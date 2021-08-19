@@ -1,5 +1,10 @@
 <template>
-  <v-app>
+<div>
+    <div>
+      <LoginWindow style="z-index: 999">31231</LoginWindow>
+    </div>
+    
+    <!-- <v-app>
     <v-app-bar
       app
       color="primary"
@@ -40,16 +45,41 @@
     <v-main>
       <router-view/>
     </v-main>
-  </v-app>
+  </v-app> -->
+</div>
 </template>
 
 <script>
-
+import LoginWindow from './components/LoginWindow'
 export default {
   name: 'App',
-
+  components:{
+    LoginWindow,
+  },
   data: () => ({
     //
   }),
+  methods: {
+    login() {
+      // this.$store.commit('WANT_LOGIN')
+    },
+
+  },
 };
 </script>
+<style scoped>
+.ivu-menu-horizontal .ivu-menu-item[data-v-7ba5bd90], .ivu-menu-horizontal .ivu-menu-submenu[data-v-7ba5bd90] {
+  color: #000;
+}
+
+.el-menu :hover {
+  color: #488ce9 !important;
+}
+.item {
+  margin-top: 10px;
+  margin-right: 40px;
+}
+.ivu-badge-count{
+  /*height: 10px;*/
+}
+</style>
