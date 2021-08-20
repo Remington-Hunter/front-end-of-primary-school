@@ -47,15 +47,6 @@ export default {
   },
   methods: {
     logout() {
-      // const _this = this
-      // _this.$axios.get("/logout", {
-      //   headers: {
-      //     "Authorization": localStorage.getItem("token")
-      //   }
-      // }).then(res => {
-      //   _this.$store.commit("REMOVE_INFO")
-      //   _this.$router.push("/login")
-      // })
       window.localStorage.removeItem('user_id')
       window.localStorage.removeItem('authorization')
       window.localStorage.removeItem('userName')
