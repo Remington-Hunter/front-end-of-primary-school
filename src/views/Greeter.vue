@@ -183,7 +183,7 @@ export default {
         }
         else{
           this.responseResult=JSON.stringify(res.data)
-          if(res.data.code===20){
+          if(res.data.code===200){
             localStorage.setItem
           }
           

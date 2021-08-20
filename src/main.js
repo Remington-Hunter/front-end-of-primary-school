@@ -9,13 +9,13 @@ import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(Element)
 Vue.config.productionTip = false
     //自动给同一个vue项目的所有请求添加请求头
-axios.interceptors.request.use(function(config) {
-    let token = localStorage.getItem('authorization');
-    if (token) {
-        config.headers['Authorization'] = token;
-    }
-    return config;
-})
+    // axios.interceptors.request.use(function(config) {
+    //     let token = localStorage.getItem('authorization');
+    //     if (token) {
+    //         config.headers['Authorization'] = token;
+    //     }
+    //     return config;
+    // })
 
 new Vue({
     router,
