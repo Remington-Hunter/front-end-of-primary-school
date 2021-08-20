@@ -174,7 +174,10 @@ export default {
       axios({
         url:url1,
         method:'post',
-        data:Data
+        data:Data,
+        headers:{
+          "Content-Type":"application/x-www-form-urlencoded"
+        }
       }).then((res)=>{
         console.log(res)
         if(this.register){
