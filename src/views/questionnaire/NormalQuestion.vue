@@ -1,10 +1,10 @@
 <template>
   <div>
-      <v-card elevation="2" class="title" style="margin-left:20%">
+      <v-card class="title"  style="margin-right:10%;float:right;">
         <span>
           <v-dialog v-model="dialog_title">
             <template v-slot:activator="{ on, attrs }">
-              <span dark v-bind="attrs" v-on="on">{{ title }}</span>
+              <span dark v-bind="attrs" v-on="on" style="text-align: center;display:block;">{{ title }}</span>
             </template>
             <v-card>
               <v-card-title class="text-h5 grey lighten-2">
@@ -28,11 +28,12 @@
             </v-card>
           </v-dialog>
         </span>
+        <v-divider></v-divider>
         <div>
           <span>
             <v-dialog v-model="dialog_describe">
               <template v-slot:activator="{ on, attrs }">
-                <span dark v-bind="attrs" v-on="on">添加说明</span>
+                <span dark v-bind="attrs" v-on="on" style="text-align: center;display:block;">添加说明</span>
               </template>
               <v-card>
                 <v-card-title class="text-h5 grey lighten-2">
@@ -57,19 +58,20 @@
             </v-dialog>
           </span>
         </div>
+        <v-divider></v-divider>
       </v-card>
-
       <v-card class="topic_control">
         <v-card-title>
             题目控件
         </v-card-title>
         <div v-for="(item,index) in problem_list" :key="(item,index)">
-        <v-btn>
-            <v-icon>{{item.icon}}</v-icon>
-            {{item.text}}
-        </v-btn>
+          <v-btn style="margin-top:10%;">
+              <v-icon >{{item.icon}}</v-icon>
+              {{item.text}}
+          </v-btn>
         </div>
     </v-card>
+
   </div>
 </template>
 
@@ -115,8 +117,18 @@ export default {
 </script>
 
 <style>
+
+.title{
+  width:70%;
+  height:200%;
+}
+
+span:hover{
+  background-color:#f6f6f6;
+}
+
 .topic_control{
-  width:15%;
+  width:10%;
   height:100%;
 }
 
