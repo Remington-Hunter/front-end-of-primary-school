@@ -64,6 +64,7 @@
 
         <div v-for="(item, index) in created_problem" :key="(item, index)">
           <SingleSelect
+            :class="'question'+ index"
             :problem_type="item"
             :problem_number="index + 1"
             @CancelNewProblem="
