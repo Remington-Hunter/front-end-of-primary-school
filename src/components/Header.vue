@@ -20,11 +20,11 @@
             <v-icon color="blue darken-2"> mdi-home-variant</v-icon> 返回首页
           </router-link>
         </li>
-        <li v-if="!hasLogin">
+        <li v-show="!hasLogin">
           <router-link to="/login"> 登录</router-link>
         </li>
-        <li v-else>
-          <a @click="logout">退出</a>
+        <li v-show="hasLogin">
+          <a @click="logout">退出登录</a>
         </li>
       </ul>
     </div>
@@ -47,17 +47,40 @@ export default {
   },
   methods: {
     logout() {
-      const _this = this
-      _this.$axios.get("/logout", {
-        headers: {
-          "Authorization": localStorage.getItem("token")
-        }
-      }).then(res => {
-        _this.$store.commit("REMOVE_INFO")
-        _this.$router.push("/login")
-      })
+      // const _this = this
+      // _this.$axios.get("/logout", {
+      //   headers: {
+      //     "Authorization": localStorage.getItem("token")
+      //   }
+      // }).then(res => {
+      //   _this.$store.commit("REMOVE_INFO")
+      //   _this.$router.push("/login")
+      // })
+      window.localStorage.removeItem('user_id')
+      window.localStorage.removeItem('authorization')
+      window.localStorage.removeItem('userName')
+      this.check_is_login();
+
+    },
+    check_is_login(){
+      if(window.localStorage.getItem('user_id')!=null){
+        this.hasLogin=true
+      }
+      else{
+        this.hasLogin=false
+      }
+      // this.$router.go(0)
     }
   },
+  mounted(){
+    this.check_is_login();
+  },
+  updated(){
+    this.check_is_login();
+  }
+  // create(){
+  //   this.check_is_login();
+  // }
   // created() {
   //   if (this.$store.getters.getUser.username) {
   //     this.user.username = this.$store.getters.getUser.username
