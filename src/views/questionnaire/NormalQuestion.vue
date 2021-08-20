@@ -1,9 +1,8 @@
 <template>
   <div>
-    <v-card class="mx-auto my-12" max-width="1000">
-      <v-card elevation="2" class="title">
+      <v-card elevation="2" class="title" style="margin-left:20%">
         <span>
-          <v-dialog v-model="dialog_title" width="500">
+          <v-dialog v-model="dialog_title">
             <template v-slot:activator="{ on, attrs }">
               <span dark v-bind="attrs" v-on="on">{{ title }}</span>
             </template>
@@ -31,7 +30,7 @@
         </span>
         <div>
           <span>
-            <v-dialog v-model="dialog_describe" width="500">
+            <v-dialog v-model="dialog_describe">
               <template v-slot:activator="{ on, attrs }">
                 <span dark v-bind="attrs" v-on="on">添加说明</span>
               </template>
@@ -59,7 +58,8 @@
           </span>
         </div>
       </v-card>
-      <v-card >
+
+      <v-card class="topic_control">
         <v-card-title>
             题目控件
         </v-card-title>
@@ -69,7 +69,6 @@
             {{item.text}}
         </v-btn>
         </div>
-    </v-card>
     </v-card>
   </div>
 </template>
@@ -88,7 +87,7 @@ export default {
       problem_list:[
           {text:'单选题',icon:'mdi-album'},
           {text:'多选题',icon:'mdi-check-bold'},
-          {text:'单选题',icon:'mdi-alpha-i-box'}
+          {text:'填空题',icon:'mdi-alpha-i-box'}
       ]
     };
   },
@@ -115,4 +114,10 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style>
+.topic_control{
+  width:15%;
+  height:100%;
+}
+
+</style>
