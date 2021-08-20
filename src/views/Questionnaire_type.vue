@@ -8,7 +8,7 @@
         <v-app>
         <div class="3" style="margin-top:5%" >
             <v-card class="common_question" style="margin-left:15%">  
-                <span class="iconfont icon-wenjuan" style="margin-left:28%;margin-top:10%"></span>
+                <span class="iconfont icon-wenjuan" align= "center"></span>
                 <div style="margin-top:-2%;margin-left:36%">普通问卷</div>
                 <div style="margin-left:30%">
                     <v-btn class="ma-2" color="primary" to="/Home">
@@ -20,7 +20,7 @@
             </v-card>
 
         <v-card class="common_question" style="margin-left:60%;margin-top:-22.6%">  
-            <span class="iconfont icon-wenjuantoupiao" style="margin-left:28%;margin-top:10%"></span>
+            <span class="iconfont icon-wenjuantoupiao" style="margin:0 auto"></span>
             <div style="margin-top:-2%;margin-left:36%">投票问卷</div>
             <div  style="margin-left:30%">
                 <v-btn class="ma-2" color="primary" to="/Home">
@@ -34,7 +34,7 @@
         </div>
          <div class="3" style="margin-top:3%">
             <v-card class="common_question" style="margin-left:15%">  
-                <span class="iconfont icon-dibudaohanglan-" style="margin-left:28%;margin-top:10%"></span>
+                <span class="iconfont icon-dibudaohanglan-" style="margin:0 auto"></span>
                 <div style="margin-top:-2%;margin-left:36%">报名问卷</div>
                 <div style="margin-left:30%">
                     <v-btn class="ma-2" color="primary" to="/Home">
@@ -45,7 +45,7 @@
                 </div>
             </v-card>
             <v-card class="common_question" style="margin-left:60%;margin-top:-22.2%">  
-                <span class="iconfont icon-wenjuantiaocha" style="margin-left:28%;margin-top:10%"></span>
+                <span class="iconfont icon-wenjuantiaocha" style="margin:0 auto"></span>
                 <div style="margin-top:-2%;margin-left:36%">考试问卷</div>
                 <div style="margin-left:30%">
                     <v-btn class="ma-2" color="primary" to="/Home">
