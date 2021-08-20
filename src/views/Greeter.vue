@@ -22,22 +22,20 @@
         label-width="120px"
       >
         <el-form-item
-          label="邮箱"
-          prop="email"
-        >
-          <el-input v-model="form.email"></el-input>
-        </el-form-item>
-        <el-form-item
-          v-if="register"
           label="昵称"
           prop="nickname"
           key="nick_item"
+        >
+          <el-input v-model="form.nickname"></el-input>
+        </el-form-item>
+        <!-- <el-form-item
+          v-if="register"
         >
           <el-input
             v-model="form.nickname"
             key="nickname"
           ></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item
           label="密码"
           prop="pass"
@@ -107,6 +105,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+import QS from 'qs'
 export default {
   data() {
     var validatePass = (rule, value, callback) => {
@@ -139,6 +139,7 @@ export default {
         pass: '',
         checkPass: ''
       },
+      responseResult:{},
       rules: {
         email: [
           { required: true, message: "请输入邮箱" },
@@ -155,29 +156,45 @@ export default {
   },
   methods: {
     submitForm() {
-      this.$refs.form.validate((valid) => {
-        if (valid) {
-          var data = { email: this.form.email, password: this.form.pass }
-          if (this.register) {
-            data.username = this.form.nickname
+      var password1=this.form.pass;
+      var Data=new FormData();
+      var url1=''
+      if(this.register){
+        Data.append("password",password1)
+        Data.append("username",this.form.nickname)
+        Data.append('checkPassword',password1)
+        url1='http://82.157.97.70/api/sign_up_username_password'
+      }
+      else{
+        Data.append("password",password1)
+        Data.append("username",this.form.nickname)
+        url1='http://82.157.97.70/api/login_username_password'
+      }
+      console.log(this.form.pass)
+      axios({
+        url:url1,
+        method:'post',
+        data:Data
+      }).then((res)=>{
+        console.log(res)
+        if(this.register){
+          this.register=false
+          alert('注册成功')
+        }
+        else{
+          this.responseResult=JSON.stringify(res.data)
+          if(res.data.code===200){
+            localStorage.setItem
           }
-          this.$http.post(
-            this.register ? "/api/register" : "/api/login",
-            data)
-            .then((response) => {
-              if (response.data.detail) {
-                this.$message(response.data.detail)
-              }
-              this.$router.push("/")
-            })
-            .catch(error => {
-              this.$alert(
-                error.response.data.detail || error.toString(),
-                'Authentication Error')
-            })
-        } else {
-          this.$message("invalid input")
-          return false
+          
+          localStorage.setItem('userName',this.form.nickname)
+          // localStorage.setItem('userName',this.ruleForm.userName);
+							//获取并存储服务器返回的AuthorizationToken信息
+					var authorization=res.headers['authorization'];
+					localStorage.setItem('authorization',authorization);
+          localStorage.setItem('user_id',res.data.data.user_id)
+							//登录成功跳转页面
+          this.$router.push('/')
         }
       })
     },
