@@ -1,5 +1,6 @@
 <template>
-  <v-card>
+  <div>
+    <v-card>
     <v-card-title>
       回收站
       <v-spacer></v-spacer>
@@ -42,8 +43,9 @@
         @click="nextSort"
       >对下一列进行排序</v-btn>
     </div>
-
+    
   </v-card>
+  </div>
 </template>
 
 
@@ -51,8 +53,10 @@
 export default {
   data() {
     return {
+      dialogVisible:true,
       sortBy: 'date',
       sortDesc: false,
+      user_id:window.localStorage.getItem('user_id'),
       search: '',
       headers: [
         {
@@ -85,7 +89,23 @@ export default {
       ],
     }
   },
+  mounted(){
+    this.getItem()
+  },
   methods: {
+    
+
+    getItem(){
+      var Data=new FormData();
+      Data.append('user_id',user_id);
+      axiso({
+        url:'',
+        method:'post',
+        data:Data
+      }).then((res)=>{
+        this.desserts=res.data;
+      })
+    },
     toggleOrder() {
       this.sortDesc = !this.sortDesc
     },
@@ -95,8 +115,35 @@ export default {
       this.sortBy = this.headers[index].value
     },
     recoveryItem(item) {
-      const index = this.desserts.indexOf(item)
-      confirm('您是否确定要恢复该问卷') && this.desserts.splice(index, 1)
+      this.$confirm('此操作将恢复该问卷, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+          const index = this.desserts.indexOf(item)
+          // this.desserts.splice(index, 1)
+          var Data=new FormData();
+          Data.append('id',index);
+          axios({
+            url:'',
+            method:'post',
+            data:Data
+          }).then((res)=>{
+            console.log(res)
+            this.getItem();
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
+      // const index = this.desserts.indexOf(item)
+      // confirm('您是否确定要恢复该问卷') && this.desserts.splice(index, 1)
     },
   },
 }

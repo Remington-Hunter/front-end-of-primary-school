@@ -24,11 +24,11 @@
             <v-icon color="blue darken-2"> mdi-home-variant</v-icon> 返回首页
           </router-link>
         </li>
-        <li v-if="!hasLogin">
+        <li v-show="!hasLogin">
           <router-link to="/login"> 登录</router-link>
         </li>
-        <li v-else>
-          <a @click="logout">退出</a>
+        <li v-show="hasLogin">
+          <a @click="logout">退出登录</a>
         </li>
       </ul>
     </div>
