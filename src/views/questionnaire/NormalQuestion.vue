@@ -1,42 +1,39 @@
 <template>
   <div>
-    <v-card class="mx-auto my-12" max-width="1000">
-      <v-card elevation="2" class="title">
+         <v-card class="title"  style="margin-right:10%;float:right;">
+        <span class="title_description">
+          <v-dialog v-model="dialog_title">
+            <template v-slot:activator="{ on, attrs }">
+              <span dark v-bind="attrs" v-on="on" style="text-align: center;display:block;">{{ title }}</span>
+            </template>
+            <v-card>
+              <v-card-title class="text-h5 grey lighten-2">
+                修改标题
+              </v-card-title>
+
+              <v-card-text>
+                <template>
+                  <v-text-field v-model="title"> </v-text-field>
+                </template>
+              </v-card-text>
+
+              <v-divider></v-divider>
+
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" text @click="dialog_title = false">
+                  确认
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </span>
+        <v-divider></v-divider>
         <div>
-          <span>
-            <v-dialog v-model="dialog_title" width="500">
+          <span class="title_description">
+            <v-dialog v-model="dialog_describe">
               <template v-slot:activator="{ on, attrs }">
-                <span dark v-bind="attrs" v-on="on">{{ title }}</span>
-              </template>
-              <v-card>
-                <v-card-title class="text-h5 grey lighten-2">
-                  修改标题
-                </v-card-title>
-
-                <v-card-text>
-                  <template>
-                    <v-text-field v-model="title"> </v-text-field>
-                  </template>
-                </v-card-text>
-
-                <v-divider></v-divider>
-
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="primary" text @click="dialog_title = false">
-                    确认
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-          </span>
-        </div>
-
-        <div>
-          <span>
-            <v-dialog v-model="dialog_describe" width="500">
-              <template v-slot:activator="{ on, attrs }">
-                <span dark v-bind="attrs" v-on="on">添加说明</span>
+                <span dark v-bind="attrs" v-on="on" style="text-align: center;display:block;">添加说明</span>
               </template>
               <v-card>
                 <v-card-title class="text-h5 grey lighten-2">
@@ -61,6 +58,8 @@
             </v-dialog>
           </span>
         </div>
+        <v-divider></v-divider>
+      </v-card>
 
         <div v-for="(item, index) in created_problem" :key="(item, index)">
           <SingleSelect
@@ -75,19 +74,17 @@
             @deleteProblem="deleteProblem"
           ></SingleSelect>
         </div>
-      </v-card>
-      <v-card>
+      <v-card class="topic_control">
         <v-card-title>
           题目控件
         </v-card-title>
         <div v-for="(item, index) in problem_list" :key="(item, index)">
-          <v-btn @click="newProblem(item.text)">
+          <v-btn @click="newProblem(item.text)" style="margin-top:10%;">
             <v-icon>{{ item.icon }}</v-icon>
             {{ item.text }}
           </v-btn>
         </div>
       </v-card>
-    </v-card>
   </div>
 </template>
 
@@ -136,4 +133,20 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style>
+
+.title{
+  width:70%;
+  height:200%;
+}
+
+.title_description:hover{
+  background-color:#f6f6f6;
+}
+
+.topic_control{
+  width:10%;
+  height:100%;
+}
+
+</style>
