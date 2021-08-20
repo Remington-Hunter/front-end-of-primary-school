@@ -1,26 +1,27 @@
-<template>
-  <div class="login">
-    <el-card>
-      <div class="logo"><img
-          src="../assets/logo.png"
-          class="img"
-        ></div>
-      <el-form
-        :model="form"
-        status-icon
-        :rules="rules"
-        ref="form"
-        label-width="23%"
-        id="form"
-      >
-        <el-form-item
-          label="昵称"
-          prop="nickname"
-          key="nick_item"
+<template >
+  <div id="building">
+    <div class="login">
+      <el-card>
+        <div class="logo"><img
+            src="../assets/logo.png"
+            class="img"
+          ></div>
+        <el-form
+          :model="form"
+          status-icon
+          :rules="rules"
+          ref="form"
+          label-width="30%"
+          id="form"
         >
-          <el-input v-model="form.nickname"></el-input>
-        </el-form-item>
-        <!-- <el-form-item
+          <el-form-item
+            label="昵称"
+            prop="nickname"
+            key="nick_item"
+          >
+            <el-input v-model="form.nickname"></el-input>
+          </el-form-item>
+          <!-- <el-form-item
           v-if="register"
         >
           <el-input
@@ -28,71 +29,72 @@
             key="nickname"
           ></el-input>
         </el-form-item> -->
-        <el-form-item
-          label="密码"
-          prop="pass"
-          key="pass_item"
-        >
-          <el-input
-            type="password"
-            v-model="form.pass"
-            :autocomplete="this.register?'new-password':'current-password'"
-            key="pass"
+          <el-form-item
+            label="密码"
+            prop="pass"
+            key="pass_item"
           >
-          </el-input>
-        </el-form-item>
-        <el-form-item
-          v-if="register"
-          label="确认密码"
-          prop="checkPass"
-        >
-          <el-input
-            type="password"
-            v-model="form.checkPass"
-            autocomplete="new-password"
-          ></el-input>
-        </el-form-item>
-        <el-form-item class="button-container">
-          <el-button
-            type="primary"
-            round
-            @click="submitForm()"
-          >
-            <span v-if="this.register">注册</span>
-            <span v-else>登录</span>
-          </el-button>
-          <el-button
-            @click="resetForm()"
-            type="primary"
-            round
-          >重置</el-button>
-        </el-form-item>
-        <el-form-item id='bott'>
-          <el-button
-            type="text"
-            @click="register = !register"
-          >
-            <div
-              v-if="register"
-              class="text-grey"
-            >返回登录</div>
-            <div
-              v-else
-              class="text-grey"
+            <el-input
+              type="password"
+              v-model="form.pass"
+              :autocomplete="this.register?'new-password':'current-password'"
+              key="pass"
             >
-              没有账号？点此注册
-            </div>
-          </el-button>
-          <el-divider direction="vertical"></el-divider>
-          <el-button
-            type="text"
-            @click="$router.push('/resetpassword')"
+            </el-input>
+          </el-form-item>
+          <el-form-item
+            v-if="register"
+            label="确认密码"
+            prop="checkPass"
           >
-            <div class="text-grey">重置密码</div>
-          </el-button>
-        </el-form-item>
-      </el-form>
-    </el-card>
+            <el-input
+              type="password"
+              v-model="form.checkPass"
+              autocomplete="new-password"
+            ></el-input>
+          </el-form-item>
+          <el-form-item class="button-container">
+            <el-button
+              type="primary"
+              round
+              @click="submitForm()"
+            >
+              <span v-if="this.register">注册</span>
+              <span v-else>登录</span>
+            </el-button>
+            <el-button
+              @click="resetForm()"
+              type="primary"
+              round
+            >重置</el-button>
+          </el-form-item>
+          <el-form-item id='bott'>
+            <el-button
+              type="text"
+              @click="register = !register"
+            >
+              <div
+                v-if="register"
+                class="text-grey"
+              >返回登录</div>
+              <div
+                v-else
+                class="text-grey"
+              >
+                没有账号？点此注册
+              </div>
+            </el-button>
+            <el-divider direction="vertical"></el-divider>
+            <el-button
+              type="text"
+              @click="$router.push('/resetpassword')"
+            >
+              <div class="text-grey">重置密码</div>
+            </el-button>
+          </el-form-item>
+        </el-form>
+      </el-card>
+    </div>
   </div>
 </template>
 
@@ -143,7 +145,7 @@ export default {
         checkPass: [
           { required: true, validator: validatePass2, trigger: 'blur' }
         ]
-      }
+      },
     }
   },
   methods: {
@@ -201,13 +203,22 @@ export default {
 </script>
 
 <style scoped>
+#building {
+  background: url("../assets/bg.jpg");
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  background-size: 100% 100%;
+}
 .login {
   text-align: center;
+  padding: 10vh 0 0 0;
 }
 .el-card {
   width: 30%;
-  margin: 10vh auto;
+  margin: auto;
   padding: 0 4% 0 0;
+  background-color: rgba(255, 255, 255, 0.8);
 }
 .logo {
   position: relative;
@@ -219,13 +230,22 @@ export default {
 .el-form-item {
   padding: 1%;
 }
+.button-container {
+  margin-bottom: 0;
+}
 .button-container .el-button {
-  margin: 0 10% 0 10%;
+  margin: 0 15% 0 0;
   width: 30%;
   min-width: min-content;
 }
 #bott {
-  text-align: center;
-  margin-bottom: 0%;
+  margin-bottom: 0;
+  margin-left: -15%;
+}
+.text-grey {
+  color: rgb(40, 67, 102);
+}
+#form >>> .el-form-item__label {
+  font-size: 18px;
 }
 </style>
