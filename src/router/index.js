@@ -36,12 +36,13 @@ const routes = [{
             path: '',
             component: () =>
                 import ('../views/Mine/Children/Questionnaires.vue')
-        },{
+          },
+          {
           path: '/deleted',
           component: () =>
               import ('../views/Mine/Children/DeletedQuest.vue')
-      }
-    ]
+        }
+      ]
     },
      {
       path: '/normalquestion',

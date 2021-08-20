@@ -216,7 +216,7 @@ export default {
   margin: 0 0 2% 4%;
 }
 .el-card {
-  width: 45%;
+  width: 40%;
   margin: auto;
   padding: 0 7% 0 0;
 }
