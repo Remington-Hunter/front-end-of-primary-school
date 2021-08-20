@@ -21,7 +21,7 @@
             color="primary"
             to="/Questionnaire_type"
           >
-            <v-icon >mdi-plus</v-icon>新建问卷
+            <v-icon>mdi-plus</v-icon>新建问卷
           </v-btn>
         </v-list-item>
 
@@ -56,8 +56,8 @@ export default {
     return {
       drawer: true,
       items: [
-        { title: '个人问卷', icon: 'mdi-file-document-outline', link: 'mine/questionnaires' },
-        { title: '回收站', icon: 'mdi-trash-can-outline', link: '/' },
+        { title: '个人问卷', icon: 'mdi-file-document-outline', link: 'mine' },
+        { title: '回收站', icon: 'mdi-trash-can-outline', link: '/deleted' },
       ],
       permanent: true,
       miniVariant: false,
