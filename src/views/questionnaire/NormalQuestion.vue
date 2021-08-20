@@ -61,9 +61,9 @@
         <v-divider></v-divider>
         <div v-for="(item, index) in created_problem" :key="(item, index)">
           <SingleSelect
-            :id="'question'+ index"
-            :problem_type="item"
-            :problem_number="index + 1"
+            :id="'question'+ item.number"
+            :problem_type="item.type"
+            :problem_number="item.number"
             @CancelNewProblem="
               created_problem.pop();
               is_creating = false;
@@ -113,6 +113,8 @@ export default {
 
       created_problem: [],
       is_creating: false,
+
+      total_problem:1,
     };
   },
   methods: {
@@ -121,13 +123,24 @@ export default {
     },
     newProblem(index) {
       if (!this.is_creating) {
-        this.created_problem.push(index);
+        let item ={}
+        item.type=index
+        item.number=this.total_problem
+        this.total_problem+=1
+        this.created_problem.push(item);
         this.is_creating = true;
       }
     },
     deleteProblem(index) {
       console.log(index);
-      document.getElementById('question'+(index-1)).remove()
+      document.getElementById('question'+index).remove()
+      for(var i=0;i<this.created_problem.length;i++) {
+        if(this.created_problem[i].number > index){
+          this.created_problem[i].number-=1
+        }
+      }
+      this.total_problem-=1
+      // console.log(this.$refs.question1);
       // this.created_problem.splice(index-1,1)
     },
   },

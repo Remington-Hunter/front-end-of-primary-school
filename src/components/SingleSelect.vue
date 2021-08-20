@@ -83,8 +83,8 @@
     </div>
 
     <div v-show="!ismodify">
-      <v-btn color="primary" @click="deleteProblem">删除</v-btn>
       <v-btn color="primary" @click="ismodify = true">修改</v-btn>
+      <v-btn color="primary" @click="deleteProblem">删除</v-btn>
     </div>
   </div>
 </template>
