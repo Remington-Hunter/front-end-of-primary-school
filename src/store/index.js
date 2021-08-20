@@ -12,15 +12,15 @@ export default new Vuex.Store({
   },
   modules: {
   },
-//   plugins: [vuexAlong({
-//     name: 'vuex-along',
-//     local: {
-//         list: [],
-//         // 填写需要的内容
-//         isFilter: true
-//     },
-//     session: false
-// })]
+  plugins: [vuexAlong({
+    name: 'vuex-along',
+    local: {
+        list: [],
+        // 填写需要的内容
+        isFilter: true
+    },
+    session: false
+})]
 // plugins: [
 //   createVuexAlong({
 //     name: "hello-vuex-along", // 设置保存的集合名字，避免同站点下的多项目数据冲突
