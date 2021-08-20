@@ -43,6 +43,11 @@ const routes = [{
       }
     ]
     },
+     {
+      path: '/normalquestion',
+      name: 'Normalquestion',
+      component: ()=>import('../views/questionnaire/NormalQuestion.vue')
+    }      
 ]
 
 

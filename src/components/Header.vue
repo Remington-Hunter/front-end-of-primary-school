@@ -1,6 +1,10 @@
 <template>
   <div class="header-container">
     <div class="header_nav">
+      <div class="logo"><img
+          src="../assets/logo.png"
+          class="img"
+        ></div>
       <router-link to="/">
         <p id="head-title">问卷星球</p>
       </router-link>
@@ -47,17 +51,31 @@ export default {
   },
   methods: {
     logout() {
-      const _this = this
-      _this.$axios.get("/logout", {
-        headers: {
-          "Authorization": localStorage.getItem("token")
-        }
-      }).then(res => {
-        _this.$store.commit("REMOVE_INFO")
-        _this.$router.push("/login")
-      })
+      window.localStorage.removeItem('user_id')
+      window.localStorage.removeItem('authorization')
+      window.localStorage.removeItem('userName')
+      this.check_is_login();
+
+    },
+    check_is_login() {
+      if (window.localStorage.getItem('user_id') != null) {
+        this.hasLogin = true
+      }
+      else {
+        this.hasLogin = false
+      }
+      // this.$router.go(0)
     }
   },
+  mounted() {
+    this.check_is_login();
+  },
+  updated() {
+    this.check_is_login();
+  }
+  // create(){
+  //   this.check_is_login();
+  // }
   // created() {
   //   if (this.$store.getters.getUser.username) {
   //     this.user.username = this.$store.getters.getUser.username

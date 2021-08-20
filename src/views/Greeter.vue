@@ -1,17 +1,8 @@
 <template>
   <div class="login">
-    <el-button
-      class="return"
-      type="primary"
-      icon="el-icon-top-right"
-      @click="$router.go(-1)"
-    >
-      返回
-    </el-button>
     <el-card>
       <div class="logo"><img
           src="../assets/logo.png"
-          alt="bread"
           class="img"
         ></div>
       <el-form
@@ -19,7 +10,8 @@
         status-icon
         :rules="rules"
         ref="form"
-        label-width="120px"
+        label-width="23%"
+        id="form"
       >
         <el-form-item
           label="昵称"
@@ -75,7 +67,7 @@
             round
           >重置</el-button>
         </el-form-item>
-        <el-form-item>
+        <el-form-item id='bott'>
           <el-button
             type="text"
             @click="register = !register"
@@ -207,22 +199,19 @@ export default {
 
 <style scoped>
 .login {
-  padding: 0 0 5% 0;
-}
-.return {
-  margin: 0 0 2% 4%;
+  text-align: center;
 }
 .el-card {
-  width: 45%;
-  margin: auto;
-  padding: 0 7% 0 0;
+  width: 30%;
+  margin: 10vh auto;
+  padding: 0 4% 0 0;
 }
 .logo {
   position: relative;
-  margin: 2% 0 6% 38%;
+  margin: 0 0 5% 20%;
 }
 .img {
-  width: 70%;
+  width: 50%;
 }
 .el-form-item {
   padding: 1%;
@@ -232,7 +221,8 @@ export default {
   width: 30%;
   min-width: min-content;
 }
-.el-form-item__label {
-  color: rgb(58, 130, 119);
+#bott {
+  text-align: center;
+  margin-bottom: 0%;
 }
 </style>
