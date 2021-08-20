@@ -71,7 +71,7 @@
 <style>
 
 .common_question {
-  height: 280px !important;
+  height: 100% !important;
   width: 25%;
 }
 
