@@ -37,7 +37,12 @@ const routes = [{
             component: () =>
                 import ('../views/Mine/Children/Questionnaires.vue')
         }]
-    },
+    }, {
+      path: '/normalquestion',
+      name: 'Normalquestion',
+      component: ()=>import('../views/questionnaire/NormalQuestion.vue')
+    }
+
 ]
 
 
