@@ -59,11 +59,9 @@
           </span>
         </div>
         <v-divider></v-divider>
-      </v-card>
-
         <div v-for="(item, index) in created_problem" :key="(item, index)">
           <SingleSelect
-            :class="'question'+ index"
+            :id="'question'+ index"
             :problem_type="item"
             :problem_number="index + 1"
             @CancelNewProblem="
@@ -74,6 +72,8 @@
             @deleteProblem="deleteProblem"
           ></SingleSelect>
         </div>
+      </v-card>
+
       <v-card class="topic_control">
         <v-card-title>
           题目控件
@@ -127,7 +127,8 @@ export default {
     },
     deleteProblem(index) {
       console.log(index);
-      this.created_problem.splice(index-1,1)
+      document.getElementById('question'+(index-1)).remove()
+      // this.created_problem.splice(index-1,1)
     },
   },
 };
