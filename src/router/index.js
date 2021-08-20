@@ -20,6 +20,22 @@ const routes = [
     name: 'Login',
     component: ()=>import('../views/Greeter.vue'),
   },
+  {
+    path: '/personInfo',
+    name: 'PersonInfo',
+    component: ()=>import('../views/PersonInfo.vue'),
+  },
+  {
+    path: '/mine',
+    name: 'Mine',
+    component: ()=>import('../views/Mine/Mine.vue'),
+    children:[
+      {
+        path:'questionnaires',
+        component: ()=> import('../views/Mine/Children/Questionnaires.vue')
+      }
+    ]
+  },
 
 ]
 
