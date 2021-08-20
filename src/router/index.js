@@ -21,6 +21,12 @@ const routes = [
     component: ()=>import('../views/Greeter.vue'),
   },
   {
+    path: '/questionnaire_type',
+    name: 'Questionnaire_type',
+    component: () =>
+        import ('../views/Questionnaire_type')
+},
+  {
     path: '/personInfo',
     name: 'PersonInfo',
     component: ()=>import('../views/PersonInfo.vue'),
@@ -36,13 +42,13 @@ const routes = [
       }
     ]
   },
-
 ]
 
+
 const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes
 })
 
 export default router
