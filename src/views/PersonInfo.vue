@@ -1,9 +1,12 @@
 <template>
-  <v-card
+  <div>
+    <div style="width:20%;float:left">
+    <v-card
     :loading="loading"
     class="mx-auto my-12"
     max-width="374"
-    style="right:30%"
+    style="left:20%"
+    
   >
 
     <v-img
@@ -19,27 +22,9 @@
     </v-avatar> -->
     <v-card-title >{{username}}</v-card-title>
     <v-card-text>
-      <v-row
-        align="center"
-        class="mx-0"
-      >
-        <v-rating
-          :value="4.5"
-          color="amber"
-          dense
-          half-increments
-          readonly
-          size="14"
-        ></v-rating>
+      
 
-        <div class="grey--text ms-4">
-          4.5 (413)
-        </div>
-      </v-row>
-
-      <div class="my-4 text-subtitle-1">
-        $ • Italian, Cafe
-      </div>
+      
 
       <div>Small plates, salads & sandwiches - an intimate setting with 12 indoor seats plus patio seating.</div>
     </v-card-text>
@@ -47,42 +32,114 @@
     <v-divider class="mx-4"></v-divider>
 
     <v-card-title>Tonight's availability</v-card-title>
-
-    <!-- <v-card-text>
-      <v-chip-group
-        v-model="selection"
-        active-class="deep-purple accent-4 white--text"
-        column
-      >
-        <v-chip>5:30PM</v-chip>
-
-        <v-chip>7:30PM</v-chip>
-
-        <v-chip>8:00PM</v-chip>
-
-        <v-chip>9:00PM</v-chip>
-      </v-chip-group>
-    </v-card-text> -->
-
     <v-card-actions>
       <v-btn
         color="deep-purple lighten-2"
         text
-        @click="reserve"
-        style="left:10%"
+        @click="reserve(true)"
+        style="left:35%"
+        
       >
         我的账户
       </v-btn>
-      <v-btn
+      <!-- <v-btn
         color="deep-purple lighten-2"
         text
-        @click="reserve"
+        @click="reserve(false)"
         style="left:45%"
       >
         我的团队
-      </v-btn>
+      </v-btn> -->
     </v-card-actions>
   </v-card>
+  </div>
+  <div style="width:70%;float:left" >
+     
+    <v-card 
+    :loading="loading"
+    class="mx-auto my-12"
+    max-width="1000" 
+    style="left:10%"
+    v-show="flag"
+    >
+     
+    
+    <v-card-text>     
+      <v-card-title>账户信息</v-card-title>
+      <div style="margin-left:15px">用户名:{{username}}</div>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <v-card-title>账户设置</v-card-title>
+      <div style="margin-left:15px">
+        <span>手机号码:{{phoneNumber}}</span>
+        <v-btn style="float:right;right:20%" elevation="2" @click="phoneDialog = true">绑定</v-btn>
+      </div>
+      <br>
+      <br>
+      <div style="margin-left:15px">
+        <span>我的邮箱:{{emile}}</span>
+        <v-btn elevation="2" style="float:right;right:20%" @click="emailDialog = true">绑定</v-btn>
+      </div>
+      <br>
+      <br>
+      <br>
+      <br>
+      <div>
+        <v-card-title>我的资源</v-card-title>
+      </div>
+      
+    </v-card-text>
+    <v-dialog
+    v-model="phoneDialog"
+          max-width="500px">
+          <v-card>
+            <v-card-text>
+              <v-text-field label="请输入新的电话号码"></v-text-field>
+
+              <!-- <small class="grey--text">：</small> -->
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+
+              <v-btn
+                text
+                color="primary"
+                @click="updatePhone"
+              >
+                Submit
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        <v-dialog
+    v-model="emailDialog"
+          max-width="500px">
+          <v-card>
+            <v-card-text>
+              <v-text-field label="请输入新的邮箱" v-model="phone"></v-text-field>
+
+              
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+
+              <v-btn
+                text
+                color="primary"
+                @click="updateEmail"
+              >
+                Submit
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+  </v-card>
+  </div>
+  </div>
 </template>
 <script>
 import axios from 'axios';
@@ -92,10 +149,20 @@ export default
       loading: false,
       selection: 1,
       // img:'',
-      username:window.localStorage.getItem('userName')
+      phone:'',
+      phoneNumber:'未绑定',
+      phoneDialog:false,
+      emile:'未绑定',
+      emailDialog:false,
+      username:window.localStorage.getItem('userName'),
+      emailData:'',
+      flag:true
     }),
     methods:
     {
+      reserve(item){
+        this.flag=item
+      },
       goTo(path) {
         this.$router.replace(path);
       },
@@ -113,6 +180,34 @@ export default
       //     this.username=res.data.username
       //   })
       // }
+      updatePhone(){
+        var Data=new FormData();
+        this.phoneDialog=true
+        Data.append('phone',this.phoneNumber)
+        axios({
+          url:'',
+          mehtod:'post',
+          data:Data
+        }).then((res)=>{
+          this.phoneNumber=this.phone,
+          this.phone='',
+          this.phoneDialog=false
+        })
+      },
+      updateEmail(){
+        var Data=new FormData();
+        this.emailDialog=true
+        Data.append('email',this.email)
+        axios({
+          url:'',
+          mehtod:'post',
+          data:Data
+        }).then((res)=>{
+          this.emailNumber=this.emailData,
+          this.emailData='',
+          this.emailDialog=false
+        })
+      }
     }
   }
 
