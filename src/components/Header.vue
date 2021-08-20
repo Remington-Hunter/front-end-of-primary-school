@@ -1,18 +1,32 @@
 <template>
-  <div class="m-content">
-    Header
-    <h3>欢迎来到赵宸的博客</h3>
-    <div class="block">
-      <el-avatar :size="50" :src="user.avatar"></el-avatar>
-      <div>{{ user.username }}</div>
-    </div>
-    <div class="maction">
-      <span><el-link href="/blogs" type="primary">主页</el-link></span>
-      <el-divider direction="vertical"></el-divider>
-      <span><el-link type="success" href="">发表</el-link></span>
-      <el-divider direction="vertical"></el-divider>
-      <span v-show="!hasLogin"><el-link type="info" href="/login">登录</el-link></span>
-      <span v-show="hasLogin"><el-link type="danger" @click="logout">退出</el-link></span>
+  <div class="header-container">
+    <div class="header_nav">
+      <router-link to="/">
+        <p id="head-title">问卷星球</p>
+      </router-link>
+      <ul>
+        <li>
+          <router-link to="/mine">
+            <v-icon color="blue darken-2">mdi-file-multiple-outline</v-icon> 我的问卷
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/personInfo">
+            <v-icon color="blue darken-2">mdi-account</v-icon> 个人中心
+          </router-link>
+        </li>
+        <li v-if="$route.path != '/'">
+          <router-link to="/">
+            <v-icon color="blue darken-2"> mdi-home-variant</v-icon> 返回首页
+          </router-link>
+        </li>
+        <li v-if="!hasLogin">
+          <router-link to="/login"> 登录</router-link>
+        </li>
+        <li v-else>
+          <a @click="logout">退出</a>
+        </li>
+      </ul>
     </div>
   </div>
 
@@ -44,24 +58,53 @@ export default {
       })
     }
   },
-  created() {
-    if (this.$store.getters.getUser.username) {
-      this.user.username = this.$store.getters.getUser.username
-      this.hasLogin = true
-    }
-  }
+  // created() {
+  //   if (this.$store.getters.getUser.username) {
+  //     this.user.username = this.$store.getters.getUser.username
+  //     this.hasLogin = true
+  //   }
+  // }
 }
 </script>
 
 <style scoped>
-.m-content {
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
+a {
+  text-decoration: inherit;
+}
+.header_nav {
+  position: fixed;
+  z-index: 1500;
+  width: 100%;
+  height: 8vh;
+  background: rgb(255, 255, 255);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+  top: 0;
 }
 
-.maction {
-  margin: 10px 0;
-
+#head-title {
+  margin-left: 3vw;
+  font-size: 1.2em;
+  color: #333333;
+  margin-top: 3vh;
+}
+.header_nav > ul {
+  margin: 0 2cm;
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+.header_nav > ul > li * {
+  display: inline-block;
+  padding: 0 0 0.1em 1.5em;
+  font-size: 1em;
+  color: #333333;
+  text-decoration: none;
+  cursor: pointer;
+}
+.header_nav > ul > li *:hover {
+  color: #008fff;
 }
 </style>

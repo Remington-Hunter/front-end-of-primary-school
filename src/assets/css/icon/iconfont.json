@@ -1,0 +1,37 @@
+{
+  "id": "2757462",
+  "name": "问卷",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "1048271",
+      "name": "问卷调查",
+      "font_class": "wenjuan",
+      "unicode": "e636",
+      "unicode_decimal": 58934
+    },
+    {
+      "icon_id": "8783394",
+      "name": "问卷",
+      "font_class": "dibudaohanglan-",
+      "unicode": "e630",
+      "unicode_decimal": 58928
+    },
+    {
+      "icon_id": "17189880",
+      "name": "问卷投票",
+      "font_class": "wenjuantoupiao",
+      "unicode": "e69a",
+      "unicode_decimal": 59034
+    },
+    {
+      "icon_id": "17456850",
+      "name": "问卷调查",
+      "font_class": "wenjuantiaocha",
+      "unicode": "e672",
+      "unicode_decimal": 58994
+    }
+  ]
+}
