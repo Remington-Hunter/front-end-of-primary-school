@@ -139,6 +139,7 @@ export default {
         pass: '',
         checkPass: ''
       },
+      responseResult:{},
       rules: {
         email: [
           { required: true, message: "请输入邮箱" },
@@ -174,10 +175,27 @@ export default {
         url:url1,
         method:'post',
         data:Data
-        
       }).then((res)=>{
         console.log(res)
-        this.$router.push('/')
+        if(this.register){
+          this.register=false
+          alert('注册成功')
+        }
+        else{
+          this.responseResult=JSON.stringify(res.data)
+          if(res.data.code===20){
+            localStorage.setItem
+          }
+          
+          localStorage.setItem('userName',this.form.nickname)
+          // localStorage.setItem('userName',this.ruleForm.userName);
+							//获取并存储服务器返回的AuthorizationToken信息
+					var authorization=res.headers['authorization'];
+					localStorage.setItem('authorization',authorization);
+          localStorage.setItem('user_id',res.data.data.user_id)
+							//登录成功跳转页面
+          this.$router.push('/')
+        }
       })
     },
     resetForm() {
