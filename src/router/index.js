@@ -20,6 +20,11 @@ const routes = [
     name: 'Login',
     component: ()=>import('../views/Greeter.vue'),
   },
+  {
+    path: '/normalquestion',
+    name: 'Normalquestion',
+    component: ()=>import('../views/questionnaire/NormalQuestion.vue')
+  }
 
 ]
 
