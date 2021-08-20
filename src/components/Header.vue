@@ -1,12 +1,10 @@
 <template>
   <div class="header-container">
     <div class="header_nav">
-      <div class="logo"><img
-          src="../assets/logo.png"
-          class="img"
-        ></div>
       <router-link to="/">
-        <p id="head-title">问卷星球</p>
+        <p id="head-title">
+          <v-icon color="blue darken-2">mdi-earth</v-icon> 问卷星球
+        </p>
       </router-link>
       <ul>
         <li>
@@ -103,7 +101,7 @@ a {
 }
 
 #head-title {
-  margin-left: 3vw;
+  margin-left: 1vw;
   font-size: 1.2em;
   color: #333333;
   margin-top: 3vh;
