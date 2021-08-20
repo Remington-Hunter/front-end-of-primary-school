@@ -139,7 +139,7 @@ export default {
         pass: '',
         checkPass: ''
       },
-      responseResult:{},
+      responseResult: {},
       rules: {
         email: [
           { required: true, message: "请输入邮箱" },
@@ -156,47 +156,47 @@ export default {
   },
   methods: {
     submitForm() {
-      var password1=this.form.pass;
-      var Data=new FormData();
-      var url1=''
-      if(this.register){
-        Data.append("password",password1)
-        Data.append("username",this.form.nickname)
-        Data.append('checkPassword',password1)
-        url1='http://82.157.97.70/api/sign_up_username_password'
+      var password1 = this.form.pass;
+      var Data = new FormData();
+      var url1 = ''
+      if (this.register) {
+        Data.append("password", password1)
+        Data.append("username", this.form.nickname)
+        Data.append('checkPassword', password1)
+        url1 = 'http://82.157.97.70/api/sign_up_username_password'
       }
-      else{
-        Data.append("password",password1)
-        Data.append("username",this.form.nickname)
-        url1='http://82.157.97.70/api/login_username_password'
+      else {
+        Data.append("password", password1)
+        Data.append("username", this.form.nickname)
+        url1 = 'http://82.157.97.70/api/login_username_password'
       }
       console.log(this.form.pass)
       axios({
-        url:url1,
-        method:'post',
-        data:Data,
-        headers:{
-          "Content-Type":"application/x-www-form-urlencoded"
+        url: url1,
+        method: 'post',
+        data: Data,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
         }
-      }).then((res)=>{
+      }).then((res) => {
         console.log(res)
-        if(this.register){
-          this.register=false
+        if (this.register) {
+          this.register = false
           alert('注册成功')
         }
-        else{
-          this.responseResult=JSON.stringify(res.data)
-          if(res.data.code===200){
+        else {
+          this.responseResult = JSON.stringify(res.data)
+          if (res.data.code === 200) {
             localStorage.setItem
           }
-          
-          localStorage.setItem('userName',this.form.nickname)
+
+          localStorage.setItem('userName', this.form.nickname)
           // localStorage.setItem('userName',this.ruleForm.userName);
-							//获取并存储服务器返回的AuthorizationToken信息
-					var authorization=res.headers['authorization'];
-					localStorage.setItem('authorization',authorization);
-          localStorage.setItem('user_id',res.data.data.user_id)
-							//登录成功跳转页面
+          //获取并存储服务器返回的AuthorizationToken信息
+          var authorization = res.headers['authorization'];
+          localStorage.setItem('authorization', authorization);
+          localStorage.setItem('user_id', res.data.data.user_id)
+          //登录成功跳转页面
           this.$router.push('/')
         }
       })
@@ -219,7 +219,6 @@ export default {
   width: 45%;
   margin: auto;
   padding: 0 7% 0 0;
-  background-color: rgba(248, 224, 157, 0.5);
 }
 .logo {
   position: relative;
