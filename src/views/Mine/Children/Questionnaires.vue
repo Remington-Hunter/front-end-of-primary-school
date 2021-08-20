@@ -52,6 +52,7 @@
 
 
 <script>
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -101,12 +102,62 @@ export default {
     },
     deleteItem(item) {
       const index = this.desserts.indexOf(item)
+      console.log(index)
       confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1)
+      var Data=FormData();
+      Data.append('id',index)
+      axios({
+        url:'',
+        method:'',
+        data:Data
+      }).then((res)=>{
+       console.log(res);
+       this.getItem(); 
+      })
     },
     copyItem(item) {
+      const index = this.desserts.indexOf(item)
+      var Data=FormData();
+      // name: '问卷2',
+      //     state: 1,
+      //     id: 234567,
+      //     num: 24,
+      //     date: '2021 - 8 - 1',
+      var name1=item.name+'副本';
+      var state1=item.state;
+      var num1=item.num;
+      var date1=new Date()
+      Data.append('name',name1);
+      Data.append('state',state1);
+      Data.append('num',num1);
+      Data.append('date',date1)
+      axios({
+        url:'',
+        method:'',
+        data:Data
+      }).then((res)=>{
+       console.log(res);
+      //  这里的思路应该是发送一个有关这个item的数据，数据库再加上一条,还要生成新的内容
+       this.getItem(); 
+      })
       //   复制问卷
     },
+    getItem(){
+      var Data=new FormData()
+      Data.append('user_id',window.localStorage.getItem('user_id'))
+      axios({
+        url:'',
+        method:'post',
+        data:Data
+      }).then((res)=>{
+        this.desserts=res.data
+        // 没写全之后再补
+      })
+    }
   },
+  mounted(){
+    this.getItem()
+  }
 }
 </script>
 
