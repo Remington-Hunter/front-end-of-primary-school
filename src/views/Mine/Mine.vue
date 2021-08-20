@@ -18,8 +18,9 @@
           <v-btn
             class="mx-2"
             color="primary"
+            to="/Questionnaire_type"
           >
-            <v-icon>mdi-plus</v-icon>新建问卷
+            <v-icon >mdi-plus</v-icon>新建问卷
           </v-btn>
         </v-list-item>
 
