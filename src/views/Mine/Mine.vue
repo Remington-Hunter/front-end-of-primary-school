@@ -1,6 +1,7 @@
 <template>
-  <v-app>
+  <div>
     <v-navigation-drawer
+      app
       v-model="drawer"
       :mini-variant="miniVariant"
       :permanent="permanent"
@@ -41,16 +42,21 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-  </v-app>
+
+    <v-main>
+      <router-view></router-view>
+    </v-main>
+  </div>
 </template>
 
 <script>
 export default {
+
   data() {
     return {
       drawer: true,
       items: [
-        { title: '个人问卷', icon: 'mdi-file-document-outline', link: '/' },
+        { title: '个人问卷', icon: 'mdi-file-document-outline', link: 'mine/questionnaires' },
         { title: '回收站', icon: 'mdi-trash-can-outline', link: '/' },
       ],
       permanent: true,
@@ -62,13 +68,14 @@ export default {
   {
     goTo(path) {
       this.$router.replace(path);
-    }
+    },
+
   }
 }
 </script>
 
 <style scoped>
-.v-list {
-  font-size: 30px !important;
+.v-navigation-drawer {
+  margin-top: 8vh;
 }
 </style>
