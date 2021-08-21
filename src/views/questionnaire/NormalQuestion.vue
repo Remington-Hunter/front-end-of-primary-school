@@ -2,7 +2,7 @@
 <div>
   <div style="padding: 10px;">
       <el-button type="primary" @click="handleDown">PDF下载-离职申请表</el-button>
-      <el-button type="primary" @click="handleWindowPrint( '#demo', '离职申请表' )">浏览器方式下载</el-button>
+      <!-- <el-button type="primary" @click="handleWindowPrint( '#demo', '离职申请表' )">浏览器方式下载</el-button> -->
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-back" @click="goBack">返回
       </el-button>
     </div>
@@ -96,7 +96,7 @@
           @deleteProblem="deleteProblem"
         ></SingleSelect>
       </div>
-      <v-btn @click="getProblemInfo">获取所有题目信息</v-btn>
+      <v-btn @click="getProblemInfo">预览</v-btn>
     </v-card>
 
     <v-card class="topic_control">
@@ -110,7 +110,13 @@
         </v-btn>
       </div>
     </v-card>
-    
+    <v-card>
+      <v-dialog v-model="isPreview">
+         <v-card-title>
+           问卷预览
+      </v-card-title>
+      </v-dialog>
+    </v-card>
   </div>
 </div>
   
@@ -119,6 +125,7 @@
 <script>
 import SingleSelect from "../../components/SingleSelect";
 import htmlToPdf from '@/assets/js/htmlToPdf';
+import QuestionnairePreview from '@/components/QuestionnairePreview'
 export default {
   name: "NormalQuestion",
   components: {
@@ -126,7 +133,7 @@ export default {
   },
   data() {
     return {
-      isPreview:false,
+      isPreview:true,
       title: "添加标题",
       dialog_title: false,
       describe: "添加说明",
@@ -145,45 +152,9 @@ export default {
     };
   },
   methods: {
-    handleWindowPrint (ele, fileName) {
-        // 留存原来的 html
-        // let bdHtml = window.document.body.innerHTML;
-        // let bdHtml = document.querySelector('#app').innerHTML;
-
-        // 要打印的 内容 html
-        // document.body.innerHTML =  document.querySelector('#demo').innerHTML;
-        // document.body.innerHTML =  document.querySelector('#demo').outerHTML;
-        // document.querySelector('#app').innerHTML =  document.querySelector('#demo').outerHTML;
-        // document.querySelector('#main').innerHTML =  document.querySelector('#demo').outerHTML;
-        console.log(666)
-      // 去除页面不必要的 head 标签内  内容， 避免影响打印页 ， title 为保存为 pdf 的文件时的 文件名
-        document.head.innerHTML = '<meta charset="utf-8">\n' +
-          ' <title> ' + fileName + '</title>\n' +
-          ' <meta name="format-detection" content="telephone=no">\n' +
-          ' <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">\n' +
-          ' <meta name="viewport" content="width=device-width,initial-scale=1.0">\n' +
-          ' <link rel="stylesheet" href="./static/css/contract.css"/>'  // 生成pdf的外部css样式
-      // document.body.innerHTML =  document.querySelector('#demo').outerHTML;
-      // document.querySelector('#main').innerHTML =  document.querySelector('#demo').outerHTML;
-      // document.body.innerHTML =  document.querySelector('#demo').outerHTML;
-        document.body.innerHTML = document.querySelector(ele).outerHTML
-
-      // window.print();
-
-      // 转异步 等待dom元素渲染（样式）完毕在打印
-        setTimeout(() => {
-          // 打印
-          window.print()
-        // 刷新页面
-          window.location.reload()
-        }, 20)
-
-        // 重新设会当前页面
-        // window.document.body.innerHTML = bdHtml;
-        // document.querySelector('#app').innerHTML =  bdHtml;
-        // 刷新页面
-        // window.location.reload();
-      },
+    goBack(){
+      this.$router.go(-1)
+    },
     handleDown () {
         htmlToPdf.downloadPDF(document.querySelector('#demo'), '我的问卷')
     },
@@ -217,7 +188,7 @@ export default {
         let index='question'+i
         let x=this.$refs[index]['0']//组件的所有信息
         let item={}
-        this.$refs[index]['0'].name='jbw'
+        // this.$refs[index]['0'].name=
         item.problem_type=x.problem_type
         item.problem_number=x.problem_number
         item.name=x.name
