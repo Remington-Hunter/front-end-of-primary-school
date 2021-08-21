@@ -185,6 +185,7 @@ export default {
   data() {
     return {
       isPreview: true,
+      question_id: "123",
       title: "添加标题",
       dialog_title: false,
       describe: "添加说明",

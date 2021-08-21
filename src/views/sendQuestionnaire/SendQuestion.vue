@@ -8,20 +8,21 @@
         </div>
         <div style="margin-left:20%;padding-top:5%">
             <v-card class="question" style="text-align: center;display:block;">
-                问卷链接与二维码
+                <span>问卷链接与二维码</span>
+                <el-input v-model="input" style="margin-top:1%;width:50%;display:inline-block;"></el-input>
                <v-img
-                lazy-src="https://picsum.photos/id/11/10/6"
+               
                 max-height="200"
                 max-width="200"
                 height="150"
                 width="170"
-                src="https://picsum.photos/id/11/500/300"
+                src="lianjie"
                 style="display: block"
                 ></v-img>
                 <!-- 转换成二维码链接地址只需更改这个 -->
-                <el-input v-model="input" style="width:50%;display:inline-block;"></el-input>
             </v-card>
         </div>
+        <button  @click="change_lianjie()">点击</button>
     </div>
 </template>
 
@@ -29,10 +30,18 @@
     export default {
     data() {
         return {
-        input: '问卷链接'
+            input: '问卷链接',
+            lianjie:'http://'
+        }
+    },
+     methods:{
+        change_lianjie() {
+            lianjie = 'https://picsum.photos/id/11/500/300';
+            alert(lianjie);
         }
     }
     }
+   
 </script>
 
 
