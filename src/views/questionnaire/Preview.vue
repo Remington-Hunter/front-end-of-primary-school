@@ -49,7 +49,7 @@
           <!-- 评分题 -->
           <div v-else-if="question.type === 8">
             <el-rate
-              v-model="value"
+              v-model="question.rating"
               :icon-classes="iconClasses"
               void-icon-class="icon-rate-face-off"
               :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
@@ -107,7 +107,6 @@ export default {
         },
       ],
       iconClasses: ['icon-rate-face-1', 'icon-rate-face-2', 'icon-rate-face-3'],
-      value: null,
     }
   },
 }
