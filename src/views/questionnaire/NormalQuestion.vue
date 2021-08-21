@@ -2,12 +2,10 @@
 <div>
   <div style="padding: 10px;">
       <el-button type="primary" @click="handleDown">PDF下载-离职申请表</el-button>
-      <!-- <el-button type="primary" @click="handleWindowPrint( '#demo', '离职申请表' )">浏览器方式下载</el-button> -->
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-back" @click="goBack">返回
       </el-button>
     </div>
     <div >
-    
     <v-card class="title" style="margin-right:10%;float:right;" id="demo">
       <span class="title_description">
         <v-dialog v-model="dialog_title">
@@ -112,7 +110,6 @@
     </v-card>
   </div>
 </div>
-  
 </template>
 
 <script>
@@ -137,10 +134,9 @@ export default {
         { text: "填空题", icon: "mdi-alpha-i-box" },
         { text: "评分题", icon: "mdi-alpha-i-box" },
       ],
-
       created_problem: [],
       is_creating: false,
-
+      question:[],
       total_problem: 1,
     };
   },
@@ -193,6 +189,44 @@ export default {
         item.rating=x.rating
         console.log(item);
       }
+    },
+    saveQuestion(){
+      var question=[];
+      var num=0;
+      for(var i=1;i<this.total_problem;i++) {
+        let index='question'+i
+        let x=this.$refs[index]['0']//组件的所有信息
+        let item={}
+        // this.$refs[index]['0'].name=
+        item.problem_type=x.problem_type
+        item.problem_number=x.problem_number
+        item.name=x.name
+        item.instruction=x.instruction
+        item.selection_list=x.selection_list
+        item.radio=x.radio
+        item.checkList=x.checkList
+        item.answer=x.answer
+        item.rating=x.rating
+        console.log(item);
+        // var item=JSON.
+
+        question[num++]=item;
+      }
+      // var Data=new FormData();
+      // Data.append('question',question);
+      // // Data.append('authorization',)
+      axios({
+        url:'http://82.157.97.70/api/questionnaire/save_new_questionnaire',
+        method:'post',
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Authorization":window.localStorage.getItem('authorization')
+        }
+      }).then((res)=>{
+        console.log(res);
+      })
+    },
+    sendQuestion(){
     }
   },
 };
