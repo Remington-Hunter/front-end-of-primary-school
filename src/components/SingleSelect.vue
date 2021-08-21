@@ -22,7 +22,7 @@
       <v-btn color="primary" @click="add_selection">新建选项</v-btn>
       <v-divider></v-divider>
       <v-btn color="primary" @click="selectConfirm">确认</v-btn>
-      <v-btn color="primary" @click="cancel">取消</v-btn>
+      <v-btn color="primary" @click="cancel" v-show="cancel_button">取消</v-btn>
     </div>
 
     <div v-show="!ismodify && problem_type === '单选题'">
@@ -62,7 +62,7 @@
         </div>
       </template>
       <v-btn color="primary" @click="writeConfirm">确认</v-btn>
-      <v-btn color="primary" @click="cancel">取消</v-btn>
+      <v-btn color="primary" @click="cancel" v-show="cancel_button">取消</v-btn>
     </div>
 
     <div v-show="!ismodify && problem_type === '填空题'">
@@ -112,6 +112,7 @@ export default {
       checkList: [], //多选题答案
       answer: "输入你的答案", //填空题答案
       rating: 0, //评分题答案
+      cancel_button: true,
     };
   },
   methods: {
@@ -123,6 +124,7 @@ export default {
         return;
       }
       this.ismodify = false;
+      this.cancel_button=false;
       this.$emit("ConfirmProblem");
     },
     writeConfirm() {
@@ -130,6 +132,7 @@ export default {
         return;
       }
       this.ismodify = false;
+      this.cancel_button=false;
       this.$emit("ConfirmProblem");
     },
     cancel() {
