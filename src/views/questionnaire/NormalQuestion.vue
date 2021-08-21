@@ -77,7 +77,7 @@
 
                 <v-card-text>
                   <template>
-                    <v-text-field v-model="describe"> </v-text-field>
+                    <v-text-field v-model="description"> </v-text-field>
                   </template>
                 </v-card-text>
 
@@ -168,10 +168,9 @@ export default {
   data() {
     return {
       isPreview: true,
-      question_id: "123",
-      title: "添加标题",
+      title: "添加标题",//问卷名字
       dialog_title: false,
-      describe: "添加说明",
+      description: "添加说明",//问卷说明
       dialog_describe: false,
       problem_list: [
         { text: "单选题", icon: "mdi-album" },
@@ -208,31 +207,61 @@ export default {
       }
     },
     deleteProblem(index) {
-      document.getElementById('question'+index).remove()
-      for(var i=0;i<this.created_problem.length;i++) {
-        if(this.created_problem[i].number > index){
-          this.created_problem[i].number-=1
-        }
-      }
-      this.total_problem-=1
+      console.log(index);
+      this.created_problem.splice(index - 1, 1)
     },
     getProblemInfo() {
       for (var i = 1; i < this.total_problem; i++) {
         let index = "question" + i;
         let x = this.$refs[index]["0"]; //组件的所有信息
         let item = {};
-        item.problem_type = x.problem_type;
-        item.problem_number = x.problem_number;
-        item.name = x.name;
-        item.instruction = x.instruction;
-        item.selection_list = x.selection_list;
-        item.radio = x.radio;
-        item.checkList = x.checkList;
-        item.answer = x.answer;
-        item.rating = x.rating;
+        item.problem_type = x.problem_type;//问题种类
+        item.problem_number = x.problem_number;//问题题号
+        item.name = x.name;//题目名字
+        item.instruction = x.instruction;//题目备注
+        item.selection_list = x.selection_list;//选择选项列表
+        item.radio = x.radio;//单选题答案
+        item.checkList = x.checkList;//多选题答案列表
+        item.answer = x.answer;//填空答案
+        item.rating = x.rating;//评分分数
         console.log(item);
       }
     },
+    saveQuestion(){
+      var question=[];
+      var num=0;
+      for(var i=1;i<this.total_problem;i++) {
+        let index='question'+i
+        let x=this.$refs[index]['0']//组件的所有信息
+        let item={}
+        // this.$refs[index]['0'].name=
+        item.problem_type=x.problem_type
+        item.problem_number=x.problem_number
+        item.name=x.name
+        item.instruction=x.instruction
+        item.selection_list=x.selection_list
+        item.radio=x.radio
+        item.checkList=x.checkList
+        item.answer=x.answer
+        item.rating=x.rating
+        console.log(item);
+        question[num++]=item;
+      }
+      var Data=new FormData();
+      Data.append('question',question);
+      // // Data.append('authorization',)
+      axios({
+        url:'http://82.157.97.70/api/questionnaire/save_new_questionnaire',
+        method:'post',
+        data:Data,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Authorization":window.localStorage.getItem('authorization')
+        }
+      }).then((res)=>{
+        console.log(res);
+      })
+    },
     upMove(index) {
       if (index === 1) {
         return;
@@ -287,6 +316,7 @@ export default {
       // let y = this.$refs[refnamelast]["0"];
       // problem_change(y, x);
     },
+
   },
 };
 </script>
