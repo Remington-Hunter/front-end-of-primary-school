@@ -55,6 +55,16 @@
               :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
             ></el-rate>
           </div>
+          <!-- 填空题 -->
+          <div v-else-if="question.type === 3">
+            <el-input
+              type="textarea"
+              autosize
+              placeholder="请输入内容"
+              v-model="question.answer"
+            >
+            </el-input>
+          </div>
         </div>
       </div>
 
@@ -90,8 +100,9 @@ export default {
           "required": true //是否必填
         },
         {
-          "type": 8, //问题种类：单选
+          "type": 3, //问题种类：单选
           "text": "您对网站满意程度？",
+          "answer": "",
           "rating": 0,
           "required": true //是否必填
         },
