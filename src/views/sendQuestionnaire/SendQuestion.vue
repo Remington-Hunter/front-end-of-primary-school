@@ -8,7 +8,8 @@
         </div>
         <div style="margin-left:20%;padding-top:5%">
             <v-card class="question" style="text-align: center;display:block;">
-                问卷链接与二维码
+                <span>问卷链接与二维码</span>
+                <el-input v-model="input" style="margin-top:1%;width:50%;display:inline-block;"></el-input>
                <v-img
                 lazy-src="https://picsum.photos/id/11/10/6"
                 max-height="200"
@@ -19,7 +20,7 @@
                 style="display: block"
                 ></v-img>
                 <!-- 转换成二维码链接地址只需更改这个 -->
-                <el-input v-model="input" style="width:50%;display:inline-block;"></el-input>
+                
             </v-card>
         </div>
     </div>

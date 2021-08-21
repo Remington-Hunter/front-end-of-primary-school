@@ -114,6 +114,8 @@
           {{ item.text }}
         </v-btn>
       </div>
+      <div><v-btn :to="'/SendQuestionnaire/'+question_id">发布问卷</v-btn></div>
+      <!-- 测试动态路由 -->
     </v-card>
   </div>
 </template>
@@ -128,6 +130,9 @@ export default {
   },
   data() {
     return {
+
+      question_id:"123",
+
       title: "添加标题",
       dialog_title: false,
 
