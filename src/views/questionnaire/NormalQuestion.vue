@@ -291,6 +291,7 @@ export default {
       }
     },
     saveQues() {
+      if(this.is_creating === true || this.total_problem === 1) {return}
       for (var i = 1; i < this.total_problem; i++) {
         let index = "question" + i;
         let x = this.$refs[index]["0"]; //组件的所有信息
