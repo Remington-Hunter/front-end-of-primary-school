@@ -55,6 +55,16 @@
               :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
             ></el-rate>
           </div>
+          <!-- 填空题 -->
+          <div v-else-if="question.type === 3">
+            <el-input
+              type="textarea"
+              autosize
+              placeholder="请输入内容"
+              v-model="question.answer"
+            >
+            </el-input>
+          </div>
         </div>
       </div>
 
@@ -136,7 +146,7 @@ export default {
       x.required = y.must_write_select === '是' ? true : false
       x.radio = ""
       x.checkList = [],
-        x.answer = "输入你的答案",
+        x.answer = "",
         x.rating = 0,
         this.questionList.push(x)
     }
