@@ -88,6 +88,29 @@
       <br>
       <div>
         <v-card-title>我的资源</v-card-title>
+        <v-card 
+        :loading="loading"
+        class="mx-auto my-12"
+        max-width="250"
+        style="left:-35%"
+        >
+        <v-icon
+          large
+          color="blue darken-2"
+          style="left:43%;margin-top:10px"
+        >
+          mdi-message-text
+        </v-icon>
+        <br>
+        <br>
+          <h3 style="text-align:center">限时免费</h3>
+          <br>
+
+          <div style="text-align:center">
+            短信条数不受限制
+          </div>
+          <br>
+        </v-card>
       </div>
       
     </v-card-text>
