@@ -142,7 +142,7 @@
           </v-btn>
         </div>
       </v-card>
-
+      
     </div>
   </div>
 
@@ -218,6 +218,7 @@ export default {
         item.checkList = x.checkList;//多选题答案列表
         item.answer = x.answer;//填空答案
         item.rating = x.rating;//评分分数
+        item.must_write_select = x.must_write_select;//题目是否必选
         console.log(item);
       }
     },
