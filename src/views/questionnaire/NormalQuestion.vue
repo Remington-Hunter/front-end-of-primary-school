@@ -165,6 +165,7 @@ export default {
         let index='question'+i
         let x=this.$refs[index]['0']//组件的所有信息
         let item={}
+        this.$refs[index]['0'].name='jbw'
         item.problem_type=x.problem_type
         item.problem_number=x.problem_number
         item.name=x.name
