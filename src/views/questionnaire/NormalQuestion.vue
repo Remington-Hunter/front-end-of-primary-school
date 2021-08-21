@@ -292,7 +292,7 @@ export default {
         item.comment = x.instruction;
         // item.selection_list = x.selection_list;
         item.answer = "";
-        item.required = x.must_write_select;
+        item.required = x.must_write_select === '是' ? 1 : 0;
         item.point = 0;
         item.type = this.problem_type_number(x.problem_type);
         let y = [];
@@ -322,7 +322,8 @@ export default {
         method: "post",
         url: "http://82.157.97.70/api/questionnaire/save_questionnaire",
         headers: {
-          Authorization: window.localStorage.getItem("authorization"),
+          "Authorization": window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json"
         },
         data: JSON.stringify(formData),
       }).then(res=>{
