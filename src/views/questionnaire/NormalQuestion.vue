@@ -196,17 +196,17 @@ export default {
         let index = "question" + i;
         let x = this.$refs[index]["0"]; //组件的所有信息
         let item = {};
-        item.problem_type = x.problem_type;
-        item.problem_number = x.problem_number;
-        item.name = x.name;
-        item.instruction = x.instruction;
-        item.selection_list = x.selection_list;
-        item.radio = x.radio;
-        item.checkList = x.checkList;
-        item.answer = x.answer;
-        item.rating = x.rating;
-        item.must_write_select = x.must_write_select;
-        this.created_problem_list.push(item);
+        item.problem_type = x.problem_type;//问题种类
+        item.problem_number = x.problem_number;//问题题号
+        item.name = x.name;//题目名字
+        item.instruction = x.instruction;//题目备注
+        item.selection_list = x.selection_list;//选择选项列表
+        item.radio = x.radio;//单选题答案
+        item.checkList = x.checkList;//多选题答案列表
+        item.answer = x.answer;//填空答案
+        item.rating = x.rating;//评分分数
+        item.must_write_select = x.must_write_select;//题目是否必选
+        console.log(item);
       }
     },
     upMove(index) {
