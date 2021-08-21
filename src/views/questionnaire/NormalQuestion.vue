@@ -142,7 +142,7 @@
           </v-btn>
         </div>
       </v-card>
-      
+
     </div>
   </div>
 
@@ -173,7 +173,7 @@ export default {
         { text: "填空题", icon: "mdi-alpha-i-box" },
         { text: "评分题", icon: "mdi-alpha-i-box" },
       ],
-      total_problem:1,
+      total_problem: 1,
       created_problem: [],
       is_creating: false,
     };
@@ -202,13 +202,13 @@ export default {
       }
     },
     deleteProblem(index) {
-      document.getElementById('question'+index).remove()
-      for(var i=0;i<this.created_problem.length;i++) {
-        if(this.created_problem[i].number > index){
-          this.created_problem[i].number-=1
+      document.getElementById('question' + index).remove()
+      for (var i = 0; i < this.created_problem.length; i++) {
+        if (this.created_problem[i].number > index) {
+          this.created_problem[i].number -= 1
         }
       }
-      this.total_problem-=1
+      this.total_problem -= 1
     },
     getProblemInfo() {
       for (var i = 1; i < this.total_problem; i++) {

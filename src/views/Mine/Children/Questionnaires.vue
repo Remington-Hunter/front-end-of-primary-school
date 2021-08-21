@@ -17,6 +17,8 @@
       :search="search"
       :sort-by.sync="sortBy"
       :sort-desc.sync="sortDesc"
+      :items-per-page="5"
+      :page="page"
       class="elevation-1"
     >
       <template v-slot:[`item.actions`]="{ item }">
@@ -59,6 +61,8 @@ export default {
       sortBy: 'date',
       sortDesc: false,
       search: '',
+      page:1,
+      pageSize:10,
       headers: [
         {
           text: '问卷名称',
@@ -90,7 +94,6 @@ export default {
           date: '2021 - 8 - 1',
           date1:'2020 - 8 - 2',
         },
-
       ],
     }
   },
@@ -148,12 +151,18 @@ export default {
     getItem(){
       var Data=new FormData()
       Data.append('user_id',window.localStorage.getItem('user_id'))
+      Data.append('page',this.page)
+      Data.append('pageSize',this.pageSize)
       axios({
         url:'',
         method:'post',
-        data:Data
+        data:Data,
+        headers:{
+          'Authorization':window.localStorage.getItem('authorization')
+        }
       }).then((res)=>{
         this.desserts=res.data
+
         // 没写全之后再补
       })
     }

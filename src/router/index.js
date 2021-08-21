@@ -49,7 +49,6 @@ const routes = [{
             }
         ]
     },
-
     {
         path: '/sendQuestionnaire',
         name: 'SendQuestionnaire',
@@ -61,6 +60,11 @@ const routes = [{
         name: 'Preview',
         component: () =>
             import ('../views/questionnaire/Preview.vue')
+            },{
+        path: '/echarts',
+        name: 'echarts',
+        component: () =>
+            import ('../components/Echarts.vue')
     }
 ]
 
