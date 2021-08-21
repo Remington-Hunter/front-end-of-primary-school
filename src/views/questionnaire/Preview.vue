@@ -14,11 +14,12 @@
         <!-- 题目标题 -->
         <div class="question-head ">
           <div class="question-title">
-            <span class="question-seq"
-              ><b>{{ index + 1 }}</b></span
-            >
+            <span class="question-seq"><b>{{ index + 1 }}</b></span>
             <span class="text">{{ question.text }}</span>
-            <span v-if="question.required" class="question-required">*</span>
+            <span
+              v-if="question.required"
+              class="question-required"
+            >*</span>
             <el-tag v-if="question.type === 1">多选</el-tag>
           </div>
         </div>
@@ -32,26 +33,46 @@
                 :key="index"
                 :label="index"
               >
-                {{ item }}</el-radio
-              >
+                {{ item }}</el-radio>
             </el-radio-group>
           </div>
           <!-- 多选题 -->
-          <div v-if="question.type === 1">
+          <div v-else-if="question.type === 1">
             <el-checkbox-group v-model="question.checkList">
               <el-checkbox
                 v-for="(item, index) in question.selectionList"
                 :key="index"
                 :label="index"
-                >{{ item }}</el-checkbox
-              >
+              >{{ item }}</el-checkbox>
             </el-checkbox-group>
+          </div>
+          <!-- 评分题 -->
+          <div v-else-if="question.type === 8">
+            <el-rate
+              v-model="question.rating"
+              :icon-classes="iconClasses"
+              void-icon-class="icon-rate-face-off"
+              :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
+            ></el-rate>
+          </div>
+          <!-- 填空题 -->
+          <div v-else-if="question.type === 3">
+            <el-input
+              type="textarea"
+              autosize
+              placeholder="请输入内容"
+              v-model="question.answer"
+            >
+            </el-input>
           </div>
         </div>
       </div>
 
       <div class="page-control">
-        <el-button type="primary" id="btn">下一页</el-button>
+        <el-button
+          type="primary"
+          id="btn"
+        >下一页</el-button>
       </div>
     </div>
   </div>
@@ -86,12 +107,10 @@ export default {
         //   required: false,
         // },
       ],
-      radio: "",
-      checked2: false,
-      checked3: false,
+      iconClasses: ['icon-rate-face-1', 'icon-rate-face-2', 'icon-rate-face-3'],
     };
   },
-  methods:{
+  methods: {
     problem_type_number(str) {
       switch (str) {
         case "单选题":
@@ -117,19 +136,19 @@ export default {
     this.subtitle = description
     console.log(list.length);
     console.log(list[0]);
-    for(var i=0;i<list.length;i++){
-      let x={}
-      var y=list[i]
+    for (var i = 0; i < list.length; i++) {
+      let x = {}
+      var y = list[i]
       console.log(y);
-      x.type =this.problem_type_number(y.problem_type)
+      x.type = this.problem_type_number(y.problem_type)
       x.text = y.name
-      x.selectionList=y.selection_list
-      x.required= y.must_write_select === '是' ? true : false
-      x.radio=""
-      x.checkList=[],
-      x.answer="输入你的答案",
-      x.rating=0,
-      this.questionList.push(x)
+      x.selectionList = y.selection_list
+      x.required = y.must_write_select === '是' ? true : false
+      x.radio = ""
+      x.checkList = [],
+        x.answer = "",
+        x.rating = 0,
+        this.questionList.push(x)
     }
   },
 };
@@ -190,7 +209,8 @@ export default {
   color: rgba(218, 35, 25, 1);
 }
 .el-radio,
-.el-checkbox {
+.el-checkbox,
+.el-rate {
   display: block;
   margin-top: 8px;
   padding: 7px;

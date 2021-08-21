@@ -1,9 +1,10 @@
 <template>
   <div>
     <div style="padding: 10px">
-      <el-button type="primary" @click="handleDown"
-        >PDF下载-离职申请表</el-button
-      >
+      <el-button
+        type="primary"
+        @click="handleDown"
+      >PDF下载-离职申请表</el-button>
       <!-- <el-button type="primary" @click="handleWindowPrint( '#demo', '离职申请表' )">浏览器方式下载</el-button> -->
       <el-button
         class="filter-item"
@@ -11,11 +12,15 @@
         type="primary"
         icon="el-icon-back"
         @click="goBack"
-        >返回
+      >返回
       </el-button>
     </div>
     <div>
-      <v-card class="title" style="margin-right: 10%; float: right" id="demo">
+      <v-card
+        class="title"
+        style="margin-right: 10%; float: right"
+        id="demo"
+      >
         <span class="title_description">
           <v-dialog v-model="dialog_title">
             <template v-slot:activator="{ on, attrs }">
@@ -24,8 +29,7 @@
                 v-bind="attrs"
                 v-on="on"
                 style="text-align: center; display: block"
-                >{{ title }}</span
-              >
+              >{{ title }}</span>
             </template>
             <v-card>
               <v-card-title class="text-h5 grey lighten-2">
@@ -42,7 +46,11 @@
 
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" text @click="dialog_title = false">
+                <v-btn
+                  color="primary"
+                  text
+                  @click="dialog_title = false"
+                >
                   确认
                 </v-btn>
               </v-card-actions>
@@ -59,8 +67,7 @@
                   v-bind="attrs"
                   v-on="on"
                   style="text-align: center; display: block"
-                  >添加说明</span
-                >
+                >添加说明</span>
               </template>
               <v-card>
                 <v-card-title class="text-h5 grey lighten-2">
@@ -77,7 +84,11 @@
 
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="primary" text @click="dialog_describe = false">
+                  <v-btn
+                    color="primary"
+                    text
+                    @click="dialog_describe = false"
+                  >
                     确认
                   </v-btn>
                 </v-card-actions>
@@ -86,7 +97,10 @@
           </span>
         </div>
         <v-divider></v-divider>
-        <div v-for="(item, index) in created_problem" :key="(item, index)">
+        <div
+          v-for="(item, index) in created_problem"
+          :key="(item, index)"
+        >
           <SingleSelect
             :ref="'question' + item.number"
             :id="'question' + item.number"
@@ -112,7 +126,10 @@
       </v-card>
       <v-card class="topic_control">
         <v-card-title> 题目控件 </v-card-title>
-        <div v-for="(item, index) in problem_list" :key="(item, index)">
+        <div
+          v-for="(item, index) in problem_list"
+          :key="(item, index)"
+        >
           <v-btn
             @click="newProblem(item.text, false, {})"
             style="margin-top: 10%"
@@ -122,6 +139,7 @@
           </v-btn>
         </div>
       </v-card>
+
       <v-btn @click="saveQues">保存新建的问卷</v-btn>
     </div>
   </div>
@@ -347,9 +365,9 @@ export default {
         return fmt;
       };
       var time2 = new Date().Format("yyyy-MM-dd hh:mm:ss");
-      var times =time2.split(" ");
+      var times = time2.split(" ");
 
-      var time = times[0]+'T'+times[1]+'Z';
+      var time = times[0] + 'T' + times[1] + 'Z';
       alert(time);
       formData.description = this.description;
       formData.endTime = time;
