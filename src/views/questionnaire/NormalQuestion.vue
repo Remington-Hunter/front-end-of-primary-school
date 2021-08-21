@@ -142,13 +142,7 @@
           </v-btn>
         </div>
       </v-card>
-      <v-card>
-        <v-dialog v-model="isPreview">
-          <v-card-title>
-            问卷预览
-          </v-card-title>
-        </v-dialog>
-      </v-card>
+      
     </div>
   </div>
 
@@ -230,6 +224,7 @@ export default {
         item.checkList = x.checkList;
         item.answer = x.answer;
         item.rating = x.rating;
+        item.must_write_select = x.must_write_select;
         console.log(item);
       }
     },

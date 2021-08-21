@@ -13,6 +13,16 @@
         </div>
       </template>
       <v-divider></v-divider>
+        <v-row align="center">
+          <v-col cols="12">
+            <v-select
+              :items="items"
+              :menu-props="{ top: true, offsetY: true }"
+              label="是否必填"
+              v-model="must_write_select"
+            ></v-select>
+          </v-col>
+        </v-row>
       <div v-for="(item, index) in selection_list" :key="(item, index)">
         <v-text-field
           :label="'选项' + (index + 1)"
@@ -61,6 +71,16 @@
           <v-text-field label="备注" v-model="instruction"></v-text-field>
         </div>
       </template>
+    <v-row align="center">
+      <v-col cols="12">
+        <v-select
+          :items="items"
+          :menu-props="{ top: true, offsetY: true }"
+          label="是否必填"
+          v-model="must_write_select"
+        ></v-select>
+      </v-col>
+    </v-row>
       <v-btn color="primary" @click="writeConfirm">确认</v-btn>
       <v-btn color="primary" @click="cancel" v-show="cancel_button">取消</v-btn>
     </div>
@@ -85,11 +105,19 @@
     <div v-show="!ismodify">
       <v-btn color="primary" @click="ismodify = true">修改</v-btn>
       <v-btn color="primary" @click="deleteProblem">删除</v-btn>
-      <v-btn color="primary" @click="$emit('upMove',problem_number)">上移</v-btn>
-      <v-btn color="primary" @click="$emit('upMoveFirst',problem_number)">上移到最前</v-btn>
-      <v-btn color="primary" @click="$emit('downMove',problem_number)">下移</v-btn>
-      <v-btn color="primary" @click="$emit('downMoveLast',problem_number)">下移到最后</v-btn>
-      <v-btn color="primary" @click="$emit('copy',problem_number)">复制</v-btn>
+      <v-btn color="primary" @click="$emit('upMove', problem_number)"
+        >上移</v-btn
+      >
+      <v-btn color="primary" @click="$emit('upMoveFirst', problem_number)"
+        >上移到最前</v-btn
+      >
+      <v-btn color="primary" @click="$emit('downMove', problem_number)"
+        >下移</v-btn
+      >
+      <v-btn color="primary" @click="$emit('downMoveLast', problem_number)"
+        >下移到最后</v-btn
+      >
+      <v-btn color="primary" @click="$emit('copy', problem_number)">复制</v-btn>
     </div>
   </div>
 </template>
@@ -108,35 +136,39 @@ export default {
     },
     iscopy: {
       type: Boolean,
-      default:false
+      default: false,
     },
     copy_info: {
       type: Object,
-      default: ()=>{
-        return {}
-      }
-    }
+      default: () => {
+        return {};
+      },
+    },
   },
   data() {
     return {
       ismodify: true,
-      name: this.iscopy ? this.copy_info.name :"",
-      instruction: this.iscopy ? this.copy_info.instruction :"",
-      selection_list: this.iscopy ? this.copy_array(this.copy_info.selection_list) :[],
+      name: this.iscopy ? this.copy_info.name : "",
+      instruction: this.iscopy ? this.copy_info.instruction : "",
+      selection_list: this.iscopy
+        ? this.copy_array(this.copy_info.selection_list)
+        : [],
       radio: "1", //单选题答案
       checkList: [], //多选题答案
       answer: "输入你的答案", //填空题答案
       rating: 0, //评分题答案
       cancel_button: true,
+      must_write_select: '',
+      items: ['是','否'],
     };
   },
   methods: {
-    copy_array(arr1){
-      var arr2=[]
-      for(var i=0;i<arr1.length;i++){
-        arr2.push(arr1[i])
+    copy_array(arr1) {
+      var arr2 = [];
+      for (var i = 0; i < arr1.length; i++) {
+        arr2.push(arr1[i]);
       }
-      return arr2
+      return arr2;
     },
     add_selection() {
       this.selection_list.push("选项");
@@ -146,7 +178,7 @@ export default {
         return;
       }
       this.ismodify = false;
-      this.cancel_button=false;
+      this.cancel_button = false;
       this.$emit("ConfirmProblem");
     },
     writeConfirm() {
@@ -154,17 +186,16 @@ export default {
         return;
       }
       this.ismodify = false;
-      this.cancel_button=false;
+      this.cancel_button = false;
       this.$emit("ConfirmProblem");
     },
     cancel() {
       this.$emit("CancelNewProblem");
     },
-    deleteProblem(){
-        this.$emit("deleteProblem",this.problem_number)
+    deleteProblem() {
+      this.$emit("deleteProblem", this.problem_number);
     },
-    created() {
-    }
+    created() {},
   },
 };
 </script>
