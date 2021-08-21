@@ -16,7 +16,7 @@
                 max-width="200"
                 height="150"
                 width="170"
-                src="lianjie"
+                v-bind:src="lianjie"
                 style="display: block"
                 ></v-img>
                 <!-- 转换成二维码链接地址只需更改这个 -->
@@ -36,8 +36,8 @@
     },
      methods:{
         change_lianjie() {
-            lianjie = 'https://picsum.photos/id/11/500/300';
-            alert(lianjie);
+            this.lianjie = 'https://picsum.photos/id/11/500/300';
+            alert(this.lianjie);
         }
     }
     }
