@@ -57,7 +57,7 @@
             </v-card>
           </v-dialog>
         </span>
-        <v-divider></v-divider>
+
         <div>
           <span class="title_description">
             <v-dialog v-model="dialog_describe">
@@ -66,7 +66,7 @@
                   dark
                   v-bind="attrs"
                   v-on="on"
-                  style="text-align: center; display: block"
+                  style="text-align: center; display: block;font-size: small"
                 >添加说明</span>
               </template>
               <v-card>
@@ -404,7 +404,7 @@ export default {
 <style scoped>
 .title {
   width: 70%;
-  height: 200%;
+  height: 200% !important;
 }
 
 .title_description:hover {

@@ -8,11 +8,10 @@
       <div>{{ problem_type }}</div>
       <template>
         <div>
-          <v-text-field label="题目" v-model="name"></v-text-field>
+          <v-text-field label="题目" v-model="name" style="font-size: small"></v-text-field>
           <v-text-field label="备注" v-model="instruction"></v-text-field>
         </div>
       </template>
-      <v-divider></v-divider>
         <v-row align="center">
           <v-col cols="12">
             <v-select
@@ -102,22 +101,26 @@
       </div>
     </div>
 
-    <div v-show="!ismodify">
-      <v-btn color="primary" @click="ismodify = true">修改</v-btn>
-      <v-btn color="primary" @click="deleteProblem">删除</v-btn>
-      <v-btn color="primary" @click="$emit('upMove', problem_number)"
-        >上移</v-btn
+    <div v-show="!ismodify" style="margin-left: 10%">
+      <v-btn color="primary" @click="ismodify = true" small ><v-icon small>mdi-pencil</v-icon>修改</v-btn>
+      <v-btn color="primary" @click="deleteProblem" style="margin-left: 1%" small>
+        <v-icon small>mdi-trash-can-outline</v-icon>删除
+      </v-btn>
+      <v-btn color="primary" @click="$emit('upMove', problem_number)" style="margin-left: 1%" small
+        ><v-icon small>mdi-arrow-up</v-icon>上移</v-btn
       >
-      <v-btn color="primary" @click="$emit('upMoveFirst', problem_number)"
-        >上移到最前</v-btn
+      <v-btn color="primary" @click="$emit('upMoveFirst', problem_number)" style="margin-left: 1%" small
+        ><v-icon small>mdi-arrow-collapse-up</v-icon>上移到最前</v-btn
       >
-      <v-btn color="primary" @click="$emit('downMove', problem_number)"
-        >下移</v-btn
+      <v-btn color="primary" @click="$emit('downMove', problem_number)" style="margin-left: 1%" small
+        ><v-icon small>mdi-arrow-down</v-icon>下移</v-btn
       >
-      <v-btn color="primary" @click="$emit('downMoveLast', problem_number)"
-        >下移到最后</v-btn
+      <v-btn color="primary" @click="$emit('downMoveLast', problem_number)" style="margin-left: 1%;" small
+        ><v-icon small>mdi-arrow-collapse-down</v-icon>下移到最后</v-btn
       >
-      <v-btn color="primary" @click="$emit('copy', problem_number)">复制</v-btn>
+      <v-btn color="primary" @click="$emit('copy', problem_number)" style="margin-left: 1%" small>
+        <v-icon small>mdi-content-copy</v-icon>复制
+      </v-btn>
     </div>
   </div>
 </template>
