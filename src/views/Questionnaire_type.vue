@@ -22,7 +22,7 @@
             <v-btn
               class="ma-2"
               color="primary"
-              to="/Home"
+              to="/normalquestion"
             >
               <!-- to进行跳转 由于普通问卷页面没有做好，这里先转到home试一下-->
               创建

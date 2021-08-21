@@ -1,6 +1,14 @@
 <template>
-  <div>
-    <v-card class="title" style="margin-right:10%;float:right;">
+<div>
+  <div style="padding: 10px;">
+      <el-button type="primary" @click="handleDown">PDF下载-离职申请表</el-button>
+      <el-button type="primary" @click="handleWindowPrint( '#demo', '离职申请表' )">浏览器方式下载</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-back" @click="goBack">返回
+      </el-button>
+    </div>
+    <div >
+    
+    <v-card class="title" style="margin-right:10%;float:right;" id="demo">
       <span class="title_description">
         <v-dialog v-model="dialog_title">
           <template v-slot:activator="{ on, attrs }">
@@ -35,7 +43,7 @@
         </v-dialog>
       </span>
       <v-divider></v-divider>
-      <div>
+      <div >
         <span class="title_description">
           <v-dialog v-model="dialog_describe">
             <template v-slot:activator="{ on, attrs }">
@@ -71,8 +79,8 @@
         </span>
       </div>
       <v-divider></v-divider>
-      <div v-for="(item, index) in created_problem" :key="(item, index)">
-        <SingleSelect
+      <div  v-for="(item, index) in created_problem" :key="(item, index)" >
+        <SingleSelect 
           :ref="'question' + item.number"
           :id="'question' + item.number"
           :problem_type="item.type"
@@ -102,12 +110,15 @@
         </v-btn>
       </div>
     </v-card>
+    
   </div>
+</div>
+  
 </template>
 
 <script>
 import SingleSelect from "../../components/SingleSelect";
-
+import htmlToPdf from '@/assets/js/htmlToPdf';
 export default {
   name: "NormalQuestion",
   components: {
@@ -115,12 +126,11 @@ export default {
   },
   data() {
     return {
+      isPreview:false,
       title: "添加标题",
       dialog_title: false,
-
       describe: "添加说明",
       dialog_describe: false,
-
       problem_list: [
         { text: "单选题", icon: "mdi-album" },
         { text: "多选题", icon: "mdi-check-bold" },
@@ -135,6 +145,48 @@ export default {
     };
   },
   methods: {
+    handleWindowPrint (ele, fileName) {
+        // 留存原来的 html
+        // let bdHtml = window.document.body.innerHTML;
+        // let bdHtml = document.querySelector('#app').innerHTML;
+
+        // 要打印的 内容 html
+        // document.body.innerHTML =  document.querySelector('#demo').innerHTML;
+        // document.body.innerHTML =  document.querySelector('#demo').outerHTML;
+        // document.querySelector('#app').innerHTML =  document.querySelector('#demo').outerHTML;
+        // document.querySelector('#main').innerHTML =  document.querySelector('#demo').outerHTML;
+        console.log(666)
+      // 去除页面不必要的 head 标签内  内容， 避免影响打印页 ， title 为保存为 pdf 的文件时的 文件名
+        document.head.innerHTML = '<meta charset="utf-8">\n' +
+          ' <title> ' + fileName + '</title>\n' +
+          ' <meta name="format-detection" content="telephone=no">\n' +
+          ' <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">\n' +
+          ' <meta name="viewport" content="width=device-width,initial-scale=1.0">\n' +
+          ' <link rel="stylesheet" href="./static/css/contract.css"/>'  // 生成pdf的外部css样式
+      // document.body.innerHTML =  document.querySelector('#demo').outerHTML;
+      // document.querySelector('#main').innerHTML =  document.querySelector('#demo').outerHTML;
+      // document.body.innerHTML =  document.querySelector('#demo').outerHTML;
+        document.body.innerHTML = document.querySelector(ele).outerHTML
+
+      // window.print();
+
+      // 转异步 等待dom元素渲染（样式）完毕在打印
+        setTimeout(() => {
+          // 打印
+          window.print()
+        // 刷新页面
+          window.location.reload()
+        }, 20)
+
+        // 重新设会当前页面
+        // window.document.body.innerHTML = bdHtml;
+        // document.querySelector('#app').innerHTML =  bdHtml;
+        // 刷新页面
+        // window.location.reload();
+      },
+    handleDown () {
+        htmlToPdf.downloadPDF(document.querySelector('#demo'), '我的问卷')
+    },
     changeTitle() {
       this.is_change_title = !this.is_change_title;
     },
