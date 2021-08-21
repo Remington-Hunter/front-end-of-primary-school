@@ -125,23 +125,6 @@
         </div>
         <v-btn @click="getProblemInfo">预览</v-btn>
       </v-card>
-
-      <div
-        v-for="(item, index) in created_problem"
-        :key="(item, index)"
-      >
-        <SingleSelect
-          :class="'question'+ index"
-          :problem_type="item.text"
-          :problem_number="index + 1"
-          @CancelNewProblem="
-              created_problem.pop();
-              is_creating = false;
-            "
-          @ConfirmProblem="is_creating = false"
-          @deleteProblem="deleteProblem"
-        ></SingleSelect>
-      </div>
       <v-card class="topic_control">
         <v-card-title>
           题目控件
@@ -225,8 +208,13 @@ export default {
       }
     },
     deleteProblem(index) {
-      console.log(index);
-      this.created_problem.splice(index - 1, 1)
+      document.getElementById('question'+index).remove()
+      for(var i=0;i<this.created_problem.length;i++) {
+        if(this.created_problem[i].number > index){
+          this.created_problem[i].number-=1
+        }
+      }
+      this.total_problem-=1
     },
     getProblemInfo() {
       for (var i = 1; i < this.total_problem; i++) {
