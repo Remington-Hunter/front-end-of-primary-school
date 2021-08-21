@@ -1,12 +1,13 @@
 <template>
-  <div>
-    <!-- <Header /> -->
-    <div>
-      <v-app>
-        <router-view />
-      </v-app>
-    </div>
+  <div id="app">
+    <v-app>
+      <Header />
+      <div id="main">
 
+        <router-view />
+
+      </div>
+    </v-app>
   </div>
 </template>
 
@@ -31,16 +32,10 @@ export default {
 };
 </script>
 <style scoped>
-.ivu-menu-horizontal .ivu-menu-item[data-v-7ba5bd90],
-.ivu-menu-horizontal .ivu-menu-submenu[data-v-7ba5bd90] {
-  color: #000;
+#app {
+  background-color: #f4f6f9;
 }
-
-.el-menu :hover {
-  color: #488ce9 !important;
-}
-.item {
-  margin-top: 10px;
-  margin-right: 40px;
+#main {
+  margin-top: 8vh;
 }
 </style>
