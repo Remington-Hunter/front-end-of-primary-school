@@ -6,6 +6,7 @@ import vuetify from './plugins/vuetify'
 import Element from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './assets/css/icon/iconfont.css'
+import '@/assets/fonts/style.css'
 import htmlToPdf from '@/assets/js/htmlToPdf'
 const echarts = require('echarts');
 Vue.prototype.$echarts = echarts
