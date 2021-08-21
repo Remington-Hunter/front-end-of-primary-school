@@ -69,7 +69,7 @@
 
                 <v-card-text>
                   <template>
-                    <v-text-field v-model="describe"> </v-text-field>
+                    <v-text-field v-model="description"> </v-text-field>
                   </template>
                 </v-card-text>
 
@@ -147,7 +147,7 @@ export default {
       question_id: "123",
       title: "添加标题",
       dialog_title: false,
-      describe: "添加说明",
+      description: "添加说明",
       dialog_describe: false,
       problem_list: [
         { text: "单选题", icon: "mdi-album" },
@@ -194,6 +194,8 @@ export default {
       this.total_problem -= 1;
     },
     getProblemInfo() {
+      if(this.is_creating === true || this.total_problem === 1) {return}
+      var list=[]
       for (var i = 1; i < this.total_problem; i++) {
         let index = "question" + i;
         let x = this.$refs[index]["0"]; //组件的所有信息
@@ -208,8 +210,17 @@ export default {
         item.answer = x.answer;//填空答案
         item.rating = x.rating;//评分分数
         item.must_write_select = x.must_write_select;//题目是否必选
+        list.push(item)
         console.log(item);
       }
+      this.$router.push({
+        path: '/preview', 
+        query: {
+          list:JSON.stringify(list),
+          title:this.title,
+          description:this.description
+        }})
+      console.log(list);
     },
     upMove(index) {
       if (index === 1) {
