@@ -28,6 +28,12 @@ const routes = [{
             import ('../views/PersonInfo.vue'),
     },
     {
+        path: '/normalquestion',
+        name: 'Normalquestion',
+        component: () =>
+            import ('../views/questionnaire/NormalQuestion')
+    },
+    {
         path: '/mine',
         name: 'Mine',
         component: () =>

@@ -1,6 +1,9 @@
 <template>
   <div>
-    <v-card class="title" style="margin-right:10%;float:right;">
+    <v-card
+      class="title"
+      style="margin-right:10%;float:right;"
+    >
       <span class="title_description">
         <v-dialog v-model="dialog_title">
           <template v-slot:activator="{ on, attrs }">
@@ -9,8 +12,7 @@
               v-bind="attrs"
               v-on="on"
               style="text-align: center;display:block;"
-              >{{ title }}</span
-            >
+            >{{ title }}</span>
           </template>
           <v-card>
             <v-card-title class="text-h5 grey lighten-2">
@@ -27,7 +29,11 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="primary" text @click="dialog_title = false">
+              <v-btn
+                color="primary"
+                text
+                @click="dialog_title = false"
+              >
                 确认
               </v-btn>
             </v-card-actions>
@@ -44,8 +50,7 @@
                 v-bind="attrs"
                 v-on="on"
                 style="text-align: center;display:block;"
-                >添加说明</span
-              >
+              >添加说明</span>
             </template>
             <v-card>
               <v-card-title class="text-h5 grey lighten-2">
@@ -62,7 +67,11 @@
 
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" text @click="dialog_describe = false">
+                <v-btn
+                  color="primary"
+                  text
+                  @click="dialog_describe = false"
+                >
                   确认
                 </v-btn>
               </v-card-actions>
@@ -71,32 +80,36 @@
         </span>
       </div>
       <v-divider></v-divider>
-      <div v-for="(item, index) in created_problem" :key="(item, index)">
-        <SingleSelect
-          :ref="'question' + item.number"
-          :id="'question' + item.number"
-          :problem_type="item.type"
-          :problem_number="item.number"
-          @CancelNewProblem="
-            created_problem.pop();
-            is_creating = false;
-            total_problem-=1;
-          "
-          @ConfirmProblem="
-            is_creating = false;
-          "
-          @deleteProblem="deleteProblem"
-        ></SingleSelect>
-      </div>
-      <v-btn @click="getProblemInfo">获取所有题目信息</v-btn>
     </v-card>
 
+    <div
+      v-for="(item, index) in created_problem"
+      :key="(item, index)"
+    >
+      <SingleSelect
+        :class="'question'+ index"
+        :problem_type="item"
+        :problem_number="index + 1"
+        @CancelNewProblem="
+              created_problem.pop();
+              is_creating = false;
+            "
+        @ConfirmProblem="is_creating = false"
+        @deleteProblem="deleteProblem"
+      ></SingleSelect>
+    </div>
     <v-card class="topic_control">
       <v-card-title>
         题目控件
       </v-card-title>
-      <div v-for="(item, index) in problem_list" :key="(item, index)">
-        <v-btn @click="newProblem(item.text)" style="margin-top:10%;">
+      <div
+        v-for="(item, index) in problem_list"
+        :key="(item, index)"
+      >
+        <v-btn
+          @click="newProblem(item.text)"
+          style="margin-top:10%;"
+        >
           <v-icon>{{ item.icon }}</v-icon>
           {{ item.text }}
         </v-btn>
@@ -130,8 +143,6 @@ export default {
 
       created_problem: [],
       is_creating: false,
-
-      total_problem: 1,
     };
   },
   methods: {
@@ -140,44 +151,14 @@ export default {
     },
     newProblem(index) {
       if (!this.is_creating) {
-        let item = {};
-        item.type = index;
-        item.number = this.total_problem;
-        this.total_problem +=1;
-        this.created_problem.push(item);
+        this.created_problem.push(index);
         this.is_creating = true;
       }
     },
     deleteProblem(index) {
       console.log(index);
-      document.getElementById("question" + index).remove();
-      for (var i = 0; i < this.created_problem.length; i++) {
-        if (this.created_problem[i].number > index) {
-          this.created_problem[i].number -= 1;
-        }
-      }
-      this.total_problem -= 1;
-      // console.log(this.$refs.question1);
-      // this.created_problem.splice(index-1,1)
+      this.created_problem.splice(index - 1, 1)
     },
-    getProblemInfo(){
-      for(var i=1;i<this.total_problem;i++) {
-        let index='question'+i
-        let x=this.$refs[index]['0']//组件的所有信息
-        let item={}
-        this.$refs[index]['0'].name='jbw'
-        item.problem_type=x.problem_type
-        item.problem_number=x.problem_number
-        item.name=x.name
-        item.instruction=x.instruction
-        item.selection_list=x.selection_list
-        item.radio=x.radio
-        item.checkList=x.checkList
-        item.answer=x.answer
-        item.rating=x.rating
-        console.log(item);
-      }
-    }
   },
 };
 </script>
