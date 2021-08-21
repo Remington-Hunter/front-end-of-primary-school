@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div style="padding: 10px;">
+    <div style="padding: 10px">
       <el-button type="primary" @click="handleDown"
         >PDF下载-离职申请表</el-button
       >
       <!-- <el-button type="primary" @click="handleWindowPrint( '#demo', '离职申请表' )">浏览器方式下载</el-button> -->
       <el-button
         class="filter-item"
-        style="margin-left: 10px;"
+        style="margin-left: 10px"
         type="primary"
         icon="el-icon-back"
         @click="goBack"
@@ -15,7 +15,7 @@
       </el-button>
     </div>
     <div>
-      <v-card class="title" style="margin-right:10%;float:right;" id="demo">
+      <v-card class="title" style="margin-right: 10%; float: right" id="demo">
         <span class="title_description">
           <v-dialog v-model="dialog_title">
             <template v-slot:activator="{ on, attrs }">
@@ -23,7 +23,7 @@
                 dark
                 v-bind="attrs"
                 v-on="on"
-                style="text-align: center;display:block;"
+                style="text-align: center; display: block"
                 >{{ title }}</span
               >
             </template>
@@ -58,7 +58,7 @@
                   dark
                   v-bind="attrs"
                   v-on="on"
-                  style="text-align: center;display:block;"
+                  style="text-align: center; display: block"
                   >添加说明</span
                 >
               </template>
@@ -69,7 +69,7 @@
 
                 <v-card-text>
                   <template>
-                    <v-text-field v-model="describe"> </v-text-field>
+                    <v-text-field v-model="description"> </v-text-field>
                   </template>
                 </v-card-text>
 
@@ -111,13 +111,11 @@
         <v-btn @click="getProblemInfo">预览</v-btn>
       </v-card>
       <v-card class="topic_control">
-        <v-card-title>
-          题目控件
-        </v-card-title>
+        <v-card-title> 题目控件 </v-card-title>
         <div v-for="(item, index) in problem_list" :key="(item, index)">
           <v-btn
             @click="newProblem(item.text, false, {})"
-            style="margin-top:10%;"
+            style="margin-top: 10%"
           >
             <v-icon>{{ item.icon }}</v-icon>
             {{ item.text }}
@@ -147,7 +145,7 @@ export default {
       question_id: "123",
       title: "添加标题",
       dialog_title: false,
-      describe: "添加说明",
+      description: "添加说明",
       dialog_describe: false,
       problem_list: [
         { text: "单选题", icon: "mdi-album" },
@@ -292,7 +290,7 @@ export default {
         item.comment = x.instruction;
         // item.selection_list = x.selection_list;
         item.answer = "";
-        item.required = x.must_write_select === '是' ? 1 : 0;
+        item.required = x.must_write_select === "是" ? 1 : 0;
         item.point = 0;
         item.type = this.problem_type_number(x.problem_type);
         let y = [];
@@ -307,26 +305,66 @@ export default {
         this.created_problem_list.push(item);
       }
 
-      var formData = new FormData();
-      var date=new Date();
-      formData.append("description", this.description);
-      formData.append("endTime", date.getTime());
-      formData.append("limit", -1);
-      formData.append("needNum", -1);
-      formData.append("startTime", date.getTime());
-      formData.append("title", this.title);
-      formData.append("userId", window.localStorage.getItem("user_id"));
-      formData.append("questionList", this.created_problem_list);
+      //var formData = new FormData();
+      var formData = {};
+      // var date=new Date();
+      Date.prototype.Format = function (fmt) {
+        // author: meizz
+        var o = {
+          "M+": this.getMonth() + 1, // 月份
+          "d+": this.getDate(), // 日
+          "h+": this.getHours(), // 小时
+          "m+": this.getMinutes(), // 分
+          "s+": this.getSeconds(), // 秒
+          "q+": Math.floor((this.getMonth() + 3) / 3), // 季度
+          S: this.getMilliseconds(), // 毫秒
+        };
+        if (/(y+)/.test(fmt))
+          fmt = fmt.replace(
+            RegExp.$1,
+            (this.getFullYear() + "").substr(4 - RegExp.$1.length)
+          );
+        for (var k in o)
+          if (new RegExp("(" + k + ")").test(fmt))
+            fmt = fmt.replace(
+              RegExp.$1,
+              RegExp.$1.length == 1
+                ? o[k]
+                : ("00" + o[k]).substr(("" + o[k]).length)
+            );
+        return fmt;
+      };
+      var time2 = new Date().Format("yyyy-MM-dd hh:mm:ss");
+      var times =time2.split(" ");
 
+      var time = times[0]+'T'+times[1]+'Z';
+      alert(time);
+      formData.description = this.description;
+      formData.endTime = time;
+      formData.limit = -1;
+      formData.title = this.title;
+      formData.needNum = -1;
+      formData.startTime = time;
+      formData.userId = window.localStorage.getItem("user_id");
+      formData.questionList = this.created_problem_list;
+      // formData.append("description", this.description);
+      // formData.append("endTime", date.getTime());
+      // formData.append("limit", -1);
+      // formData.append("needNum", -1);
+      // formData.append("startTime", date.getTime());
+      // formData.append("title", this.title);
+      // formData.append("userId", window.localStorage.getItem("user_id"));
+      // formData.append("questionList", this.created_problem_list);
+      // alert(JSON.stringify(formData))
       axios({
         method: "post",
         url: "http://82.157.97.70/api/questionnaire/save_questionnaire",
         headers: {
-          "Authorization": window.localStorage.getItem("authorization"),
-          "Content-Type": "application/json"
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
         },
         data: JSON.stringify(formData),
-      }).then(res=>{
+      }).then((res) => {
         console.log(res);
       });
     },
