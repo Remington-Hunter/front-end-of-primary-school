@@ -49,7 +49,6 @@ const routes = [{
             }
         ]
     },
-
     {
         path: '/sendQuestionnaire/:question_id',
         name: 'SendQuestionnaire',

@@ -159,13 +159,6 @@
           </v-btn>
         </div>
       </v-card>
-      <v-card>
-        <v-dialog v-model="isPreview">
-          <v-card-title>
-            问卷预览
-          </v-card-title>
-        </v-dialog>
-      </v-card>
     </div>
   </div>
 
