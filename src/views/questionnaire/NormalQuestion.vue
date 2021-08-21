@@ -75,17 +75,22 @@
         <SingleSelect
           :ref="'question' + item.number"
           :id="'question' + item.number"
+          :iscopy="item.iscopy"
           :problem_type="item.type"
           :problem_number="item.number"
+          :copy_info="item.copy_info"
           @CancelNewProblem="
             created_problem.pop();
             is_creating = false;
-            total_problem-=1;
+            total_problem -= 1;
           "
-          @ConfirmProblem="
-            is_creating = false;
-          "
+          @ConfirmProblem="is_creating = false"
           @deleteProblem="deleteProblem"
+          @upMove="upMove"
+          @upMoveFirst="upMoveFirst"
+          @downMove="downMove"
+          @downMoveLast="downMoveLast"
+          @copy="copy"
         ></SingleSelect>
       </div>
       <v-btn @click="getProblemInfo">获取所有题目信息</v-btn>
@@ -96,7 +101,7 @@
         题目控件
       </v-card-title>
       <div v-for="(item, index) in problem_list" :key="(item, index)">
-        <v-btn @click="newProblem(item.text)" style="margin-top:10%;">
+        <v-btn @click="newProblem(item.text, false,{})" style="margin-top:10%;">
           <v-icon>{{ item.icon }}</v-icon>
           {{ item.text }}
         </v-btn>
@@ -107,6 +112,7 @@
 
 <script>
 import SingleSelect from "../../components/SingleSelect";
+import { problem_exchange, problem_change } from "../../utils/deepCopy";
 
 export default {
   name: "NormalQuestion",
@@ -138,12 +144,14 @@ export default {
     changeTitle() {
       this.is_change_title = !this.is_change_title;
     },
-    newProblem(index) {
+    newProblem(index, iscopy ,copy_info) {
       if (!this.is_creating) {
         let item = {};
         item.type = index;
         item.number = this.total_problem;
-        this.total_problem +=1;
+        item.iscopy = iscopy;
+        item.copy_info =copy_info
+        this.total_problem += 1;
         this.created_problem.push(item);
         this.is_creating = true;
       }
@@ -160,24 +168,76 @@ export default {
       // console.log(this.$refs.question1);
       // this.created_problem.splice(index-1,1)
     },
-    getProblemInfo(){
-      for(var i=1;i<this.total_problem;i++) {
-        let index='question'+i
-        let x=this.$refs[index]['0']//组件的所有信息
-        let item={}
-        this.$refs[index]['0'].name='jbw'
-        item.problem_type=x.problem_type
-        item.problem_number=x.problem_number
-        item.name=x.name
-        item.instruction=x.instruction
-        item.selection_list=x.selection_list
-        item.radio=x.radio
-        item.checkList=x.checkList
-        item.answer=x.answer
-        item.rating=x.rating
+    getProblemInfo() {
+      for (var i = 1; i < this.total_problem; i++) {
+        let index = "question" + i;
+        let x = this.$refs[index]["0"]; //组件的所有信息
+        let item = {};
+        item.problem_type = x.problem_type;
+        item.problem_number = x.problem_number;
+        item.name = x.name;
+        item.instruction = x.instruction;
+        item.selection_list = x.selection_list;
+        item.radio = x.radio;
+        item.checkList = x.checkList;
+        item.answer = x.answer;
+        item.rating = x.rating;
         console.log(item);
       }
-    }
+    },
+    upMove(index) {
+      if (index === 1) {
+        return;
+      }
+      let refnamebefore = "question" + (index - 1);
+      let refname = "question" + index;
+      let x = this.$refs[refname]["0"];
+      let y = this.$refs[refnamebefore]["0"];
+      problem_exchange(x, y);
+    },
+    upMoveFirst(index) {
+      if (index === 1) {
+        return;
+      }
+      let refnamebefore = "question" + 1;
+      let refname = "question" + index;
+      let x = this.$refs[refname]["0"];
+      let y = this.$refs[refnamebefore]["0"];
+      problem_exchange(x, y);
+    },
+    downMove(index) {
+      if (index === this.total_problem - 1) {
+        return;
+      }
+      let refnameafter = "question" + (index + 1);
+      let refname = "question" + index;
+      let x = this.$refs[refname]["0"];
+      let y = this.$refs[refnameafter]["0"];
+      problem_exchange(x, y);
+    },
+    downMoveLast(index) {
+      if (index === this.total_problem - 1) {
+        return;
+      }
+      let refnameafter = "question" + (this.total_problem - 1);
+      let refname = "question" + index;
+      let x = this.$refs[refname]["0"];
+      let y = this.$refs[refnameafter]["0"];
+      problem_exchange(x, y);
+    },
+    copy(index) {
+      let refname = "question" + index;
+      let x = this.$refs[refname]["0"];
+      let y={}
+      problem_change(y, x);
+      console.log(y);
+      this.newProblem(x.problem_type, true,y);
+      // this.is_creating = false;
+
+      // let refnamelast = "question" + (this.total_problem - 1);
+      // let y = this.$refs[refnamelast]["0"];
+      // problem_change(y, x);
+    },
   },
 };
 </script>

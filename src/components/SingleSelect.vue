@@ -85,6 +85,11 @@
     <div v-show="!ismodify">
       <v-btn color="primary" @click="ismodify = true">修改</v-btn>
       <v-btn color="primary" @click="deleteProblem">删除</v-btn>
+      <v-btn color="primary" @click="$emit('upMove',problem_number)">上移</v-btn>
+      <v-btn color="primary" @click="$emit('upMoveFirst',problem_number)">上移到最前</v-btn>
+      <v-btn color="primary" @click="$emit('downMove',problem_number)">下移</v-btn>
+      <v-btn color="primary" @click="$emit('downMoveLast',problem_number)">下移到最后</v-btn>
+      <v-btn color="primary" @click="$emit('copy',problem_number)">复制</v-btn>
     </div>
   </div>
 </template>
@@ -101,13 +106,21 @@ export default {
       type: Number,
       default: 1,
     },
+    iscopy: {
+      type: Boolean,
+      default:false
+    },
+    copy_info: {
+      type: Object,
+      default: {}
+    }
   },
   data() {
     return {
       ismodify: true,
-      name: "",
-      instruction: "",
-      selection_list: [],
+      name: this.iscopy ? this.copy_info.name :"",
+      instruction: this.iscopy ? this.copy_info.instruction :"",
+      selection_list: this.iscopy ? this.copy_array(this.copy_info.selection_list) :[],
       radio: "1", //单选题答案
       checkList: [], //多选题答案
       answer: "输入你的答案", //填空题答案
@@ -116,6 +129,13 @@ export default {
     };
   },
   methods: {
+    copy_array(arr1){
+      var arr2=[]
+      for(var i=0;i<arr1.length;i++){
+        arr2.push(arr1[i])
+      }
+      return arr2
+    },
     add_selection() {
       this.selection_list.push("选项");
     },
@@ -140,6 +160,8 @@ export default {
     },
     deleteProblem(){
         this.$emit("deleteProblem",this.problem_number)
+    },
+    created() {
     }
   },
 };
