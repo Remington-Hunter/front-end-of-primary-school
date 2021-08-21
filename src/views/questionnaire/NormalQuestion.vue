@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="padding: 10px;">
+    <div style="padding: 10px">
       <el-button
         type="primary"
         @click="handleDown"
@@ -8,7 +8,7 @@
       <!-- <el-button type="primary" @click="handleWindowPrint( '#demo', '离职申请表' )">浏览器方式下载</el-button> -->
       <el-button
         class="filter-item"
-        style="margin-left: 10px;"
+        style="margin-left: 10px"
         type="primary"
         icon="el-icon-back"
         @click="goBack"
@@ -16,10 +16,9 @@
       </el-button>
     </div>
     <div>
-
       <v-card
         class="title"
-        style="margin-right:10%;float:right;"
+        style="margin-right: 10%; float: right"
         id="demo"
       >
         <span class="title_description">
@@ -29,7 +28,7 @@
                 dark
                 v-bind="attrs"
                 v-on="on"
-                style="text-align: center;display:block;"
+                style="text-align: center; display: block"
               >{{ title }}</span>
             </template>
             <v-card>
@@ -67,7 +66,7 @@
                   dark
                   v-bind="attrs"
                   v-on="on"
-                  style="text-align: center;display:block;"
+                  style="text-align: center; display: block"
                 >添加说明</span>
               </template>
               <v-card>
@@ -77,7 +76,7 @@
 
                 <v-card-text>
                   <template>
-                    <v-text-field v-model="describe"> </v-text-field>
+                    <v-text-field v-model="description"> </v-text-field>
                   </template>
                 </v-card-text>
 
@@ -110,10 +109,10 @@
             :problem_number="item.number"
             :copy_info="item.copy_info"
             @CancelNewProblem="
-            created_problem.pop();
-            is_creating = false;
-            total_problem -= 1;
-          "
+              created_problem.pop();
+              is_creating = false;
+              total_problem -= 1;
+            "
             @ConfirmProblem="is_creating = false"
             @deleteProblem="deleteProblem"
             @upMove="upMove"
@@ -126,16 +125,14 @@
         <v-btn @click="getProblemInfo">预览</v-btn>
       </v-card>
       <v-card class="topic_control">
-        <v-card-title>
-          题目控件
-        </v-card-title>
+        <v-card-title> 题目控件 </v-card-title>
         <div
           v-for="(item, index) in problem_list"
           :key="(item, index)"
         >
           <v-btn
-            @click="newProblem(item.text, false,{})"
-            style="margin-top:10%;"
+            @click="newProblem(item.text, false, {})"
+            style="margin-top: 10%"
           >
             <v-icon>{{ item.icon }}</v-icon>
             {{ item.text }}
@@ -143,17 +140,18 @@
         </div>
       </v-card>
 
+      <v-btn @click="saveQues">保存新建的问卷</v-btn>
     </div>
   </div>
-
 </template>
 
 <script>
+import axios from "axios";
 import SingleSelect from "../../components/SingleSelect";
 import { problem_exchange, problem_change } from "../../utils/deepCopy";
 
-import htmlToPdf from '@/assets/js/htmlToPdf';
-import QuestionnairePreview from '@/components/QuestionnairePreview'
+import htmlToPdf from "@/assets/js/htmlToPdf";
+import QuestionnairePreview from "@/components/QuestionnairePreview";
 export default {
   name: "NormalQuestion",
   components: {
@@ -165,7 +163,7 @@ export default {
       question_id: "123",
       title: "添加标题",
       dialog_title: false,
-      describe: "添加说明",
+      description: "添加说明",
       dialog_describe: false,
       problem_list: [
         { text: "单选题", icon: "mdi-album" },
@@ -176,14 +174,15 @@ export default {
       total_problem: 1,
       created_problem: [],
       is_creating: false,
+      created_problem_list: [],
     };
   },
   methods: {
     goBack() {
-      this.$router.go(-1)
+      this.$router.go(-1);
     },
     handleDown() {
-      htmlToPdf.downloadPDF(document.querySelector('#demo'), '我的问卷')
+      htmlToPdf.downloadPDF(document.querySelector("#demo"), "我的问卷");
     },
     changeTitle() {
       this.is_change_title = !this.is_change_title;
@@ -194,7 +193,7 @@ export default {
         item.type = index;
         item.number = this.total_problem;
         item.iscopy = iscopy;
-        item.copy_info = copy_info
+        item.copy_info = copy_info;
         console.log(item);
         this.total_problem += 1;
         this.created_problem.push(item);
@@ -202,13 +201,13 @@ export default {
       }
     },
     deleteProblem(index) {
-      document.getElementById('question' + index).remove()
+      document.getElementById("question" + index).remove();
       for (var i = 0; i < this.created_problem.length; i++) {
         if (this.created_problem[i].number > index) {
-          this.created_problem[i].number -= 1
+          this.created_problem[i].number -= 1;
         }
       }
-      this.total_problem -= 1
+      this.total_problem -= 1;
     },
     getProblemInfo() {
       for (var i = 1; i < this.total_problem; i++) {
@@ -272,7 +271,7 @@ export default {
       let refname = "question" + index;
       let x = this.$refs[refname]["0"];
       console.log(x);
-      let y = {}
+      let y = {};
       problem_change(y, x);
       console.log(y);
       this.newProblem(x.problem_type, true, y);
@@ -281,6 +280,111 @@ export default {
       // let refnamelast = "question" + (this.total_problem - 1);
       // let y = this.$refs[refnamelast]["0"];
       // problem_change(y, x);
+    },
+    problem_type_number(str) {
+      switch (str) {
+        case "单选题":
+          return 0;
+          break;
+        case "多选题":
+          return 1;
+          break;
+        case "填空题":
+          return 2;
+          break;
+        case "评分题":
+          return 8;
+          break;
+      }
+    },
+    saveQues() {
+      for (var i = 1; i < this.total_problem; i++) {
+        let index = "question" + i;
+        let x = this.$refs[index]["0"]; //组件的所有信息
+        let item = {};
+        // item.problem_type = x.problem_type;
+        item.number = x.problem_number;
+        item.content = x.name;
+        item.comment = x.instruction;
+        // item.selection_list = x.selection_list;
+        item.answer = "";
+        item.required = x.must_write_select === "是" ? 1 : 0;
+        item.point = 0;
+        item.type = this.problem_type_number(x.problem_type);
+        let y = [];
+        for (var i = 0; i < x.selection_list.length; i++) {
+          let z = {};
+          z.content = x.selection_list[i];
+          z.limit = -1;
+          z.number = i + "";
+          y.push(z);
+        }
+        item.optionList = y;
+        this.created_problem_list.push(item);
+      }
+
+      //var formData = new FormData();
+      var formData = {};
+      // var date=new Date();
+      Date.prototype.Format = function (fmt) {
+        // author: meizz
+        var o = {
+          "M+": this.getMonth() + 1, // 月份
+          "d+": this.getDate(), // 日
+          "h+": this.getHours(), // 小时
+          "m+": this.getMinutes(), // 分
+          "s+": this.getSeconds(), // 秒
+          "q+": Math.floor((this.getMonth() + 3) / 3), // 季度
+          S: this.getMilliseconds(), // 毫秒
+        };
+        if (/(y+)/.test(fmt))
+          fmt = fmt.replace(
+            RegExp.$1,
+            (this.getFullYear() + "").substr(4 - RegExp.$1.length)
+          );
+        for (var k in o)
+          if (new RegExp("(" + k + ")").test(fmt))
+            fmt = fmt.replace(
+              RegExp.$1,
+              RegExp.$1.length == 1
+                ? o[k]
+                : ("00" + o[k]).substr(("" + o[k]).length)
+            );
+        return fmt;
+      };
+      var time2 = new Date().Format("yyyy-MM-dd hh:mm:ss");
+      var times = time2.split(" ");
+
+      var time = times[0] + 'T' + times[1] + 'Z';
+      alert(time);
+      formData.description = this.description;
+      formData.endTime = time;
+      formData.limit = -1;
+      formData.title = this.title;
+      formData.needNum = -1;
+      formData.startTime = time;
+      formData.userId = window.localStorage.getItem("user_id");
+      formData.questionList = this.created_problem_list;
+      // formData.append("description", this.description);
+      // formData.append("endTime", date.getTime());
+      // formData.append("limit", -1);
+      // formData.append("needNum", -1);
+      // formData.append("startTime", date.getTime());
+      // formData.append("title", this.title);
+      // formData.append("userId", window.localStorage.getItem("user_id"));
+      // formData.append("questionList", this.created_problem_list);
+      // alert(JSON.stringify(formData))
+      axios({
+        method: "post",
+        url: "http://82.157.97.70/api/questionnaire/save_questionnaire",
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
+        },
+        data: JSON.stringify(formData),
+      }).then((res) => {
+        console.log(res);
+      });
     },
   },
 };
