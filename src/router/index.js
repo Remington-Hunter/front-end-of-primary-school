@@ -55,9 +55,13 @@ const routes = [{
         name: 'SendQuestionnaire',
         component: () =>
             import ('../views/sendQuestionnaire/SendQuestion.vue')
+    },
+    {
+        path: '/preview',
+        name: 'Preview',
+        component: () =>
+            import ('../views/questionnaire/Preview.vue')
     }
-
-
 ]
 
 
