@@ -19,10 +19,10 @@
                 v-bind:src="lianjie"
                 style="display: block"
                 ></v-img>
-                <!-- 转换成二维码链接地址只需更改这个 -->
+                <!-- 转换成二维码链接地址只需更改这个src属性 -->
             </v-card>
         </div>
-        <button  @click="change_lianjie()">点击</button>
+        <v-btn  @click="change_lianjie()">发布问卷</v-btn>
     </div>
 </template>
 

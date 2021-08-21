@@ -125,23 +125,6 @@
         </div>
         <v-btn @click="getProblemInfo">预览</v-btn>
       </v-card>
-
-      <div
-        v-for="(item, index) in created_problem"
-        :key="(item, index)"
-      >
-        <SingleSelect
-          :class="'question'+ index"
-          :problem_type="item.text"
-          :problem_number="index + 1"
-          @CancelNewProblem="
-              created_problem.pop();
-              is_creating = false;
-            "
-          @ConfirmProblem="is_creating = false"
-          @deleteProblem="deleteProblem"
-        ></SingleSelect>
-      </div>
       <v-card class="topic_control">
         <v-card-title>
           题目控件
@@ -159,13 +142,7 @@
           </v-btn>
         </div>
       </v-card>
-      <v-card>
-        <v-dialog v-model="isPreview">
-          <v-card-title>
-            问卷预览
-          </v-card-title>
-        </v-dialog>
-      </v-card>
+      
     </div>
   </div>
 
@@ -225,23 +202,29 @@ export default {
       }
     },
     deleteProblem(index) {
-      console.log(index);
-      this.created_problem.splice(index - 1, 1)
+      document.getElementById('question'+index).remove()
+      for(var i=0;i<this.created_problem.length;i++) {
+        if(this.created_problem[i].number > index){
+          this.created_problem[i].number-=1
+        }
+      }
+      this.total_problem-=1
     },
     getProblemInfo() {
       for (var i = 1; i < this.total_problem; i++) {
         let index = "question" + i;
         let x = this.$refs[index]["0"]; //组件的所有信息
         let item = {};
-        item.problem_type = x.problem_type;
-        item.problem_number = x.problem_number;
-        item.name = x.name;
-        item.instruction = x.instruction;
-        item.selection_list = x.selection_list;
-        item.radio = x.radio;
-        item.checkList = x.checkList;
-        item.answer = x.answer;
-        item.rating = x.rating;
+        item.problem_type = x.problem_type;//问题种类
+        item.problem_number = x.problem_number;//问题题号
+        item.name = x.name;//题目名字
+        item.instruction = x.instruction;//题目备注
+        item.selection_list = x.selection_list;//选择选项列表
+        item.radio = x.radio;//单选题答案
+        item.checkList = x.checkList;//多选题答案列表
+        item.answer = x.answer;//填空答案
+        item.rating = x.rating;//评分分数
+        item.must_write_select = x.must_write_select;//题目是否必选
         console.log(item);
       }
     },
