@@ -1,7 +1,8 @@
 <template>
-  <v-card>
+  <div>
+    <v-card>
     <v-card-title>
-      问卷列表
+      回收站
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -20,19 +21,15 @@
       class="elevation-1"
     >
       <template v-slot:[`item.actions`]="{ item }">
-        <v-icon
-          small
-          class="mr-2"
-          @click="copyItem(item)"
+        <v-btn
+          text
+          color="primary"
+          @click="recoveryItem(item)"
         >
-          mdi-content-copy
-        </v-icon>
-        <v-icon
-          small
-          @click="deleteItem(item)"
-        >
-          mdi-delete-outline
-        </v-icon>
+          <v-icon small>
+            mdi-restore
+          </v-icon> <span style="padding-left:5px">恢复 </span>
+        </v-btn>
       </template>
     </v-data-table>
     <div class="text-center pt-2">
@@ -46,18 +43,20 @@
         @click="nextSort"
       >对下一列进行排序</v-btn>
     </div>
-
+    
   </v-card>
+  </div>
 </template>
 
 
 <script>
-import axios from 'axios'
 export default {
   data() {
     return {
+      dialogVisible:true,
       sortBy: 'date',
       sortDesc: false,
+      user_id:window.localStorage.getItem('user_id'),
       search: '',
       headers: [
         {
@@ -70,7 +69,6 @@ export default {
         { text: '回收量', value: 'num' },
         { text: '创建时间', value: 'date' },
         { text: '操作', value: 'actions', sortable: false },
-        { text: '更多功能' },
       ],
       desserts: [
         {
@@ -91,7 +89,23 @@ export default {
       ],
     }
   },
+  mounted(){
+    this.getItem()
+  },
   methods: {
+    
+
+    getItem(){
+      var Data=new FormData();
+      Data.append('user_id',user_id);
+      axiso({
+        url:'',
+        method:'post',
+        data:Data
+      }).then((res)=>{
+        this.desserts=res.data;
+      })
+    },
     toggleOrder() {
       this.sortDesc = !this.sortDesc
     },
@@ -100,64 +114,38 @@ export default {
       index = (index + 1) % this.headers.length
       this.sortBy = this.headers[index].value
     },
-    deleteItem(item) {
-      const index = this.desserts.indexOf(item)
-      console.log(index)
-      confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1)
-      var Data=FormData();
-      Data.append('id',index)
-      axios({
-        url:'',
-        method:'',
-        data:Data
-      }).then((res)=>{
-       console.log(res);
-       this.getItem(); 
-      })
+    recoveryItem(item) {
+      this.$confirm('此操作将恢复该问卷, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+          const index = this.desserts.indexOf(item)
+          // this.desserts.splice(index, 1)
+          var Data=new FormData();
+          Data.append('id',index);
+          axios({
+            url:'',
+            method:'post',
+            data:Data
+          }).then((res)=>{
+            console.log(res)
+            this.getItem();
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
+      // const index = this.desserts.indexOf(item)
+      // confirm('您是否确定要恢复该问卷') && this.desserts.splice(index, 1)
     },
-    copyItem(item) {
-      const index = this.desserts.indexOf(item)
-      var Data=FormData();
-      // name: '问卷2',
-      //     state: 1,
-      //     id: 234567,
-      //     num: 24,
-      //     date: '2021 - 8 - 1',
-      var name1=item.name+'副本';
-      var state1=item.state;
-      var num1=item.num;
-      var date1=new Date()
-      Data.append('name',name1);
-      Data.append('state',state1);
-      Data.append('num',num1);
-      Data.append('date',date1)
-      axios({
-        url:'',
-        method:'',
-        data:Data
-      }).then((res)=>{
-       console.log(res);
-      //  这里的思路应该是发送一个有关这个item的数据，数据库再加上一条,还要生成新的内容
-       this.getItem(); 
-      })
-      //   复制问卷
-    },
-    getItem(){
-      var Data=new FormData()
-      Data.append('user_id',window.localStorage.getItem('user_id'))
-      axios({
-        url:'',
-        method:'post',
-        data:Data
-      }).then((res)=>{
-        this.desserts=res.data
-        // 没写全之后再补
-      })
-    }
   },
-  mounted(){
-    this.getItem()
-  }
 }
 </script>
 

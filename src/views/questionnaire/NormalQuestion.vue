@@ -1,6 +1,6 @@
 <template>
   <div>
-      <v-card class="title"  style="margin-right:10%;float:right;">
+      <v-card class="title" style="margin-right:10%;float:right;">
         <span class="title_description">
           <v-dialog v-model="dialog_title">
             <template v-slot:activator="{ on, attrs }">
@@ -60,24 +60,42 @@
         </div>
         <v-divider></v-divider>
       </v-card>
+
+        <div v-for="(item, index) in created_problem" :key="(item, index)">
+          <SingleSelect
+            :class="'question'+ index"
+            :problem_type="item"
+            :problem_number="index + 1"
+            @CancelNewProblem="
+              created_problem.pop();
+              is_creating = false;
+            "
+            @ConfirmProblem="is_creating = false"
+            @deleteProblem="deleteProblem"
+          ></SingleSelect>
+        </div>
       <v-card class="topic_control">
         <v-card-title>
-            题目控件
+          题目控件
         </v-card-title>
-        <div v-for="(item,index) in problem_list" :key="(item,index)">
-          <v-btn style="margin-top:10%;">
-              <v-icon >{{item.icon}}</v-icon>
-              {{item.text}}
+        <div v-for="(item, index) in problem_list" :key="(item, index)">
+          <v-btn @click="newProblem(item.text)" style="margin-top:10%;">
+            <v-icon>{{ item.icon }}</v-icon>
+            {{ item.text }}
           </v-btn>
         </div>
-    </v-card>
-
+      </v-card>
   </div>
 </template>
 
 <script>
+import SingleSelect from "../../components/SingleSelect";
+
 export default {
   name: "NormalQuestion",
+  components: {
+    SingleSelect,
+  },
   data() {
     return {
       title: "添加标题",
@@ -86,34 +104,33 @@ export default {
       describe: "添加说明",
       dialog_describe: false,
 
-      problem_list:[
-          {text:'单选题',icon:'mdi-album'},
-          {text:'多选题',icon:'mdi-check-bold'},
-          {text:'填空题',icon:'mdi-alpha-i-box'}
-      ]
+      problem_list: [
+        { text: "单选题", icon: "mdi-album" },
+        { text: "多选题", icon: "mdi-check-bold" },
+        { text: "填空题", icon: "mdi-alpha-i-box" },
+        { text: "评分题", icon: "mdi-alpha-i-box" },
+      ],
+
+      created_problem: [],
+      is_creating: false,
     };
   },
   methods: {
     changeTitle() {
       this.is_change_title = !this.is_change_title;
     },
+    newProblem(index) {
+      if (!this.is_creating) {
+        this.created_problem.push(index);
+        this.is_creating = true;
+      }
+    },
+    deleteProblem(index) {
+      console.log(index);
+      this.created_problem.splice(index-1,1)
+    },
   },
-//   created(){
-//       axios({
-//         url:'http://82.157.97.70/api/login_username_password',
-//         method:'post',
-//         params:{
-//           password:'123',
-//           username:'this.form.nickname'
-//         },
-//         // data:{}
-//         
-//       }).then((res)=>{
-//         console.log(res)
-//         this.$router.push('/')
-//       })
-//   }
-}
+};
 </script>
 
 <style>
@@ -123,7 +140,7 @@ export default {
   height:200%;
 }
 
-.title_description{}:hover{
+.title_description:hover{
   background-color:#f6f6f6;
 }
 
