@@ -38,10 +38,6 @@ export default {
     };
   },
   methods: {
-    change_lianjie() {
-      this.lianjie = "https://picsum.photos/id/11/500/300";
-      alert(this.lianjie);
-    },
     send_ID() {
       var data1 = new FormData();
       data1.append("id", window.localStorage.getItem("user_id"));
