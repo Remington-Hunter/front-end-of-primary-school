@@ -21,10 +21,12 @@
         class="elevation-1"
       >
         <template v-slot:[`item.actions`]="{ item }">
+          <v-icon small @click="deleteItem(item.id)"> mdi-delete-outline </v-icon>
           <v-btn text color="primary" @click="recoveryItem(item)">
             <v-icon small> mdi-restore </v-icon>
             <span style="padding-left: 5px">恢复 </span>
           </v-btn>
+        
         </template>
       </v-data-table>
       <div class="text-center pt-2">
@@ -85,6 +87,26 @@ export default {
     this.getItem();
   },
   methods: {
+    deleteItem(item) {
+      const index = item;
+      console.log(index);
+      // confirm("Are you sure you want to delete this item?")
+      var Data = new FormData();
+      Data.append('id',index)
+      console.log(111)
+      axios({
+        url: "http://82.157.97.70/api/questionnaire/delete_questionnaire",
+        method: "post",
+        data: Data,
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
+        },
+      }).then((res) => {
+        console.log(res);
+        this.getItem();
+      });
+    },
     getItem() {
       console.log(13123);
       axios({
@@ -100,9 +122,9 @@ export default {
         this.desserts = [];
         for (let i = 0; i < res.data.data.length; i++) {
           var state = "";
-          if (!(res.data.data[i].delete)) {
+          if (res.data.data[i].deleted===0) {
             continue;
-          }
+          } 
           if (res.data.data[i].preparing) {
             state = "准备中";
           } else if (res.data.data[i].using) {
@@ -150,6 +172,9 @@ export default {
           ) {
             state = "未开始";
           }
+          if(res.data.data[i].stopping){
+            state="已停用"
+          }
           var data2 = res.data.data[i].endTime;
           if (data2 != null) {
             data2 = data2.replace("T", " ");
@@ -162,7 +187,7 @@ export default {
             date: res.data.data[i].createTime.replace("T", " "),
             date2: data2,
           };
-          console.log(data)
+          // console.log(data)
           this.desserts.push(data);
         }
         // 没写全之后再补
