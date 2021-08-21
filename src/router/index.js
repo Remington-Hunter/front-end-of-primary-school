@@ -28,8 +28,13 @@ const routes = [{
             import ('../views/PersonInfo.vue'),
     },
     {
+        path: '/normalquestion',
+        name: 'Normalquestion',
+        component: () =>
+            import ('../views/questionnaire/NormalQuestion')
+    },
+    {
         path: '/mine',
-        name: 'Mine',
         component: () =>
             import ('../views/Mine/Mine.vue'),
         children: [{
@@ -44,17 +49,12 @@ const routes = [{
             }
         ]
     },
+
     {
-        path: '/normalquestion',
-        name: 'Normalquestion',
+        path: '/sendQuestionnaire/:question_id',
+        name: 'SendQuestionnaire',
         component: () =>
-            import ('../views/questionnaire/NormalQuestion.vue')
-    },
-    {
-        path: '/getPdf',
-        name: 'getPdf',
-        component: () =>
-            import ('../components/getPdf.vue')
+            import ('../views/sendQuestionnaire/SendQuestion.vue')
     }
 
 

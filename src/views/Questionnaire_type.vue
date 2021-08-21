@@ -121,13 +121,13 @@
 </script>
 
 
-<style>
+<style scoped>
 .common_question {
   height: 100% !important;
   width: 25%;
 }
 .theme--light.v-application {
-    background: #f4f6f9;
-    color: rgba(0, 0, 0, 0.87);
+  background: #f4f6f9;
+  color: rgba(0, 0, 0, 0.87);
 }
 </style>
