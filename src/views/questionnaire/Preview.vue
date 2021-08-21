@@ -125,12 +125,12 @@ export default {
       x.text = y.name
       x.selectionList=y.selection_list
       x.required= y.must_write_select === '是' ? true : false
+      x.radio=""
+      x.checkList=[],
+      x.answer="输入你的答案",
+      x.rating=0,
       this.questionList.push(x)
     }
-    // console.log(this.questionList);
-    // console.log(list);
-    // console.log(title);
-    // console.log(description);
   },
 };
 </script>
