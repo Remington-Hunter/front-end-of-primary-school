@@ -39,24 +39,31 @@ const routes = [{
         component: () =>
             import ('../views/Mine/Mine.vue'),
         children: [{
-            path: '',
-            component: () =>
-                import ('../views/Mine/Children/Questionnaires.vue')
-          },
-          {
-          path: '/deleted',
-          component: () =>
-              import ('../views/Mine/Children/DeletedQuest.vue')
-        }
-      ]
+                path: '',
+                component: () =>
+                    import ('../views/Mine/Children/Questionnaires.vue')
+            },
+            {
+                path: '/deleted',
+                component: () =>
+                    import ('../views/Mine/Children/DeletedQuest.vue')
+            }
+        ]
     },
-     {
-      path: '/normalquestion',
-      name: 'Normalquestion',
-      component: ()=>import('../views/questionnaire/NormalQuestion.vue')
+    {
+        path: '/normalquestion',
+        name: 'Normalquestion',
+        component: () =>
+            import ('../views/questionnaire/NormalQuestion.vue')
+    },
+    {
+        path: '/sendQuestionnaire/:question_id',
+        name: 'SendQuestionnaire',
+        component: () =>
+            import ('../views/sendQuestionnaire/SendQuestion.vue')
     }
 
-        
+
 ]
 
 
