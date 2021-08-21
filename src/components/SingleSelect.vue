@@ -112,7 +112,9 @@ export default {
     },
     copy_info: {
       type: Object,
-      default: {}
+      default: ()=>{
+        return {}
+      }
     }
   },
   data() {

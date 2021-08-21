@@ -132,7 +132,7 @@
       >
         <SingleSelect
           :class="'question'+ index"
-          :problem_type="item"
+          :problem_type="item.text"
           :problem_number="index + 1"
           @CancelNewProblem="
               created_problem.pop();
@@ -196,7 +196,7 @@ export default {
         { text: "填空题", icon: "mdi-alpha-i-box" },
         { text: "评分题", icon: "mdi-alpha-i-box" },
       ],
-
+      total_problem:1,
       created_problem: [],
       is_creating: false,
     };
@@ -218,6 +218,7 @@ export default {
         item.number = this.total_problem;
         item.iscopy = iscopy;
         item.copy_info = copy_info
+        console.log(item);
         this.total_problem += 1;
         this.created_problem.push(item);
         this.is_creating = true;
@@ -287,6 +288,7 @@ export default {
     copy(index) {
       let refname = "question" + index;
       let x = this.$refs[refname]["0"];
+      console.log(x);
       let y = {}
       problem_change(y, x);
       console.log(y);
