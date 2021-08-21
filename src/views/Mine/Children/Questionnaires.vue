@@ -112,7 +112,9 @@ export default {
       axios({
         url:'',
         method:'',
-        data:Data
+        data:{
+          'id':index
+        }
       }).then((res)=>{
        console.log(res);
        this.getItem(); 
@@ -120,7 +122,7 @@ export default {
     },
     copyItem(item) {
       const index = this.desserts.indexOf(item)
-      var Data=FormData();
+      // var Data=FormData();
       // name: '问卷2',
       //     state: 1,
       //     id: 234567,
@@ -130,14 +132,22 @@ export default {
       var state1=item.state;
       var num1=item.num;
       var date1=new Date()
-      Data.append('name',name1);
-      Data.append('state',state1);
-      Data.append('num',num1);
-      Data.append('date',date1)
+      // Data.append('name',name1);
+      // Data.append('state',state1);
+      // Data.append('num',num1);
+      // Data.append('date',date1)
       axios({
         url:'',
         method:'',
-        data:Data
+        data:{
+          'name':name1,
+          'state':state1,
+          'num':num1,
+          'date':date1
+        },
+        headers:{
+          'Authorization':window.localStorage.getItem('authorization')
+        }
       }).then((res)=>{
        console.log(res);
       //  这里的思路应该是发送一个有关这个item的数据，数据库再加上一条,还要生成新的内容
@@ -146,20 +156,21 @@ export default {
       //   复制问卷
     },
     getItem(){
-      var Data=new FormData()
-      Data.append('user_id',window.localStorage.getItem('user_id'))
-      Data.append('page',this.page)
-      Data.append('pageSize',this.pageSize)
+      // var Data=new FormData()
+      // Data.append('user_id',window.localStorage.getItem('user_id'))
+      // Data.append('page',this.page)
+      // Data.append('pageSize',this.pageSize)
       axios({
         url:'',
         method:'post',
-        data:Data,
+        data:{
+          'user_id':window.localStorage.getItem('user_id')
+        },
         headers:{
           'Authorization':window.localStorage.getItem('authorization')
         }
       }).then((res)=>{
         this.desserts=res.data
-
         // 没写全之后再补
       })
     }
