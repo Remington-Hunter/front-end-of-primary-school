@@ -57,17 +57,10 @@ const routes = [{
             import ('../views/questionnaire/NormalQuestion.vue')
     },
     {
-<<<<<<< HEAD
-        path: '/getPdf',
-        name: 'getPdf',
-        component: () =>
-            import ('../components/getPdf.vue')
-=======
         path: '/sendQuestionnaire/:question_id',
         name: 'SendQuestionnaire',
         component: () =>
             import ('../views/sendQuestionnaire/SendQuestion.vue')
->>>>>>> rm
     }
 
 
