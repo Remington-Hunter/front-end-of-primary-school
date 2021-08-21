@@ -55,6 +55,12 @@ const routes = [{
         name: 'SendQuestionnaire',
         component: () =>
             import ('../views/sendQuestionnaire/SendQuestion.vue')
+    },
+    {
+        path: '/echarts',
+        name: 'echarts',
+        component: () =>
+            import ('../components/Echarts.vue')
     }
 
 
