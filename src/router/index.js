@@ -35,7 +35,6 @@ const routes = [{
     },
     {
         path: '/mine',
-        name: 'Mine',
         component: () =>
             import ('../views/Mine/Mine.vue'),
         children: [{
@@ -50,12 +49,7 @@ const routes = [{
             }
         ]
     },
-    {
-        path: '/normalquestion',
-        name: 'Normalquestion',
-        component: () =>
-            import ('../views/questionnaire/NormalQuestion.vue')
-    },
+
     {
         path: '/getPdf',
         name: 'getPdf',
