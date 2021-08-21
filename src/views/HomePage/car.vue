@@ -52,7 +52,7 @@ export default {
   background: url("../../assets/pic/car.jpg");
   width: 100%;
   height: 100%;
-  position: fixed;
+  position: relative;
   background-size: 100% 100%;
 }
 #a {
