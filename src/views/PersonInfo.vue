@@ -37,19 +37,19 @@
         color="deep-purple lighten-2"
         text
         @click="reserve(true)"
-        style="left:35%"
+        
         
       >
         我的账户
       </v-btn>
-      <!-- <v-btn
+      <v-btn
         color="deep-purple lighten-2"
         text
-        @click="reserve(false)"
+        @click="goBack"
         style="left:45%"
       >
-        我的团队
-      </v-btn> -->
+        返回
+      </v-btn>
     </v-card-actions>
   </v-card>
   </div>
@@ -183,6 +183,9 @@ export default
     }),
     methods:
     {
+      goBack(){
+        this.$router.go(-1);
+      },
       reserve(item){
         this.flag=item
       },
