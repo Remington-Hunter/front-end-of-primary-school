@@ -5,9 +5,7 @@
   >
 
     <v-app>
-      <div
-        class="3"
-      >
+      <div class="3">
         <v-card
           class="common_question"
           style="margin-left:15%; margin-right: 7%; display: inline-block"
