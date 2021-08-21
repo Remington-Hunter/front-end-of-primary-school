@@ -108,7 +108,7 @@ export default {
           "Content-Type": "application/json",
         },
       }).then((res) => {
-        //  console.log(res);
+         console.log(res);
         this.getItem();
       });
     },
@@ -126,6 +126,7 @@ export default {
         },
         headers: {
           Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
         },
       }).then((res) => {
         console.log(res);
@@ -198,6 +199,9 @@ export default {
             res.data.data[i].startTime > time
           ) {
             state = "未开始";
+          }
+          if(res.data.data[i].stopping){
+            state="已停用"
           }
           var data2 = res.data.data[i].endTime;
           if (data2 != null) {
