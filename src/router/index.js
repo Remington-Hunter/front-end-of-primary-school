@@ -33,24 +33,31 @@ const routes = [{
         component: () =>
             import ('../views/Mine/Mine.vue'),
         children: [{
-            path: '',
-            component: () =>
-                import ('../views/Mine/Children/Questionnaires.vue')
-          },
-          {
-          path: '/deleted',
-          component: () =>
-              import ('../views/Mine/Children/DeletedQuest.vue')
-        }
-      ]
+                path: '',
+                component: () =>
+                    import ('../views/Mine/Children/Questionnaires.vue')
+            },
+            {
+                path: '/deleted',
+                component: () =>
+                    import ('../views/Mine/Children/DeletedQuest.vue')
+            }
+        ]
     },
-     {
-      path: '/normalquestion',
-      name: 'Normalquestion',
-      component: ()=>import('../views/questionnaire/NormalQuestion.vue')
+    {
+        path: '/normalquestion',
+        name: 'Normalquestion',
+        component: () =>
+            import ('../views/questionnaire/NormalQuestion.vue')
+    },
+    {
+        path: '/getPdf',
+        name: 'getPdf',
+        component: () =>
+            import ('../components/getPdf.vue')
     }
 
-        
+
 ]
 
 
