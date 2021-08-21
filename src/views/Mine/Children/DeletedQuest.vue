@@ -21,12 +21,13 @@
         class="elevation-1"
       >
         <template v-slot:[`item.actions`]="{ item }">
-          <v-icon small @click="deleteItem(item.id)"> mdi-delete-outline </v-icon>
+          <v-icon small @click="deleteItem(item.id)">
+            mdi-delete-outline
+          </v-icon>
           <v-btn text color="primary" @click="recoveryItem(item)">
             <v-icon small> mdi-restore </v-icon>
             <span style="padding-left: 5px">恢复 </span>
           </v-btn>
-        
         </template>
       </v-data-table>
       <div class="text-center pt-2">
@@ -64,22 +65,22 @@ export default {
         { text: "操作", value: "actions", sortable: false },
       ],
       desserts: [
-        {
-          name: "问卷1",
-          state: 0,
-          id: 123456,
-          num: 2,
-          date: "2020 - 8 - 1",
-          date2: "2020 - 8 - 1",
-        },
-        {
-          name: "问卷2",
-          state: 1,
-          id: 234567,
-          num: 24,
-          date: "2021 - 8 - 1",
-          date2: "2020 - 8 - 1",
-        },
+        // {
+        //   name: "问卷1",
+        //   state: 0,
+        //   id: 123456,
+        //   num: 2,
+        //   date: "2020 - 8 - 1",
+        //   date2: "2020 - 8 - 1",
+        // },
+        // {
+        //   name: "问卷2",
+        //   state: 1,
+        //   id: 234567,
+        //   num: 24,
+        //   date: "2021 - 8 - 1",
+        //   date2: "2020 - 8 - 1",
+        // },
       ],
     };
   },
@@ -92,8 +93,8 @@ export default {
       console.log(index);
       // confirm("Are you sure you want to delete this item?")
       var Data = new FormData();
-      Data.append('id',index)
-      console.log(111)
+      Data.append("id", index);
+      console.log(111);
       axios({
         url: "http://82.157.97.70/api/questionnaire/delete_questionnaire",
         method: "post",
@@ -122,9 +123,9 @@ export default {
         this.desserts = [];
         for (let i = 0; i < res.data.data.length; i++) {
           var state = "";
-          if (res.data.data[i].deleted===0) {
+          if (res.data.data[i].deleted === 0) {
             continue;
-          } 
+          }
           if (res.data.data[i].preparing) {
             state = "准备中";
           } else if (res.data.data[i].using) {
@@ -172,8 +173,8 @@ export default {
           ) {
             state = "未开始";
           }
-          if(res.data.data[i].stopping){
-            state="已停用"
+          if (res.data.data[i].stopping) {
+            state = "已停用";
           }
           var data2 = res.data.data[i].endTime;
           if (data2 != null) {
@@ -212,14 +213,18 @@ export default {
             type: "success",
             message: "删除成功!",
           });
-          const index = this.desserts.indexOf(item);
+          const index = item;
           // this.desserts.splice(index, 1)
-          // var Data = new FormData();
-          // Data.append("id", index);
+          var Data = new FormData();
+          Data.append("id", index);
           axios({
             url: "",
             method: "post",
             data: Data,
+            headers: {
+              Authorization: window.localStorage.getItem("authorization"),
+              "Content-Type": "application/json",
+            },
           }).then((res) => {
             console.log(res);
             this.getItem();
