@@ -37,7 +37,7 @@
             </el-radio-group>
           </div>
           <!-- 多选题 -->
-          <div v-if="question.type === 1">
+          <div v-else-if="question.type === 1">
             <el-checkbox-group v-model="question.checkList">
               <el-checkbox
                 v-for="(item,index) in question.selectionList"
@@ -45,6 +45,15 @@
                 :label="index"
               >{{item}}</el-checkbox>
             </el-checkbox-group>
+          </div>
+          <!-- 评分题 -->
+          <div v-else-if="question.type === 8">
+            <el-rate
+              v-model="value"
+              :icon-classes="iconClasses"
+              void-icon-class="icon-rate-face-off"
+              :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
+            ></el-rate>
           </div>
         </div>
       </div>
@@ -81,6 +90,12 @@ export default {
           "required": true //是否必填
         },
         {
+          "type": 8, //问题种类：单选
+          "text": "您对网站满意程度？",
+          "rating": 0,
+          "required": true //是否必填
+        },
+        {
           "type": 1, //问题种类：多选
           "text": "您使用xx社交网站的目的是？",
           "selectionList": ["a选项", "b选项", "c选项"],
@@ -91,9 +106,8 @@ export default {
           "required": false
         },
       ],
-      radio: '',
-      checked2: false,
-      checked3: false,
+      iconClasses: ['icon-rate-face-1', 'icon-rate-face-2', 'icon-rate-face-3'],
+      value: null,
     }
   },
 }
@@ -154,7 +168,8 @@ export default {
   color: rgba(218, 35, 25, 1);
 }
 .el-radio,
-.el-checkbox {
+.el-checkbox,
+.el-rate {
   display: block;
   margin-top: 8px;
   padding: 7px;
