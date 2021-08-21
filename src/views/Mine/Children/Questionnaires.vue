@@ -69,6 +69,7 @@ export default {
         { text: 'ID', value: 'id' },
         { text: '回收量', value: 'num' },
         { text: '创建时间', value: 'date' },
+        {text:'发布时间',value:'date1'},
         { text: '操作', value: 'actions', sortable: false },
         { text: '更多功能' },
       ],
@@ -79,6 +80,7 @@ export default {
           id: 123456,
           num: 2,
           date: '2020 - 8 - 1',
+          date1:'2020 - 8 - 2',
         },
         {
           name: '问卷2',
@@ -86,6 +88,7 @@ export default {
           id: 234567,
           num: 24,
           date: '2021 - 8 - 1',
+          date1:'2020 - 8 - 2',
         },
 
       ],

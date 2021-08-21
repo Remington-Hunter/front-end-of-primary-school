@@ -77,7 +77,7 @@
 
                 <v-card-text>
                   <template>
-                    <v-text-field v-model="description"> </v-text-field>
+                    <v-text-field v-model="describe"> </v-text-field>
                   </template>
                 </v-card-text>
 
@@ -162,9 +162,10 @@ export default {
   data() {
     return {
       isPreview: true,
-      title: "添加标题",//问卷名字
+      question_id: "123",
+      title: "添加标题",
       dialog_title: false,
-      description: "添加说明",//问卷说明
+      describe: "添加说明",
       dialog_describe: false,
       problem_list: [
         { text: "单选题", icon: "mdi-album" },
@@ -201,8 +202,13 @@ export default {
       }
     },
     deleteProblem(index) {
-      console.log(index);
-      this.created_problem.splice(index - 1, 1)
+      document.getElementById('question'+index).remove()
+      for(var i=0;i<this.created_problem.length;i++) {
+        if(this.created_problem[i].number > index){
+          this.created_problem[i].number-=1
+        }
+      }
+      this.total_problem-=1
     },
     getProblemInfo() {
       for (var i = 1; i < this.total_problem; i++) {
@@ -222,41 +228,6 @@ export default {
         console.log(item);
       }
     },
-    saveQuestion(){
-      var question=[];
-      var num=0;
-      for(var i=1;i<this.total_problem;i++) {
-        let index='question'+i
-        let x=this.$refs[index]['0']//组件的所有信息
-        let item={}
-        // this.$refs[index]['0'].name=
-        item.problem_type=x.problem_type
-        item.problem_number=x.problem_number
-        item.name=x.name
-        item.instruction=x.instruction
-        item.selection_list=x.selection_list
-        item.radio=x.radio
-        item.checkList=x.checkList
-        item.answer=x.answer
-        item.rating=x.rating
-        console.log(item);
-        question[num++]=item;
-      }
-      var Data=new FormData();
-      Data.append('question',question);
-      // // Data.append('authorization',)
-      axios({
-        url:'http://82.157.97.70/api/questionnaire/save_new_questionnaire',
-        method:'post',
-        data:Data,
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          "Authorization":window.localStorage.getItem('authorization')
-        }
-      }).then((res)=>{
-        console.log(res);
-      })
-    },
     upMove(index) {
       if (index === 1) {
         return;
@@ -311,7 +282,6 @@ export default {
       // let y = this.$refs[refnamelast]["0"];
       // problem_change(y, x);
     },
-
   },
 };
 </script>
