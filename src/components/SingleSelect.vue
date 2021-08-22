@@ -81,7 +81,7 @@
             class="question-required"
           >*</span></div>
 
-        <div>{{ instruction }}</div>
+        <div class="q-instruction">{{ instruction }}</div>
         <div
           v-if="problem_type === '填空题'"
           class="question-body"
@@ -198,7 +198,7 @@ export default {
   props: {
     problem_type_copy: {
       type: String,
-      default:"单选题"
+      default: "单选题"
     },
     problem_number: {
       type: Number,
@@ -232,10 +232,10 @@ export default {
       items: ["是", "否"],
       iconClasses: ['icon-rate-face-1', 'icon-rate-face-2', 'icon-rate-face-3'],
       has_exchanged: false,
-      problem_type:this.problem_type_copy,
+      problem_type: this.problem_type_copy,
     };
   },
-  created(){
+  created() {
     console.log(this.problem_type_copy);
     console.log(this.problem_type);
   },
@@ -286,6 +286,7 @@ export default {
 </script>
 
 <style scoped>
+@import "../assets/css/icon/preview.css";
 .content {
   border-bottom: solid 2px #e6e6e6;
 }

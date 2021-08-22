@@ -4,9 +4,7 @@
       <el-aside width="200px">
         <el-menu :default-openeds="['1']">
           <el-submenu index="1">
-            <template slot="title"
-              ><i class="el-icon-menu"></i>题目控件</template
-            >
+            <template slot="title"><i class="el-icon-menu"></i>题目控件</template>
             <el-menu-item
               v-for="(item, index) in problem_list"
               :key="(item, index)"
@@ -16,6 +14,11 @@
               {{ item.text }}
             </el-menu-item>
           </el-submenu>
+          <el-submenu index="2">
+            <template slot="title"><i class="el-icon-setting"></i>问卷设置</template>
+            <el-menu-item @click="dialogTimeVisible = true"> <i class="
+              el-icon-alarm-clock"></i> 时间控制</el-menu-item>
+          </el-submenu>
         </el-menu>
       </el-aside>
 
@@ -23,22 +26,6 @@
         style="border-left: solid 2px #e6e6e6;overflow-y:scroll;overflow-x:hidden;height:100%"
         id="demo"
       >
-        <template>
-          <div class="block"></div>
-          <div class="block">
-            <div class="block">
-              <span class="demonstration">默认</span>
-              <el-date-picker
-                v-model="value1"
-                type="datetimerange"
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-              >
-              </el-date-picker>
-            </div>
-          </div>
-        </template>
 
         <div>
           <div
@@ -50,13 +37,26 @@
             <div class="header-subtitle">{{ description }}</div>
             <p class="sub">编辑问卷标题和描述</p>
           </div>
-          <el-dialog title="题目" :visible.sync="dialogFormVisible" center>
+          <el-dialog
+            title="题目"
+            :visible.sync="dialogFormVisible"
+            center
+          >
             <el-form>
-              <el-form-item label="标题" :label-width="formLabelWidth">
-                <el-input v-model="title" autocomplete="off"></el-input>
+              <el-form-item
+                label="标题"
+                :label-width="formLabelWidth"
+              >
+                <el-input
+                  v-model="title"
+                  autocomplete="off"
+                ></el-input>
               </el-form-item>
 
-              <el-form-item label="描述" :label-width="formLabelWidth">
+              <el-form-item
+                label="描述"
+                :label-width="formLabelWidth"
+              >
                 <el-input
                   v-model="description"
                   autocomplete="off"
@@ -66,16 +66,23 @@
                 ></el-input>
               </el-form-item>
             </el-form>
-            <div slot="footer" class="dialog-footer">
+            <div
+              slot="footer"
+              class="dialog-footer"
+            >
               <el-button @click="dialogFormVisible = false">取 消</el-button>
-              <el-button type="primary" @click="dialogFormVisible = false"
-                >确 定</el-button
-              >
+              <el-button
+                type="primary"
+                @click="dialogFormVisible = false"
+              >确 定</el-button>
             </div>
           </el-dialog>
 
           <v-divider></v-divider>
-          <div v-for="(item, index) in created_problem" :key="(item, index)">
+          <div
+            v-for="(item, index) in created_problem"
+            :key="(item, index)"
+          >
             <SingleSelect
               :ref="'question' + item.number"
               :id="'question' + item.number"
@@ -109,6 +116,42 @@
         </div>
       </el-container>
     </el-container>
+    <el-dialog
+      :visible.sync="dialogTimeVisible"
+      width="45%"
+      center
+    >
+      <div class="timm">
+        <el-row>
+          开启控制<el-switch
+            v-model="has_time"
+            style="margin-left:20px"
+          ></el-switch>
+        </el-row>
+        <el-row>选择时间
+          <el-date-picker
+            v-model="value1"
+            type="datetimerange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :disabled="!has_time"
+            style="margin-left:20px"
+          >
+          </el-date-picker>
+        </el-row>
+      </div>
+
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button
+          type="primary"
+          @click="dialogTimeVisible = false"
+        >确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -132,6 +175,7 @@ export default {
         "为了给您提供更好的服务，希望您能抽出几分钟时间，将您的感受和建议告诉我们，我们非常重视每位用户的宝贵意见，期待您的参与！现在我们就马上开始吧！",
       formLabelWidth: "100px",
       dialogFormVisible: false,
+      dialogTimeVisible: false,
       question_id: "123",
       problem_list: [
         { text: "单选题", icon: "mdi-radiobox-marked" },
@@ -145,6 +189,7 @@ export default {
       created_problem_list: [],
       start_time: new Date(),
       end_time: new Date(),
+      has_time: false,
     };
   },
   methods: {
@@ -350,6 +395,9 @@ export default {
 .el-form-item__content {
   margin-right: 50px;
 }
+.el-dialog--center .el-dialog__body {
+  padding: 30px 25px 0px;
+}
 </style>
 
 <style scoped>
@@ -372,4 +420,10 @@ export default {
 .header-subtitle {
   margin-top: 20px;
 }
+.el-row {
+  margin-bottom: 20px;
+  padding-left: 50px;
+}
 </style>
+
+

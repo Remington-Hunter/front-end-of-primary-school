@@ -33,6 +33,11 @@
   .question-title .text {
     margin-right: 4px;
   }
+  .q-instruction{
+    color: grey;
+    font-size: 14px;
+    padding-left: 20px;
+  }
   .question-body {
     padding-top: 10px;
   }

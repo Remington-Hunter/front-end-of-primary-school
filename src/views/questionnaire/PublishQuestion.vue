@@ -14,11 +14,12 @@
         <!-- 题目标题 -->
         <div class="question-head ">
           <div class="question-title">
-            <span class="question-seq"
-              ><b>{{ index + 1 }}</b></span
-            >
+            <span class="question-seq"><b>{{ index + 1 }}</b></span>
             <span class="text">{{ question.text }}</span>
-            <span v-if="question.required" class="question-required">*</span>
+            <span
+              v-if="question.required"
+              class="question-required"
+            >*</span>
             <el-tag v-if="question.type === 1">多选</el-tag>
           </div>
         </div>
@@ -32,8 +33,7 @@
                 :key="index"
                 :label="index"
               >
-                {{ item }}</el-radio
-              >
+                {{ item }}</el-radio>
             </el-radio-group>
           </div>
           <!-- 多选题 -->
@@ -43,8 +43,7 @@
                 v-for="(item, index) in question.selectionList"
                 :key="index"
                 :label="index"
-                >{{ item }}</el-checkbox
-              >
+              >{{ item }}</el-checkbox>
             </el-checkbox-group>
           </div>
           <!-- 评分题 -->
@@ -69,7 +68,11 @@
         </div>
       </div>
       <div class="page-control">
-        <el-button type="primary" id="btn" @click="submit">提交</el-button>
+        <el-button
+          type="primary"
+          id="btn"
+          @click="submit"
+        >提交</el-button>
       </div>
     </div>
   </div>
@@ -166,13 +169,12 @@ export default {
         }
         list.push(z);
       }
-      x.answerDtoList = list;
-      console.log(x);
+      x.answerDtoList = list
       axios({
         method: "post",
         url: "http://82.157.97.70/api/answer/submit_answer",
-        headers: {
-          "Content-Type": "application/json",
+        headers:{
+          "Content-Type":"application/json"
         },
         data: JSON.stringify(x),
       }).then((res) => {
@@ -180,79 +182,17 @@ export default {
       });
     },
   },
-  created() {},
+  created() { },
 };
 </script>
 
 <style scoped>
+@import "../../assets/css/icon/preview.css";
 #prev {
   width: 1000px;
   min-height: 100%;
   margin: 0 auto;
   overflow: hidden;
   position: relative;
-}
-
-.s-main {
-  position: relative;
-  padding: 80px 72px 20px;
-  margin: 40px auto;
-  box-sizing: border-box;
-  background-color: rgb(255, 255, 255);
-  overflow: hidden;
-}
-
-.header-title {
-  text-align: center;
-  font-size: 30px;
-  word-break: break-word;
-}
-.header-subtitle {
-  margin-top: 40px;
-  font-size: 16px;
-  word-break: break-word;
-}
-.question-head {
-  margin-top: 45px;
-}
-.question-title {
-  font-size: 18px;
-  word-break: break-word;
-}
-.question-seq {
-  display: block;
-  margin-right: 8px;
-  font-size: 18px;
-  float: left;
-}
-.question-title .text {
-  margin-right: 4px;
-}
-.question-body {
-  padding-top: 10px;
-}
-
-.question-required {
-  background-size: 100%;
-  vertical-align: -2px;
-  margin-right: 4px;
-  color: rgba(218, 35, 25, 1);
-}
-.el-radio,
-.el-checkbox,
-.el-rate {
-  display: block;
-  margin-top: 8px;
-  padding: 7px;
-}
-.page-control {
-  text-align: center;
-  padding: 50px 0;
-}
-.el-tag {
-  padding: 0px 3px;
-  height: 25px;
-  line-height: 25px;
-  font-size: 80%;
 }
 </style>
