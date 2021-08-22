@@ -130,10 +130,10 @@ export default {
       dialogFormVisible: false,
       question_id: "123",
       problem_list: [
-        { text: "单选题", icon: "mdi-album" },
+        { text: "单选题", icon: "mdi-radiobox-marked" },
         { text: "多选题", icon: "mdi-check-bold" },
-        { text: "填空题", icon: "mdi-alpha-i-box" },
-        { text: "评分题", icon: "mdi-alpha-i-box" },
+        { text: "填空题", icon: "mdi-checkbox-blank-outline" },
+        { text: "评分题", icon: "mdi-star-outline" },
       ],
       total_problem: 1,
       created_problem: [],
