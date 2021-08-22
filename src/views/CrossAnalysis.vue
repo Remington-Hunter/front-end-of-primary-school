@@ -1,23 +1,34 @@
 <template>
   <div class="analysis">
-    <div id="func1" style="width: 600px; height: 400px"></div>
-    <div id="func2" style="width: 600px; height: 400px"></div>
-    <div id="func3" style="width: 600px; height: 400px"></div>
-    <div id="func4" style="width: 600px; height: 400px"></div>
+    <div style="width: 600px;height:400px;">
+        <drawLine
+        :id='"line"+"111"'
+        ></drawLine>
+    </div >
+        <div style="width: 600px;height:400px;">
+            <drawPie
+        :id='"pie"+"111"'
+        ></drawPie>
+        </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import drawLine from "../components/DrawLine.vue"
+import drawPie from "../components/DrawPie.vue"
 export default {
   data() {
     return {
-      source: [],
+      series: ['1','2'],
       msg1: "饼状图",
       id:'',
     };
   },
-  components: {},
+  components: {
+      drawLine,
+      drawPie,
+  },
   created: {},
   mounted() {
     this.getseries();
@@ -36,7 +47,7 @@ export default {
             data:Data,
         }).then((res)=>{
             console.log(res);
-            
+
         })
     },
     drawfunc1() {
