@@ -195,11 +195,11 @@ export default {
         item.point = 0;
         item.type = this.problem_type_number(x.problem_type);
         let y = [];
-        for (var i = 0; i < x.selection_list.length; i++) {
+        for (var j = 0; j < x.selection_list.length; j++) {
           let z = {};
-          z.content = x.selection_list[i];
+          z.content = x.selection_list[j];
           z.limit = -1;
-          z.number = i + "";
+          z.number = j + "";
           y.push(z);
         }
         item.optionList = y;
@@ -250,7 +250,7 @@ export default {
       formData.questionList = this.created_problem_list;
       axios({
         method: "post",
-        url: "http://82.157.97.70/api/questionnaire/questionnaire/publish_questionnaire",
+        url: "http://82.157.97.70/api/questionnaire/publish_questionnaire",
         headers: {
           Authorization: window.localStorage.getItem("authorization"),
           "Content-Type": "application/json",
@@ -406,11 +406,11 @@ export default {
         item.point = 0;
         item.type = this.problem_type_number(x.problem_type);
         let y = [];
-        for (var i = 0; i < x.selection_list.length; i++) {
+        for (var j = 0; j < x.selection_list.length; j++) {
           let z = {};
-          z.content = x.selection_list[i];
+          z.content = x.selection_list[j];
           z.limit = -1;
-          z.number = i + "";
+          z.number = j + "";
           y.push(z);
         }
         item.optionList = y;
