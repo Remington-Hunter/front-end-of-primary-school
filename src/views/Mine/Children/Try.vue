@@ -69,7 +69,6 @@
         </v-icon>
         <v-icon small @click="deleteItem(item.id)"> mdi-delete-outline </v-icon>
       </template>
-    </v-data-table>
     <div class="text-center pt-2">
       <v-btn color="primary" class="mr-2" @click="toggleOrder"
       >切换排序顺序</v-btn>
@@ -103,24 +102,24 @@ export default {
       //   { text: "更多功能" },
       // ],
       desserts: [
-        {
-          name: "问卷1",
-          state: 0,
-          id: 123456,
-          num: 2,
-          date: "2020 - 8 - 1",
-          // date1:'2020 - 8 - 2',
-          date2: "2020 - 8 - 3",
-        },
-        {
-          name: "问卷2",
-          state: 1,
-          id: 234567,
-          num: 24,
-          date: "2021 - 8 - 1",
-          // date1:'2020 - 8 - 2',
-          date2: "2020 - 8 - 4",
-        },
+        // {
+        //   name: "问卷1",
+        //   state: 0,
+        //   id: 123456,
+        //   num: 2,
+        //   date: "2020 - 8 - 1",
+        //   // date1:'2020 - 8 - 2',
+        //   date2: "2020 - 8 - 3",
+        // },
+        // {
+        //   name: "问卷2",
+        //   state: 1,
+        //   id: 234567,
+        //   num: 24,
+        //   date: "2021 - 8 - 1",
+        //   // date1:'2020 - 8 - 2',
+        //   date2: "2020 - 8 - 4",
+        // },
       ],
     };
   },
@@ -261,10 +260,10 @@ export default {
     formatter(row, column) {
       return row.address;
     },
-    mounted() {
-      this.getItem();
-    },
-  }
+  },
+  mounted() {
+    this.getItem();
+  },
 };
 </script>
 
