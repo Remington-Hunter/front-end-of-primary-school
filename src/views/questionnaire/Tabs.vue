@@ -9,12 +9,15 @@
           label="编辑"
           name="first"
         >
-          <normal />
+          <normal 
+          @problem_change="changeState"
+          />
         </el-tab-pane>
 
         <el-tab-pane
           label="投放"
           name="second"
+          :disabled="state"
         >
           <send />
         </el-tab-pane>
@@ -22,14 +25,14 @@
         <el-tab-pane
           label="统计"
           name="third"
-          disabled="true"
+          :disabled="state"
         >待完成</el-tab-pane>
       </el-tabs>
     </div>
   </div>
 </template>
 <script>
-import Normal from "./NormalQuestion.vue"
+import Normal from "./NormalQuestion"
 import Send from "./Send.vue"
 import axios from 'axios';
 export default {
@@ -42,9 +45,19 @@ export default {
       activeName: 'first',
       input: "https://wj.qq.com/s2/8918766/dd18/",
       lianjie: "",
+      state:true
     };
   },
   methods: {
+    changeState(index){
+      if(index === false){
+        this.state=true
+        return
+      }
+      else{
+        this.state = false
+      }
+    },
     handleClick(tab, event) {
       console.log(tab, event);
       if (tab.name == 'second') {

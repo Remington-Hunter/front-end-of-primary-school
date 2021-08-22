@@ -102,7 +102,7 @@
     </div>
 
     <div v-show="!ismodify" style="margin-left: 10%">
-      <v-btn color="primary" @click="ismodify = true" small ><v-icon small>mdi-pencil</v-icon>修改</v-btn>
+      <v-btn color="primary" @click="ismodify = true;$emit('ismodifying')" small ><v-icon small>mdi-pencil</v-icon>修改</v-btn>
       <v-btn color="primary" @click="deleteProblem" style="margin-left: 1%" small>
         <v-icon small>mdi-trash-can-outline</v-icon>删除
       </v-btn>

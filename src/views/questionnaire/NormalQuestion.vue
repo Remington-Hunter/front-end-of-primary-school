@@ -112,14 +112,20 @@
               created_problem.pop();
               is_creating = false;
               total_problem -= 1;
+              total_problem_change();
             "
-            @ConfirmProblem="is_creating = false"
+            @ConfirmProblem="is_creating = false;
+            total_problem_change();
+            send_question_parent();
+            "
             @deleteProblem="deleteProblem"
             @upMove="upMove"
             @upMoveFirst="upMoveFirst"
             @downMove="downMove"
             @downMoveLast="downMoveLast"
             @copy="copy"
+            @ismodifying="is_creating = true;total_problem_change();"
+            @confirmed="is_creating = false"
           ></SingleSelect>
         </div>
         <v-btn @click="getProblemInfo">预览</v-btn>
@@ -152,7 +158,6 @@ import SingleSelect from "../../components/SingleSelect";
 import { problem_exchange, problem_change } from "../../utils/deepCopy";
 
 import htmlToPdf from "@/assets/js/htmlToPdf";
-import QuestionnairePreview from "@/components/QuestionnairePreview";
 export default {
   name: "NormalQuestion",
   components: {
@@ -179,8 +184,8 @@ export default {
     };
   },
   methods: {
-    sendQues(){
-      if(this.is_creating === true || this.total_problem === 1) {return}
+    current_questionnaire(){
+      this.created_problem_list=[]
       for (var i = 1; i < this.total_problem; i++) {
         let index = "question" + i;
         let x = this.$refs[index]["0"]; //组件的所有信息
@@ -248,6 +253,16 @@ export default {
       formData.startTime = time;
       formData.userId = window.localStorage.getItem("user_id");
       formData.questionList = this.created_problem_list;
+      return formData
+    },
+    send_question_parent(){
+      if(this.is_creating === true || this.total_problem === 1) {return}
+      var obj1=this.current_questionnaire()
+      this.$emit("currentQuestionnaire",obj1)
+    },
+    sendQues(){
+      if(this.is_creating === true || this.total_problem === 1) {return}
+      var formData=this.current_questionnaire()
       axios({
         method: "post",
         url: "http://82.157.97.70/api/questionnaire/questionnaire/publish_questionnaire",
@@ -259,6 +274,20 @@ export default {
       }).then((res) => {
         console.log(res);
       });
+    },
+    total_problem_change(){
+      if(this.is_creating === true){
+        this.$emit('problem_change',false)
+        return
+      }
+      else{
+        if(this.total_problem === 1){
+          this.$emit('problem_change',false)
+        }
+        else{
+          this.$emit('problem_change',true)
+        }
+      }
     },
     goBack() {
       this.$router.go(-1);
@@ -280,6 +309,7 @@ export default {
         this.total_problem += 1;
         this.created_problem.push(item);
         this.is_creating = true;
+        this.total_problem_change();
       }
     },
     deleteProblem(index) {
@@ -290,6 +320,7 @@ export default {
         }
       }
       this.total_problem -= 1;
+      this.total_problem_change();
     },
     getProblemInfo() {
       if(this.is_creating === true || this.total_problem === 1) {return}
@@ -392,73 +423,7 @@ export default {
     },
     saveQues() {
       if(this.is_creating === true || this.total_problem === 1) {return}
-      for (var i = 1; i < this.total_problem; i++) {
-        let index = "question" + i;
-        let x = this.$refs[index]["0"]; //组件的所有信息
-        let item = {};
-        // item.problem_type = x.problem_type;
-        item.number = x.problem_number;
-        item.content = x.name;
-        item.comment = x.instruction;
-        // item.selection_list = x.selection_list;
-        item.answer = "";
-        item.required = x.must_write_select === "是" ? 1 : 0;
-        item.point = 0;
-        item.type = this.problem_type_number(x.problem_type);
-        let y = [];
-        for (var i = 0; i < x.selection_list.length; i++) {
-          let z = {};
-          z.content = x.selection_list[i];
-          z.limit = -1;
-          z.number = i + "";
-          y.push(z);
-        }
-        item.optionList = y;
-        this.created_problem_list.push(item);
-      }
-
-      //var formData = new FormData();
-      var formData = {};
-      // var date=new Date();
-      Date.prototype.Format = function (fmt) {
-        // author: meizz
-        var o = {
-          "M+": this.getMonth() + 1, // 月份
-          "d+": this.getDate(), // 日
-          "h+": this.getHours(), // 小时
-          "m+": this.getMinutes(), // 分
-          "s+": this.getSeconds(), // 秒
-          "q+": Math.floor((this.getMonth() + 3) / 3), // 季度
-          S: this.getMilliseconds(), // 毫秒
-        };
-        if (/(y+)/.test(fmt))
-          fmt = fmt.replace(
-            RegExp.$1,
-            (this.getFullYear() + "").substr(4 - RegExp.$1.length)
-          );
-        for (var k in o)
-          if (new RegExp("(" + k + ")").test(fmt))
-            fmt = fmt.replace(
-              RegExp.$1,
-              RegExp.$1.length == 1
-                ? o[k]
-                : ("00" + o[k]).substr(("" + o[k]).length)
-            );
-        return fmt;
-      };
-      var time2 = new Date().Format("yyyy-MM-dd hh:mm:ss");
-      var times = time2.split(" ");
-
-      var time = times[0] + 'T' + times[1] + 'Z';
-      alert(time);
-      formData.description = this.description;
-      formData.endTime = time;
-      formData.limit = -1;
-      formData.title = this.title;
-      formData.needNum = -1;
-      formData.startTime = time;
-      formData.userId = window.localStorage.getItem("user_id");
-      formData.questionList = this.created_problem_list;
+      var formData=this.current_questionnaire()
       axios({
         method: "post",
         url: "http://82.157.97.70/api/questionnaire/save_questionnaire",
