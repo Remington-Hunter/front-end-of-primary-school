@@ -1,29 +1,31 @@
 @font-face {
-    font-family: "iconfont";
-    /* Project id 2757462 */
-    src: url('iconfont.woff2?t=1629426619660') format('woff2'), url('iconfont.woff?t=1629426619660') format('woff'), url('iconfont.ttf?t=1629426619660') format('truetype');
+  font-family: "iconfont"; /* Project id 2760721 */
+  src: url('iconfont.woff2?t=1629596759542') format('woff2'),
+       url('iconfont.woff?t=1629596759542') format('woff'),
+       url('iconfont.ttf?t=1629596759542') format('truetype');
 }
 
 .iconfont {
-    font-family: "iconfont" !important;
-    font-size: 800%;
-    font-style: normal;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  font-family: "iconfont" !important;
+  font-size: 800%;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .icon-wenjuan:before {
-    content: "\e636";
+  content: "\e636";
 }
 
-.icon-dibudaohanglan-:before {
-    content: "\e630";
+.icon-wenjuanguanli:before {
+  content: "\e643";
+}
+
+.icon-wenjuan1:before {
+  content: "\e8bb";
 }
 
 .icon-wenjuantoupiao:before {
-    content: "\e69a";
+  content: "\e69a";
 }
 
-.icon-wenjuantiaocha:before {
-    content: "\e672";
-}
