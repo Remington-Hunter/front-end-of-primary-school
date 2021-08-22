@@ -9,12 +9,16 @@
           label="编辑"
           name="first"
         >
-          <normal />
+          <normal 
+          @problem_change="changeState"
+          @currentQuestionnaire="getCurrentQuestionnaire"
+          />
         </el-tab-pane>
 
         <el-tab-pane
           label="投放"
           name="second"
+          :disabled="state"
         >
           <send />
         </el-tab-pane>
@@ -22,13 +26,14 @@
         <el-tab-pane
           label="统计"
           name="third"
-          :disabled=true
+          :disabled="state"
         >待完成</el-tab-pane>
       </el-tabs>
       <el-row style='position: absolute;right:100px;top:12vh;'>
         <el-button
           type="primary"
           plain
+          @click="saveQues"
         >保存</el-button>
         <el-button
           type="primary"
@@ -59,7 +64,7 @@
   </div>
 </template>
 <script>
-import Normal from "./NormalQuestion.vue"
+import Normal from "./NormalQuestion"
 import Send from "./Send.vue"
 import axios from 'axios';
 export default {
@@ -72,10 +77,43 @@ export default {
       activeName: 'first',
       input: "https://wj.qq.com/s2/8918766/dd18/",
       lianjie: "",
-      state: false
+      state:true,
+      current_questionnaire:{},
+      is_creating:false,
+      total_problem:1
     };
   },
   methods: {
+    saveQues() {
+      if(this.is_creating === true || this.total_problem === 1) {return}
+      var formData=this.current_questionnaire
+      axios({
+        method: "post",
+        url: "http://82.157.97.70/api/questionnaire/save_questionnaire",
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
+        },
+        data: JSON.stringify(formData),
+      }).then((res) => {
+        console.log(res);
+      });},
+    getCurrentQuestionnaire(obj){
+      this.current_questionnaire=obj.data
+      this.is_creating=obj.is_creating
+      this.total_problem=this.total_problem
+      console.log(this.is_creating);
+      console.log(this.total_problem);
+    },
+    changeState(index){
+      if(index === false){
+        this.state=true
+        return
+      }
+      else{
+        this.state = false
+      }
+    },
     handleClick(tab, event) {
       console.log(tab, event);
       if (tab.name == 'second') {
