@@ -119,7 +119,7 @@ export default {
           if (y.required) {
             if (y.radio === "") {
               alert("您有必选项未完成!");
-              return
+              return;
             } else {
               z.number = y.radio + "";
               z.content = "";
@@ -132,7 +132,7 @@ export default {
           if (y.required) {
             if (y.checkList.length === 0) {
               alert("您有必选项未完成!");
-              return
+              return;
             } else {
               z.number = "";
               for (var j = 0; j < y.checkList.length; j++) {
@@ -156,7 +156,7 @@ export default {
           if (y.required) {
             if (y.answer === "") {
               alert("您有必选项未完成!");
-              return
+              return;
             } else {
               z.number = "";
               z.content = y.answer;
@@ -165,11 +165,14 @@ export default {
             z.number = "";
             z.content = y.answer;
           }
-          // console.log(z)
+        } else if (y.type === 3) {
+          z.number = "" + y.rating;
+          z.content = "";
         }
-        list.push(z)
+        list.push(z);
       }
-      x.answerDtoList=list
+      x.answerDtoList = list;
+      console.log(x);
       axios({
         method: "post",
         url: "http://82.157.97.70/api/answer/submit_answer",
