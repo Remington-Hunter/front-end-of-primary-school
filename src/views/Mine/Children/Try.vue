@@ -49,26 +49,35 @@
       <el-table-column
           prop="address"
           label="操作">
+        <template slot-scope="scope">
+          <el-button
+              @click.native.prevent="deleteItem(desserts[scope.$index].id)"
+              type="text"
+              size="small">
+            移除
+          </el-button>
+          <el-button
+              @click.native.prevent="copyItem(desserts[scope.$index].id)"
+              type="text"
+              size="small">
+            复制
+          </el-button>
+        </template>
       </el-table-column>
       <el-table-column
           prop="address"
           label="更多功能">
       </el-table-column>
     </el-table>
-<!--    <v-data-table-->
-<!--        :headers="headers"-->
-<!--        :items="desserts"-->
-<!--        :search="search"-->
-<!--        :sort-by.sync="sortBy"-->
-<!--        :sort-desc.sync="sortDesc"-->
-<!--        class="elevation-1"-->
-<!--    >-->
-      <template v-slot:[`item.actions`]="{ item }">
-        <v-icon small class="mr-2" @click="copyItem(item.id)">
-          mdi-content-copy
-        </v-icon>
-        <v-icon small @click="deleteItem(item.id)"> mdi-delete-outline </v-icon>
-      </template>
+    <!--    <v-data-table-->
+    <!--        :headers="headers"-->
+    <!--        :items="desserts"-->
+    <!--        :search="search"-->
+    <!--        :sort-by.sync="sortBy"-->
+    <!--        :sort-desc.sync="sortDesc"-->
+    <!--        class="elevation-1"-->
+    <!--    >-->
+
     <div class="text-center pt-2">
       <v-btn color="primary" class="mr-2" @click="toggleOrder"
       >切换排序顺序</v-btn>
@@ -268,10 +277,6 @@ export default {
       return ""+val;
     }
   },
-  mounted() {
-      console.log(111)
-      this.getItem();
-    },
 };
 </script>
 
