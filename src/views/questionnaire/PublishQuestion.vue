@@ -159,6 +159,7 @@ export default {
             z.number = "";
             z.content = y.answer;
           }
+          console.log(z);
         } else if (y.type === 3) {
             z.number = ""+y.rating;
             z.content ="";
@@ -166,9 +167,13 @@ export default {
         list.push(z)
       }
       x.answerDtoList=list
+      console.log(x)
       axios({
         method: "post",
         url: "http://82.157.97.70/api/answer/submit_answer",
+        headers:{
+          "Content-Type":"application/json"
+        },
         data: JSON.stringify(x),
       }).then((res) => {
         console.log(res);
