@@ -21,8 +21,8 @@ export default {
   data() {
     return {};
   },
-  components: {},
-  created: {},
+  // components: {},
+  // created: {},
   mounted() {
     //   alert(111)
     console.log(this.id)

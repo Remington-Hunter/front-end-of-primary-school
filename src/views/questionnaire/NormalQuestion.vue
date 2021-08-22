@@ -181,7 +181,6 @@ export default {
         item.point = 0;
         item.type = this.problem_type_number(x.problem_type);
         let y = [];
-        var len=x.selection_list.length
         for (var j = 0; j < x.selection_list.length; j++) {
           let z = {};
           z.content = x.selection_list[j];
