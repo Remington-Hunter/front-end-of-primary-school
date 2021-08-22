@@ -21,6 +21,7 @@ export function problem_change(obj1,obj2){
     obj1.checkList=obj2.checkList
     obj1.answer=obj2.answer
     obj1.rating=obj2.rating
+    obj1.must_write_select=obj2.must_write_select
 }
 
 export function problem_exchange(obj1,obj2){
