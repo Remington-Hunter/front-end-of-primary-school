@@ -275,10 +275,6 @@ export default {
       this.is_change_title = !this.is_change_title;
     },
     newProblem(index, iscopy, copy_info) {
-      for (var i = 1; i < this.total_problem; i++) {
-        let refname = "question" + i;
-        console.log(this.$refs[refname]["0"]);
-      }
 
       if (!this.is_creating) {
         let item = {};
@@ -286,7 +282,7 @@ export default {
         item.number = this.total_problem;
         item.iscopy = iscopy;
         item.copy_info = copy_info;
-        console.log(item);
+        this.created_problem.push(item);
         this.total_problem += 1;
         this.created_problem.push(item);
         this.is_creating = true;

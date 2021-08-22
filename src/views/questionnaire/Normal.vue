@@ -81,7 +81,7 @@
               :ref="'question' + item.number"
               :id="'question' + item.number"
               :iscopy="item.iscopy"
-              :problem_type="item.type"
+              :problem_type_copy="item.type"
               :problem_number="item.number"
               :copy_info="item.copy_info"
               @CancelNewProblem="
