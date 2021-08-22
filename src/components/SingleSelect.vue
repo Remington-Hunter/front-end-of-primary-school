@@ -169,7 +169,7 @@
 export default {
   name: "SingleSelect",
   props: {
-    problem_type: {
+    problem_type_copy: {
       type: String,
       default: "单选题",
     },
@@ -203,6 +203,8 @@ export default {
       cancel_button: true,
       must_write_select: "否",
       items: ["是", "否"],
+      has_exchanged:false,
+      problem_type: this.has_exchanged? this.problem_type : this.problem_type_copy,
     };
   },
   computed: {

@@ -80,7 +80,7 @@
             :ref="'question' + item.number"
             :id="'question' + item.number"
             :iscopy="item.iscopy"
-            :problem_type="item.type"
+            :problem_type_copy="item.type"
             :problem_number="item.number"
             :copy_info="item.copy_info"
             @CancelNewProblem="
@@ -308,24 +308,6 @@ export default {
       if (index === 1) {
         return;
       }
-      for (var i = 1; i < this.total_problem; i++) {
-        let refname = "question" + i;
-        console.log(this.$refs[refname]["0"]);
-      }
-      var len = this.created_problem.length;
-      var x1 = {};
-      var y1 = {};
-      for (var i = 0; i < len; i++) {
-        if (this.created_problem[i].number === index) {
-          x1 = this.created_problem[i];
-        }
-        if (this.created_problem[i].number === index - 1) {
-          y1 = this.created_problem[i];
-        }
-      }
-      var t = x1.type;
-      x1.type = y1.type;
-      y1.type = t;
       let refnamebefore = "question" + (index - 1);
       let refname = "question" + index;
       let x = this.$refs[refname]["0"];
@@ -337,24 +319,6 @@ export default {
       if (index === 1) {
         return;
       }
-      for (var i = 1; i < this.total_problem; i++) {
-        let refname = "question" + i;
-        console.log(this.$refs[refname]["0"]);
-      }
-      var len = this.created_problem.length;
-      var x1 = {};
-      var y1 = {};
-      for (var i = 0; i < len; i++) {
-        if (this.created_problem[i].number === index) {
-          x1 = this.created_problem[i];
-        }
-        if (this.created_problem[i].number === 1) {
-          y1 = this.created_problem[i];
-        }
-      }
-      var t = x1.type;
-      x1.type = y1.type;
-      y1.type = t;
       let refnamebefore = "question" + 1;
       let refname = "question" + index;
       let x = this.$refs[refname]["0"];
@@ -366,24 +330,6 @@ export default {
       if (index === this.total_problem - 1) {
         return;
       }
-      for (var i = 1; i < this.total_problem; i++) {
-        let refname = "question" + i;
-        console.log(this.$refs[refname]["0"]);
-      }
-      var len = this.created_problem.length;
-      var x1 = {};
-      var y1 = {};
-      for (var i = 0; i < len; i++) {
-        if (this.created_problem[i].number === index) {
-          x1 = this.created_problem[i];
-        }
-        if (this.created_problem[i].number === index+1) {
-          y1 = this.created_problem[i];
-        }
-      }
-      var t = x1.type;
-      x1.type = y1.type;
-      y1.type = t;
       let refnameafter = "question" + (index + 1);
       let refname = "question" + index;
       let x = this.$refs[refname]["0"];
@@ -395,24 +341,6 @@ export default {
       if (index === this.total_problem - 1) {
         return;
       }
-      for (var i = 1; i < this.total_problem; i++) {
-        let refname = "question" + i;
-        console.log(this.$refs[refname]["0"]);
-      }
-      var len = this.created_problem.length;
-      var x1 = {};
-      var y1 = {};
-      for (var i = 0; i < len; i++) {
-        if (this.created_problem[i].number === index) {
-          x1 = this.created_problem[i];
-        }
-        if (this.created_problem[i].number === this.total_problem - 1) {
-          y1 = this.created_problem[i];
-        }
-      }
-      var t = x1.type;
-      x1.type = y1.type;
-      y1.type = t;
       let refnameafter = "question" + (this.total_problem - 1);
       let refname = "question" + index;
       let x = this.$refs[refname]["0"];
