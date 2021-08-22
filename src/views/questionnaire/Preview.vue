@@ -154,7 +154,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 @import "../../assets/css/icon/preview.css";
 #prev {
   width: 1000px;
