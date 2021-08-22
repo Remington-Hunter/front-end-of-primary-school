@@ -73,8 +73,8 @@
   </div>
 </template>
 <script>
-import Normal1 from "./Normal.vue"
-import Normal from "./NormalQuestion"
+import Normal from "./Normal.vue"
+// import Normal from "./NormalQuestion"
 import Send from "./Send.vue"
 import axios from 'axios';
 import htmlToPdf from "@/assets/js/htmlToPdf";
