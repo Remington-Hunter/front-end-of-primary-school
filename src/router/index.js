@@ -85,6 +85,12 @@ const routes = [{
         component: () =>
             import ('../views/questionnaire/Try.vue')
     },
+    {
+        path: '/crossanalysis',
+        name: 'crossanalysis',
+        component: () =>
+            import ('../views/CrossAnalysis.vue')
+    }
 ]
 
 
