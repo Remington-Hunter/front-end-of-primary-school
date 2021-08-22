@@ -20,7 +20,7 @@
       class="elevation-1"
     >
       <template v-slot:[`item.actions`]="{ item }">
-        <v-icon small class="mr-2" @click="copyItem(item)">
+        <v-icon small class="mr-2" @click="copyItem(item.id)">
           mdi-content-copy
         </v-icon>
         <v-icon small @click="deleteItem(item.id)"> mdi-delete-outline </v-icon>
@@ -111,7 +111,7 @@ export default {
       });
     },
     copyItem(item) {
-      const index = this.desserts.indexOf(item);
+      const index = item;
       // var name1=item.name+'副本';
       // var state1=item.state;
       // var num1=item.num;

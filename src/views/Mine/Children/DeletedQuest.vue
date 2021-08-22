@@ -218,7 +218,7 @@ export default {
           var Data = new FormData();
           Data.append("id", index);
           axios({
-            url: "",
+            url: "http://82.157.97.70/api/questionnaire/",
             method: "post",
             data: Data,
             headers: {
