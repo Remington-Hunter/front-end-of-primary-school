@@ -125,7 +125,6 @@
             @downMoveLast="downMoveLast"
             @copy="copy"
             @ismodifying="is_creating = true;total_problem_change();"
-            @confirmed="is_creating = false"
           ></SingleSelect>
         </div>
         <v-btn @click="getProblemInfo">预览</v-btn>
@@ -200,11 +199,14 @@ export default {
         item.point = 0;
         item.type = this.problem_type_number(x.problem_type);
         let y = [];
-        for (var i = 0; i < x.selection_list.length; i++) {
+        var len=x.selection_list.length
+        console.log(len)
+        for (var j = 0; j < x.selection_list.length; j++) {
+          console.log(1);
           let z = {};
-          z.content = x.selection_list[i];
+          z.content = x.selection_list[j];
           z.limit = -1;
-          z.number = i + "";
+          z.number = j + "";
           y.push(z);
         }
         item.optionList = y;
@@ -244,7 +246,7 @@ export default {
       var times = time2.split(" ");
 
       var time = times[0] + 'T' + times[1] + 'Z';
-      alert(time);
+      // alert(time);
       formData.description = this.description;
       formData.endTime = time;
       formData.limit = -1;
@@ -257,7 +259,12 @@ export default {
     },
     send_question_parent(){
       if(this.is_creating === true || this.total_problem === 1) {return}
-      var obj1=this.current_questionnaire()
+      var obj1={}
+      var obj1={
+        data:this.current_questionnaire(),
+        is_creating:this.is_creating,
+        total_problem:this.total_problem,
+      }
       this.$emit("currentQuestionnaire",obj1)
     },
     sendQues(){
@@ -321,6 +328,7 @@ export default {
       }
       this.total_problem -= 1;
       this.total_problem_change();
+      this.send_question_parent();
     },
     getProblemInfo() {
       if(this.is_creating === true || this.total_problem === 1) {return}
@@ -360,6 +368,7 @@ export default {
       let x = this.$refs[refname]["0"];
       let y = this.$refs[refnamebefore]["0"];
       problem_exchange(x, y);
+      this.send_question_parent();
     },
     upMoveFirst(index) {
       if (index === 1) {
@@ -370,6 +379,7 @@ export default {
       let x = this.$refs[refname]["0"];
       let y = this.$refs[refnamebefore]["0"];
       problem_exchange(x, y);
+      this.send_question_parent();
     },
     downMove(index) {
       if (index === this.total_problem - 1) {
@@ -380,6 +390,7 @@ export default {
       let x = this.$refs[refname]["0"];
       let y = this.$refs[refnameafter]["0"];
       problem_exchange(x, y);
+      this.send_question_parent();
     },
     downMoveLast(index) {
       if (index === this.total_problem - 1) {
@@ -390,6 +401,7 @@ export default {
       let x = this.$refs[refname]["0"];
       let y = this.$refs[refnameafter]["0"];
       problem_exchange(x, y);
+      this.send_question_parent();
     },
     copy(index) {
       let refname = "question" + index;
