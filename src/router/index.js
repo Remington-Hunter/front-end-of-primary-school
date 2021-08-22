@@ -83,7 +83,7 @@ const routes = [{
         path: '/try',
         name: 'Try',
         component: () =>
-            import ('../views/questionnaire/Try.vue')
+            import ('../views/Mine/Children/Try.vue')
     },
 ]
 
