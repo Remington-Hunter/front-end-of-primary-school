@@ -12,6 +12,7 @@
     </v-card-title>
     <el-table
         :data="desserts"
+        :search="search"
         style="width: 100%"
         :default-sort = "{prop: 'date', order: 'descending'}"
     >
