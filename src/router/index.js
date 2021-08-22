@@ -90,9 +90,14 @@ const routes = [{
         name: 'crossanalysis',
         component: () =>
             import ('../views/CrossAnalysis.vue')
-    }
+    },
+    {
+        path: '/try',
+        name: 'Try',
+        component: () =>
+            import ('../views/Mine/Children/Try.vue')
+    },
 ]
-
 
 const router = new VueRouter({
     mode: 'history',
