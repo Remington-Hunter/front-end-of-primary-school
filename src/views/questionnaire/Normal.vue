@@ -19,7 +19,7 @@
         </el-menu>
       </el-aside>
 
-      <el-container style="border-left: solid 2px #e6e6e6;overflow-y:scroll;overflow-x:hidden;height:100%">
+      <el-container style="border-left: solid 2px #e6e6e6;overflow-y:scroll;overflow-x:hidden;height:100%" id="demo">
         <div>
           <div
             @click="dialogFormVisible = true"
