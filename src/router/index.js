@@ -29,9 +29,15 @@ const routes = [{
     },
     {
         path: '/normalquestion',
-        name: 'Normalquestion',
+        name: 'NormalQuestion',
         component: () =>
             import ('../views/questionnaire/NormalQuestion')
+    },
+    {
+        path: '/votequestion',
+        name: 'VoteQuestion',
+        component: () =>
+            import ('../views/questionnaire/VoteQuestion')
     },
     {
         path: '/mine',
