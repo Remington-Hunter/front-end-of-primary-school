@@ -150,11 +150,10 @@
 import axios from "axios";
 import SingleSelect from "../../components/SingleSelect";
 import { problem_exchange, problem_change } from "../../utils/deepCopy";
-
 import htmlToPdf from "@/assets/js/htmlToPdf";
-import QuestionnairePreview from "@/components/QuestionnairePreview";
+
 export default {
-  name: "NormalQuestion",
+  name: "VoteQuestion",
   components: {
     SingleSelect,
   },
@@ -169,8 +168,6 @@ export default {
       problem_list: [
         { text: "单选题", icon: "mdi-album" },
         { text: "多选题", icon: "mdi-check-bold" },
-        { text: "填空题", icon: "mdi-alpha-i-box" },
-        { text: "评分题", icon: "mdi-alpha-i-box" },
       ],
       total_problem: 1,
       created_problem: [],

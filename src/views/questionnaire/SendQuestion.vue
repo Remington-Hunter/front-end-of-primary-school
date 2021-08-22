@@ -7,7 +7,10 @@
       </v-btn>
     </div>
     <div style="margin-left: 20%; padding-top: 5%">
-      <v-card class="question" style="text-align: center; display: block">
+      <v-card
+        class="question"
+        style="text-align: center; display: block"
+      >
         <span>问卷链接与二维码</span>
         <el-input
           v-model="input"
@@ -25,6 +28,7 @@
       </v-card>
     </div>
     <v-btn @click="send_ID()">发布问卷</v-btn>
+
   </div>
 </template>
 
@@ -33,8 +37,8 @@ import axios from 'axios';
 export default {
   data() {
     return {
-        input: "",
-        lianjie: "",
+      input: "",
+      lianjie: "",
     };
   },
   methods: {
@@ -52,17 +56,17 @@ export default {
         console.log(res);
         this.input += 'http://82.157.97.70/vj/';
         this.input += res.data.data;
-        this.lianjie = 'http://82.157.97.70/api/qrcode/getQRCode/?content='+this.input+'&logoUrl=http://82.157.97.70/api/getIcon';
+        this.lianjie = 'http://82.157.97.70/api/qrcode/getQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
         //alert(this.input);
       });
-      
+
     },
   },
 };
 </script>
 
 
-<style>
+<style scoped>
 .v-btn__content {
   color: #1ea0fa;
 }

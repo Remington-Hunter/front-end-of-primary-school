@@ -29,9 +29,15 @@ const routes = [{
     },
     {
         path: '/normalquestion',
-        name: 'Normalquestion',
+        name: 'NormalQuestion',
         component: () =>
             import ('../views/questionnaire/NormalQuestion')
+    },
+    {
+        path: '/votequestion',
+        name: 'VoteQuestion',
+        component: () =>
+            import ('../views/questionnaire/VoteQuestion')
     },
     {
         path: '/mine',
@@ -53,19 +59,26 @@ const routes = [{
         path: '/sendQuestionnaire',
         name: 'SendQuestionnaire',
         component: () =>
-            import ('../views/sendQuestionnaire/SendQuestion.vue')
+            import ('../views/questionnaire/SendQuestion.vue')
     },
     {
         path: '/preview',
         name: 'Preview',
         component: () =>
             import ('../views/questionnaire/Preview.vue')
-            },{
+            },
+    {
         path: '/echarts',
         name: 'echarts',
         component: () =>
             import ('../components/Echarts.vue')
-    }
+    },
+    {
+        path: '/edit',
+        name: 'Edit',
+        component: () =>
+            import ('../views/questionnaire/Tabs.vue')
+    },
 ]
 
 

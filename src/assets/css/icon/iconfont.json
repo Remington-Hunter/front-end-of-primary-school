@@ -1,6 +1,6 @@
 {
-  "id": "2757462",
-  "name": "问卷",
+  "id": "2760721",
+  "name": "问卷项目",
   "font_family": "iconfont",
   "css_prefix_text": "icon-",
   "description": "",
@@ -13,11 +13,18 @@
       "unicode_decimal": 58934
     },
     {
-      "icon_id": "8783394",
+      "icon_id": "8159887",
+      "name": "问卷管理",
+      "font_class": "wenjuanguanli",
+      "unicode": "e643",
+      "unicode_decimal": 58947
+    },
+    {
+      "icon_id": "11372715",
       "name": "问卷",
-      "font_class": "dibudaohanglan-",
-      "unicode": "e630",
-      "unicode_decimal": 58928
+      "font_class": "wenjuan1",
+      "unicode": "e8bb",
+      "unicode_decimal": 59579
     },
     {
       "icon_id": "17189880",
@@ -25,13 +32,6 @@
       "font_class": "wenjuantoupiao",
       "unicode": "e69a",
       "unicode_decimal": 59034
-    },
-    {
-      "icon_id": "17456850",
-      "name": "问卷调查",
-      "font_class": "wenjuantiaocha",
-      "unicode": "e672",
-      "unicode_decimal": 58994
     }
   ]
 }
