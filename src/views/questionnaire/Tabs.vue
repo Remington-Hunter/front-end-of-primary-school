@@ -29,7 +29,9 @@
           label="统计"
           name="third"
           :disabled="state"
-        >待完成</el-tab-pane>
+        >
+        <CrossAnalysis></CrossAnalysis>
+        </el-tab-pane>
       </el-tabs>
       <el-row style='position: absolute;right:100px;top:12vh;'>
         <el-button
@@ -78,10 +80,12 @@ import Normal from "./NormalQuestion"
 import Send from "./Send.vue"
 import axios from 'axios';
 import htmlToPdf from "@/assets/js/htmlToPdf";
+import CrossAnalysis from '@/views/CrossAnalysis'
 export default {
   components: {
     Normal,
-    Send
+    Send,
+    CrossAnalysis
   },
   data() {
     return {

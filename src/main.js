@@ -8,8 +8,8 @@ import 'element-ui/lib/theme-chalk/index.css'
 import './assets/css/icon/iconfont.css'
 import '@/assets/fonts/style.css'
 import htmlToPdf from '@/assets/js/htmlToPdf'
-import Blob from './excel/Blob'
-import Export2Excel from './excel/Export2Excel.js'
+// import Blob from './excel/Blob'
+// import Export2Excel from './excel/Export2Excel.js'
 const echarts = require('echarts');
 
 Vue.prototype.$echarts = echarts
