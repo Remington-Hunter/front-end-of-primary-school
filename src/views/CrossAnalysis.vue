@@ -21,28 +21,33 @@
       </el-button>
     </div>
     <div id="demo1">
-      <div v-for="(item, index) in series" :key="(item, index)">
+      <div v-for="(item, index) in data" :key="(item, index)">
         <div>题目{{ index + 1 }}</div>
-        <div style="width: 600px; height: 400px">
-          <drawBar :id="BarToString(index)"></drawBar>
+        <div v-if="data[index].question.type===2">
+          <Completion ></Completion>
         </div>
-        <el-button @click="goto(1)">
-          <span>折线图</span>
-        </el-button>
-        <el-button @click="goto(2)">
-          <span>饼图</span>
-        </el-button>
-        <el-button @click="goto(3)">
-          <span>柱状图</span>
-        </el-button>
-        <div style="width: 600px; height: 400px" v-if="id === 1">
-          <drawLine :id="LineToString(index)"></drawLine>
-        </div>
-        <div style="width: 600px; height: 400px" v-if="id === 2">
-          <drawPie :id="PieToString(index)"></drawPie>
-        </div>
-        <div style="width: 600px; height: 400px" v-if="id === 3">
-          <drawCol :id="ColToString(index)"></drawCol>
+        <div v-else>
+          <div style="width: 600px; height: 400px">
+            <drawBar :id="BarToString(index)" :series="bar[index]"></drawBar>
+          </div>
+          <el-button @click="goto(1)">
+            <span>折线图</span>
+          </el-button>
+          <el-button @click="goto(2)">
+            <span>饼图</span>
+          </el-button>
+          <el-button @click="goto(3)">
+            <span>柱状图</span>
+          </el-button>
+          <div style="width: 600px; height: 400px" v-if="id === 1">
+            <drawLine :id="LineToString(index)" :series="line[index]"></drawLine>
+          </div>
+          <div style="width: 600px; height: 400px" v-if="id === 2">
+            <drawPie :id="PieToString(index)" :series="pie[index]"></drawPie>
+          </div>
+          <div style="width: 600px; height: 400px" v-if="id === 3">
+            <drawCol :id="ColToString(index)" :series="col[index]"></drawCol>
+          </div>
         </div>
       </div>
     </div>
@@ -55,6 +60,7 @@ import drawPie from "../components/DrawPie.vue";
 import drawBar from "../components/DrawBar.vue";
 import drawCol from "../components/DrawCol.vue";
 import htmlToPdf from "@/assets/js/htmlToPdf";
+import Completion from "../components/Completion";
 // import Export2Excel from '@/excel/Export2Excel'
 // import Blob from '@/excel/Blob'
 export default {
@@ -63,6 +69,11 @@ export default {
       series: ["1", "2", "3"],
       msg1: "饼状图",
       id: 1,
+      bar:[],
+      data:[],
+      pie:[],
+      col:[],
+      line:[],
       historyList:[]
     };
   },
@@ -71,12 +82,61 @@ export default {
     drawPie,
     drawBar,
     drawCol,
+    Completion,
   },
 //   created() {},
   mounted() {
-    // this.getseries();
+    this.getseries();
   },
   methods: {
+    getBarData(data){
+      // console.log(data);
+      for(var i=0;i<data.length;i++){
+        // console.log(111)
+        // console.log(data[i].question.type)
+        if(data[i].question.type===2){
+          // console.log(11)
+          var data_i=data[i].answerList;
+          var item=[];
+          for(let j=0;j<data_i.length;j++){
+            // var s=[data_i[j].answerNum,data_i[j].content]
+            item.push(data_i[j]);
+          }
+          // console.log(item)
+          this.bar.push(item)
+        }
+        else{
+          var data_i=data[i].optionList;
+          var item=[];
+          for(let j=0;j<data_i.length;j++){
+            var s=[data_i[j].answerNum,data_i[j].content]
+            item.push(s);
+          }
+          this.bar.push(item)
+          // console.log(item)
+          // console.log(22)
+        }
+      }
+      console.log(31231)
+      console.log(this.bar)
+    },
+    getseries(){
+      var Data=new FormData();
+      Data.append('id',72);
+      axios({
+        url:'http://82.157.97.70/api/answer/get_result',
+        method:'post',
+        data:Data
+      }).then((res)=>{
+        var data=res.data.data;
+        console.log(res);
+        this.data=data;
+        this.getBarData(data);
+        this.getColData(data);
+        this.getPieData(data);
+        this.getLineData(data);
+      })
+    },
       exportData() {
 		this.excelData = this.historyList;  //将你要导出的数组数据（historyList）赋值给excelDate
 		this.export2Excel(); //调用export2Excel函数，填写表头（clomns里的type）和对应字段(historyList里的属性名)
@@ -143,6 +203,78 @@ export default {
     },
     goBack(){
         this.$router.go(-1)
+    },
+    getColData(data){
+      for(var i=0;i<data.length;i++){
+        if(data[i].question.type==2){
+          var data_i=data[i].answerList;
+          var item=[];
+          for(let j=0;j<data_i.length;j++){
+            // var s=[data_i[j].answerNum,data_i[j].content]
+            item.push(data_i[j]);
+          }
+          this.col.push(item)
+        }
+        else{
+          var data_i=data[i].optionList;
+          var item=[];
+          for(let j=0;j<data_i.length;j++){
+            var s={'选项':data_i[j].content,'数量':data_i[j].answerNum}
+            item.push(s);
+          }
+          this.col.push(item)
+        }
+      }
+      // console.log("col")
+      // console.log(this.col);
+    },
+    getPieData(data){
+      for(var i=0;i<data.length;i++){
+        if(data[i].question.type==2){
+          var data_i=data[i].answerList;
+          var item=[];
+          for(let j=0;j<data_i.length;j++){
+            // var s=[data_i[j].answerNum,data_i[j].content]
+            item.push(data_i[j]);
+          }
+          this.pie.push(item)
+        }
+        else{
+          var data_i=data[i].optionList;
+          var item=[];
+          for(let j=0;j<data_i.length;j++){
+            var s={value:data_i[j].answerNum,name:data_i[j].content}
+            item.push(s);
+          }
+          this.pie.push(item)
+        }
+      }
+    },
+    getLineData(data){
+      for(var i=0;i<data.length;i++){
+
+        if(data[i].question.type==2){
+          var data_i=data[i].answerList;
+          var item=[];
+          this.line.push(item)
+        }
+        else{
+          var data_i=data[i].optionList;
+          var item=[];
+          var col1=[];
+          var col2=[];
+          for(let j=0;j<data_i.length;j++){
+            // var s={value:data_i[j].answerNum,name:data_i[j].content}
+            col1.push(data_i[j].content);
+            col2.push(data_i[j].answerNum)
+          }
+          item.push(col1);
+          item.push(col2);
+          this.line.push(item)
+        }
+      }
+      console.log("line")
+      console.log(this.line);
     }
   },
 };

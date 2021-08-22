@@ -1,224 +1,284 @@
 <template>
-  <div class="mod-config">
-    <div style="padding: 10px;">
-      <el-button type="primary" @click="handleDown">PDF下载-离职申请表</el-button>
-      <el-button type="primary" @click="handleWindowPrint( '#demo', '离职申请表' )">浏览器方式下载</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-back" @click="goBack">返回
+  <div class="analysis">
+      <el-button type="primary" @click="exportData" style="display:block; margin:5px auto;">导出Excel表格</el-button>
+
+    <span
+      >问卷标题
+      <span style="font-size: small">ID:{{ "问卷ID" }}</span>
+    </span>
+    <div style="padding: 10px">
+      <el-button type="primary" @click="handleDown"
+        >PDF下载-离职申请表</el-button
+      >
+      <!-- <el-button type="primary" @click="handleWindowPrint( '#demo', '离职申请表' )">浏览器方式下载</el-button> -->
+      <el-button
+        class="filter-item"
+        style="margin-left: 10px"
+        type="primary"
+        icon="el-icon-back"
+        @click="goBack"
+        >返回
       </el-button>
     </div>
-    <div style="width: 100%">
-    <div id="demo">
-      gwrgewggge
-      <v-carousel
-    cycle
-    height="400"
-    :interval="2500"
-    hide-delimiter-background
-    :show-arrows="false"
-    id="building"
-  >
-    <v-carousel-item
-      v-for="(slide, i) in slides"
-      :key="i"
-    >
-      <v-sheet
-        height="100%"
-        id="a"
-      >
-        <v-row
-          class="fill-height"
-          align="center"
-          justify="center"
-        >
-          <div class="text-h2">
-            {{ slide }} Slide
+    <div id="demo1">
+      <div v-for="(item, index) in data" :key="(item, index)">
+        <div>题目{{ index + 1 }}</div>
+        <div v-if="data[index].question.type===2">
+          <Completion ></Completion>
+        </div>
+        <div v-else>
+          <div style="width: 600px; height: 400px">
+            <drawBar :id="BarToString(index)" :series="bar[index]"></drawBar>
           </div>
-        </v-row>
-      </v-sheet>
-    </v-carousel-item>
-  </v-carousel>
-  <v-carousel
-    cycle
-    height="400"
-    :interval="2500"
-    hide-delimiter-background
-    :show-arrows="false"
-    id="building"
-  >
-    <v-carousel-item
-      v-for="(slide, i) in slides"
-      :key="i"
-    >
-      <v-sheet
-        height="100%"
-        id="a"
-      >
-        <v-row
-          class="fill-height"
-          align="center"
-          justify="center"
-        >
-          <div class="text-h2">
-            {{ slide }} Slide
+          <el-button @click="goto(1)">
+            <span>折线图</span>
+          </el-button>
+          <el-button @click="goto(2)">
+            <span>饼图</span>
+          </el-button>
+          <el-button @click="goto(3)">
+            <span>柱状图</span>
+          </el-button>
+          <div style="width: 600px; height: 400px" v-if="id === 1">
+            <drawLine :id="LineToString(index)"></drawLine>
           </div>
-        </v-row>
-      </v-sheet>
-    </v-carousel-item>
-  </v-carousel>
-  <v-carousel
-    cycle
-    height="400"
-    :interval="2500"
-    hide-delimiter-background
-    :show-arrows="false"
-    id="building"
-  >
-    <v-carousel-item
-      v-for="(slide, i) in slides"
-      :key="i"
-    >
-      <v-sheet
-        height="100%"
-        id="a"
-      >
-        <v-row
-          class="fill-height"
-          align="center"
-          justify="center"
-        >
-          <div class="text-h2">
-            {{ slide }} Slide
+          <div style="width: 600px; height: 400px" v-if="id === 2">
+            <drawPie :id="PieToString(index)"></drawPie>
           </div>
-        </v-row>
-      </v-sheet>
-    </v-carousel-item>
-  </v-carousel>
-    </div>
+          <div style="width: 600px; height: 400px" v-if="id === 3">
+            <drawCol :id="ColToString(index)" :series="col[index]"></drawCol>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
-
 <script>
-  import htmlToPdf from '../assets/js/htmlToPdf'
-  const libraryOption = [{id: 0, name: '家庭原因'}, {id: 1, name: '个人发展'}, {id: 2, name: '薪资福利'},
-    {id: 3, name: '工作环境'}, {id: 4, name: '工作时间'}, {id: 5, name: '身体健康'}]
-  const calendarTypeKeyValue = libraryOption.reduce((acc, cur) => {
-    acc[cur.id] = cur.name
-    return acc
-  }, {})
-  export default {
-    name: 'PdfDemo',
-    data () {
-      // 和导出pdf没关系
-      return {
-      slides: [
-        'First',
-        'Second',
-        'Third',
-
-      ],
-    }
-    },
-    filters: {
-      typeFilter (type) {
-        return calendarTypeKeyValue[type]
-      }
-    },
-    created () {
-      this.getList()
-    },
-    methods: {
-      getList () {
-        this.leaveData = this.$route.query.obj
-        if (!this.leaveData.dimId) {
-          this.$message.error('id不能为空，请从下下载！')
-          this.goBack()
-        } else {
-          this.$http({
-            url: this.$http.adornUrl(`/sys/sysapprovelog/list`),
-            method: 'post',
-            data: {
-              approve_type: 6,
-              approve_id: this.leaveData.dimId
-            }
-          }).then(({data}) => {
-            console.log(data)
-            if (data && data.code === 0) {
-              this.approvalLogs = data.sysApproveLogs
-              console.log('------------2------------', this.approvalLogs)
-            }
-          })
+import axios from "axios";
+import drawLine from "../components/DrawLine.vue";
+import drawPie from "../components/DrawPie.vue";
+import drawBar from "../components/DrawBar.vue";
+import drawCol from "../components/DrawCol.vue";
+import htmlToPdf from "@/assets/js/htmlToPdf";
+import Completion from "../components/Completion";
+// import Export2Excel from '@/excel/Export2Excel'
+// import Blob from '@/excel/Blob'
+export default {
+  data() {
+    return {
+      series: ["1", "2", "3"],
+      msg1: "饼状图",
+      id: 1,
+      bar:[],
+      data:[],
+      pie:[],
+      col:[],
+      line:[],
+      historyList:[]
+    };
+  },
+  components: {
+    drawLine,
+    drawPie,
+    drawBar,
+    drawCol,
+    Completion,
+  },
+//   created() {},
+  mounted() {
+    this.getseries();
+  },
+  methods: {
+    getBarData(data){
+      // console.log(data);
+      for(var i=0;i<data.length;i++){
+        // console.log(111)
+        // console.log(data[i].question.type)
+        if(data[i].question.type===2){
+          // console.log(11)
+          var data_i=data[i].answerList;
+          var item=[];
+          for(let j=0;j<data_i.length;j++){
+            // var s=[data_i[j].answerNum,data_i[j].content]
+            item.push(data_i[j]);
+          }
+          // console.log(item)
+          this.bar.push(item)
         }
-        console.log('------------1------------', this.leaveData)
-      },
-      handleWindowPrint (ele, fileName) {
-        // 留存原来的 html
-        // let bdHtml = window.document.body.innerHTML;
-        // let bdHtml = document.querySelector('#app').innerHTML;
-
-        // 要打印的 内容 html
-        // document.body.innerHTML =  document.querySelector('#demo').innerHTML;
-        // document.body.innerHTML =  document.querySelector('#demo').outerHTML;
-        // document.querySelector('#app').innerHTML =  document.querySelector('#demo').outerHTML;
-        // document.querySelector('#main').innerHTML =  document.querySelector('#demo').outerHTML;
-        console.log(666)
-      // 去除页面不必要的 head 标签内  内容， 避免影响打印页 ， title 为保存为 pdf 的文件时的 文件名
-        document.head.innerHTML = '<meta charset="utf-8">\n' +
-          ' <title> ' + fileName + '</title>\n' +
-          ' <meta name="format-detection" content="telephone=no">\n' +
-          ' <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">\n' +
-          ' <meta name="viewport" content="width=device-width,initial-scale=1.0">\n' +
-          ' <link rel="stylesheet" href="./static/css/contract.css"/>'  // 生成pdf的外部css样式
-      // document.body.innerHTML =  document.querySelector('#demo').outerHTML;
-      // document.querySelector('#main').innerHTML =  document.querySelector('#demo').outerHTML;
-      // document.body.innerHTML =  document.querySelector('#demo').outerHTML;
-        document.body.innerHTML = document.querySelector(ele).outerHTML
-
-      // window.print();
-
-      // 转异步 等待dom元素渲染（样式）完毕在打印
-        setTimeout(() => {
-          // 打印
-          window.print()
-        // 刷新页面
-          window.location.reload()
-        }, 20)
-
-        // 重新设会当前页面
-        // window.document.body.innerHTML = bdHtml;
-        // document.querySelector('#app').innerHTML =  bdHtml;
-        // 刷新页面
-        // window.location.reload();
-      },
-      goBack () {
-        this.$router.go(-1)
-      },
-      handleDown () {
-        htmlToPdf.downloadPDF(document.querySelector('#demo'), '离职申请表')
+        else{
+          var data_i=data[i].optionList;
+          var item=[];
+          for(let j=0;j<data_i.length;j++){
+            var s=[data_i[j].answerNum,data_i[j].content]
+            item.push(s);
+          }
+          this.bar.push(item)
+          // console.log(item)
+          // console.log(22)
+        }
       }
+      console.log(31231)
+      console.log(this.bar)
+    },
+    getseries(){
+      var Data=new FormData();
+      Data.append('id',72);
+      axios({
+        url:'http://82.157.97.70/api/answer/get_result',
+        method:'post',
+        data:Data
+      }).then((res)=>{
+        var data=res.data.data;
+        console.log(res);
+        this.data=data;
+        this.getBarData(data);
+        this.getColData(data);
+        this.getPieData(data);
+        this.getLineData(data);
+      })
+    },
+      exportData() {
+		this.excelData = this.historyList;  //将你要导出的数组数据（historyList）赋值给excelDate
+		this.export2Excel(); //调用export2Excel函数，填写表头（clomns里的type）和对应字段(historyList里的属性名)
+	},
+	//表格数据写入excel
+    export2Excel() {
+      var that = this;
+      require.ensure([], () => {
+        const {
+          export_json_to_excel
+        } = require("../assets/excel/Export2Excel");  
+        //这里使用绝对路径( @表示src文件夹 )，使用@/+存放export2Excel的路径【也可以写成相对于你当前"xxx.vue"文件的相对路径，例如我的页面放在assets文件夹同级下的views文件夹下的“home.vue”里，那这里路径也可以写成"../assets/excel/Export2Excel"】
+        const tHeader = ["报名日期", "姓名", "班级", "学号","性别","邮箱","联系方式","所选导师"]; // 导出的excel表头名信息
+        const filterVal = [
+          "date",
+          "name",
+          "class",
+          "studentId",
+          "sex",
+          "email",
+          "telephone",
+          "teacher"
+        ]; // 导出的excel表头字段名，需要导出表格字段名
+        const list = that.excelData;
+        const data = that.formatJson(filterVal, list);
+
+        export_json_to_excel(tHeader, data, "学生报名信息汇总"); // 导出的表格名称，根据需要自己命名
+      });
+    },
+    //格式转换，直接复制即可,不需要修改什么
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => v[j]));
+    },
+//     exportExcel() {
+//       require.ensure([], () => {
+// 　　　　　　　　const { export_json_to_excel } = require('../excel/Export2Excel');
+// 　　　　　　　　const tHeader = ['序号', 'IMSI', 'MSISDN', '证件号码', '姓名'];
+// 　　　　　　　　const filterVal = ['ID', 'imsi', 'msisdn', 'address', 'name'];
+// 　　　　　　　　const list = this.tableData;
+// 　　　　　　　　const data = this.formatJson(filterVal, list);
+// 　　　　　　　　export_json_to_excel(tHeader, data, '列表excel');
+// 　　　　　　})
+//     },
+//     formatJson(filterVal, jsonData) {
+// 　　　　　　return jsonData.map(v => filterVal.map(j => v[j]))
+// 　　　　},
+    goto(id) {
+      this.id = id;
+    },
+    PieToString(val) {
+      return "pie" + val;
+    },
+    BarToString(val) {
+      return "bar" + val;
+    },
+    ColToString(val) {
+      return "col" + val;
+    },
+    LineToString(val) {
+      return "line" + val;
+    },
+    handleDown() {
+      htmlToPdf.downloadPDF(document.querySelector("#demo1"), "数据分析");
+    },
+    goBack(){
+        this.$router.go(-1)
+    },
+    getColData(data){
+      for(var i=0;i<data.length;i++){
+        if(data[i].question.type==2){
+          var data_i=data[i].answerList;
+          var item=[];
+          for(let j=0;j<data_i.length;j++){
+            // var s=[data_i[j].answerNum,data_i[j].content]
+            item.push(data_i[j]);
+          }
+          this.col.push(item)
+        }
+        else{
+          var data_i=data[i].optionList;
+          var item=[];
+          for(let j=0;j<data_i.length;j++){
+            var s={'选项':data_i[j].content,'数量':data_i[j].answerNum}
+            item.push(s);
+          }
+          this.col.push(item)
+        }
+      }
+      // console.log("col")
+      // console.log(this.col);
+    },
+    getPieData(data){
+      for(var i=0;i<data.length;i++){
+        if(data[i].question.type==2){
+          var data_i=data[i].answerList;
+          var item=[];
+          for(let j=0;j<data_i.length;j++){
+            // var s=[data_i[j].answerNum,data_i[j].content]
+            item.push(data_i[j]);
+          }
+          this.pie.push(item)
+        }
+        else{
+          var data_i=data[i].optionList;
+          var item=[];
+          for(let j=0;j<data_i.length;j++){
+            var s={value:data_i[j].answerNum,name:data_i[j].content}
+            item.push(s);
+          }
+          this.pie.push(item)
+        }
+      }
+    },
+    getLineData(data){
+      for(var i=0;i<data.length;i++){
+
+        if(data[i].question.type==2){
+          var data_i=data[i].answerList;
+          var item=[];
+          this.line.push(item)
+        }
+        else{
+          var data_i=data[i].optionList;
+          var item=[];
+          var col1=[];
+          var col2=[];
+          for(let j=0;j<data_i.length;j++){
+            // var s={value:data_i[j].answerNum,name:data_i[j].content}
+            col1.push(data_i[j].content);
+            col2.push(data_i[j].answerNum)
+            item.push(col1);
+            item.push(col2);
+          }
+          this.line.push(item)
+        }
+      }
+      console.log("line")
+      console.log(this.line);
     }
-  }
+  },
+};
 </script>
 
-<style scoped>
-  #demo {
-    background-color: #fff;
-    width: 1000px;
-    /* height: 400px; */
-    margin: auto;
-    padding: 40px;
-    box-sizing: border-box;
-  }
-
-  .table_style td,th {
-    padding: 10px;
-    font-size: 15px;
-  }
-
-  .table_style {
-    border-collapse: collapse;
-    width: 100%;
-    text-align: center
-  }
+<style lang='scss' scoped>
 </style>
-
