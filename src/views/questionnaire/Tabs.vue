@@ -22,7 +22,9 @@
           @click="sendQues"
         >
           <send 
-          :ma="ma"/>
+          :ma="ma"
+          :input="input"
+          :lianjie="lianjie"/>
         </el-tab-pane>
 
         <el-tab-pane
@@ -86,8 +88,6 @@ export default {
   data() {
     return {
       activeName: 'first',
-      input: "https://wj.qq.com/s2/8918766/dd18/",
-      lianjie: "",
       state:true,
       current_questionnaire:{},
       is_creating:false,
@@ -95,7 +95,9 @@ export default {
       preview_list:[],
       title:'',
       description:'',
-      ma:''
+      ma:'',
+      input:'',
+      lianjie:''
     };
   },
   methods: {
@@ -124,6 +126,9 @@ export default {
         },
         data: JSON.stringify(formData),
       }).then((res) => {
+        this.input = 'http://82.157.97.70/vj/';
+        this.input += res.data.data;
+        this.lianjie = 'http://82.157.97.70/api/qrcode/getQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
         this.ma=res.data.data
       });
     },
@@ -163,7 +168,7 @@ export default {
       console.log(tab, event);
       if (tab.name == 'second') {
         // 触发事件
-        this.send_ID();
+        // this.send_ID();
         this.sendQues();
       }
     },
@@ -179,7 +184,7 @@ export default {
         },
       }).then((res) => {
         console.log(res);
-        this.input += 'http://82.157.97.70/vj/';
+        this.input = 'http://82.157.97.70/vj/';
         this.input += res.data.data;
         this.lianjie = 'http://82.157.97.70/api/qrcode/getQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
         //alert(this.input);

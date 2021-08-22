@@ -79,6 +79,12 @@ const routes = [{
         component: () =>
             import ('../views/questionnaire/Tabs.vue')
     },
+    {
+        path: '/vj/:ma',
+        name: 'CollectQuestion',
+        component: () =>
+            import ('../views/CollectQuestion.vue')
+    }
 ]
 
 
