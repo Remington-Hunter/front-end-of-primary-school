@@ -1,37 +1,42 @@
 <template>
   <div class="analysis">
-    <div style="width: 600px;height:400px;">
-        <drawLine
-        :id='"line"+"111"'
-        ></drawLine>
-    </div >
-        <div style="width: 600px;height:400px;">
-            <drawPie
-        :id='"pie"+"111"'
-        ></drawPie>
-        </div>
+    <div style="width: 600px; height: 400px">
+      <drawLine :id="'line' + '111'"></drawLine>
+    </div>
+    <div style="width: 600px; height: 400px">
+      <drawPie :id="'pie' + '111'"></drawPie>
+    </div>
+    <div style="width: 600px; height: 400px">
+      <drawBar :id="'bar' + '111'"></drawBar>
+    </div>
+    <div style="width: 600px; height: 400px">
+      <drawCol :id="'Col' + '111'"></drawCol>
+    </div>
   </div>
 </template>
-
 <script>
 import axios from "axios";
-import drawLine from "../components/DrawLine.vue"
-import drawPie from "../components/DrawPie.vue"
+import drawLine from "../components/DrawLine.vue";
+import drawPie from "../components/DrawPie.vue";
+import drawBar from "../components/DrawBar.vue";
+import drawCol from "../components/DrawCol.vue";
 export default {
   data() {
     return {
-      series: ['1','2'],
+      series: ["1", "2"],
       msg1: "饼状图",
-      id:'',
+      id: "",
     };
   },
   components: {
-      drawLine,
-      drawPie,
+    drawLine,
+    drawPie,
+    drawBar,
+    drawCol,
   },
   created: {},
   mounted() {
-    this.getseries();
+    // this.getseries();
     this.drawfunc1();
     this.drawfunc2();
     this.drawfunc3();
@@ -39,16 +44,15 @@ export default {
   },
   methods: {
     getseries() {
-        var Data=new FormData();
-        Data.append('id',this.id);
-        axios({
-            url:'http://82.157.97.70/api/questionnaire/',
-            method:'post',
-            data:Data,
-        }).then((res)=>{
-            console.log(res);
-
-        })
+      var Data = new FormData();
+      Data.append("id", this.id);
+      axios({
+        url: "http://82.157.97.70/api/questionnaire/",
+        method: "post",
+        data: Data,
+      }).then((res) => {
+        console.log(res);
+      });
     },
     drawfunc1() {
       let myChart = this.$echarts.init(document.getElementById("func1"));
@@ -158,7 +162,6 @@ export default {
             type: "line",
           },
         ],
-
       };
       myChart.setOption(option);
     },
