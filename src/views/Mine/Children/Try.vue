@@ -85,7 +85,7 @@ export default {
     return {
       // sortBy: "date",
       // sortDesc: false,
-      // search: "",
+      search: "",
       // headers: [
       //   {
       //     text: "问卷名称",
@@ -122,6 +122,10 @@ export default {
         // },
       ],
     };
+  },
+  mounted() {
+    console.log(111)
+    this.getItem();
   },
   methods: {
     toggleOrder() {
@@ -260,10 +264,7 @@ export default {
     formatter(row, column) {
       return row.address;
     },
-  },
-  mounted() {
-    this.getItem();
-  },
+  }
 };
 </script>
 
