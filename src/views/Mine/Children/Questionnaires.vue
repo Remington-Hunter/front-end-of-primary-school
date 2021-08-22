@@ -20,10 +20,10 @@
       class="elevation-1"
     >
       <template v-slot:[`item.actions`]="{ item }">
-        <v-icon small class="mr-2" @click="copyItem(item)">
+        <v-icon small class="mr-2" @click="copyItem(item.id)">
           mdi-content-copy
         </v-icon>
-        <v-icon small @click="deleteItem(item)"> mdi-delete-outline </v-icon>
+        <v-icon small @click="deleteItem(item.id)"> mdi-delete-outline </v-icon>
       </template>
     </v-data-table>
     <div class="text-center pt-2">
@@ -60,24 +60,24 @@ export default {
         { text: "更多功能" },
       ],
       desserts: [
-        {
-          name: "问卷1",
-          state: 0,
-          id: 123456,
-          num: 2,
-          date: "2020 - 8 - 1",
-          // date1:'2020 - 8 - 2',
-          date2: "2020 - 8 - 3",
-        },
-        {
-          name: "问卷2",
-          state: 1,
-          id: 234567,
-          num: 24,
-          date: "2021 - 8 - 1",
-          // date1:'2020 - 8 - 2',
-          date2: "2020 - 8 - 4",
-        },
+        // {
+        //   name: "问卷1",
+        //   state: 0,
+        //   id: 123456,
+        //   num: 2,
+        //   date: "2020 - 8 - 1",
+        //   // date1:'2020 - 8 - 2',
+        //   date2: "2020 - 8 - 3",
+        // },
+        // {
+        //   name: "问卷2",
+        //   state: 1,
+        //   id: 234567,
+        //   num: 24,
+        //   date: "2021 - 8 - 1",
+        //   // date1:'2020 - 8 - 2',
+        //   date2: "2020 - 8 - 4",
+        // },
       ],
     };
   },
@@ -91,29 +91,27 @@ export default {
       this.sortBy = this.headers[index].value;
     },
     deleteItem(item) {
-      const index = this.desserts.indexOf(item);
+      const index = item;
       console.log(index);
-      confirm("Are you sure you want to delete this item?") &&
-        this.desserts.splice(index, 1);
-      var Data = FormData();
-      // Data.append('id',index)
+      // confirm("Are you sure you want to delete this item?")
+      var Data = new FormData();
+      Data.append('id',index)
+      console.log(111)
       axios({
-        url: "http://82.157.97.70/api/questionnaire/",
+        url: "http://82.157.97.70/api/questionnaire/throw_to_trashcan",
         method: "post",
-        data: {
-          id: index,
-        },
+        data: Data,
         headers: {
           Authorization: window.localStorage.getItem("authorization"),
           "Content-Type": "application/json",
         },
       }).then((res) => {
-        //  console.log(res);
+        console.log(res);
         this.getItem();
       });
     },
     copyItem(item) {
-      const index = this.desserts.indexOf(item);
+      const index = item;
       // var name1=item.name+'副本';
       // var state1=item.state;
       // var num1=item.num;
@@ -126,6 +124,7 @@ export default {
         },
         headers: {
           Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
         },
       }).then((res) => {
         console.log(res);
@@ -149,7 +148,7 @@ export default {
         this.desserts = [];
         for (let i = 0; i < res.data.data.length; i++) {
           var state = "";
-          if (res.data.data[i].delete) {
+          if (res.data.data[i].deleted) {
             continue;
           }
           if (res.data.data[i].preparing) {
@@ -199,6 +198,9 @@ export default {
           ) {
             state = "未开始";
           }
+          if(res.data.data[i].stopping){
+            state="已停用"
+          }
           var data2 = res.data.data[i].endTime;
           if (data2 != null) {
             data2 = data2.replace("T", " ");
@@ -211,7 +213,7 @@ export default {
             date: res.data.data[i].createTime.replace("T", " "),
             date2: data2,
           };
-          // console.log(data)
+          console.log(data)
           this.desserts.push(data);
         }
         // 没写全之后再补
