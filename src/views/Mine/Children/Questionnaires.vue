@@ -20,10 +20,10 @@
       class="elevation-1"
     >
       <template v-slot:[`item.actions`]="{ item }">
-        <v-icon size=14px class="mr-2" @click="copyItem(item.id)">
+        <v-icon size=14px class="mr-2" @click="copyItem(item.id)" title="复制">
           mdi-content-copy
         </v-icon>
-        <v-icon small @click="deleteItem(item.id)"> mdi-trash-can-outline </v-icon>
+        <v-icon small @click="deleteItem(item.id)" title="删除"> mdi-trash-can-outline </v-icon>
       </template>
     </v-data-table>
     <div class="text-center pt-2">

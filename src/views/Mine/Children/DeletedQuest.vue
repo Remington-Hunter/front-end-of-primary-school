@@ -21,8 +21,8 @@
         class="elevation-1"
       >
         <template v-slot:[`item.actions`]="{ item }">
-          <v-icon small @click="deleteItem(item.id)">
-            mdi-delete-outline
+          <v-icon small @click="deleteItem(item.id)" title="删除">
+            mdi-trash-can-outline
           </v-icon>
           <v-btn text color="primary" @click="recoveryItem(item.id)">
             <v-icon small> mdi-restore </v-icon>
@@ -211,7 +211,7 @@ export default {
         .then(() => {
           this.$message({
             type: "success",
-            message: "删除成功!",
+            message: "恢复成功!",
           });
           const index = item;
           // this.desserts.splice(index, 1)

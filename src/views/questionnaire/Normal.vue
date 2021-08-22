@@ -154,7 +154,7 @@ export default {
         item.comment = x.instruction;
         // item.selection_list = x.selection_list;
         item.answer = "";
-        item.required = x.must_write_select === "是" ? 1 : 0;
+        item.required = x.must_write_select? 1 : 0;
         item.point = 0;
         item.type = this.problem_type_number(x.problem_type);
         let y = [];
@@ -358,7 +358,7 @@ export default {
           return 2;
           break;
         case "评分题":
-          return 8;
+          return 3;
           break;
       }
     },

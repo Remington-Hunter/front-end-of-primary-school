@@ -123,15 +123,18 @@ export default {
     },
     sendQues() {
       if (this.is_creating === true || this.total_problem === 1) { return }
-      var formData = this.current_questionnaire
+      // var formData = this.current_questionnaire
+      var formData = new FormData();
+      this.saveQues();
+      formData.append("questionnaireId",this.current_questionnaire.id)
       axios({
         method: "post",
-        url: "http://82.157.97.70/api/questionnaire/publish_questionnaire",
+        url: "http://82.157.97.70/api/questionnaire/throw_questionnaire",
         headers: {
           Authorization: window.localStorage.getItem("authorization"),
           "Content-Type": "application/json",
         },
-        data: JSON.stringify(formData),
+        data: formData,
       }).then((res) => {
         this.input = 'http://82.157.97.70/vj/';
         this.input += res.data.data;
@@ -154,6 +157,7 @@ export default {
         data: JSON.stringify(formData),
       }).then((res) => {
         console.log(res);
+        this.current_questionnaire.id = res.data.data;
       });
     },
     getCurrentQuestionnaire(obj) {
