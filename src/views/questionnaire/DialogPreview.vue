@@ -8,28 +8,29 @@
       <!-- 题目列表 -->
       <div
         class="question-list"
-        v-for="(question, index) in questionList"
+        v-for="(question, index) in list"
         :key="index"
       >
         <!-- 题目标题 -->
         <div class="question-head ">
           <div class="question-title">
             <span class="question-seq"><b>{{ index + 1 }}</b></span>
-            <span class="text">{{ question.text }}</span>
+            <span class="text">{{ question.name }}</span>
             <span
-              v-if="question.required"
+              v-if="question.must_write_select"
               class="question-required"
             >*</span>
-            <el-tag v-if="question.type === 1">多选</el-tag>
+            <el-tag v-if="question.problem_type === '多选题'">多选</el-tag>
           </div>
+          <div class="q-instruction">{{ question.instruction }}</div>
         </div>
 
         <div class="question-body ">
           <!-- 单选题 -->
-          <div v-if="question.type === 0">
+          <div v-if="question.problem_type === '单选题'">
             <el-radio-group v-model="question.radio">
               <el-radio
-                v-for="(item, index) in question.selectionList"
+                v-for="(item, index) in question.selection_list"
                 :key="index"
                 :label="index"
               >
@@ -37,17 +38,17 @@
             </el-radio-group>
           </div>
           <!-- 多选题 -->
-          <div v-else-if="question.type === 1">
+          <div v-else-if="question.problem_type === '多选题'">
             <el-checkbox-group v-model="question.checkList">
               <el-checkbox
-                v-for="(item, index) in question.selectionList"
+                v-for="(item, index) in question.selection_list"
                 :key="index"
                 :label="index"
               >{{ item }}</el-checkbox>
             </el-checkbox-group>
           </div>
           <!-- 评分题 -->
-          <div v-else-if="question.type === 3">
+          <div v-else-if="question.problem_type === '评分题'">
             <el-rate
               v-model="question.rating"
               :icon-classes="iconClasses"
@@ -56,7 +57,7 @@
             ></el-rate>
           </div>
           <!-- 填空题 -->
-          <div v-else-if="question.type === 2">
+          <div v-else-if="question.problem_type === '填空题'">
             <el-input
               type="textarea"
               autosize
@@ -67,13 +68,6 @@
           </div>
         </div>
       </div>
-
-      <div class="page-control">
-        <!-- <el-button
-          type="primary"
-          id="btn"
-        >下一页</el-button> -->
-      </div>
     </div>
   </div>
 </template>
@@ -82,9 +76,6 @@
 export default {
   data() {
     return {
-      headerTitle: "社交网站满意度问卷",
-      subtitle:
-        "为了给您提供更好的服务，希望您能抽出几分钟时间，将您的感受和建议告诉我们，我们非常重视每位用户的宝贵意见，期待您的参与！现在我们就马上开始吧！",
       questionList: [
         // {
         //   type: 0, //问题种类：单选
@@ -110,57 +101,27 @@ export default {
       iconClasses: ['icon-rate-face-1', 'icon-rate-face-2', 'icon-rate-face-3'],
     };
   },
-  methods: {
-    problem_type_number(str) {
-      switch (str) {
-        case "单选题":
-          return 0;
-          break;
-        case "多选题":
-          return 1;
-          break;
-        case "填空题":
-          return 2;
-          break;
-        case "评分题":
-          return 3;
-          break;
-      }
-    },
-  },
-  created() {
-    let list = JSON.parse(this.$route.query.list);
-    let title = this.$route.query.title;
-    let description = this.$route.query.description;
-    this.headerTitle = title
-    this.subtitle = description
-    console.log(list.length);
-    console.log(list[0]);
-    for (var i = 0; i < list.length; i++) {
-      let x = {}
-      var y = list[i]
-      console.log(y);
-      x.type = this.problem_type_number(y.problem_type)
-      x.text = y.name
-      x.selectionList = y.selection_list
-      x.required = y.must_write_select === '是' ? true : false
-      x.radio = ""
-      x.checkList = [],
-        x.answer = "",
-        x.rating = 0,
-        this.questionList.push(x)
-    }
-  },
+  props: ['headerTitle', 'subtitle', 'list'],
 };
 </script>
 
 <style scoped>
 @import "../../assets/css/icon/preview.css";
 #prev {
-  width: 1000px;
+  width: 100%;
   min-height: 100%;
   margin: 0 auto;
   overflow: hidden;
   position: relative;
+}
+
+.s-main {
+  position: relative;
+  padding: 0px 80px;
+  margin: auto;
+  padding-bottom: 15px;
+  box-sizing: border-box;
+  background-color: rgb(255, 255, 255);
+  overflow: hidden;
 }
 </style>

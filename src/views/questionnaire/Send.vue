@@ -92,12 +92,10 @@
                   <path d="M59.2 26.5c-2.1-.4-4.2-.4-6.3.1-.1 0-.1.1-.2.1-1 .3-1.6 1.3-1.3 2.3.2.8 1 1.4 1.8 1.4.6-.1 1.1-.2 1.7-.4 3.7-.3 7.2 1.4 9.2 4.5 1 1.9 1.2 4.1.6 6.1-.2.6-.3 1.2-.4 1.8 0 .9.8 1.7 1.7 1.7h.1c.9 0 1.6-.1 1.8-1.6 2.9-10.1-3.8-14.9-8.7-16z"></path>
                 </svg></a></el-col>
           </el-row>
-
         </el-col>
       </el-row>
 
     </div>
-{{ma}}
   </div>
 </template>
 
@@ -107,15 +105,16 @@ export default {
     ma:{
       type:String,
       defalut:''
+    },
+    input:{
+      type:String,
+      defalut:'http://82.157.97.70/vj/'
+    },
+    lianjie:{
+      type:String,
+      defalut:''
     }
   },
-  data() {
-    return {
-      input: "https://wj.qq.com/s2/8918766/dd18/",
-      lianjie: "",
-    };
-  },
-
 };
 </script>
 
@@ -130,11 +129,11 @@ export default {
   max-width: 1240px;
 }
 .share-content {
-  padding: 30px 10px 30px 27px;
+  padding: 30px 10px 30px 60px;
 }
 .section-title {
   font-weight: bold;
-  margin: 15px 0;
+  margin: 0px 0 30px 0;
   text-align: left;
   width: 100%;
 }

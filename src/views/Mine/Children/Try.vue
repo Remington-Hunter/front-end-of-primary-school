@@ -1,35 +1,87 @@
 <template>
   <v-card>
     <v-card-title>
-      问卷列表
       <v-spacer></v-spacer>
       <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="Search"
-        single-line
-        hide-details
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          single-line
+          hide-details
       ></v-text-field>
     </v-card-title>
-    <v-data-table
-      :headers="headers"
-      :items="desserts"
-      :search="search"
-      :sort-by.sync="sortBy"
-      :sort-desc.sync="sortDesc"
-      class="elevation-1"
+    <el-table
+        :data="desserts"
+        :search="search"
+        style="width: 100%"
+        :default-sort = "{prop: 'date', order: 'descending'}"
     >
-      <template v-slot:[`item.actions`]="{ item }">
-        <v-icon size=14px class="mr-2" @click="copyItem(item.id)" title="复制">
-          mdi-content-copy
-        </v-icon>
-        <v-icon small @click="deleteItem(item.id)" title="删除"> mdi-trash-can-outline </v-icon>
-      </template>
-    </v-data-table>
+      <el-table-column
+          prop="name"
+          label="问卷名称"
+          sortable
+          width="180">
+      </el-table-column>
+      <el-table-column
+          prop="state"
+          label="状态"
+          width="180">
+      </el-table-column>
+      <el-table-column
+          prop="id"
+          label="ID"
+          sortable>
+      </el-table-column>
+      <el-table-column
+          prop="num"
+          label="回收量"
+          sortable>
+      </el-table-column>
+      <el-table-column
+          prop="date"
+          label="创建时间"
+          sortable>
+      </el-table-column>
+      <el-table-column
+          prop="date2"
+          label="截止时间"
+          sortable>
+      </el-table-column>
+      <el-table-column
+          prop="address"
+          label="操作">
+        <template slot-scope="scope">
+          <el-button
+              @click.native.prevent="deleteItem(desserts[scope.$index].id)"
+              type="text"
+              size="small">
+            移除
+          </el-button>
+          <el-button
+              @click.native.prevent="copyItem(desserts[scope.$index].id)"
+              type="text"
+              size="small">
+            复制
+          </el-button>
+        </template>
+      </el-table-column>
+      <el-table-column
+          prop="address"
+          label="更多功能">
+      </el-table-column>
+    </el-table>
+    <!--    <v-data-table-->
+    <!--        :headers="headers"-->
+    <!--        :items="desserts"-->
+    <!--        :search="search"-->
+    <!--        :sort-by.sync="sortBy"-->
+    <!--        :sort-desc.sync="sortDesc"-->
+    <!--        class="elevation-1"-->
+    <!--    >-->
+
     <div class="text-center pt-2">
       <v-btn color="primary" class="mr-2" @click="toggleOrder"
-        >切换排序顺序</v-btn
-      >
+      >切换排序顺序</v-btn>
       <v-btn color="primary" @click="nextSort">对下一列进行排序</v-btn>
     </div>
   </v-card>
@@ -41,24 +93,24 @@ import axios from "axios";
 export default {
   data() {
     return {
-      sortBy: "date",
-      sortDesc: false,
+      // sortBy: "date",
+      // sortDesc: false,
       search: "",
-      headers: [
-        {
-          text: "问卷名称",
-          align: "start",
-          value: "name",
-        },
-        { text: "状态", value: "state", sortable: false },
-        { text: "ID", value: "id" },
-        { text: "回收量", value: "num" },
-        { text: "创建时间", value: "date" },
-        // {text:'发布时间',value:'date1'},
-        { text: "截止时间", value: "date2" },
-        { text: "操作", value: "actions", sortable: false },
-        { text: "更多功能" },
-      ],
+      // headers: [
+      //   {
+      //     text: "问卷名称",
+      //     align: "start",
+      //     value: "name",
+      //   },
+      //   { text: "状态", value: "state", sortable: false },
+      //   { text: "ID", value: "id" },
+      //   { text: "回收量", value: "num" },
+      //   { text: "创建时间", value: "date" },
+      //   // {text:'发布时间',value:'date1'},
+      //   { text: "截止时间", value: "date2" },
+      //   { text: "操作", value: "actions", sortable: false },
+      //   { text: "更多功能" },
+      // ],
       desserts: [
         // {
         //   name: "问卷1",
@@ -81,6 +133,10 @@ export default {
       ],
     };
   },
+  mounted() {
+    console.log(111)
+    this.getItem();
+  },
   methods: {
     toggleOrder() {
       this.sortDesc = !this.sortDesc;
@@ -95,7 +151,7 @@ export default {
       console.log(index);
       // confirm("Are you sure you want to delete this item?")
       var Data = new FormData();
-      Data.append('id',index)
+      Data.append('id', index)
       console.log(111)
       axios({
         url: "http://82.157.97.70/api/questionnaire/throw_to_trashcan",
@@ -112,12 +168,12 @@ export default {
     },
     copyItem(item) {
       const index = item;
-      var Data=new FormData();
-      Data.append('id',index)
+      var Data = new FormData();
+      Data.append('id', index)
       axios({
         url: "http://82.157.97.70/api/questionnaire/copy_questionnaire",
         method: "post",
-        data:Data,
+        data: Data,
         headers: {
           Authorization: window.localStorage.getItem("authorization"),
           "Content-Type": "application/json",
@@ -165,16 +221,16 @@ export default {
             };
             if (/(y+)/.test(fmt))
               fmt = fmt.replace(
-                RegExp.$1,
-                (this.getFullYear() + "").substr(4 - RegExp.$1.length)
+                  RegExp.$1,
+                  (this.getFullYear() + "").substr(4 - RegExp.$1.length)
               );
             for (var k in o)
               if (new RegExp("(" + k + ")").test(fmt))
                 fmt = fmt.replace(
-                  RegExp.$1,
-                  RegExp.$1.length == 1
-                    ? o[k]
-                    : ("00" + o[k]).substr(("" + o[k]).length)
+                    RegExp.$1,
+                    RegExp.$1.length == 1
+                        ? o[k]
+                        : ("00" + o[k]).substr(("" + o[k]).length)
                 );
             return fmt;
           };
@@ -183,19 +239,19 @@ export default {
 
           var time = times[0] + "T" + times[1] + "Z";
           if (
-            res.data.data[i].endTime != null &&
-            res.data.data[i].endTime < time
+              res.data.data[i].endTime != null &&
+              res.data.data[i].endTime < time
           ) {
             state = "已过期";
           }
           if (
-            res.data.data[i].endTime != null &&
-            res.data.data[i].startTime > time
+              res.data.data[i].endTime != null &&
+              res.data.data[i].startTime > time
           ) {
             state = "未开始";
           }
-          if(res.data.data[i].stopping){
-            state="已停用"
+          if (res.data.data[i].stopping) {
+            state = "已停用"
           }
           var data2 = res.data.data[i].endTime;
           if (data2 != null) {
@@ -204,7 +260,7 @@ export default {
           var data = {
             name: res.data.data[i].title,
             state: state,
-            id: res.data.data[i].id,
+            id: this.tostring(res.data.data[i].id).padStart(7, '0'),   //padStart中的数字7位
             num: res.data.data[i].answerNum,
             date: res.data.data[i].createTime.replace("T", " "),
             date2: data2,
@@ -215,9 +271,12 @@ export default {
         // 没写全之后再补
       });
     },
-  },
-  mounted() {
-    this.getItem();
+    formatter(row, column) {
+      return row.address;
+    },
+    tostring(val){
+      return ""+val;
+    }
   },
 };
 </script>

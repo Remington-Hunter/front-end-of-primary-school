@@ -9,9 +9,9 @@
           label="编辑"
           name="first"
         >
-          <normal 
-          @problem_change="changeState"
-          @currentQuestionnaire="getCurrentQuestionnaire"
+          <normal
+            @problem_change="changeState"
+            @currentQuestionnaire="getCurrentQuestionnaire"
           />
         </el-tab-pane>
 
@@ -21,8 +21,11 @@
           :disabled="state"
           @click="sendQues"
         >
-          <send 
-          :ma="ma"/>
+          <send
+            :ma="ma"
+            :input="input"
+            :lianjie="lianjie"
+          />
         </el-tab-pane>
 
         <el-tab-pane
@@ -30,7 +33,7 @@
           name="third"
           :disabled="state"
         >
-        <CrossAnalysis></CrossAnalysis>
+          <CrossAnalysis></CrossAnalysis>
         </el-tab-pane>
       </el-tabs>
       <el-row style='position: absolute;right:100px;top:12vh;'>
@@ -73,11 +76,32 @@
         >返回</el-button>
       </el-row>
     </div>
+    <el-dialog
+      :visible.sync="dialogVisible"
+      width="60%"
+    >
+      <d-preview
+        :headerTitle="this.title"
+        :subtitle="this.description"
+        :list="this.preview_list"
+      ></d-preview>
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button
+          type="primary"
+          @click="dialogVisible = false"
+        >确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
-import Normal from "./NormalQuestion"
+import Normal from "./Normal.vue"
+// import Normal from "./NormalQuestion"
 import Send from "./Send.vue"
+import DPreview from "./DialogPreview.vue"
 import axios from 'axios';
 import htmlToPdf from "@/assets/js/htmlToPdf";
 import CrossAnalysis from '@/views/CrossAnalysis'
@@ -85,21 +109,23 @@ export default {
   components: {
     Normal,
     Send,
-    CrossAnalysis
+    CrossAnalysis,
+    DPreview,
   },
   data() {
     return {
       activeName: 'first',
-      input: "https://wj.qq.com/s2/8918766/dd18/",
-      lianjie: "",
-      state:true,
-      current_questionnaire:{},
-      is_creating:false,
-      total_problem:1,
-      preview_list:[],
-      title:'',
-      description:'',
-      ma:''
+      state: true,
+      current_questionnaire: {},
+      is_creating: false,
+      total_problem: 1,
+      preview_list: [],
+      title: '',
+      description: '',
+      ma: '',
+      input: '',
+      lianjie: '',
+      dialogVisible: false,
     };
   },
   methods: {
@@ -107,34 +133,14 @@ export default {
       htmlToPdf.downloadPDF(document.querySelector("#demo"), "我的问卷");
     },
     getProblemInfo() {
-      if(this.is_creating === true || this.total_problem === 1) {return}
-      this.$router.push({
-        path: '/preview', 
-        query: {
-          list:JSON.stringify(this.preview_list),
-          title:this.title,
-          description:this.description
-        }})
+      if (this.is_creating === true || this.total_problem === 1) { return }
+      this.dialogVisible = true;
     },
-    sendQues(){
-      if(this.is_creating === true || this.total_problem === 1) {return}
-      var formData=this.current_questionnaire
-      axios({
-        method: "post",
-        url: "http://82.157.97.70/api/questionnaire/publish_questionnaire",
-        headers: {
-          Authorization: window.localStorage.getItem("authorization"),
-          "Content-Type": "application/json",
-        },
-        data: JSON.stringify(formData),
-      }).then((res) => {
-        this.ma=res.data.data
-      });
-    },
-    saveQues() {
-      if(this.is_creating === true || this.total_problem === 1) {
-        return}
-      var formData=this.current_questionnaire
+    sendQues() {
+      if (this.is_creating === true || this.total_problem === 1) {
+        return
+      }
+      var formData = this.current_questionnaire
       axios({
         method: "post",
         url: "http://82.157.97.70/api/questionnaire/save_questionnaire",
@@ -145,21 +151,59 @@ export default {
         data: JSON.stringify(formData),
       }).then((res) => {
         console.log(res);
-      });},
-    getCurrentQuestionnaire(obj){
-      this.current_questionnaire=obj.data
-      this.is_creating=obj.is_creating
-      this.total_problem=obj.total_problem
-      this.preview_list=obj.preview_list
-      this.title=obj.title
-      this.description=obj.description
+        this.current_questionnaire.id = res.data.data;
+        if (this.is_creating === true || this.total_problem === 1) { return }
+        // var formData = this.current_questionnaire
+        var formData = new FormData();
+        formData.append("questionnaireId", this.current_questionnaire.id)
+        axios({
+          method: "post",
+          url: "http://82.157.97.70/api/questionnaire/throw_questionnaire",
+          headers: {
+            Authorization: window.localStorage.getItem("authorization"),
+            "Content-Type": "application/json",
+          },
+          data: formData,
+        }).then((res) => {
+          this.input = 'http://82.157.97.70/vj/';
+          this.input += res.data.data;
+          this.lianjie = 'http://82.157.97.70/api/qrcode/getQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
+          this.ma = res.data.data
+        });
+      });
     },
-    changeState(index){
-      if(index === false){
-        this.state=true
+    saveQues() {
+      if (this.is_creating === true || this.total_problem === 1) {
         return
       }
-      else{
+      var formData = this.current_questionnaire
+      axios({
+        method: "post",
+        url: "http://82.157.97.70/api/questionnaire/save_questionnaire",
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
+        },
+        data: JSON.stringify(formData),
+      }).then((res) => {
+        console.log(res);
+        this.current_questionnaire.id = res.data.data;
+      });
+    },
+    getCurrentQuestionnaire(obj) {
+      this.current_questionnaire = obj.data
+      this.is_creating = obj.is_creating
+      this.total_problem = obj.total_problem
+      this.preview_list = obj.preview_list
+      this.title = obj.title
+      this.description = obj.description
+    },
+    changeState(index) {
+      if (index === false) {
+        this.state = true
+        return
+      }
+      else {
         this.state = false
       }
     },
@@ -167,7 +211,7 @@ export default {
       console.log(tab, event);
       if (tab.name == 'second') {
         // 触发事件
-        this.send_ID();
+        // this.send_ID();
         this.sendQues();
       }
     },
@@ -183,7 +227,7 @@ export default {
         },
       }).then((res) => {
         console.log(res);
-        this.input += 'http://82.157.97.70/vj/';
+        this.input = 'http://82.157.97.70/vj/';
         this.input += res.data.data;
         this.lianjie = 'http://82.157.97.70/api/qrcode/getQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
         //alert(this.input);
@@ -195,7 +239,6 @@ export default {
 
 <style scoped>
 .tabs {
-  background-color: white;
   padding: 0 54px;
   padding-top: 5vh;
 }
@@ -204,5 +247,11 @@ export default {
 <style>
 .el-tabs__item {
   font-size: 18px !important;
+}
+.el-tabs__content {
+  margin: 40px 100px;
+  background-color: white;
+  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+    0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
 }
 </style>

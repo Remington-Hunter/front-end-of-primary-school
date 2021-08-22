@@ -67,90 +67,122 @@
           </div>
         </div>
       </div>
-
       <div class="page-control">
-        <!-- <el-button
+        <el-button
           type="primary"
           id="btn"
-        >下一页</el-button> -->
+          @click="submit"
+        >提交</el-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
+  name: "PublishQuestion",
+  props: {
+    headerTitle: {
+      type: String,
+      default: "",
+    },
+    subtitle: {
+      type: String,
+      defalut: "",
+    },
+    questionList: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
+    questionnaireId: {
+      type: Number,
+      default: 0,
+    },
+  },
   data() {
     return {
-      headerTitle: "社交网站满意度问卷",
-      subtitle:
-        "为了给您提供更好的服务，希望您能抽出几分钟时间，将您的感受和建议告诉我们，我们非常重视每位用户的宝贵意见，期待您的参与！现在我们就马上开始吧！",
-      questionList: [
-        // {
-        //   type: 0, //问题种类：单选
-        //   text: "您是否使用过xx社交网站？",
-        //   selectionList: ["a选项", "b选项"],
-        //   radio: "",
-        //   checkList: [],
-        //   answer: "输入你的答案",
-        //   rating: 0,
-        //   required: true, //是否必填
-        // },
-        // {
-        //   type: 1, //问题种类：多选
-        //   text: "您使用xx社交网站的目的是？",
-        //   selectionList: ["a选项", "b选项", "c选项"],
-        //   radio: "",
-        //   checkList: [],
-        //   answer: "输入你的答案",
-        //   rating: 0,
-        //   required: false,
-        // },
-      ],
-      iconClasses: ['icon-rate-face-1', 'icon-rate-face-2', 'icon-rate-face-3'],
+      iconClasses: ["icon-rate-face-1", "icon-rate-face-2", "icon-rate-face-3"],
     };
   },
   methods: {
-    problem_type_number(str) {
-      switch (str) {
-        case "单选题":
-          return 0;
-          break;
-        case "多选题":
-          return 1;
-          break;
-        case "填空题":
-          return 2;
-          break;
-        case "评分题":
-          return 3;
-          break;
+    submit() {
+      var x = {};
+      x.questionnaireId = this.questionnaireId;
+      var list = [];
+      console.log(this.questionList.length);
+      for (var i = 0; i < this.questionList.length; i++) {
+        var z = {};
+        var y = this.questionList[i];
+        z.questionId = y.questionId;
+        if (y.type === 0) {
+          if (y.required) {
+            if (y.radio === "") {
+              alert("您有必选项未完成!");
+              return
+            } else {
+              z.number = y.radio + "";
+              z.content = "";
+            }
+          } else {
+            z.number = y.radio + "";
+            z.content = "";
+          }
+        } else if (y.type === 1) {
+          if (y.required) {
+            if (y.checkList.length === 0) {
+              alert("您有必选项未完成!");
+              return
+            } else {
+              z.number = "";
+              for (var i = 0; i < y.checkList.length; i++) {
+                z.number += y.checkList[i];
+              }
+              z.content = "";
+            }
+          } else {
+            z.number = "";
+            for (var i = 0; i < y.checkList.length; i++) {
+              z.number += y.checkList[i];
+            }
+            z.content = "";
+          }
+        } else if (y.type === 2) {
+          if (y.required) {
+            if (y.answer === "") {
+              alert("您有必选项未完成!");
+              return
+            } else {
+              z.number = "";
+              z.content = y.answer;
+            }
+          } else {
+            z.number = "";
+            z.content = y.answer;
+          }
+          console.log(z);
+        } else if (y.type === 3) {
+          z.number = "" + y.rating;
+          z.content = "";
+        }
+        list.push(z)
       }
+      x.answerDtoList = list
+      axios({
+        method: "post",
+        url: "http://82.157.97.70/api/answer/submit_answer",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        data: JSON.stringify(x),
+      }).then((res) => {
+        console.log(res);
+      });
     },
   },
-  created() {
-    let list = JSON.parse(this.$route.query.list);
-    let title = this.$route.query.title;
-    let description = this.$route.query.description;
-    this.headerTitle = title
-    this.subtitle = description
-    console.log(list.length);
-    console.log(list[0]);
-    for (var i = 0; i < list.length; i++) {
-      let x = {}
-      var y = list[i]
-      console.log(y);
-      x.type = this.problem_type_number(y.problem_type)
-      x.text = y.name
-      x.selectionList = y.selection_list
-      x.required = y.must_write_select === '是' ? true : false
-      x.radio = ""
-      x.checkList = [],
-        x.answer = "",
-        x.rating = 0,
-        this.questionList.push(x)
-    }
-  },
+  created() { },
 };
 </script>
 
