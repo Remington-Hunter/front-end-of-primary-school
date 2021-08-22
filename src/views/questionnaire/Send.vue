@@ -97,7 +97,6 @@
       </el-row>
 
     </div>
-{{ma}}
   </div>
 </template>
 
@@ -107,15 +106,16 @@ export default {
     ma:{
       type:String,
       defalut:''
+    },
+    input:{
+      type:String,
+      defalut:'http://82.157.97.70/vj/'
+    },
+    lianjie:{
+      type:String,
+      defalut:''
     }
   },
-  data() {
-    return {
-      input: "https://wj.qq.com/s2/8918766/dd18/",
-      lianjie: "",
-    };
-  },
-
 };
 </script>
 

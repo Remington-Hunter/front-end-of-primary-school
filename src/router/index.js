@@ -80,11 +80,17 @@ const routes = [{
             import ('../views/questionnaire/Tabs.vue')
     },
     {
-        path: '/try',
-        name: 'Try',
+        path: '/vj/:ma',
+        name: 'CollectQuestion',
         component: () =>
-            import ('../views/questionnaire/Try.vue')
+            import ('../views/CollectQuestion.vue')
     },
+    {
+        path: '/crossanalysis',
+        name: 'crossanalysis',
+        component: () =>
+            import ('../views/CrossAnalysis.vue')
+    }
 ]
 
 

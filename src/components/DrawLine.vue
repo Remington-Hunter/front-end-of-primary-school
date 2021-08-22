@@ -8,7 +8,7 @@
 export default {
   props: {
     id: {
-      type: Number,
+      type: String,
     //   default: "单选题",
     },
     series: {
@@ -21,8 +21,8 @@ export default {
   data() {
     return {};
   },
-  components: {},
-  created: {},
+  // components: {},
+  // created: {},
   mounted() {
     //   alert(111)
     console.log(this.id)
