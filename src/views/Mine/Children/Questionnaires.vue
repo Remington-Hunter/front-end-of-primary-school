@@ -112,22 +112,18 @@ export default {
     },
     copyItem(item) {
       const index = item;
-      // var name1=item.name+'副本';
-      // var state1=item.state;
-      // var num1=item.num;
-      // var date1=new Date()
+      var Data=new FormData();
+      Data.append('id',index)
       axios({
-        url: "http://82.157.97.70/api/questionnaire/",
+        url: "http://82.157.97.70/api/questionnaire/copy_questionnaire",
         method: "post",
-        data: {
-          id: index,
-        },
+        data:Data,
         headers: {
           Authorization: window.localStorage.getItem("authorization"),
           "Content-Type": "application/json",
         },
       }).then((res) => {
-        console.log(res);
+        // console.log(res);
         //  这里的思路应该是发送一个有关这个item的数据，数据库再加上一条,还要生成新的内容
         this.getItem();
       });
@@ -144,7 +140,7 @@ export default {
           "Content-Type": "application/json",
         },
       }).then((res) => {
-        console.log(res);
+        // console.log(res);
         this.desserts = [];
         for (let i = 0; i < res.data.data.length; i++) {
           var state = "";
@@ -213,7 +209,7 @@ export default {
             date: res.data.data[i].createTime.replace("T", " "),
             date2: data2,
           };
-          console.log(data)
+          // console.log(data)
           this.desserts.push(data);
         }
         // 没写全之后再补

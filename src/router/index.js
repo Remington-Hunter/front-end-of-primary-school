@@ -60,11 +60,17 @@ const routes = [{
         name: 'Preview',
         component: () =>
             import ('../views/questionnaire/Preview.vue')
-            },{
+    }, {
         path: '/echarts',
         name: 'echarts',
         component: () =>
             import ('../components/Echarts.vue')
+    },
+    {
+        path: '/crossanalysis',
+        name: 'crossanalysis',
+        component: () =>
+            import ('../views/CrossAnalysis.vue')
     }
 ]
 
