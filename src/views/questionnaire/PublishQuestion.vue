@@ -22,6 +22,7 @@
             >*</span>
             <el-tag v-if="question.type === 1">多选</el-tag>
           </div>
+          <div class="q-instruction">{{ question.comment }}</div>
         </div>
 
         <div class="question-body ">
