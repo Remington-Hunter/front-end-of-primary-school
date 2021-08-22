@@ -3,8 +3,9 @@
     <PublishQuestion 
     :headerTitle="headerTitle"
     :subtitle="subtitle"
-    :questionList="questionList"/>
-    <div  type="primary" style="text-align: center;display: block" @click="send_Info()"><el-button big>提交</el-button></div>
+    :questionList="questionList"
+    :questionnaireId="current_questionnaire.questionnaire.id"/>
+    <!-- <div  type="primary" style="text-align: center;display: block" @click="send_Info()"><el-button big>提交</el-button></div> -->
   </div>
 
 </template>
@@ -20,7 +21,7 @@ export default {
   data() {
     return {
       ma: this.$route.params.ma,
-      current_questionnaire: {},
+      current_questionnaire: {questionnaire:{id:0}},
       headerTitle: "社交网站满意度问卷",
       subtitle:
         "为了给您提供更好的服务，希望您能抽出几分钟时间，将您的感受和建议告诉我们，我们非常重视每位用户的宝贵意见，期待您的参与！现在我们就马上开始吧！",
@@ -48,6 +49,8 @@ export default {
         x.checkList = [],
         x.answer = "",
         x.rating = 0,
+        x.comment = y.question.comment
+        x.questionId = y.question.id;
         this.questionList.push(x);
       }
     },
@@ -64,19 +67,19 @@ export default {
         this.showInfo();
       });
     },
-    send_Info() {
-      var formData = {};
-      formData.questionnaireID = 1;
+    // send_Info() {
+    //   var formData = {};
+    //   formData.questionnaireID = 1;
 
-      axios({
-        method: "post",
-        url: "http://82.157.97.70/api/answer/submit_answer",
-        data: formData,
-      }).then((res) => {
-        console.log(res.data.data);
+    //   axios({
+    //     method: "post",
+    //     url: "http://82.157.97.70/api/answer/submit_answer",
+    //     data: formData,
+    //   }).then((res) => {
+    //     console.log(res.data.data);
 
-      });
-    },
+    //   });
+    // },
   },
   created() {
     this.getInfo();
