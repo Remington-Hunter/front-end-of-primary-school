@@ -69,7 +69,6 @@
         </v-icon>
         <v-icon small @click="deleteItem(item.id)"> mdi-delete-outline </v-icon>
       </template>
-    </v-data-table>
     <div class="text-center pt-2">
       <v-btn color="primary" class="mr-2" @click="toggleOrder"
       >切换排序顺序</v-btn>
@@ -86,7 +85,7 @@ export default {
     return {
       // sortBy: "date",
       // sortDesc: false,
-      // search: "",
+      search: "",
       // headers: [
       //   {
       //     text: "问卷名称",
@@ -261,10 +260,12 @@ export default {
     formatter(row, column) {
       return row.address;
     },
-    mounted() {
+    
+  },
+  mounted() {
+      console.log(111)
       this.getItem();
     },
-  }
 };
 </script>
 
