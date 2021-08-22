@@ -246,7 +246,7 @@ export default {
           var data = {
             name: res.data.data[i].title,
             state: state,
-            id: res.data.data[i].id,
+            id: this.tostring(res.data.data[i].id).padStart(7, '0'),   //padStart中的数字7位
             num: res.data.data[i].answerNum,
             date: res.data.data[i].createTime.replace("T", " "),
             date2: data2,
@@ -260,7 +260,9 @@ export default {
     formatter(row, column) {
       return row.address;
     },
-    
+    tostring(val){
+      return ""+val;
+    }
   },
   mounted() {
       console.log(111)
