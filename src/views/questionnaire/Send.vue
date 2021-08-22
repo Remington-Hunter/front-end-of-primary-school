@@ -125,11 +125,11 @@ export default {
   max-width: 1240px;
 }
 .share-content {
-  padding: 30px 10px 30px 27px;
+  padding: 30px 10px 30px 60px;
 }
 .section-title {
   font-weight: bold;
-  margin: 15px 0;
+  margin: 0px 0 30px 0;
   text-align: left;
   width: 100%;
 }

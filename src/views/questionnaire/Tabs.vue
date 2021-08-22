@@ -59,7 +59,7 @@
   </div>
 </template>
 <script>
-import Normal from "./NormalQuestion.vue"
+import Normal from "./Normal.vue"
 import Send from "./Send.vue"
 import axios from 'axios';
 export default {
@@ -107,7 +107,6 @@ export default {
 
 <style scoped>
 .tabs {
-  background-color: white;
   padding: 0 54px;
   padding-top: 5vh;
 }
@@ -116,5 +115,11 @@ export default {
 <style>
 .el-tabs__item {
   font-size: 18px !important;
+}
+.el-tabs__content {
+  margin: 40px 100px;
+  background-color: white;
+  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+    0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
 }
 </style>
