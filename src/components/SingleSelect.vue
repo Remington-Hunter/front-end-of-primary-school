@@ -196,7 +196,7 @@
 export default {
   name: "SingleSelect",
   props: {
-    problem_type: {
+    problem_type_copy: {
       type: String,
       default: "单选题",
     },
@@ -230,7 +230,9 @@ export default {
       cancel_button: true,
       must_write_select: false,
       items: ["是", "否"],
-      iconClasses: ['icon-rate-face-1', 'icon-rate-face-2', 'icon-rate-face-3']
+      iconClasses: ['icon-rate-face-1', 'icon-rate-face-2', 'icon-rate-face-3'],
+      has_exchanged: false,
+      problem_type: this.has_exchanged ? this.problem_type : this.problem_type_copy,
     };
   },
   computed: {

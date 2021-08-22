@@ -4,11 +4,7 @@
       <!-- <el-button type="primary" @click="handleWindowPrint( '#demo', '离职申请表' )">浏览器方式下载</el-button> -->
     </div>
     <div>
-      <v-card
-        class="title"
-        style="margin-right: 10%; float: right"
-        id="demo"
-      >
+      <v-card class="title" style="margin-right: 10%; float: right" id="demo">
         <span class="title_description">
           <v-dialog v-model="dialog_title">
             <template v-slot:activator="{ on, attrs }">
@@ -17,7 +13,8 @@
                 v-bind="attrs"
                 v-on="on"
                 style="text-align: center; display: block"
-              >{{ title }}</span>
+                >{{ title }}</span
+              >
             </template>
             <v-card>
               <v-card-title class="text-h5 grey lighten-2">
@@ -34,11 +31,7 @@
 
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn
-                  color="primary"
-                  text
-                  @click="dialog_title = false"
-                >
+                <v-btn color="primary" text @click="dialog_title = false">
                   确认
                 </v-btn>
               </v-card-actions>
@@ -55,7 +48,8 @@
                   v-bind="attrs"
                   v-on="on"
                   style="text-align: center; display: block;font-size: small"
-                >添加说明</span>
+                  >添加说明</span
+                >
               </template>
               <v-card>
                 <v-card-title class="text-h5 grey lighten-2">
@@ -72,11 +66,7 @@
 
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn
-                    color="primary"
-                    text
-                    @click="dialog_describe = false"
-                  >
+                  <v-btn color="primary" text @click="dialog_describe = false">
                     确认
                   </v-btn>
                 </v-card-actions>
@@ -85,15 +75,12 @@
           </span>
         </div>
         <v-divider></v-divider>
-        <div
-          v-for="(item, index) in created_problem"
-          :key="(item, index)"
-        >
+        <div v-for="(item, index) in created_problem" :key="(item, index)">
           <SingleSelect
             :ref="'question' + item.number"
             :id="'question' + item.number"
             :iscopy="item.iscopy"
-            :problem_type="item.type"
+            :problem_type_copy="item.type"
             :problem_number="item.number"
             :copy_info="item.copy_info"
             @CancelNewProblem="
@@ -102,9 +89,10 @@
               total_problem -= 1;
               total_problem_change();
             "
-            @ConfirmProblem="is_creating = false;
-            total_problem_change();
-            send_question_parent();
+            @ConfirmProblem="
+              is_creating = false;
+              total_problem_change();
+              send_question_parent();
             "
             @deleteProblem="deleteProblem"
             @upMove="upMove"
@@ -112,16 +100,16 @@
             @downMove="downMove"
             @downMoveLast="downMoveLast"
             @copy="copy"
-            @ismodifying="is_creating = true;total_problem_change();"
+            @ismodifying="
+              is_creating = true;
+              total_problem_change();
+            "
           ></SingleSelect>
         </div>
       </v-card>
       <v-card class="topic_control">
         <v-card-title> 题目控件 </v-card-title>
-        <div
-          v-for="(item, index) in problem_list"
-          :key="(item, index)"
-        >
+        <div v-for="(item, index) in problem_list" :key="(item, index)">
           <v-btn
             @click="newProblem(item.text, false, {})"
             style="margin-top: 10%"
@@ -165,8 +153,8 @@ export default {
     };
   },
   methods: {
-    current_questionnaire(){
-      this.created_problem_list=[]
+    current_questionnaire() {
+      this.created_problem_list = [];
       for (var i = 1; i < this.total_problem; i++) {
         let index = "question" + i;
         let x = this.$refs[index]["0"]; //组件的所有信息
@@ -195,7 +183,7 @@ export default {
       //var formData = new FormData();
       var formData = {};
       // var date=new Date();
-      Date.prototype.Format = function (fmt) {
+      Date.prototype.Format = function(fmt) {
         // author: meizz
         var o = {
           "M+": this.getMonth() + 1, // 月份
@@ -224,7 +212,7 @@ export default {
       var time2 = new Date().Format("yyyy-MM-dd hh:mm:ss");
       var times = time2.split(" ");
 
-      var time = times[0] + 'T' + times[1] + 'Z';
+      var time = times[0] + "T" + times[1] + "Z";
       // alert(time);
       formData.description = this.description;
       formData.endTime = time;
@@ -234,49 +222,49 @@ export default {
       formData.startTime = time;
       formData.userId = window.localStorage.getItem("user_id");
       formData.questionList = this.created_problem_list;
-      return formData
+      return formData;
     },
-    send_question_parent(){
-      if(this.is_creating === true || this.total_problem === 1) {return}
-      var list=[]
+    send_question_parent() {
+      if (this.is_creating === true || this.total_problem === 1) {
+        return;
+      }
+      var list = [];
       for (var i = 1; i < this.total_problem; i++) {
         let index = "question" + i;
         let x = this.$refs[index]["0"]; //组件的所有信息
         let item = {};
-        item.problem_type = x.problem_type;//问题种类
-        item.problem_number = x.problem_number;//问题题号
-        item.name = x.name;//题目名字
-        item.instruction = x.instruction;//题目备注
-        item.selection_list = x.selection_list;//选择选项列表
-        item.radio = x.radio;//单选题答案
-        item.checkList = x.checkList;//多选题答案列表
-        item.answer = x.answer;//填空答案
-        item.rating = x.rating;//评分分数
-        item.must_write_select = x.must_write_select;//题目是否必选
-        list.push(item)
+        item.problem_type = x.problem_type; //问题种类
+        item.problem_number = x.problem_number; //问题题号
+        item.name = x.name; //题目名字
+        item.instruction = x.instruction; //题目备注
+        item.selection_list = x.selection_list; //选择选项列表
+        item.radio = x.radio; //单选题答案
+        item.checkList = x.checkList; //多选题答案列表
+        item.answer = x.answer; //填空答案
+        item.rating = x.rating; //评分分数
+        item.must_write_select = x.must_write_select; //题目是否必选
+        list.push(item);
       }
-      var obj1={}
-      var obj1={
-        data:this.current_questionnaire(),
-        is_creating:this.is_creating,
-        total_problem:this.total_problem,
-        preview_list:list,
-        title:this.title,
-        description:this.description,
-      }
-      this.$emit("currentQuestionnaire",obj1)
+      var obj1 = {};
+      var obj1 = {
+        data: this.current_questionnaire(),
+        is_creating: this.is_creating,
+        total_problem: this.total_problem,
+        preview_list: list,
+        title: this.title,
+        description: this.description,
+      };
+      this.$emit("currentQuestionnaire", obj1);
     },
-    total_problem_change(){
-      if(this.is_creating === true){
-        this.$emit('problem_change',false)
-        return
-      }
-      else{
-        if(this.total_problem === 1){
-          this.$emit('problem_change',false)
-        }
-        else{
-          this.$emit('problem_change',true)
+    total_problem_change() {
+      if (this.is_creating === true) {
+        this.$emit("problem_change", false);
+        return;
+      } else {
+        if (this.total_problem === 1) {
+          this.$emit("problem_change", false);
+        } else {
+          this.$emit("problem_change", true);
         }
       }
     },
@@ -287,6 +275,11 @@ export default {
       this.is_change_title = !this.is_change_title;
     },
     newProblem(index, iscopy, copy_info) {
+      for (var i = 1; i < this.total_problem; i++) {
+        let refname = "question" + i;
+        console.log(this.$refs[refname]["0"]);
+      }
+
       if (!this.is_creating) {
         let item = {};
         item.type = index;
