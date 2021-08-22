@@ -66,7 +66,7 @@ const routes = [{
         name: 'Preview',
         component: () =>
             import ('../views/questionnaire/Preview.vue')
-            },
+    },
     {
         path: '/echarts',
         name: 'echarts',
