@@ -24,7 +24,7 @@
           <v-icon small @click="deleteItem(item.id)">
             mdi-delete-outline
           </v-icon>
-          <v-btn text color="primary" @click="recoveryItem(item)">
+          <v-btn text color="primary" @click="recoveryItem(item.id)">
             <v-icon small> mdi-restore </v-icon>
             <span style="padding-left: 5px">恢复 </span>
           </v-btn>
@@ -122,15 +122,15 @@ export default {
         console.log(res);
         this.desserts = [];
         for (let i = 0; i < res.data.data.length; i++) {
-          var state = "";
+          var state = "已删除";
           if (res.data.data[i].deleted === 0) {
             continue;
           }
-          if (res.data.data[i].preparing) {
-            state = "准备中";
-          } else if (res.data.data[i].using) {
-            state = "已发布";
-          }
+          // if (res.data.data[i].preparing) {
+          //   state = "准备中";
+          // } else if (res.data.data[i].using) {
+          //   state = "已发布";
+          // }
           Date.prototype.Format = function (fmt) {
             // author: meizz
             var o = {
@@ -161,21 +161,21 @@ export default {
           var times = time2.split(" ");
 
           var time = times[0] + "T" + times[1] + "Z";
-          if (
-            res.data.data[i].endTime != null &&
-            res.data.data[i].endTime < time
-          ) {
-            state = "已过期";
-          }
-          if (
-            res.data.data[i].endTime != null &&
-            res.data.data[i].startTime > time
-          ) {
-            state = "未开始";
-          }
-          if (res.data.data[i].stopping) {
-            state = "已停用";
-          }
+          // if (
+          //   res.data.data[i].endTime != null &&
+          //   res.data.data[i].endTime < time
+          // ) {
+          //   state = "已过期";
+          // }
+          // if (
+          //   res.data.data[i].endTime != null &&
+          //   res.data.data[i].startTime > time
+          // ) {
+          //   state = "未开始";
+          // }
+          // if (res.data.data[i].stopping) {
+          //   state = "已停用";
+          // }
           var data2 = res.data.data[i].endTime;
           if (data2 != null) {
             data2 = data2.replace("T", " ");
@@ -218,7 +218,7 @@ export default {
           var Data = new FormData();
           Data.append("id", index);
           axios({
-            url: "http://82.157.97.70/api/questionnaire/",
+            url: "http://82.157.97.70/api/questionnaire/take_out_from_trashcan",
             method: "post",
             data: Data,
             headers: {

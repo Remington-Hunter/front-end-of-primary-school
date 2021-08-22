@@ -66,7 +66,7 @@ const routes = [{
         name: 'Preview',
         component: () =>
             import ('../views/questionnaire/Preview.vue')
-            },
+    },
     {
         path: '/echarts',
         name: 'echarts',
@@ -78,6 +78,12 @@ const routes = [{
         name: 'Edit',
         component: () =>
             import ('../views/questionnaire/Tabs.vue')
+    },
+    {
+        path: '/try',
+        name: 'Try',
+        component: () =>
+            import ('../views/questionnaire/Try.vue')
     },
 ]
 

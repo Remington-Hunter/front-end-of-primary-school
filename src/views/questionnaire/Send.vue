@@ -97,13 +97,18 @@
       </el-row>
 
     </div>
-
+{{ma}}
   </div>
 </template>
 
 <script>
-import axios from 'axios';
 export default {
+  props:{
+    ma:{
+      type:String,
+      defalut:''
+    }
+  },
   data() {
     return {
       input: "https://wj.qq.com/s2/8918766/dd18/",
