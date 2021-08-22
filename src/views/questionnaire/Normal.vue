@@ -19,7 +19,10 @@
         </el-menu>
       </el-aside>
 
-      <el-container style="border-left: solid 2px #e6e6e6;overflow-y:scroll;overflow-x:hidden;height:100%" id="demo">
+      <el-container
+        style="border-left: solid 2px #e6e6e6;overflow-y:scroll;overflow-x:hidden;height:100%"
+        id="demo"
+      >
         <div>
           <div
             @click="dialogFormVisible = true"
@@ -113,7 +116,6 @@
 
 
 <script>
-import "../../assets/css/icon/preview.css"
 import SingleSelect from "../../components/SingleSelect";
 import { problem_exchange, problem_change } from "../../utils/deepCopy";
 
@@ -154,7 +156,7 @@ export default {
         item.comment = x.instruction;
         // item.selection_list = x.selection_list;
         item.answer = "";
-        item.required = x.must_write_select? 1 : 0;
+        item.required = x.must_write_select ? 1 : 0;
         item.point = 0;
         item.type = this.problem_type_number(x.problem_type);
         let y = [];
@@ -366,19 +368,6 @@ export default {
 };
 </script>
 
-<style >
-.v-application ul,
-.v-application ol {
-  padding-left: 0;
-}
-.v-application p {
-  margin-bottom: 0;
-}
-.el-form-item__content {
-  margin-right: 50px;
-}
-</style>
-
 <style scoped>
 #top {
   padding: 20px 120px;
@@ -398,5 +387,18 @@ export default {
 }
 .header-subtitle {
   margin-top: 20px;
+}
+</style>
+
+<style >
+.v-application ul,
+.v-application ol {
+  padding-left: 0;
+}
+.v-application p {
+  margin-bottom: 0;
+}
+.el-form-item__content {
+  margin-right: 50px;
 }
 </style>

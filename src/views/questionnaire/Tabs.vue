@@ -76,12 +76,32 @@
         >返回</el-button>
       </el-row>
     </div>
+    <el-dialog
+      :visible.sync="dialogVisible"
+      width="60%"
+    >
+      <d-preview
+        :headerTitle="this.title"
+        :subtitle="this.description"
+        :list="this.preview_list"
+      ></d-preview>
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button
+          type="primary"
+          @click="dialogVisible = false"
+        >确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
 import Normal from "./Normal.vue"
 // import Normal from "./NormalQuestion"
 import Send from "./Send.vue"
+import DPreview from "./DialogPreview.vue"
 import axios from 'axios';
 import htmlToPdf from "@/assets/js/htmlToPdf";
 import CrossAnalysis from '@/views/CrossAnalysis'
@@ -89,7 +109,8 @@ export default {
   components: {
     Normal,
     Send,
-    CrossAnalysis
+    CrossAnalysis,
+    DPreview,
   },
   data() {
     return {
@@ -103,7 +124,8 @@ export default {
       description: '',
       ma: '',
       input: '',
-      lianjie: ''
+      lianjie: '',
+      dialogVisible: false,
     };
   },
   methods: {
@@ -112,14 +134,7 @@ export default {
     },
     getProblemInfo() {
       if (this.is_creating === true || this.total_problem === 1) { return }
-      this.$router.push({
-        path: '/preview',
-        query: {
-          list: JSON.stringify(this.preview_list),
-          title: this.title,
-          description: this.description
-        }
-      })
+      this.dialogVisible = true;
     },
     sendQues() {
       if (this.is_creating === true || this.total_problem === 1) {
@@ -142,7 +157,7 @@ export default {
         var formData = new FormData();
         this.current_questionnaire.id = this.saveQues();
         alert(this.current_questionnaire.id);
-        formData.append("questionnaireId",this.current_questionnaire.id)
+        formData.append("questionnaireId", this.current_questionnaire.id)
         axios({
           method: "post",
           url: "http://82.157.97.70/api/questionnaire/throw_questionnaire",
