@@ -13,9 +13,7 @@
               <v-icon>{{ item.icon }}</v-icon>
               {{ item.text }}
             </el-menu-item>
-
           </el-submenu>
-
         </el-menu>
       </el-aside>
 
@@ -23,13 +21,29 @@
         style="border-left: solid 2px #e6e6e6;overflow-y:scroll;overflow-x:hidden;height:100%"
         id="demo"
       >
+        <template>
+          <div class="block"></div>
+          <div class="block">
+            <div class="block">
+              <span class="demonstration">默认</span>
+              <el-date-picker
+                v-model="value1"
+                type="datetimerange"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+              >
+              </el-date-picker>
+            </div>
+          </div>
+        </template>
         <div>
           <div
             @click="dialogFormVisible = true"
             style="cursor: pointer;"
             id="top"
           >
-            <div class="header-title">{{title}}</div>
+            <div class="header-title">{{ title }}</div>
             <div class="header-subtitle">{{ description }}</div>
             <p class="sub">编辑问卷标题和描述</p>
           </div>
@@ -61,7 +75,6 @@
                   placeholder="请输入描述"
                 ></el-input>
               </el-form-item>
-
             </el-form>
             <div
               slot="footer"
@@ -88,36 +101,39 @@
               :problem_number="item.number"
               :copy_info="item.copy_info"
               @CancelNewProblem="
-              created_problem.pop();
-              is_creating = false;
-              total_problem -= 1;
-              total_problem_change();
-            "
-              @ConfirmProblem="is_creating = false;
-            total_problem_change();
-            send_question_parent();
-            "
+                created_problem.pop();
+                is_creating = false;
+                total_problem -= 1;
+                total_problem_change();
+              "
+              @ConfirmProblem="
+                is_creating = false;
+                total_problem_change();
+                send_question_parent();
+              "
               @deleteProblem="deleteProblem"
               @upMove="upMove"
               @upMoveFirst="upMoveFirst"
               @downMove="downMove"
               @downMoveLast="downMoveLast"
               @copy="copy"
-              @ismodifying="is_creating = true;total_problem_change();"
+              @ismodifying="
+                is_creating = true;
+                total_problem_change();
+              "
             ></SingleSelect>
           </div>
-
         </div>
       </el-container>
     </el-container>
   </div>
 </template>
 
-
-
 <script>
+import "../../assets/css/icon/preview.css";
 import SingleSelect from "../../components/SingleSelect";
 import { problem_exchange, problem_change } from "../../utils/deepCopy";
+import { dateFormat } from "../../utils/dateFormat";
 
 export default {
   name: "NormalQuestion",
@@ -126,9 +142,12 @@ export default {
   },
   data() {
     return {
+      value1: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
+
       title: "题目",
-      description: "为了给您提供更好的服务，希望您能抽出几分钟时间，将您的感受和建议告诉我们，我们非常重视每位用户的宝贵意见，期待您的参与！现在我们就马上开始吧！",
-      formLabelWidth: '100px',
+      description:
+        "为了给您提供更好的服务，希望您能抽出几分钟时间，将您的感受和建议告诉我们，我们非常重视每位用户的宝贵意见，期待您的参与！现在我们就马上开始吧！",
+      formLabelWidth: "100px",
       dialogFormVisible: false,
       question_id: "123",
       problem_list: [
@@ -141,11 +160,13 @@ export default {
       created_problem: [],
       is_creating: false,
       created_problem_list: [],
-    }
+      start_time: new Date(),
+      end_time: new Date(),
+    };
   },
   methods: {
     current_questionnaire() {
-      this.created_problem_list = []
+      this.created_problem_list = [];
       for (var i = 1; i < this.total_problem; i++) {
         let index = "question" + i;
         let x = this.$refs[index]["0"]; //组件的所有信息
@@ -171,70 +192,39 @@ export default {
         this.created_problem_list.push(item);
       }
 
-      //var formData = new FormData();
       var formData = {};
-      // var date=new Date();
-      Date.prototype.Format = function (fmt) {
-        // author: meizz
-        var o = {
-          "M+": this.getMonth() + 1, // 月份
-          "d+": this.getDate(), // 日
-          "h+": this.getHours(), // 小时
-          "m+": this.getMinutes(), // 分
-          "s+": this.getSeconds(), // 秒
-          "q+": Math.floor((this.getMonth() + 3) / 3), // 季度
-          S: this.getMilliseconds(), // 毫秒
-        };
-        if (/(y+)/.test(fmt))
-          fmt = fmt.replace(
-            RegExp.$1,
-            (this.getFullYear() + "").substr(4 - RegExp.$1.length)
-          );
-        for (var k in o)
-          if (new RegExp("(" + k + ")").test(fmt))
-            fmt = fmt.replace(
-              RegExp.$1,
-              RegExp.$1.length == 1
-                ? o[k]
-                : ("00" + o[k]).substr(("" + o[k]).length)
-            );
-        return fmt;
-      };
-      var time2 = new Date().Format("yyyy-MM-dd hh:mm:ss");
-      var times = time2.split(" ");
-
-      var time = times[0] + 'T' + times[1] + 'Z';
-      // alert(time);
+      formData.startTime = dateFormat(this.value1[0]);
+      formData.endTime = dateFormat(this.value1[1]);
       formData.description = this.description;
-      formData.endTime = time;
       formData.limit = -1;
       formData.title = this.title;
       formData.needNum = -1;
-      formData.startTime = time;
       formData.userId = window.localStorage.getItem("user_id");
       formData.questionList = this.created_problem_list;
-      return formData
+      return formData;
     },
     send_question_parent() {
-      if (this.is_creating === true || this.total_problem === 1) { return }
-      var list = []
+      if (this.is_creating === true || this.total_problem === 1) {
+        return;
+      }
+      var list = [];
       for (var i = 1; i < this.total_problem; i++) {
         let index = "question" + i;
         let x = this.$refs[index]["0"]; //组件的所有信息
         let item = {};
-        item.problem_type = x.problem_type;//问题种类
-        item.problem_number = x.problem_number;//问题题号
-        item.name = x.name;//题目名字
-        item.instruction = x.instruction;//题目备注
-        item.selection_list = x.selection_list;//选择选项列表
-        item.radio = x.radio;//单选题答案
-        item.checkList = x.checkList;//多选题答案列表
-        item.answer = x.answer;//填空答案
-        item.rating = x.rating;//评分分数
-        item.must_write_select = x.must_write_select;//题目是否必选
-        list.push(item)
+        item.problem_type = x.problem_type; //问题种类
+        item.problem_number = x.problem_number; //问题题号
+        item.name = x.name; //题目名字
+        item.instruction = x.instruction; //题目备注
+        item.selection_list = x.selection_list; //选择选项列表
+        item.radio = x.radio; //单选题答案
+        item.checkList = x.checkList; //多选题答案列表
+        item.answer = x.answer; //填空答案
+        item.rating = x.rating; //评分分数
+        item.must_write_select = x.must_write_select; //题目是否必选
+        list.push(item);
       }
-      var obj1 = {}
+      var obj1 = {};
       var obj1 = {
         data: this.current_questionnaire(),
         is_creating: this.is_creating,
@@ -242,20 +232,18 @@ export default {
         preview_list: list,
         title: this.title,
         description: this.description,
-      }
-      this.$emit("currentQuestionnaire", obj1)
+      };
+      this.$emit("currentQuestionnaire", obj1);
     },
     total_problem_change() {
       if (this.is_creating === true) {
-        this.$emit('problem_change', false)
-        return
-      }
-      else {
+        this.$emit("problem_change", false);
+        return;
+      } else {
         if (this.total_problem === 1) {
-          this.$emit('problem_change', false)
-        }
-        else {
-          this.$emit('problem_change', true)
+          this.$emit("problem_change", false);
+        } else {
+          this.$emit("problem_change", true);
         }
       }
     },
@@ -368,6 +356,19 @@ export default {
 };
 </script>
 
+<style>
+.v-application ul,
+.v-application ol {
+  padding-left: 0;
+}
+.v-application p {
+  margin-bottom: 0;
+}
+.el-form-item__content {
+  margin-right: 50px;
+}
+</style>
+
 <style scoped>
 #top {
   padding: 20px 120px;
@@ -390,15 +391,4 @@ export default {
 }
 </style>
 
-<style >
-.v-application ul,
-.v-application ol {
-  padding-left: 0;
-}
-.v-application p {
-  margin-bottom: 0;
-}
-.el-form-item__content {
-  margin-right: 50px;
-}
-</style>
+
