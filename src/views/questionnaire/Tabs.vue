@@ -28,6 +28,36 @@
           :disabled="state"
         >待完成</el-tab-pane>
       </el-tabs>
+      <el-row style='position: absolute;right:100px;top:12vh;'>
+        <el-button
+          type="primary"
+          plain
+        >保存</el-button>
+        <el-button
+          type="primary"
+          plain
+        >预览</el-button>
+        <el-button
+          v-if="state"
+          type="primary"
+          icon="el-icon-pause"
+          plain
+        >暂停回收</el-button>
+        <el-button
+          v-else
+          type="primary"
+          icon="el-icon-video-play"
+          plain
+        >开始回收</el-button>
+        <el-button
+          type="primary"
+          plain
+        >导出PDF<i class="el-icon-download el-icon--right"></i></el-button>
+        <el-button
+          type="primary"
+          plain
+        >返回</el-button>
+      </el-row>
     </div>
   </div>
 </template>
@@ -90,7 +120,8 @@ export default {
 <style scoped>
 .tabs {
   background-color: white;
-  padding: 24px 54px;
+  padding: 0 54px;
+  padding-top: 5vh;
 }
 </style>
 
