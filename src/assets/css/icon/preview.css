@@ -1,0 +1,62 @@
+.s-main {
+    position: relative;
+    padding: 80px 72px 20px;
+    margin: 40px auto;
+    box-sizing: border-box;
+    background-color: rgb(255, 255, 255);
+    overflow: hidden;
+  }
+  
+  .header-title {
+    text-align: center;
+    font-size: 30px;
+    word-break: break-word;
+  }
+  .header-subtitle {
+    margin-top: 40px;
+    font-size: 16px;
+    word-break: break-word;
+  }
+  .question-head {
+    margin-top: 45px;
+  }
+  .question-title {
+    font-size: 18px;
+    word-break: break-word;
+  }
+  .question-seq {
+    display: block;
+    margin-right: 8px;
+    font-size: 18px;
+    float: left;
+  }
+  .question-title .text {
+    margin-right: 4px;
+  }
+  .question-body {
+    padding-top: 10px;
+  }
+  
+  .question-required {
+    background-size: 100%;
+    vertical-align: -2px;
+    margin-right: 4px;
+    color: rgba(218, 35, 25, 1);
+  }
+  .el-radio,
+  .el-checkbox,
+  .el-rate {
+    display: block;
+    margin-top: 8px;
+    padding: 7px;
+  }
+  .page-control {
+    text-align: center;
+    padding: 50px 0;
+  }
+  .el-tag {
+    padding: 0px 3px;
+    height: 25px;
+    line-height: 25px;
+    font-size: 80%;
+  }
