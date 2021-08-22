@@ -154,7 +154,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style >
 #prev {
   width: 1000px;
   min-height: 100%;

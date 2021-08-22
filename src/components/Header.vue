@@ -104,7 +104,6 @@ a {
   margin-left: 1vw;
   font-size: 1.2em;
   color: #333333;
-  margin-top: 3vh;
 }
 .header_nav > ul {
   margin: 0 2cm;
