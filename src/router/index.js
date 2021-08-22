@@ -79,6 +79,18 @@ const routes = [{
         component: () =>
             import ('../views/questionnaire/Tabs.vue')
     },
+    {
+        path: '/try',
+        name: 'Try',
+        component: () =>
+            import ('../views/questionnaire/Try.vue')
+    },
+    {
+        path: '/crossanalysis',
+        name: 'crossanalysis',
+        component: () =>
+            import ('../views/CrossAnalysis.vue')
+    }
 ]
 
 

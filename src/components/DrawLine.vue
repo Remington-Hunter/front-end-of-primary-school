@@ -8,7 +8,7 @@
 export default {
   props: {
     id: {
-      type: Number,
+      type: String,
     //   default: "单选题",
     },
     series: {
