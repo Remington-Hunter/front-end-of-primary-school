@@ -20,6 +20,7 @@
                 </button>
                 <div class="copy-text-input">
                   <input
+                      id = "textAreas"
                       type="text"
                       disabled=""
                       class="ui-input"
@@ -131,14 +132,12 @@ export default {
   },
   methods: {
     copy() {
-      this.$copyText(this.input).then(function (e) {
-            alert("复制成功");
-          }, function (e) {
-            alert("复制失败")
-          }
-      )
-    }
-  }
+      var e = document.getElementById("textAreas");
+      e.select(); // 选择对象
+      document.execCommand("Copy"); // 执行浏览器复制命令
+      alert("内容复制成功！");
+    },
+  },
 };
 </script>
 
