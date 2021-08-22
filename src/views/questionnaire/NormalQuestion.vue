@@ -1,19 +1,7 @@
 <template>
   <div>
     <div style="padding: 10px">
-      <el-button
-        type="primary"
-        @click="handleDown"
-      >PDF下载-离职申请表</el-button>
       <!-- <el-button type="primary" @click="handleWindowPrint( '#demo', '离职申请表' )">浏览器方式下载</el-button> -->
-      <el-button
-        class="filter-item"
-        style="margin-left: 10px"
-        type="primary"
-        icon="el-icon-back"
-        @click="goBack"
-      >返回
-      </el-button>
     </div>
     <div>
       <v-card
@@ -127,7 +115,6 @@
             @ismodifying="is_creating = true;total_problem_change();"
           ></SingleSelect>
         </div>
-        <v-btn @click="getProblemInfo">预览</v-btn>
       </v-card>
       <v-card class="topic_control">
         <v-card-title> 题目控件 </v-card-title>
@@ -144,19 +131,14 @@
           </v-btn>
         </div>
       </v-card>
-
-      <v-btn @click="saveQues">保存新建的问卷</v-btn>
-      <v-btn @click="sendQues">发布问卷</v-btn>
     </div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
 import SingleSelect from "../../components/SingleSelect";
 import { problem_exchange, problem_change } from "../../utils/deepCopy";
 
-import htmlToPdf from "@/assets/js/htmlToPdf";
 export default {
   name: "NormalQuestion",
   components: {
@@ -200,9 +182,7 @@ export default {
         item.type = this.problem_type_number(x.problem_type);
         let y = [];
         var len=x.selection_list.length
-        console.log(len)
         for (var j = 0; j < x.selection_list.length; j++) {
-          console.log(1);
           let z = {};
           z.content = x.selection_list[j];
           z.limit = -1;
@@ -259,28 +239,33 @@ export default {
     },
     send_question_parent(){
       if(this.is_creating === true || this.total_problem === 1) {return}
+      var list=[]
+      for (var i = 1; i < this.total_problem; i++) {
+        let index = "question" + i;
+        let x = this.$refs[index]["0"]; //组件的所有信息
+        let item = {};
+        item.problem_type = x.problem_type;//问题种类
+        item.problem_number = x.problem_number;//问题题号
+        item.name = x.name;//题目名字
+        item.instruction = x.instruction;//题目备注
+        item.selection_list = x.selection_list;//选择选项列表
+        item.radio = x.radio;//单选题答案
+        item.checkList = x.checkList;//多选题答案列表
+        item.answer = x.answer;//填空答案
+        item.rating = x.rating;//评分分数
+        item.must_write_select = x.must_write_select;//题目是否必选
+        list.push(item)
+      }
       var obj1={}
       var obj1={
         data:this.current_questionnaire(),
         is_creating:this.is_creating,
         total_problem:this.total_problem,
+        preview_list:list,
+        title:this.title,
+        description:this.description,
       }
       this.$emit("currentQuestionnaire",obj1)
-    },
-    sendQues(){
-      if(this.is_creating === true || this.total_problem === 1) {return}
-      var formData=this.current_questionnaire()
-      axios({
-        method: "post",
-        url: "http://82.157.97.70/api/questionnaire/questionnaire/publish_questionnaire",
-        headers: {
-          Authorization: window.localStorage.getItem("authorization"),
-          "Content-Type": "application/json",
-        },
-        data: JSON.stringify(formData),
-      }).then((res) => {
-        console.log(res);
-      });
     },
     total_problem_change(){
       if(this.is_creating === true){
@@ -298,9 +283,6 @@ export default {
     },
     goBack() {
       this.$router.go(-1);
-    },
-    handleDown() {
-      htmlToPdf.downloadPDF(document.querySelector("#demo"), "我的问卷");
     },
     changeTitle() {
       this.is_change_title = !this.is_change_title;
@@ -329,35 +311,6 @@ export default {
       this.total_problem -= 1;
       this.total_problem_change();
       this.send_question_parent();
-    },
-    getProblemInfo() {
-      if(this.is_creating === true || this.total_problem === 1) {return}
-      var list=[]
-      for (var i = 1; i < this.total_problem; i++) {
-        let index = "question" + i;
-        let x = this.$refs[index]["0"]; //组件的所有信息
-        let item = {};
-        item.problem_type = x.problem_type;//问题种类
-        item.problem_number = x.problem_number;//问题题号
-        item.name = x.name;//题目名字
-        item.instruction = x.instruction;//题目备注
-        item.selection_list = x.selection_list;//选择选项列表
-        item.radio = x.radio;//单选题答案
-        item.checkList = x.checkList;//多选题答案列表
-        item.answer = x.answer;//填空答案
-        item.rating = x.rating;//评分分数
-        item.must_write_select = x.must_write_select;//题目是否必选
-        list.push(item)
-        console.log(item);
-      }
-      this.$router.push({
-        path: '/preview', 
-        query: {
-          list:JSON.stringify(list),
-          title:this.title,
-          description:this.description
-        }})
-      console.log(list);
     },
     upMove(index) {
       if (index === 1) {
@@ -432,21 +385,6 @@ export default {
           return 8;
           break;
       }
-    },
-    saveQues() {
-      if(this.is_creating === true || this.total_problem === 1) {return}
-      var formData=this.current_questionnaire()
-      axios({
-        method: "post",
-        url: "http://82.157.97.70/api/questionnaire/save_questionnaire",
-        headers: {
-          Authorization: window.localStorage.getItem("authorization"),
-          "Content-Type": "application/json",
-        },
-        data: JSON.stringify(formData),
-      }).then((res) => {
-        console.log(res);
-      });
     },
   },
 };

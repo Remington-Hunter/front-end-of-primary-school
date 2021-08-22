@@ -19,8 +19,10 @@
           label="投放"
           name="second"
           :disabled="state"
+          @click="sendQues"
         >
-          <send />
+          <send 
+          :ma="ma"/>
         </el-tab-pane>
 
         <el-tab-pane
@@ -34,29 +36,37 @@
           type="primary"
           plain
           @click="saveQues"
+          :disabled="state"
         >保存</el-button>
         <el-button
           type="primary"
           plain
+          :disabled="state"
+          @click="getProblemInfo"
         >预览</el-button>
         <el-button
           v-if="state"
           type="primary"
           icon="el-icon-pause"
+          :disabled="state"
           plain
         >暂停回收</el-button>
         <el-button
           v-else
           type="primary"
           icon="el-icon-video-play"
+          :disabled="state"
           plain
         >开始回收</el-button>
         <el-button
           type="primary"
+          @click="handleDown"
+          :disabled="state"
           plain
         >导出PDF<i class="el-icon-download el-icon--right"></i></el-button>
         <el-button
           type="primary"
+          @click="$router.go(-1)"
           plain
         >返回</el-button>
       </el-row>
@@ -67,6 +77,7 @@
 import Normal from "./NormalQuestion"
 import Send from "./Send.vue"
 import axios from 'axios';
+import htmlToPdf from "@/assets/js/htmlToPdf";
 export default {
   components: {
     Normal,
@@ -80,12 +91,45 @@ export default {
       state:true,
       current_questionnaire:{},
       is_creating:false,
-      total_problem:1
+      total_problem:1,
+      preview_list:[],
+      title:'',
+      description:'',
+      ma:''
     };
   },
   methods: {
-    saveQues() {
+    handleDown() {
+      htmlToPdf.downloadPDF(document.querySelector("#demo"), "我的问卷");
+    },
+    getProblemInfo() {
       if(this.is_creating === true || this.total_problem === 1) {return}
+      this.$router.push({
+        path: '/preview', 
+        query: {
+          list:JSON.stringify(this.preview_list),
+          title:this.title,
+          description:this.description
+        }})
+    },
+    sendQues(){
+      if(this.is_creating === true || this.total_problem === 1) {return}
+      var formData=this.current_questionnaire
+      axios({
+        method: "post",
+        url: "http://82.157.97.70/api/questionnaire/publish_questionnaire",
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
+        },
+        data: JSON.stringify(formData),
+      }).then((res) => {
+        this.ma=res.data.data
+      });
+    },
+    saveQues() {
+      if(this.is_creating === true || this.total_problem === 1) {
+        return}
       var formData=this.current_questionnaire
       axios({
         method: "post",
@@ -101,9 +145,10 @@ export default {
     getCurrentQuestionnaire(obj){
       this.current_questionnaire=obj.data
       this.is_creating=obj.is_creating
-      this.total_problem=this.total_problem
-      console.log(this.is_creating);
-      console.log(this.total_problem);
+      this.total_problem=obj.total_problem
+      this.preview_list=obj.preview_list
+      this.title=obj.title
+      this.description=obj.description
     },
     changeState(index){
       if(index === false){
@@ -119,6 +164,7 @@ export default {
       if (tab.name == 'second') {
         // 触发事件
         this.send_ID();
+        this.sendQues();
       }
     },
     send_ID() {
