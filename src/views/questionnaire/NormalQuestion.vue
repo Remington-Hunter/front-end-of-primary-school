@@ -141,6 +141,7 @@
       </v-card>
 
       <v-btn @click="saveQues">保存新建的问卷</v-btn>
+      <v-btn @click="sendQues">发布问卷</v-btn>
     </div>
   </div>
 </template>
@@ -178,6 +179,87 @@ export default {
     };
   },
   methods: {
+    sendQues(){
+      if(this.is_creating === true || this.total_problem === 1) {return}
+      for (var i = 1; i < this.total_problem; i++) {
+        let index = "question" + i;
+        let x = this.$refs[index]["0"]; //组件的所有信息
+        let item = {};
+        // item.problem_type = x.problem_type;
+        item.number = x.problem_number;
+        item.content = x.name;
+        item.comment = x.instruction;
+        // item.selection_list = x.selection_list;
+        item.answer = "";
+        item.required = x.must_write_select === "是" ? 1 : 0;
+        item.point = 0;
+        item.type = this.problem_type_number(x.problem_type);
+        let y = [];
+        for (var i = 0; i < x.selection_list.length; i++) {
+          let z = {};
+          z.content = x.selection_list[i];
+          z.limit = -1;
+          z.number = i + "";
+          y.push(z);
+        }
+        item.optionList = y;
+        this.created_problem_list.push(item);
+      }
+
+      //var formData = new FormData();
+      var formData = {};
+      // var date=new Date();
+      Date.prototype.Format = function (fmt) {
+        // author: meizz
+        var o = {
+          "M+": this.getMonth() + 1, // 月份
+          "d+": this.getDate(), // 日
+          "h+": this.getHours(), // 小时
+          "m+": this.getMinutes(), // 分
+          "s+": this.getSeconds(), // 秒
+          "q+": Math.floor((this.getMonth() + 3) / 3), // 季度
+          S: this.getMilliseconds(), // 毫秒
+        };
+        if (/(y+)/.test(fmt))
+          fmt = fmt.replace(
+            RegExp.$1,
+            (this.getFullYear() + "").substr(4 - RegExp.$1.length)
+          );
+        for (var k in o)
+          if (new RegExp("(" + k + ")").test(fmt))
+            fmt = fmt.replace(
+              RegExp.$1,
+              RegExp.$1.length == 1
+                ? o[k]
+                : ("00" + o[k]).substr(("" + o[k]).length)
+            );
+        return fmt;
+      };
+      var time2 = new Date().Format("yyyy-MM-dd hh:mm:ss");
+      var times = time2.split(" ");
+
+      var time = times[0] + 'T' + times[1] + 'Z';
+      alert(time);
+      formData.description = this.description;
+      formData.endTime = time;
+      formData.limit = -1;
+      formData.title = this.title;
+      formData.needNum = -1;
+      formData.startTime = time;
+      formData.userId = window.localStorage.getItem("user_id");
+      formData.questionList = this.created_problem_list;
+      axios({
+        method: "post",
+        url: "http://82.157.97.70/api/questionnaire/questionnaire/publish_questionnaire",
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
+        },
+        data: JSON.stringify(formData),
+      }).then((res) => {
+        console.log(res);
+      });
+    },
     goBack() {
       this.$router.go(-1);
     },
@@ -377,15 +459,6 @@ export default {
       formData.startTime = time;
       formData.userId = window.localStorage.getItem("user_id");
       formData.questionList = this.created_problem_list;
-      // formData.append("description", this.description);
-      // formData.append("endTime", date.getTime());
-      // formData.append("limit", -1);
-      // formData.append("needNum", -1);
-      // formData.append("startTime", date.getTime());
-      // formData.append("title", this.title);
-      // formData.append("userId", window.localStorage.getItem("user_id"));
-      // formData.append("questionList", this.created_problem_list);
-      // alert(JSON.stringify(formData))
       axios({
         method: "post",
         url: "http://82.157.97.70/api/questionnaire/save_questionnaire",

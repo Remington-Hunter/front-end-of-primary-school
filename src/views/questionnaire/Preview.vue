@@ -47,7 +47,7 @@
             </el-checkbox-group>
           </div>
           <!-- 评分题 -->
-          <div v-else-if="question.type === 8">
+          <div v-else-if="question.type === 2">
             <el-rate
               v-model="question.rating"
               :icon-classes="iconClasses"
