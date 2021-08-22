@@ -113,6 +113,7 @@ export default {
       x.questionnaireId = this.questionnaireId;
       var list = [];
       console.log(this.questionList.length);
+      console.log(this.questionList)
       for (var i = 0; i < this.questionList.length; i++) {
         var z = {};
         var y = this.questionList[i];
@@ -137,19 +138,24 @@ export default {
               return;
             } else {
               z.number = "";
-              for (var i = 0; i < y.checkList.length; i++) {
-                z.number += y.checkList[i];
+              for (var j = 0; j < y.checkList.length; j++) {
+                z.number += y.checkList[j];
               }
               z.content = "";
             }
           } else {
             z.number = "";
-            for (var i = 0; i < y.checkList.length; i++) {
-              z.number += y.checkList[i];
+            for (var k = 0; k < y.checkList.length; k++) {
+              z.number += y.checkList[k];
             }
             z.content = "";
           }
-        } else if (y.type === 2) {
+        }
+       else if (y.type === 3) {
+            z.number = ""+y.rating;
+            z.content ="";
+        }
+        else if(y.type === 2){
           if (y.required) {
             if (y.answer === "") {
               alert("您有必选项未完成!");
@@ -162,7 +168,6 @@ export default {
             z.number = "";
             z.content = y.answer;
           }
-          console.log(z);
         } else if (y.type === 3) {
           z.number = "" + y.rating;
           z.content = "";
