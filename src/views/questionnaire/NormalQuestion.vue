@@ -381,7 +381,7 @@ export default {
           return 2;
           break;
         case "评分题":
-          return 8;
+          return 3;
           break;
       }
     },
