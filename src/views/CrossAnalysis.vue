@@ -129,7 +129,7 @@ export default {
     getseries(){
       // alert(1);
       var Data=new FormData();
-      Data.append('id',id);
+      Data.append('id',121);
       axios({
         url:'http://82.157.97.70/api/answer/get_result',
         method:'post',
@@ -232,8 +232,8 @@ export default {
           this.col.push(item)
         }
       }
-      // console.log("col")
-      // console.log(this.col);
+      console.log("col")
+      console.log(this.col);
     },
     getPieData(data){
       for(var i=0;i<data.length;i++){
@@ -280,8 +280,8 @@ export default {
           this.line.push(item)
         }
       }
-      console.log("line")
-      console.log(this.line);
+      // console.log("line")
+      // console.log(this.line);
     }
   },
 };

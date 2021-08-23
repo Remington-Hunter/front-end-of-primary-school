@@ -25,6 +25,13 @@
         </v-icon>
         <v-icon small @click="deleteItem(item.id)" title="删除"> mdi-trash-can-outline </v-icon>
       </template>
+      <template v-slot:[`item.actions1`]="{ item }">
+        <v-icon size=14px class="mr-2" @click="startItem(item.id)" title="开始">
+          mdi-arrow-right-drop-circle
+        </v-icon>
+        <v-icon small @click="modifyItem(item.id)" title="修改"> mdi-pencil-outline </v-icon>
+        <v-icon small @click="checkItem(item.id)" title="查看链接"> mdi-magnify</v-icon>
+      </template>
     </v-data-table>
     <div class="text-center pt-2">
       <v-btn color="primary" class="mr-2" @click="toggleOrder"
@@ -56,7 +63,7 @@ export default {
         // {text:'发布时间',value:'date1'},
         { text: "截止时间", value: "date2" },
         { text: "操作", value: "actions", sortable: false },
-        { text: "更多功能" },
+        { text: "更多功能",value:"actions1",sortable:false},
       ],
       desserts: [
         // {
@@ -81,6 +88,51 @@ export default {
     };
   },
   methods: {
+    modifyItem(item){
+      var Data=new FormData();
+      Data.append('id',item);
+      axios({
+        url:'http://82.157.97.70/api/questionnaire/get_questionnaire_by_id',
+        method:'post',
+        data: Data,
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
+        },
+      }).then((res)=>{
+        console.log(res);
+      })
+    },
+    startItem(item){
+      var Data=new FormData();
+      Data.append("id",item)
+      axios({
+        url:'http://82.157.97.70/api/questionnaire/get_questionnaire_by_id',
+        method:'post',
+        data: Data,
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
+        },
+      }).then((res)=>{
+        console.log(res);
+      })
+    },
+    checkItem(item){
+      var Data=new FormData();
+      Data.append("id",item);
+      axios({
+        url:'http://82.157.97.70/api/get_questionnaire_by_id',
+        method:'post',
+        data: Data,
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
+        },
+      }).then((res)=>{
+        console.log(res);
+      })
+    },
     toggleOrder() {
       this.sortDesc = !this.sortDesc;
     },
