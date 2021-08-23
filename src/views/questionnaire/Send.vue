@@ -132,6 +132,18 @@ export default {
       defalut: ''
     }
   },
+  data(){
+    return {
+      id:'',
+    }
+  },
+  created(){
+    this.id=this.$route.params.id
+  },
+  mounted(){
+    this.id=this.$router.query.id
+    console.log(this.id);
+  },
   methods: {
     copy() {
       var e = document.getElementById("textAreas");
