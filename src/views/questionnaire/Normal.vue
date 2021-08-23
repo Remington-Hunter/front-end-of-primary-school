@@ -2,7 +2,7 @@
   <div>
     <el-container style="height: 600px;">
       <el-aside width="200px">
-        <el-menu :default-openeds="['1']">
+        <el-menu :default-openeds="['1','2']">
           <el-submenu index="1">
             <template slot="title"><i class="el-icon-menu"></i>题目控件</template>
             <el-menu-item
@@ -16,8 +16,16 @@
           </el-submenu>
           <el-submenu index="2">
             <template slot="title"><i class="el-icon-setting"></i>问卷设置</template>
-            <el-menu-item @click="dialogTimeVisible = true"> <i class="
-              el-icon-alarm-clock"></i> 时间控制</el-menu-item>
+            <el-menu-item @click="dialogTimeVisible = true"> 时间控制</el-menu-item>
+            <el-tooltip
+              class="item"
+              effect="dark"
+              content="是否允许用户提交问卷后查看填写结果"
+              placement="right"
+            >
+              <el-menu-item> 查看结果 <el-switch v-model="see_result"></el-switch>
+              </el-menu-item>
+            </el-tooltip>
           </el-submenu>
         </el-menu>
       </el-aside>
@@ -182,6 +190,9 @@ export default {
         { text: "多选题", icon: "mdi-check-bold" },
         { text: "填空题", icon: "mdi-checkbox-blank-outline" },
         { text: "评分题", icon: "mdi-star-outline" },
+        { text: "投票单选题", icon: "mdi-radiobox-marked" },
+        { text: "投票多选题", icon: "mdi-check-bold" },
+        { text: "报名题", icon: "mdi-check-bold" }
       ],
       total_problem: 1,
       created_problem: [],
@@ -190,6 +201,7 @@ export default {
       start_time: new Date(),
       end_time: new Date(),
       has_time: false,
+      see_result: false,
     };
   },
   methods: {
@@ -397,6 +409,9 @@ export default {
 }
 .el-dialog--center .el-dialog__body {
   padding: 30px 25px 0px;
+}
+.el-switch {
+  padding-left: 10px;
 }
 </style>
 
