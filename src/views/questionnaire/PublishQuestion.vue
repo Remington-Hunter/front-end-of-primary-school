@@ -14,48 +14,56 @@
         <!-- 题目标题 -->
         <div class="question-head ">
           <div class="question-title">
-            <span class="question-seq"
-              ><b>{{ index + 1 }}</b></span
-            >
+            <span class="question-seq"><b>{{ index + 1 }}</b></span>
             <span class="text">{{ question.text }}</span>
-            <span v-if="question.required" class="question-required">*</span>
-            <el-tag v-if="question.type === 1">多选</el-tag>
+            <span
+              v-if="question.required"
+              class="question-required"
+            >*</span>
+            <el-tag v-if="[1,4,7,11].includes(question.type)">多选</el-tag>
           </div>
           <div class="q-instruction">{{ question.comment }}</div>
         </div>
 
         <div class="question-body ">
           <!-- 单选题 -->
-          <div v-if="question.type === 0">
+          <div v-if="[0,6,10].includes(question.type)">
             <el-radio-group v-model="question.radio">
               <el-radio
                 v-for="(item, index) in question.selectionList"
                 :key="index"
                 :label="index"
               >
-                {{ item }}</el-radio
-              >
+                {{ item.content }}
+                <div class="q-instruction">{{ item.comment }}</div>
+              </el-radio>
             </el-radio-group>
           </div>
           <!-- 多选题 -->
-          <div v-else-if="question.type === 1">
+          <div v-else-if="[1,4,7,11].includes(question.type)">
             <el-checkbox-group v-model="question.checkList">
               <el-checkbox
                 v-for="(item, index) in question.selectionList"
                 :key="index"
                 :label="index"
-                >{{ item }}</el-checkbox
-              >
+              >{{ item.content }} <span
+                  class="sel-total"
+                  v-show="item.total"
+                >(剩余{{item.total}})</span>
+                <span class="q-instruction">{{ item.comment }}</span>
+              </el-checkbox>
             </el-checkbox-group>
           </div>
           <!-- 评分题 -->
           <div v-else-if="question.type === 3">
             <el-rate
-              v-model="question.rating"
+              v-model="
+            question.rating"
               :icon-classes="iconClasses"
               void-icon-class="icon-rate-face-off"
               :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
-            ></el-rate>
+            >
+            </el-rate>
           </div>
           <!-- 填空题 -->
           <div v-else-if="question.type === 2">
@@ -74,9 +82,13 @@
           >提交</el-button
         >
       </div> -->
-      <div class="page-control"><el-button type="text" @click="dialogVisible = true" :disabled="state"
-        >提交</el-button
-      ></div>
+      <div class="page-control">
+        <el-button
+          type="text"
+          @click="dialogVisible = true"
+          :disabled="state"
+        >提交</el-button>
+      </div>
 
       <el-dialog
         title="提示"
@@ -85,10 +97,14 @@
         :before-close="handleClose"
       >
         <span>提交后不能够更改,确定提交?</span>
-        <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="dialogVisible = false;submit()"
-            >确 定</el-button
-          >
+        <span
+          slot="footer"
+          class="dialog-footer"
+        >
+          <el-button
+            type="primary"
+            @click="dialogVisible = false;submit()"
+          >确 定</el-button>
           <el-button @click="dialogVisible = false">取 消</el-button>
         </span>
       </el-dialog>
@@ -133,7 +149,7 @@ export default {
         .then((_) => {
           done();
         })
-        .catch((_) => {});
+        .catch((_) => { });
     },
     submit() {
       var x = {};
@@ -215,7 +231,7 @@ export default {
       });
     },
   },
-  created() {},
+  created() { },
 };
 </script>
 
