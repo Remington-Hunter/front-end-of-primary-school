@@ -29,7 +29,7 @@
           <v-row>
             <v-col
               cols="12"
-              sm="10"
+              sm="8"
             >
               <v-text-field
                 :label="'选项' + (index + 1)"
@@ -38,14 +38,19 @@
             </v-col>
             <v-col
               cols="12"
-              sm="2"
+              sm="4"
               v-if="problem_type === '报名单选题'||problem_type === '报名多选题'"
             >
-              <v-text-field
-                label="名额设置"
-                type=number
-                v-model="selection_list[index].total"
-              ></v-text-field>
+              <div class="set-num">设置名额<el-input-number
+                  v-model="selection_list[index].total"
+                  controls-position="right"
+                  @change="handleChange"
+                  :min="1"
+                  :max="99999"
+                  size="small"
+                ></el-input-number>
+              </div>
+
             </v-col>
           </v-row>
           <v-text-field
@@ -360,6 +365,12 @@ export default {
 .del {
   margin-bottom: 15px;
   height: 35px;
+}
+.set-num {
+  margin-top: 20px;
+}
+.el-input-number {
+  padding-left: 20px;
 }
 </style>
 
