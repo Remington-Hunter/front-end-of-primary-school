@@ -143,7 +143,7 @@ export default {
         var data1 = new FormData();
         var questionnaireId = this.ma.split("_");
         data1.append("id",questionnaireId[0]);
-        alert(questionnaireId[0])
+        // alert(questionnaireId[0])
         axios({
           url: "http://82.157.97.70/api/questionnaire/get_new_link",
           method: "post",
