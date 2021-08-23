@@ -20,16 +20,21 @@
         class="elevation-1"
     >
       <template v-slot:[`item.actions`]="{ item }">
-        <v-icon size=14px class="mr-2" @click="copyItem(item.id)" title="复制">
+        <v-icon
+          size=14px
+          class="mr-2"
+          @click="copyItem(item.id)"
+          title="复制"
+        >
           mdi-content-copy
         </v-icon>
         <v-icon small @click="deleteItem(item.id)" title="删除"> mdi-trash-can-outline</v-icon>
       </template>
       <template v-slot:[`item.actions1`]="{ item }">
-        <v-icon v-if="is_publish" size=14px class="mr-2" @click="startItem(item.id)" title="开始">
+        <v-icon size=14px class="mr-2" @click="startItem(item.id)" title="开始">
           mdi-arrow-right-drop-circle
         </v-icon>
-        <v-icon v-else size=14px class="mr-2" @click="stopItem(item.id)" title="开始">
+        <v-icon size=14px class="mr-2" @click="stopItem(item.id)" title="停止">
           mdi-pause-circle
         </v-icon>
         <v-icon small @click="modifyItem(item.id)" title="修改"> mdi-pencil-outline</v-icon>
@@ -47,7 +52,6 @@ import axios from "axios";
 export default {
   data() {
     return {
-      is_publish: true,
       sortBy: "date",
       sortDesc: false,
       search: "",
@@ -95,9 +99,6 @@ export default {
     checkAnalysis(id) {
       this.$router.push({name: 'crossanalysis', params: {id: id}})
     },
-    change_is_publish() {
-      this.is_publish = !this.is_publish
-    },
     modifyItem(item) {
       var Data = new FormData();
       Data.append('questionnaireId', item);
@@ -127,15 +128,18 @@ export default {
         },
       }).then((res) => {
         console.log(res);
-        this.getItem();
-        this.change_is_publish();
+        for(var i=0;i<this.desserts.length;i++){
+          if(this.desserts[i].id===item){
+            this.desserts[i].state="已发布"
+          }
+        }
       })
     },
-    stopItem(item) {
+    stopItem(item){
       var Data = new FormData();
       Data.append("questionnaireId", item)
       axios({
-        url: 'http://82.157.97.70/api/questionnaire/publish_questionnaire',
+        url: 'http://82.157.97.70/api/questionnaire/stop_questionnaire',
         method: 'post',
         data: Data,
         headers: {
@@ -144,8 +148,11 @@ export default {
         },
       }).then((res) => {
         console.log(res);
-        this.getItem();
-        this.change_is_publish();
+        for(var i=0;i<this.desserts.length;i++){
+          if(this.desserts[i].id===item){
+            this.desserts[i].state="已停止"
+          }
+        }
       })
     },
     checkItem(item) {
