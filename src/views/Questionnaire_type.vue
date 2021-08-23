@@ -20,6 +20,7 @@
               class="ma-2"
               color="primary"
               :to="'/edit'+'/'+0"
+              @click="saveQues_normal"
             >
               <!-- to进行跳转 由于普通问卷页面没有做好，这里先转到home试一下-->
               创建
@@ -122,11 +123,38 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
-      type: ""
+      type: "",
+      current_questionnaire:{},
     }
+  },
+  methods:{
+    saveQues_normal() {
+      this.current_questionnaire.userId = window.localStorage.getItem("user_id")
+      this.current_questionnaire.type = 0;
+      var formData = this.current_questionnaire
+      // console.log(JSON.stringify(formData));
+      axios({
+        method: "post",
+        url: "http://82.157.97.70/api/questionnaire/save_questionnaire",
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
+        },
+        data: JSON.stringify(formData),
+      }).then((res) => {
+        console.log(res);
+        this.current_questionnaire.id = res.data.data;
+        if (res.data.code === 200 || res.data.code === 201) {
+          this.is_saved = true
+          this.questionnaire_id = res.data.data
+        }
+      });
+    },
   }
 }
 </script>

@@ -171,7 +171,7 @@ export default {
         if (this.is_creating === true || this.total_problem === 1) { return }
         // var formData = this.current_questionnaire
         var formData = new FormData();
-        console.log(this.current_questionnaire.id);
+        // alert(this.current_questionnaire.id);
         formData.append("questionnaireId", this.current_questionnaire.id)
         axios({
           method: "post",
