@@ -39,16 +39,16 @@
             <el-button @click="goto(3)">
               <span>柱状图</span>
             </el-button>
-            <div style="width: 600px; height: 400px" v-if="id === 1">
+            <div style="width: 600px; height: 400px" v-if="type === 1">
               <drawLine
                 :id="LineToString(index)"
                 :series="line[index]"
               ></drawLine>
             </div>
-            <div style="width: 600px; height: 400px" v-if="id === 2">
+            <div style="width: 600px; height: 400px" v-if="type === 2">
               <drawPie :id="PieToString(index)" :series="pie[index]"></drawPie>
             </div>
-            <div style="width: 600px; height: 400px" v-if="id === 3">
+            <div style="width: 600px; height: 400px" v-if="type === 3">
               <drawCol :id="ColToString(index)" :series="col[index]"></drawCol>
             </div>
           </div>
@@ -137,6 +137,7 @@ export default {
       line: [],
       completion: [],
       historyList: [],
+      type:1
     };
   },
   components: {
@@ -268,8 +269,10 @@ export default {
     //     formatJson(filterVal, jsonData) {
     // 　　　　　　return jsonData.map(v => filterVal.map(j => v[j]))
     // 　　　　},
-    goto(id) {
-      this.id = id;
+    goto(type) {
+      this.getseries()
+      this.type = type;
+      console.log(121);
     },
     PieToString(val) {
       return "pie" + val;
