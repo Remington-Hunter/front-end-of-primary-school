@@ -20,53 +20,24 @@
     </div>
     <div id="demo1" style="">
       <div v-for="(item, index) in data" :key="(item, index)">
-        <div v-if="data[index].question.type === 2">
-          <div>题目{{ index + 1 }}</div>
-          <Completion :data1="completion[index]"></Completion>
-        </div>
-        <div v-else>
-          <div v-if="bar[index].length !== 0">
-            <div>题目{{ index + 1 }}</div>
-            <div style="width: 600px; height: 400px">
-              <drawBar :id="BarToString(index)" :series="bar[index]"></drawBar>
-            </div>
-            <el-button @click="goto(1)">
-              <span>折线图</span>
-            </el-button>
-            <el-button @click="goto(2)">
-              <span>饼图</span>
-            </el-button>
-            <el-button @click="goto(3)">
-              <span>柱状图</span>
-            </el-button>
-            <div style="width: 600px; height: 400px" v-if="type === 1">
-              <drawLine
-                :id="LineToString(index)"
-                :series="line[index]"
-              ></drawLine>
-            </div>
-            <div style="width: 600px; height: 400px" v-if="type === 2">
-              <drawPie :id="PieToString(index)" :series="pie[index]"></drawPie>
-            </div>
-            <div style="width: 600px; height: 400px" v-if="type === 3">
-              <drawCol :id="ColToString(index)" :series="col[index]"></drawCol>
-            </div>
+        <div>第{{ index + 1 }}题：
+            <span>{{data[index].question.content}}</span>  
+            
+            <!-- 上面的是题目内容 -->
+            <span v-if="data[index].question.type==0">单选题</span>
+            <span v-if="data[index].question.type==1">多选题</span>
+            <span v-if="data[index].question.type==2">填空题</span>
+            <span v-if="data[index].question.type==3">评分题</span>
           </div>
-          <div v-else>题目{{ index + 1 }}的数据为空</div>
-        </div>
-      </div>
-      <div>
-        <div v-for="(item, index) in col" :key="(item, index)">
-          <div v-if="data[index].question.type === 2">
-            <div>题目{{ index + 1 }}</div>
-            <el-table :data="completion[index]" style="width: 100%">
-              <el-table-column label="id" width="180">
+        <div v-if="data[index].question.type === 2">
+          <el-table :data="completion[index]" style="width: 100%">
+              <el-table-column label="序号" width="180">
                 <template slot-scope="scope">
                   <!-- <i class="el-icon-time"></i> -->
                   <span style="margin-left: 10px">{{ scope.row.id }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="content" width="180">
+              <el-table-column label="内容" width="180">
                 <template slot-scope="scope1">
                   <!-- <i class="el-icon-time"></i> -->
                   <span style="margin-left: 10px">{{
@@ -83,22 +54,74 @@
                 </template>
               </el-table-column> -->
             </el-table>
+        </div>
+        <div v-else>
+          <div v-if="bar[index].length !== 0">
+            <!-- <Completion :data1="completion[index]"></Completion> -->
+            <div v-if="type==0">
+              <el-table :data="completion[index]" style="width: 100%">
+                <el-table-column label="content" width="180">
+                  <template slot-scope="scope2">
+                    <!-- <i class="el-icon-time"></i> -->
+                    <span style="margin-left: 10px">{{
+                      scope2.row.content
+                    }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="num" width="180">
+                  <template slot-scope="scope3">
+                    <!-- <i class="el-icon-time"></i> -->
+                    <span style="margin-left: 10px">{{ scope3.row.num }}</span>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </div>
+            <div style="width: 600px; height: 400px" v-if="type === 1">
+              <drawBar :id="BarToString(index)" :series="bar[index]"></drawBar>
+            </div>
+            <div style="width: 600px; height: 400px" v-if="type === 2">
+              <drawLine
+                :id="LineToString(index)"
+                :series="line[index]"
+              ></drawLine>
+            </div>
+            <div style="width: 600px; height: 400px" v-if="type === 3">
+              <drawPie :id="PieToString(index)" :series="pie[index]"></drawPie>
+            </div>
+            <div style="width: 600px; height: 400px" v-if="type === 4">
+              <drawCol :id="ColToString(index)" :series="col[index]"></drawCol>
+            </div>
+            <el-button @click="goto(0)">
+              <span>表格</span>
+            </el-button>
+            <el-button @click="goto(1)">
+              <span>条形图</span>
+            </el-button>
+            <el-button @click="goto(2)">
+              <span>折线图</span>
+            </el-button>
+            <el-button @click="goto(3)">
+              <span>饼图</span>
+            </el-button>
+            <el-button @click="goto(4)">
+              <span>柱状图</span>
+            </el-button>
+            
           </div>
           <div v-else>
-            <div>题目{{ index + 1 }}</div>
             <el-table :data="completion[index]" style="width: 100%">
-              <el-table-column label="content" width="180">
-                <template slot-scope="scope2">
+              <el-table-column label="id" width="180">
+                <template slot-scope="scope">
                   <!-- <i class="el-icon-time"></i> -->
-                  <span style="margin-left: 10px">{{
-                    scope2.row.content
-                  }}</span>
+                  <span style="margin-left: 10px">{{ scope.row.id }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="num" width="180">
-                <template slot-scope="scope3">
+              <el-table-column label="content" width="180">
+                <template slot-scope="scope1">
                   <!-- <i class="el-icon-time"></i> -->
-                  <span style="margin-left: 10px">{{ scope3.row.num }}</span>
+                  <span style="margin-left: 10px">{{
+                    scope1.row.content
+                  }}</span>
                 </template>
               </el-table-column>
             </el-table>
@@ -137,7 +160,7 @@ export default {
       line: [],
       completion: [],
       historyList: [],
-      type:1
+      type:0
     };
   },
   components: {
@@ -273,6 +296,9 @@ export default {
       // this.getseries()
       this.type = type;
       console.log(121);
+    },
+    ComToString(val) {
+      return "com" + val;
     },
     PieToString(val) {
       return "pie" + val;
