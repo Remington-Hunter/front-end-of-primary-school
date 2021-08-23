@@ -4,8 +4,10 @@
     :headerTitle="headerTitle"
     :subtitle="subtitle"
     :questionList="questionList"
-    :questionnaireId="current_questionnaire.questionnaire.id"/>
+    :questionnaireId="current_questionnaire.questionnaire.id"
+    v-show="can_write_state"/>
     <!-- <div  type="primary" style="text-align: center;display: block" @click="send_Info()"><el-button big>提交</el-button></div> -->
+    <div v-show="!can_write_state">不在填写时间内</div>
   </div>
 
 </template>
@@ -13,6 +15,7 @@
 <script>
 import axios from "axios";
 import PublishQuestion from "./questionnaire/PublishQuestion.vue";
+import { dateFormat } from "../utils/dateFormat";
 export default {
   name: "CollectQuestion",
   components: {
@@ -26,6 +29,7 @@ export default {
       subtitle:
         "为了给您提供更好的服务，希望您能抽出几分钟时间，将您的感受和建议告诉我们，我们非常重视每位用户的宝贵意见，期待您的参与！现在我们就马上开始吧！",
       questionList: [],
+      can_write_state: true
     };
   },
   methods: {
@@ -64,6 +68,19 @@ export default {
       }).then((res) => {
         console.log(res.data.data);
         this.current_questionnaire = res.data.data;
+        console.log(dateFormat(new Date()));
+        if(this.current_questionnaire.questionnaire.startTime === null || this.current_questionnaire.questionnaire.startTime === null){
+          this.can_write_state = true
+        }
+        else{
+          if(dateFormat(new Date()) >=this.current_questionnaire.questionnaire.startTime 
+          && dateFormat(new Date()) <=this.current_questionnaire.questionnaire.endTime){
+            this.can_write_state= true
+          }
+          else{
+            this.can_write_state = false
+          }
+        }
         this.showInfo();
       });
     },

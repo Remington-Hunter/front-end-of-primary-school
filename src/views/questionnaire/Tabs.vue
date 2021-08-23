@@ -127,7 +127,8 @@ export default {
       lianjie: '',
       dialogVisible: false,
       questionnaire_type:"",//问卷类型
-      is_saved:false
+      is_saved:false,
+      questionnaire_id:-1
     };
   },
   methods: {
@@ -142,6 +143,9 @@ export default {
       if (this.is_creating === true || this.total_problem === 1) {
         return
       }
+      if(this.questionnaire_id !== -1){
+        this.current_questionnaire.id=this.questionnaire_id
+      }
       this.current_questionnaire.type= this.questionnaire_type
       var formData = this.current_questionnaire
       axios({
@@ -155,7 +159,9 @@ export default {
       }).then((res) => {
         console.log(res);
         this.current_questionnaire.id = res.data.data;
-        this.is_saved = true
+        if(res.data.code === 200 || res.data.code === 201){
+          this.is_saved = true
+        }
         if (this.is_creating === true || this.total_problem === 1) { return }
         // var formData = this.current_questionnaire
         var formData = new FormData();
@@ -180,7 +186,12 @@ export default {
       if (this.is_creating === true || this.total_problem === 1) {
         return
       }
-      this.current_questionnaire.type= 0
+      if(this.questionnaire_id !== -1){
+        this.current_questionnaire.id=this.questionnaire_id
+      }
+      console.log(this.questionnaire_id);
+      console.log(this.current_questionnaire.id);
+      this.current_questionnaire.type= this.questionnaire_type
       var formData = this.current_questionnaire
       axios({
         method: "post",
@@ -193,7 +204,10 @@ export default {
       }).then((res) => {
         console.log(res);
         this.current_questionnaire.id = res.data.data;
-        this.is_saved = true
+        if(res.data.code === 200 || res.data.code === 201){
+          this.is_saved = true
+          this.questionnaire_id=res.data.data
+        }
       });
     },
     getCurrentQuestionnaire(obj) {
