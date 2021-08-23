@@ -10,7 +10,7 @@
 
         <v-img
           height="250"
-          src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
+          src="../assets/cooking.png"
         ></v-img>
 
         <!-- <v-avatar style="left:40%">
@@ -188,6 +188,7 @@ export default
     }),
     methods:
     {
+      
       phoneChange(){
         this.phoneDialog=true;
         var Data=new FormData();
