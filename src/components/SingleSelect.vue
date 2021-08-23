@@ -26,11 +26,25 @@
           v-for="(item, index) in selection_list"
           :key="(item, index)"
         >
+
           <v-text-field
-            :label="'选项' + (index + 1)"
-            v-model="selection_list[index]"
+            label="选项内容"
+            v-model="selection_list[index].content"
           ></v-text-field>
-          <v-btn @click="delete_item(index)">删除</v-btn>
+          <v-text-field
+            label="备注"
+            v-model="selection_list[index].comment"
+          ></v-text-field>
+          <div class="del">
+            <v-btn
+              @click="delete_item(index)"
+              text
+              color="primary"
+              style="float: right;"
+            >
+              <v-icon>mdi-delete-outline</v-icon>删除选项
+            </v-btn>
+          </div>
         </div>
         <div>
           <el-button @click="add_selection"><i class="el-icon-plus"></i> 新建选项</el-button>
@@ -108,7 +122,7 @@
             >
               <v-text-field
                 :label="'选项' + (index + 1)"
-                v-model="selection_list[index]"
+                v-model="selection_list[index].content"
               ></v-text-field>
             </v-col>
             <v-col
@@ -118,9 +132,14 @@
               <v-text-field
                 label="名额设置"
                 type=number
+                v-model="selection_list[index].total"
               ></v-text-field>
             </v-col>
           </v-row>
+          <v-text-field
+            label="备注"
+            v-model="selection_list[index].comment"
+          ></v-text-field>
         </div>
         <div>
           <el-button @click="add_selection"><i class="el-icon-plus"></i> 新建选项</el-button>
@@ -168,15 +187,20 @@
           </div>
         </div>
 
-        <div v-else-if="problem_type==='多选题' || problem_type==='投票多选题'">
+        <div v-else-if="problem_type==='多选题' || problem_type==='投票多选题' || problem_type==='报名题'">
           <div>
             <el-checkbox-group v-model="checkList">
               <el-checkbox
                 v-for="(item, index) in selection_list"
                 :key="(item, index)"
-                :label="item"
-              >
+                :label="item.content"
+              >{{item.content}}<span class="q-instruction">{{ item.comment }}</span>
+                <span
+                  class="sel-total"
+                  v-show="item.total"
+                >(剩余{{item.total}})</span>
               </el-checkbox>
+
             </el-checkbox-group>
           </div>
         </div>
@@ -186,12 +210,12 @@
             v-for="(item, index) in selection_list"
             :key="(item, index)"
           >
-            <template>
-              <el-radio
-                v-model="radio"
-                :label="index"
-              >{{ item }}</el-radio>
-            </template>
+            <el-radio
+              v-model="radio"
+              :label="index"
+            >{{ item.content }}
+            </el-radio>
+            <div class="q-instruction">{{ item.comment }}</div>
           </div>
         </div>
       </div>
@@ -319,9 +343,9 @@ export default {
     },
   },
   methods: {
-    delete_item(index){
+    delete_item(index) {
       console.log(index);
-      this.selection_list.splice(index,1)
+      this.selection_list.splice(index, 1)
       console.log(this.selection_list);
     },
     copy_array(arr1) {
@@ -332,7 +356,9 @@ export default {
       return arr2;
     },
     add_selection() {
-      this.selection_list.push("选项");
+      let sel = {};
+      sel.content = '';
+      this.selection_list.push(sel);
     },
     selectConfirm() {
       this.ismodify = false;
@@ -352,7 +378,8 @@ export default {
     },
     created() { },
   },
-};
+
+}
 </script>
 
 <style scoped>
@@ -372,6 +399,14 @@ export default {
 .required {
   margin-bottom: 15px;
 }
+.sel-total {
+  padding-left: 10px;
+  color: #feae3a;
+}
+.del {
+  margin-bottom: 15px;
+  height: 25px;
+}
 </style>
 
 <style lang="scss">
@@ -388,13 +423,3 @@ export default {
   line-height: 10px;
 }
 </style>
-
-<style >
-.el-input .el-input {
-  width: 130px;
-}
-.input-with-select .el-input-group__prepend {
-  background-color: #fff;
-}
-</style>
-
