@@ -161,6 +161,7 @@ export default {
         this.current_questionnaire.id = res.data.data;
         if(res.data.code === 200 || res.data.code === 201){
           this.is_saved = true
+          this.questionnaire_id=res.data.data
         }
         if (this.is_creating === true || this.total_problem === 1) { return }
         // var formData = this.current_questionnaire
