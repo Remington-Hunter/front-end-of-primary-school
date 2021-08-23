@@ -31,13 +31,19 @@
         <v-icon small @click="deleteItem(item.id)" title="删除"> mdi-trash-can-outline</v-icon>
       </template>
       <template v-slot:[`item.actions1`]="{ item }">
-        <v-icon size=14px class="mr-2" @click="startItem(item.id)" title="开始">
+        <v-icon size=14px class="mr-2" @click="startItem(item.id)" title="发布">
           mdi-arrow-right-drop-circle
         </v-icon>
         <v-icon size=14px class="mr-2" @click="stopItem(item.id)" title="停止">
           mdi-pause-circle
         </v-icon>
-        <v-icon small @click="modifyItem(item.id)" title="修改" > mdi-pencil-outline</v-icon>
+        <!--   第一种方式-->
+        <v-icon small @click="modifyItem_first(item.id)" title="修改第一种办法" > mdi-pencil-outline</v-icon>
+        <!--   第二种方式-->
+        <v-icon small @click="modifyItem_second(item.id)" title="修改第二种办法" > mdi-pencil-outline</v-icon>
+        <!--   第三种方式-->
+        <v-icon small @click="modifyItem_third(item.id)" title="修改第三种办法" > mdi-pencil-outline</v-icon>
+
         <v-icon small @click="lookUpLink(item.id)" title="查看链接" style="margin-left: 1%"> mdi-magnify</v-icon>
         <v-icon small @click="checkAnalysis(item.id)" title="统计结果" style="margin-left: 1%"> mdi-poll</v-icon>
       </template>
@@ -100,11 +106,43 @@ export default {
     checkAnalysis(id) {
       this.$router.push({name: 'crossanalysis', params: {id: id}})
     },
-    modifyItem(item) {
+    modifyItem_first(item) {
+      var Data = new FormData();
+      Data.append('id', item);
+      axios({
+        url: 'http://82.157.97.70/api/questionnaire/edit_qusetionnaire',
+        method: 'post',
+        data: Data,
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
+        },
+      }).then((res) => {
+        console.log(res);
+        this.getItem();
+      })
+    },
+    modifyItem_third(item) {
       var Data = new FormData();
       Data.append('id', item);
       axios({
         url: 'http://82.157.97.70/api/questionnaire/throw_and_get_new_questionnaire',
+        method: 'post',
+        data: Data,
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
+        },
+      }).then((res) => {
+        console.log(res);
+        this.getItem();
+      })
+    },
+    modifyItem_second(item) {
+      var Data = new FormData();
+      Data.append('id', item);
+      axios({
+        url: 'http://82.157.97.70/api/questionnaire/delete_and_get_questionnaire_by_id',
         method: 'post',
         data: Data,
         headers: {
