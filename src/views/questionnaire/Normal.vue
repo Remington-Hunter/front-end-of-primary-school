@@ -9,13 +9,34 @@
           <el-submenu index="1">
             <template slot="title"><i class="el-icon-menu"></i>题目控件</template>
             <el-menu-item
-              v-for="(item, index) in problem_list"
+              v-for="(item, index) in problem_list0"
               :key="(item, index)"
               @click="newProblem(item.text, false, {})"
             >
               <v-icon>{{ item.icon }}</v-icon>
               {{ item.text }}
             </el-menu-item>
+            <div v-if="type===1">
+              <el-menu-item
+                v-for="(item, index) in problem_list1"
+                :key="(item, index)"
+                @click="newProblem(item.text, false, {})"
+              >
+                <v-icon>{{ item.icon }}</v-icon>
+                {{ item.text }}
+              </el-menu-item>
+            </div>
+
+            <div v-if="type===2">
+              <el-menu-item
+                v-for="(item, index) in problem_list2"
+                :key="(item, index)"
+                @click="newProblem(item.text, false, {})"
+              >
+                <v-icon>{{ item.icon }}</v-icon>
+                {{ item.text }}
+              </el-menu-item>
+            </div>
           </el-submenu>
           <el-submenu index="2">
             <template slot="title"><i class="el-icon-setting"></i>问卷设置</template>
@@ -179,10 +200,10 @@ export default {
   components: {
     SingleSelect,
   },
+  props: ['type'],
   data() {
     return {
       value1: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
-
       title: "题目",
       description:
         "为了给您提供更好的服务，希望您能抽出几分钟时间，将您的感受和建议告诉我们，我们非常重视每位用户的宝贵意见，期待您的参与！现在我们就马上开始吧！",
@@ -190,13 +211,17 @@ export default {
       dialogFormVisible: false,
       dialogTimeVisible: false,
       question_id: "123",
-      problem_list: [
+      problem_list0: [
         { text: "单选题", icon: "mdi-radiobox-marked" },
         { text: "多选题", icon: "mdi-check-bold" },
         { text: "填空题", icon: "mdi-checkbox-blank-outline" },
         { text: "评分题", icon: "mdi-star-outline" },
+      ],
+      problem_list1: [
         { text: "投票单选题", icon: "mdi-radiobox-marked" },
         { text: "投票多选题", icon: "mdi-check-bold" },
+      ],
+      problem_list2: [
         { text: "报名单选题", icon: "mdi-radiobox-marked" },
         { text: "报名多选题", icon: "mdi-check-bold" }
       ],
