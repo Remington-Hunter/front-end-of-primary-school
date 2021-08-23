@@ -298,7 +298,11 @@ export default {
     },
   },
   created() {
+    let query = this.$route.query;
     this.questionnaire_type = parseInt(this.$route.params.type)
+    this.questionnaire_id = query.id;
+    // alert(this.questionnaire_id)
+    console.log(this.questionnaire_id)
     console.log(this.questionnaire_type);
   }
 };

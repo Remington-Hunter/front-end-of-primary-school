@@ -19,7 +19,6 @@
             <v-btn
               class="ma-2"
               color="primary"
-              :to="'/edit'+'/'+0"
               @click="saveQues_normal"
             >
               <!-- to进行跳转 由于普通问卷页面没有做好，这里先转到home试一下-->
@@ -46,6 +45,7 @@
             <v-btn
               class="ma-2"
               color="primary"
+              @click="saveQues_toupiao"
               :to="'/edit'+'/'+1"
             >
               <!-- to进行跳转 由于普通问卷页面没有做好，这里先转到home试一下-->
@@ -77,6 +77,7 @@
             <v-btn
               class="ma-2"
               color="primary"
+              @click="saveQues_baoming"
               :to="'/edit'+'/'+2"
             >
               <!-- to进行跳转 由于普通问卷页面没有做好，这里先转到home试一下-->
@@ -136,8 +137,10 @@ export default {
     saveQues_normal() {
       this.current_questionnaire.userId = window.localStorage.getItem("user_id")
       this.current_questionnaire.type = 0;
+      this.current_questionnaire.questionList = []
+      // this.current_questionnaire.title = "题目";
       var formData = this.current_questionnaire
-      // console.log(JSON.stringify(formData));
+      console.log(JSON.stringify(formData));
       axios({
         method: "post",
         url: "http://82.157.97.70/api/questionnaire/save_questionnaire",
@@ -149,12 +152,66 @@ export default {
       }).then((res) => {
         console.log(res);
         this.current_questionnaire.id = res.data.data;
+        this.$router.push({path:"/edit/0",query:{id:this.current_questionnaire.id}})
+        if (res.data.code === 200 || res.data.code === 201) {
+          this.is_saved = true
+          this.questionnaire_id = res.data.data
+        }
+        // alert(this.current_questionnaire.id);
+      });
+    },
+    saveQues_toupiao() {
+      this.current_questionnaire.userId = window.localStorage.getItem("user_id")
+      this.current_questionnaire.type = 1;
+      this.current_questionnaire.questionList = []
+      // this.current_questionnaire.title = "题目";
+      var formData = this.current_questionnaire
+      console.log(JSON.stringify(formData));
+      axios({
+        method: "post",
+        url: "http://82.157.97.70/api/questionnaire/save_questionnaire",
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
+        },
+        data: JSON.stringify(formData),
+      }).then((res) => {
+        console.log(res);
+        this.current_questionnaire.id = res.data.data;
+        this.$router.push({path:"/edit/0",query:{id:this.current_questionnaire.id}})
         if (res.data.code === 200 || res.data.code === 201) {
           this.is_saved = true
           this.questionnaire_id = res.data.data
         }
       });
     },
+    saveQues_baoming() {
+      this.current_questionnaire.userId = window.localStorage.getItem("user_id")
+      this.current_questionnaire.type = 2;
+      this.current_questionnaire.questionList = []
+      // this.current_questionnaire.title = "题目";
+      var formData = this.current_questionnaire
+      console.log(JSON.stringify(formData));
+      axios({
+        method: "post",
+        url: "http://82.157.97.70/api/questionnaire/save_questionnaire",
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
+        },
+        data: JSON.stringify(formData),
+      }).then((res) => {
+        console.log(res);
+        this.current_questionnaire.id = res.data.data;
+        this.$router.push({path:"/edit/0",query:{id:this.current_questionnaire.id}})
+        if (res.data.code === 200 || res.data.code === 201) {
+          this.is_saved = true
+          this.questionnaire_id = res.data.data
+        }
+        // alert(this.current_questionnaire.id);
+      });
+    },
+
   }
 }
 </script>
