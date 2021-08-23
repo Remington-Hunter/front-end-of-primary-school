@@ -73,6 +73,7 @@
           type="primary"
           id="btn"
           @click="submit"
+          :disabled="state"
         >提交</el-button>
       </div>
     </div>
@@ -106,6 +107,7 @@ export default {
   data() {
     return {
       iconClasses: ["icon-rate-face-1", "icon-rate-face-2", "icon-rate-face-3"],
+      state:false
     };
   },
   methods: {
@@ -185,6 +187,7 @@ export default {
         data: JSON.stringify(x),
       }).then((res) => {
         console.log(res);
+        this.state=true
       });
     },
   },
