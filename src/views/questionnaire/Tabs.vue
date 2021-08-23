@@ -52,7 +52,7 @@
         <el-button
           v-if="option"
           type="primary"
-          icon="el-icon-pause"
+          icon="el-icon-video-pause"
           :disabled="state"
           plain
           @click="change_prepare_state"
