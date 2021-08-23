@@ -15,12 +15,13 @@
                 <button
                     type="button"
                     class="ui-button"
-                    @click="copy()"
+                    id="btn"
+                    @click="copy"
                 >复制
                 </button>
                 <div class="copy-text-input">
                   <input
-                      id = "textAreas"
+                      id="demoInput"
                       type="text"
                       disabled=""
                       class="ui-input"
@@ -40,9 +41,8 @@
                 class="ui-button"
                 id="down"
                 target="_blank"
-                href="/survey/get_qrcode?url=https%3A%2F%2Fwj.qq.com%2Fs2%2F8918766%2Fdd18%2F&amp;type=3"
+                @click="download_link"
             >下载二维码</a></el-col>
-
             <el-col
                 :span="4"
                 id="share-method-qq"
@@ -110,7 +110,9 @@
         </el-col>
       </el-row>
     </div>
-    <div><el-button @click="get_link()">获得新链接</el-button></div>
+    <div>
+      <el-button @click="get_link()">获得新链接</el-button>
+    </div>
   </div>
 </template>
 
@@ -132,32 +134,48 @@ export default {
       defalut: ''
     }
   },
+  data(){
+    return{
+      download_lianjie:"",
+    }
+  },
   methods: {
     copy() {
-      var e = document.getElementById("textAreas");
-      e.select(); // 选择对象
-      document.execCommand("Copy"); // 执行浏览器复制命令
-      alert("内容复制成功！");
+      const btn = document.querySelector('#btn');
+      btn.addEventListener('click', () => {
+        const input = document.querySelector('#demoInput');
+        input.select();
+        if (document.execCommand('copy')) {
+          document.execCommand('copy');
+          console.log('复制成功');
+        }
+      })
     },
-    get_link(){
-        var data1 = new FormData();
-        var questionnaireId = this.ma.split("_");
-        data1.append("id",questionnaireId[0]);
-        // alert(questionnaireId[0])
-        axios({
-          url: "http://82.157.97.70/api/questionnaire/get_new_link",
-          method: "post",
-          data: data1,
-          headers: {
-            Authorization: window.localStorage.getItem("authorization"),
-          },
-        }).then((res) => {
-          console.log(res);
-          this.input = 'http://82.157.97.70/vj/';
-          this.input += res.data.data;
-          this.lianjie = 'http://82.157.97.70/api/qrcode/getQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
-          //alert(this.input);
-        });
+    download_link() {
+      this.download_lianjie='http://82.157.97.70/vj/';
+      this.download_lianjie+=this.input;
+      this.download_lianjie = 'http://82.157.97.70/api/qrcode/downloadQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
+      console.log(this.download_lianjie);
+    },
+    get_link() {
+      var data1 = new FormData();
+      var questionnaireId = this.ma.split("_");
+      data1.append("id", questionnaireId[0]);
+      // alert(questionnaireId[0])
+      axios({
+        url: "http://82.157.97.70/api/questionnaire/get_new_link",
+        method: "post",
+        data: data1,
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+        },
+      }).then((res) => {
+        console.log(res);
+        this.input = 'http://82.157.97.70/vj/';
+        this.input += res.data.data;
+        this.lianjie = 'http://82.157.97.70/api/qrcode/getQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
+        //alert(this.input);
+      });
     }
   },
 };
