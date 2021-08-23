@@ -102,6 +102,11 @@ const routes = [{
         component: () =>
             import ('../views/Mine/Children/Try.vue')
     },
+    {
+        path:'/ana',
+        name:'Analysis',
+        component: () => import('../views/Analysis.vue')
+    },
 ]
 
 const router = new VueRouter({
