@@ -74,7 +74,7 @@ const routes = [{
             import ('../components/Echarts.vue')
     },
     {
-        path: '/edit',
+        path: '/edit/:type',
         name: 'Edit',
         component: () =>
             import ('../views/questionnaire/Tabs.vue')

@@ -22,6 +22,7 @@
             >*</span>
             <el-tag v-if="question.type === 1">多选</el-tag>
           </div>
+          <div class="q-instruction">{{ question.comment }}</div>
         </div>
 
         <div class="question-body ">
@@ -72,6 +73,7 @@
           type="primary"
           id="btn"
           @click="submit"
+          :disabled="state"
         >提交</el-button>
       </div>
     </div>
@@ -105,6 +107,7 @@ export default {
   data() {
     return {
       iconClasses: ["icon-rate-face-1", "icon-rate-face-2", "icon-rate-face-3"],
+      state:false
     };
   },
   methods: {
@@ -113,6 +116,7 @@ export default {
       x.questionnaireId = this.questionnaireId;
       var list = [];
       console.log(this.questionList.length);
+      console.log(this.questionList)
       for (var i = 0; i < this.questionList.length; i++) {
         var z = {};
         var y = this.questionList[i];
@@ -121,7 +125,7 @@ export default {
           if (y.required) {
             if (y.radio === "") {
               alert("您有必选项未完成!");
-              return
+              return;
             } else {
               z.number = y.radio + "";
               z.content = "";
@@ -134,26 +138,31 @@ export default {
           if (y.required) {
             if (y.checkList.length === 0) {
               alert("您有必选项未完成!");
-              return
+              return;
             } else {
               z.number = "";
-              for (var i = 0; i < y.checkList.length; i++) {
-                z.number += y.checkList[i];
+              for (var j = 0; j < y.checkList.length; j++) {
+                z.number += y.checkList[j];
               }
               z.content = "";
             }
           } else {
             z.number = "";
-            for (var i = 0; i < y.checkList.length; i++) {
-              z.number += y.checkList[i];
+            for (var k = 0; k < y.checkList.length; k++) {
+              z.number += y.checkList[k];
             }
             z.content = "";
           }
-        } else if (y.type === 2) {
+        }
+       else if (y.type === 3) {
+            z.number = ""+y.rating;
+            z.content ="";
+        }
+        else if(y.type === 2){
           if (y.required) {
             if (y.answer === "") {
               alert("您有必选项未完成!");
-              return
+              return;
             } else {
               z.number = "";
               z.content = y.answer;
@@ -162,12 +171,11 @@ export default {
             z.number = "";
             z.content = y.answer;
           }
-          console.log(z);
         } else if (y.type === 3) {
           z.number = "" + y.rating;
           z.content = "";
         }
-        list.push(z)
+        list.push(z);
       }
       x.answerDtoList = list
       axios({
@@ -179,6 +187,7 @@ export default {
         data: JSON.stringify(x),
       }).then((res) => {
         console.log(res);
+        this.state=true
       });
     },
   },

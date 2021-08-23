@@ -141,6 +141,7 @@ export default {
       if (this.is_creating === true || this.total_problem === 1) {
         return
       }
+      this.current_questionnaire.type= 0
       var formData = this.current_questionnaire
       axios({
         method: "post",
@@ -177,6 +178,7 @@ export default {
       if (this.is_creating === true || this.total_problem === 1) {
         return
       }
+      this.current_questionnaire.type= 0
       var formData = this.current_questionnaire
       axios({
         method: "post",

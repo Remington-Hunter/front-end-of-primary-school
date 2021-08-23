@@ -221,8 +221,10 @@ export default {
       }
 
       var formData = {};
-      formData.startTime = dateFormat(this.value1[0]);
-      formData.endTime = dateFormat(this.value1[1]);
+      if(this.has_time === true){
+        formData.startTime = dateFormat(this.value1[0]);
+        formData.endTime = dateFormat(this.value1[1]);
+      }
       formData.description = this.description;
       formData.limit = -1;
       formData.title = this.title;
