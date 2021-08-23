@@ -1,7 +1,5 @@
 <template>
   <div class="analysis">
-    <!-- <el-button type="primary" @click="exportData" style="display:block; margin:5px auto;">导出Excel表格</el-button> -->
-
     <span
       >问卷标题
       <span style="font-size: small">ID:{{ "问卷ID" }}</span>
