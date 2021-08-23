@@ -1,7 +1,10 @@
 <template>
   <div>
-    <el-container style="height: 600px;">
-      <el-aside width="200px">
+    <el-container style="height: 630px;">
+      <el-aside
+        width="200px"
+        style="overflow-x:hidden;"
+      >
         <el-menu :default-openeds="['1','2']">
           <el-submenu index="1">
             <template slot="title"><i class="el-icon-menu"></i>题目控件</template>
@@ -125,7 +128,7 @@
       </el-container>
     </el-container>
     <el-dialog
-    @close="send_question_parent()"
+      @close="send_question_parent()"
       :visible.sync="dialogTimeVisible"
       width="45%"
       center
@@ -194,7 +197,8 @@ export default {
         { text: "评分题", icon: "mdi-star-outline" },
         { text: "投票单选题", icon: "mdi-radiobox-marked" },
         { text: "投票多选题", icon: "mdi-check-bold" },
-        { text: "报名题", icon: "mdi-check-bold" }
+        { text: "报名单选题", icon: "mdi-radiobox-marked" },
+        { text: "报名多选题", icon: "mdi-check-bold" }
       ],
       total_problem: 1,
       created_problem: [],
@@ -236,7 +240,7 @@ export default {
 
       var formData = {};
       console.log(this.has_time);
-      if(this.has_time === true){
+      if (this.has_time === true) {
         formData.startTime = dateFormat(this.value1[0]);
         formData.endTime = dateFormat(this.value1[1]);
         console.log(formData.startTime);

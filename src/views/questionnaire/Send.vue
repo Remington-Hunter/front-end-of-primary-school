@@ -111,7 +111,7 @@
       </el-row>
     </div>
     <div>
-      <el-button @click="get_link()">获得新链接</el-button>
+      <el-button @click="get_new_link()">获得新链接</el-button>
     </div>
   </div>
 </template>
@@ -137,7 +137,17 @@ export default {
   data(){
     return{
       download_lianjie:"",
+      id:'',
     }
+  },
+  created(){
+    this.id=this.$route.params.id;
+    this.get_link()
+  },
+  mounted(){
+    this.id=this.$router.query.id;
+    this.download_link();
+    console.log(this.id);
   },
   methods: {
     copy() {
@@ -157,7 +167,25 @@ export default {
       this.download_lianjie = 'http://82.157.97.70/api/qrcode/downloadQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
       console.log(this.download_lianjie);
     },
-    get_link() {
+    get_link(){
+      var data = new FormData();
+      data.append("id",this.id);
+      axios({
+        url: "http://82.157.97.70/api/questionnaire/get_link",
+        method: "post",
+        data: data,
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+        },
+      }).then((res) => {
+        console.log(res);
+        this.input = 'http://82.157.97.70/vj/';
+        this.input += res.data.data;
+        this.lianjie = 'http://82.157.97.70/api/qrcode/getQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
+        //alert(this.input);
+      });
+    },
+    get_new_link() {
       var data1 = new FormData();
       var questionnaireId = this.ma.split("_");
       data1.append("id", questionnaireId[0]);

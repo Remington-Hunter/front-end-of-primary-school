@@ -30,8 +30,8 @@
           mdi-arrow-right-drop-circle
         </v-icon>
         <v-icon small @click="modifyItem(item.id)" title="修改"> mdi-pencil-outline </v-icon>
-        <v-icon small @click="checkItem(item.id)" title="查看链接"> mdi-magnify</v-icon>
-        <v-icon small @click="checkItem(item.id)" title="统计结果"> mdi-poll</v-icon>
+        <v-icon small @click="lookUpLink(item.id)" title="查看链接"> mdi-magnify</v-icon>
+        <v-icon small @click="checkAnalysis(item.id)" title="统计结果"> mdi-poll</v-icon>
       </template>
     </v-data-table>
     <div class="text-center pt-2">
@@ -60,7 +60,7 @@ export default {
         { text: "状态", value: "state", sortable: false },
         { text: "ID", value: "id" },
         { text: "回收量", value: "num" },
-        { text: "创建时间", value: "date" },
+        { text: "创建/发布时间", value: "date" },
         // {text:'发布时间',value:'date1'},
         { text: "截止时间", value: "date2" },
         { text: "操作", value: "actions", sortable: false },
@@ -89,6 +89,12 @@ export default {
     };
   },
   methods: {
+    lookUpLink(id){
+      this.$router.push({name:'send',params:{id:id}})
+    },
+    checkAnalysis(id){
+      this.$router.push({name:'crossanalysis',params:{id:id}})
+    },
     modifyItem(item){
       var Data=new FormData();
       Data.append('id',item);

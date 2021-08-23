@@ -2,7 +2,7 @@
   <div class="content">
     <div class="question">
       <div v-show="
-        ismodify && (['单选题', '多选题','投票单选题','投票多选题'].includes(problem_type) )
+        ismodify && (['单选题', '多选题','投票单选题','投票多选题','报名单选题','报名多选题'].includes(problem_type) )
       ">
         <div>{{ problem_type }}</div>
         <template>
@@ -26,11 +26,42 @@
           v-for="(item, index) in selection_list"
           :key="(item, index)"
         >
+          <v-row>
+            <v-col
+              cols="12"
+              sm="10"
+            >
+              <v-text-field
+                :label="'选项' + (index + 1)"
+                v-model="selection_list[index].content"
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="12"
+              sm="2"
+              v-if="problem_type === '报名单选题'||problem_type === '报名多选题'"
+            >
+              <v-text-field
+                label="名额设置"
+                type=number
+                v-model="selection_list[index].total"
+              ></v-text-field>
+            </v-col>
+          </v-row>
           <v-text-field
-            :label="'选项' + (index + 1)"
-            v-model="selection_list[index]"
+            label="备注"
+            v-model="selection_list[index].comment"
           ></v-text-field>
-          <v-btn @click="delete_item(index)">删除</v-btn>
+          <div class="del">
+            <v-btn
+              @click="delete_item(index)"
+              text
+              color="primary"
+              style="float: right;"
+            >
+              <v-icon>mdi-delete-outline</v-icon>删除选项
+            </v-btn>
+          </div>
         </div>
         <div>
           <el-button @click="add_selection"><i class="el-icon-plus"></i> 新建选项</el-button>
@@ -76,65 +107,6 @@
         >取消</el-button>
       </div>
 
-      <div v-show="
-        ismodify && (problem_type === '报名题')
-      ">
-        <div>{{ problem_type }}</div>
-        <template>
-          <div>
-            <v-text-field
-              label="请输入题目"
-              v-model="name"
-              :rules="[rules.required]"
-            ></v-text-field>
-            <v-text-field
-              label="备注"
-              v-model="instruction"
-            ></v-text-field>
-          </div>
-        </template>
-        <div class="required">
-          是否必填：<el-switch v-model="must_write_select">
-          </el-switch>
-        </div>
-        <div
-          v-for="(item, index) in selection_list"
-          :key="(item, index)"
-        >
-          <v-row>
-            <v-col
-              cols="12"
-              sm="10"
-            >
-              <v-text-field
-                :label="'选项' + (index + 1)"
-                v-model="selection_list[index]"
-              ></v-text-field>
-            </v-col>
-            <v-col
-              cols="12"
-              sm="2"
-            >
-              <v-text-field
-                label="名额设置"
-                type=number
-              ></v-text-field>
-            </v-col>
-          </v-row>
-        </div>
-        <div>
-          <el-button @click="add_selection"><i class="el-icon-plus"></i> 新建选项</el-button>
-          <el-button
-            @click="selectConfirm"
-            :disabled="confirmstate"
-          >确认</el-button>
-          <el-button
-            @click="cancel"
-            v-show="cancel_button"
-          >取消</el-button>
-        </div>
-      </div>
-
       <div v-show="!ismodify">
         <div class="question-seq">{{ problem_number }}.</div>
         <div class="text">{{ name }} <span
@@ -168,30 +140,39 @@
           </div>
         </div>
 
-        <div v-else-if="problem_type==='多选题' || problem_type==='投票多选题'">
+        <div v-else-if="['多选题','报名多选题','投票多选题'].includes(problem_type)">
           <div>
             <el-checkbox-group v-model="checkList">
               <el-checkbox
                 v-for="(item, index) in selection_list"
                 :key="(item, index)"
-                :label="item"
-              >
+                :label="item.content"
+              >{{item.content}} <span
+                  class="sel-total"
+                  v-show="item.total"
+                >(剩余{{item.total}})</span><span class="q-instruction">{{ item.comment }}</span>
+
               </el-checkbox>
+
             </el-checkbox-group>
           </div>
         </div>
 
-        <div v-else-if="problem_type==='单选题' || problem_type==='投票单选题'">
+        <div v-else-if="['单选题' ,'投票单选题','报名单选题'].includes(problem_type)">
           <div
             v-for="(item, index) in selection_list"
             :key="(item, index)"
           >
-            <template>
-              <el-radio
-                v-model="radio"
-                :label="index"
-              >{{ item }}</el-radio>
-            </template>
+            <el-radio
+              v-model="radio"
+              :label="index"
+            >{{ item.content }}<span
+                class="sel-total"
+                v-show="item.total"
+              >(剩余{{item.total}})</span>
+            </el-radio>
+            <div class="q-instruction">{{ item.comment }}</div>
+
           </div>
         </div>
       </div>
@@ -319,9 +300,9 @@ export default {
     },
   },
   methods: {
-    delete_item(index){
+    delete_item(index) {
       console.log(index);
-      this.selection_list.splice(index,1)
+      this.selection_list.splice(index, 1)
       console.log(this.selection_list);
     },
     copy_array(arr1) {
@@ -332,7 +313,9 @@ export default {
       return arr2;
     },
     add_selection() {
-      this.selection_list.push("选项");
+      let sel = {};
+      sel.content = '';
+      this.selection_list.push(sel);
     },
     selectConfirm() {
       this.ismodify = false;
@@ -352,7 +335,8 @@ export default {
     },
     created() { },
   },
-};
+
+}
 </script>
 
 <style scoped>
@@ -372,6 +356,14 @@ export default {
 .required {
   margin-bottom: 15px;
 }
+.sel-total {
+  padding-left: 10px;
+  color: #feae3a;
+}
+.del {
+  margin-bottom: 15px;
+  height: 35px;
+}
 </style>
 
 <style lang="scss">
@@ -388,13 +380,3 @@ export default {
   line-height: 10px;
 }
 </style>
-
-<style >
-.el-input .el-input {
-  width: 130px;
-}
-.input-with-select .el-input-group__prepend {
-  background-color: #fff;
-}
-</style>
-

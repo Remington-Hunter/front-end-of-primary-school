@@ -92,6 +92,11 @@ const routes = [{
             import ('../views/CrossAnalysis.vue')
     },
     {
+        path:'/send/:id',
+        name: 'send',
+        component: () => import('../views/questionnaire/Send.vue')
+    },
+    {
         path: '/try',
         name: 'Try',
         component: () =>
