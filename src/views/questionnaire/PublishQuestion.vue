@@ -14,12 +14,11 @@
         <!-- 题目标题 -->
         <div class="question-head ">
           <div class="question-title">
-            <span class="question-seq"><b>{{ index + 1 }}</b></span>
+            <span class="question-seq"
+              ><b>{{ index + 1 }}</b></span
+            >
             <span class="text">{{ question.text }}</span>
-            <span
-              v-if="question.required"
-              class="question-required"
-            >*</span>
+            <span v-if="question.required" class="question-required">*</span>
             <el-tag v-if="question.type === 1">多选</el-tag>
           </div>
           <div class="q-instruction">{{ question.comment }}</div>
@@ -34,7 +33,8 @@
                 :key="index"
                 :label="index"
               >
-                {{ item }}</el-radio>
+                {{ item }}</el-radio
+              >
             </el-radio-group>
           </div>
           <!-- 多选题 -->
@@ -44,7 +44,8 @@
                 v-for="(item, index) in question.selectionList"
                 :key="index"
                 :label="index"
-              >{{ item }}</el-checkbox>
+                >{{ item }}</el-checkbox
+              >
             </el-checkbox-group>
           </div>
           <!-- 评分题 -->
@@ -68,14 +69,29 @@
           </div>
         </div>
       </div>
-      <div class="page-control">
-        <el-button
-          type="primary"
-          id="btn"
-          @click="submit"
-          :disabled="state"
-        >提交</el-button>
-      </div>
+      <!-- <div class="page-control">
+        <el-button type="primary" id="btn" @click="submit" :disabled="state"
+          >提交</el-button
+        >
+      </div> -->
+      <div class="page-control"><el-button type="text" @click="dialogVisible = true" :disabled="state"
+        >提交</el-button
+      ></div>
+
+      <el-dialog
+        title="提示"
+        :visible.sync="dialogVisible"
+        width="30%"
+        :before-close="handleClose"
+      >
+        <span>提交后不能够更改,确定提交?</span>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="dialogVisible = false;submit()"
+            >确 定</el-button
+          >
+          <el-button @click="dialogVisible = false">取 消</el-button>
+        </span>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -107,16 +123,24 @@ export default {
   data() {
     return {
       iconClasses: ["icon-rate-face-1", "icon-rate-face-2", "icon-rate-face-3"],
-      state:false
+      state: false,
+      dialogVisible: false,
     };
   },
   methods: {
+    handleClose(done) {
+      this.$confirm("确认关闭？")
+        .then((_) => {
+          done();
+        })
+        .catch((_) => {});
+    },
     submit() {
       var x = {};
       x.questionnaireId = this.questionnaireId;
       var list = [];
       console.log(this.questionList.length);
-      console.log(this.questionList)
+      console.log(this.questionList);
       for (var i = 0; i < this.questionList.length; i++) {
         var z = {};
         var y = this.questionList[i];
@@ -153,12 +177,10 @@ export default {
             }
             z.content = "";
           }
-        }
-       else if (y.type === 3) {
-            z.number = ""+y.rating;
-            z.content ="";
-        }
-        else if(y.type === 2){
+        } else if (y.type === 3) {
+          z.number = "" + y.rating;
+          z.content = "";
+        } else if (y.type === 2) {
           if (y.required) {
             if (y.answer === "") {
               alert("您有必选项未完成!");
@@ -177,21 +199,22 @@ export default {
         }
         list.push(z);
       }
-      x.answerDtoList = list
+      x.answerDtoList = list;
       axios({
         method: "post",
         url: "http://82.157.97.70/api/answer/submit_answer",
-        headers:{
-          "Content-Type":"application/json"
+        headers: {
+          "Content-Type": "application/json",
         },
         data: JSON.stringify(x),
       }).then((res) => {
+        alert(res.data.message)
         console.log(res);
-        this.state=true
+        this.state = true;
       });
     },
   },
-  created() { },
+  created() {},
 };
 </script>
 
