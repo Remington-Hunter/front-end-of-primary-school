@@ -58,7 +58,7 @@ export default {
   data() {
     return {
       sortBy: "date",
-      sortDesc: false,
+      sortDesc: true,
       search: "",
       headers: [
         {
