@@ -20,7 +20,6 @@
           label="投放"
           name="second"
           :disabled="state"
-          @click="sendQues"
         >
           <send
             :ma="ma"
@@ -149,7 +148,6 @@ export default {
         return
       }
         this.current_questionnaire.id = this.questionnaire_id;
-        if (this.is_creating === true || this.total_problem === 1) { return }
         // var formData = this.current_questionnaire
         var formData = new FormData();
         // alert(this.current_questionnaire.id);
@@ -191,11 +189,11 @@ export default {
         data: JSON.stringify(formData),
       }).then((res) => {
         console.log(res);
-        this.current_questionnaire.id = res.data.data;
-        if (res.data.code === 200 || res.data.code === 201) {
-          this.is_saved = true
-          this.questionnaire_id = res.data.data
-        }
+        // this.current_questionnaire.id = res.data.data;
+        // if (res.data.code === 200 || res.data.code === 201) {
+        //   this.is_saved = true
+        //   this.questionnaire_id = res.data.data
+        // }
       });
     },
     getCurrentQuestionnaire(obj) {
