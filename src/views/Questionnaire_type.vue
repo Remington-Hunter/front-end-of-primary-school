@@ -46,7 +46,6 @@
               class="ma-2"
               color="primary"
               @click="saveQues_toupiao"
-              :to="'/edit'+'/'+1"
             >
               <!-- to进行跳转 由于普通问卷页面没有做好，这里先转到home试一下-->
               创建
@@ -78,7 +77,6 @@
               class="ma-2"
               color="primary"
               @click="saveQues_baoming"
-              :to="'/edit'+'/'+2"
             >
               <!-- to进行跳转 由于普通问卷页面没有做好，这里先转到home试一下-->
               创建
@@ -104,7 +102,6 @@
               disabled
               class="ma-2"
               color="primary"
-              :to="'/edit'+'/'+3"
             >
               <!-- to进行跳转 由于普通问卷页面没有做好，这里先转到home试一下-->
               敬请期待
@@ -182,7 +179,7 @@ export default {
       }).then((res) => {
         console.log(res);
         this.current_questionnaire.id = res.data.data;
-        this.$router.push({path:"/edit/0",query:{id:this.current_questionnaire.id}})
+        this.$router.push({path:"/edit/1",query:{id:this.current_questionnaire.id}})
         if (res.data.code === 200 || res.data.code === 201) {
           this.is_saved = true
           this.questionnaire_id = res.data.data
@@ -207,7 +204,7 @@ export default {
       }).then((res) => {
         console.log(res);
         this.current_questionnaire.id = res.data.data;
-        this.$router.push({path:"/edit/0",query:{id:this.current_questionnaire.id}})
+        this.$router.push({path:"/edit/2",query:{id:this.current_questionnaire.id}})
         if (res.data.code === 200 || res.data.code === 201) {
           this.is_saved = true
           this.questionnaire_id = res.data.data
