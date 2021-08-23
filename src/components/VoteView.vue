@@ -20,95 +20,45 @@
     </div>
     <div id="demo1" style="">
       <div v-for="(item, index) in data" :key="(item, index)">
-        <div>第{{ index + 1 }}题：
-            <span>{{data[index].question.content}}</span>  
-            
-            <!-- 上面的是题目内容 -->
-            <span v-if="data[index].question.type==0">单选题</span>
-            <span v-if="data[index].question.type==1">多选题</span>
-            <span v-if="data[index].question.type==2">填空题</span>
-            <span v-if="data[index].question.type==3">评分题</span>
-          </div>
         <div v-if="data[index].question.type === 2">
-          <el-table :data="completion[index]" style="width: 100%">
-              <el-table-column label="序号" width="180">
-                <template slot-scope="scope">
-                  <!-- <i class="el-icon-time"></i> -->
-                  <span style="margin-left: 10px">{{ scope.row.id }}</span>
-                </template>
-              </el-table-column>
-              <el-table-column label="内容" width="180">
-                <template slot-scope="scope1">
-                  <!-- <i class="el-icon-time"></i> -->
-                  <span style="margin-left: 10px">{{
-                    scope1.row.content
-                  }}</span>
-                </template>
-              </el-table-column>
-              <!-- <el-table-column
-                label="content"
-                width="180">
-                <template slot-scope="scope1">
-                  <i class="el-icon-time"></i>
-                  <span style="margin-left: 10px">{{ scope1.row.content }}</span>
-                </template>
-              </el-table-column> -->
-            </el-table>
+          <div>题目{{ index + 1 }}</div>
+          <Completion :data1="completion[index]"></Completion>
         </div>
         <div v-else>
           <div v-if="bar[index].length !== 0">
-            <!-- <Completion :data1="completion[index]"></Completion> -->
-            <div v-if="type==0">
-              <el-table :data="completion[index]" style="width: 100%">
-                <el-table-column label="content" width="180">
-                  <template slot-scope="scope2">
-                    <!-- <i class="el-icon-time"></i> -->
-                    <span style="margin-left: 10px">{{
-                      scope2.row.content
-                    }}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column label="num" width="180">
-                  <template slot-scope="scope3">
-                    <!-- <i class="el-icon-time"></i> -->
-                    <span style="margin-left: 10px">{{ scope3.row.num }}</span>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </div>
-            <div style="width: 600px; height: 400px" v-if="type === 1">
+            <div>题目{{ index + 1 }}</div>
+            <div style="width: 600px; height: 400px">
               <drawBar :id="BarToString(index)" :series="bar[index]"></drawBar>
             </div>
-            <div style="width: 600px; height: 400px" v-if="type === 2">
+            <el-button @click="goto(1)">
+              <span>折线图</span>
+            </el-button>
+            <el-button @click="goto(2)">
+              <span>饼图</span>
+            </el-button>
+            <el-button @click="goto(3)">
+              <span>柱状图</span>
+            </el-button>
+            <div style="width: 600px; height: 400px" v-if="type === 1">
               <drawLine
                 :id="LineToString(index)"
                 :series="line[index]"
               ></drawLine>
             </div>
-            <div style="width: 600px; height: 400px" v-if="type === 3">
+            <div style="width: 600px; height: 400px" v-if="type === 2">
               <drawPie :id="PieToString(index)" :series="pie[index]"></drawPie>
             </div>
-            <div style="width: 600px; height: 400px" v-if="type === 4">
+            <div style="width: 600px; height: 400px" v-if="type === 3">
               <drawCol :id="ColToString(index)" :series="col[index]"></drawCol>
             </div>
-            <el-button @click="goto(0)">
-              <span>表格</span>
-            </el-button>
-            <el-button @click="goto(1)">
-              <span>条形图</span>
-            </el-button>
-            <el-button @click="goto(2)">
-              <span>折线图</span>
-            </el-button>
-            <el-button @click="goto(3)">
-              <span>饼图</span>
-            </el-button>
-            <el-button @click="goto(4)">
-              <span>柱状图</span>
-            </el-button>
-            
           </div>
-          <div v-else>
+          <div v-else>题目{{ index + 1 }}的数据为空</div>
+        </div>
+      </div>
+      <div>
+        <div v-for="(item, index) in col" :key="(item, index)">
+          <div v-if="data[index].question.type === 2">
+            <div>题目{{ index + 1 }}</div>
             <el-table :data="completion[index]" style="width: 100%">
               <el-table-column label="id" width="180">
                 <template slot-scope="scope">
@@ -122,6 +72,25 @@
                   <span style="margin-left: 10px">{{
                     scope1.row.content
                   }}</span>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+          <div v-else>
+            <div>题目{{ index + 1 }}</div>
+            <el-table :data="completion[index]" style="width: 100%">
+              <el-table-column label="content" width="180">
+                <template slot-scope="scope2">
+                  <!-- <i class="el-icon-time"></i> -->
+                  <span style="margin-left: 10px">{{
+                    scope2.row.content
+                  }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="num" width="180">
+                <template slot-scope="scope3">
+                  <!-- <i class="el-icon-time"></i> -->
+                  <span style="margin-left: 10px">{{ scope3.row.num }}</span>
                 </template>
               </el-table-column>
             </el-table>
@@ -160,7 +129,7 @@ export default {
       line: [],
       completion: [],
       historyList: [],
-      type:0
+      type:1
     };
   },
   components: {
@@ -207,19 +176,13 @@ export default {
       }
     },
     getBarData(data) {
-      // console.log(data);
       for (var i = 0; i < data.length; i++) {
-        // console.log(111)
-        // console.log(data[i].question.type)
         if (data[i].question.type === 2) {
-          // console.log(11)
           var data_i = data[i].answerList;
           var item = [];
           for (let j = 0; j < data_i.length; j++) {
-            // var s=[data_i[j].answerNum,data_i[j].content]
             item.push(data_i[j]);
           }
-          // console.log(item)
           this.bar.push(item);
         } else {
           var data_i = data[i].optionList;
@@ -229,15 +192,10 @@ export default {
             item.push(s);
           }
           this.bar.push(item);
-          // console.log(item)
-          // console.log(22)
         }
       }
-      // console.log(31231)
-      // console.log(this.bar)
     },
     getseries() {
-      // alert(1);
       var Data = new FormData();
       Data.append("id", this.id);
       axios({
@@ -255,50 +213,10 @@ export default {
         this.getCompletionData(data);
       });
     },
-    exportData() {
-      this.excelData = this.completion; //将你要导出的数组数据（historyList）赋值给excelDate
-      this.export2Excel(); //调用export2Excel函数，填写表头（clomns里的type）和对应字段(historyList里的属性名)
-    },
-    //表格数据写入excel
-    export2Excel() {
-      var that = this;
-      require.ensure([], () => {
-        const {
-          export_json_to_excel,
-        } = require("../assets/excel/Export2Excel");
-        //这里使用绝对路径( @表示src文件夹 )，使用@/+存放export2Excel的路径【也可以写成相对于你当前"xxx.vue"文件的相对路径，例如我的页面放在assets文件夹同级下的views文件夹下的“home.vue”里，那这里路径也可以写成"../assets/excel/Export2Excel"】
-        const tHeader = [content, num]; // 导出的excel表头名信息
-        const filterVal = ["content", "num"]; // 导出的excel表头字段名，需要导出表格字段名
-        const list = that.excelData;
-        const data = that.formatJson(filterVal, list);
-
-        export_json_to_excel(tHeader, data, "学生报名信息汇总"); // 导出的表格名称，根据需要自己命名
-      });
-    },
-    //格式转换，直接复制即可,不需要修改什么
-    formatJson(filterVal, jsonData) {
-      return jsonData.map((v) => filterVal.map((j) => v[j]));
-    },
-    //     exportExcel() {
-    //       require.ensure([], () => {
-    // 　　　　　　　　const { export_json_to_excel } = require('../excel/Export2Excel');
-    // 　　　　　　　　const tHeader = ['序号', 'IMSI', 'MSISDN', '证件号码', '姓名'];
-    // 　　　　　　　　const filterVal = ['ID', 'imsi', 'msisdn', 'address', 'name'];
-    // 　　　　　　　　const list = this.tableData;
-    // 　　　　　　　　const data = this.formatJson(filterVal, list);
-    // 　　　　　　　　export_json_to_excel(tHeader, data, '列表excel');
-    // 　　　　　　})
-    //     },
-    //     formatJson(filterVal, jsonData) {
-    // 　　　　　　return jsonData.map(v => filterVal.map(j => v[j]))
-    // 　　　　},
     goto(type) {
       // this.getseries()
       this.type = type;
       console.log(121);
-    },
-    ComToString(val) {
-      return "com" + val;
     },
     PieToString(val) {
       return "pie" + val;

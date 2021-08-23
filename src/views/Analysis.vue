@@ -131,6 +131,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import axios from "axios";
 import drawLine from "../components/DrawLine.vue";
@@ -389,5 +390,6 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped></style>
+<style  scoped>
+@import "../assets/css/icon/analysis.css";
+</style>
