@@ -1,6 +1,6 @@
 <template>
   <div class=''>
-    <div v-for="(item,index) in data" :key="(item,index)">
+    <div v-for="(item,index) in data" :key="(item, index)">
       <div>{{item.id}}:{{item.content}}</div>
     </div>
   </div>

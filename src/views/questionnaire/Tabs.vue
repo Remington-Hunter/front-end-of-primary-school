@@ -62,6 +62,7 @@
           icon="el-icon-video-play"
           :disabled="state"
           plain
+          @click="change_state()"
         >开始回收</el-button>
         <el-button
           type="primary"
@@ -143,7 +144,7 @@ export default {
       if (this.is_creating === true || this.total_problem === 1) {
         return
       }
-      this.current_questionnaire.type= this.questionnaire_type
+      this.current_questionnaire.type= parseInt(this.questionnaire_type)
       var formData = this.current_questionnaire
       axios({
         method: "post",
@@ -181,7 +182,7 @@ export default {
       if (this.is_creating === true || this.total_problem === 1) {
         return
       }
-      this.current_questionnaire.type= 0
+      this.current_questionnaire.type= parseInt(this.questionnaire_type)
       var formData = this.current_questionnaire
       axios({
         method: "post",
@@ -217,10 +218,9 @@ export default {
     },
     change_state(){
       var formData = new FormData();
-      formData.append("questionnaireID",this.current_questionnaire.id);
-      formData.append("");
+      formData.append("ID",this.current_questionnaire.id);
       axios({
-        url: "http://82.157.97.70/api/questionnaire/publish_questionnaire",
+        url: "http://82.157.97.70/api/questionnaire/prepare_questionnaire",
         method: "post",
         data: formData,
         headers: {
@@ -228,7 +228,7 @@ export default {
         },
       }).then((res) => {
             console.log(res);
-
+            this.changeState(index);
         });
     },
     handleClick(tab, event) {
