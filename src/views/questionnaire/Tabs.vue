@@ -140,6 +140,7 @@ export default {
       if (this.is_creating === true || this.total_problem === 1) {
         return
       }
+      this.current_questionnaire.type = 0;
       var formData = this.current_questionnaire
       axios({
         method: "post",
@@ -189,6 +190,7 @@ export default {
       }).then((res) => {
         console.log(res);
         this.current_questionnaire.id = res.data.data;
+
       });
     },
     getCurrentQuestionnaire(obj) {
@@ -207,6 +209,22 @@ export default {
       else {
         this.state = false
       }
+    },
+    change_state(){
+      var formData = new FormData();
+      formData.append("questionnaireID",this.current_questionnaire.id);
+      formData.append("");
+      axios({
+        url: "http://82.157.97.70/api/questionnaire/publish_questionnaire",
+        method: "post",
+        data: formData,
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+        },
+      }).then((res) => {
+            console.log(res);
+
+        });
     },
     handleClick(tab, event) {
       console.log(tab, event);
