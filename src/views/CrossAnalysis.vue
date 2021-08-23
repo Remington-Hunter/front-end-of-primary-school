@@ -1,41 +1,61 @@
 <template>
-  <div class="analysis">
-    <span
-      >问卷标题
-      <span style="font-size: small">ID:{{ "问卷ID" }}</span>
-    </span>
-    <div style="padding: 10px">
-      <el-button type="primary" @click="handleDown">数据分析PDF下载</el-button>
-      <!-- <el-button type="primary" @click="handleWindowPrint( '#demo', '离职申请表' )">浏览器方式下载</el-button> -->
-      <el-button
-        class="filter-item"
-        style="margin-left: 10px"
-        type="primary"
-        icon="el-icon-back"
-        @click="goBack"
-        >返回
-      </el-button>
-    </div>
-    <div id="demo1" style="">
-      <div v-for="(item, index) in data" :key="(item, index)">
-        <div>第{{ index + 1 }}题：
-            <span>{{data[index].question.content}}</span>  
-            
-            <!-- 上面的是题目内容 -->
-            <span v-if="data[index].question.type==0">单选题</span>
-            <span v-if="data[index].question.type==1">多选题</span>
-            <span v-if="data[index].question.type==2">填空题</span>
-            <span v-if="data[index].question.type==3">评分题</span>
+  <div class="main">
+    <el-page-header
+      @back="goBack"
+      content="统计分析"
+    >
+    </el-page-header>
+    <el-button
+      type="primary"
+      @click="handleDown"
+      class="d-btn"
+    ><i class="el-icon-download"></i> 下载PDF</el-button>
+    <div
+      class="center"
+      id="demo1"
+    >
+      <div class="header-title">这里是问卷题目</div>
+      <div class="content">
+        <div
+          v-for="(item, index) in data"
+          :key="(index)"
+        >
+          <el-divider></el-divider>
+          <div class="question-head ">
+            <div class="question-title">
+              <span class="question-seq"><b>第{{ index + 1 }}题：</b></span>
+              <span class="text">{{data[index].question.content}}</span>
+              <span
+                v-if="data[index].question.type==0"
+                class="question-type"
+              >单选题</span>
+              <span
+                v-if="data[index].question.type==1"
+                class="question-type"
+              >多选题</span>
+              <span
+                v-if="data[index].question.type==2"
+                class="question-type"
+              >填空题</span>
+              <span
+                v-if="data[index].question.type==3"
+                class="question-type"
+              >评分题</span>
+            </div>
           </div>
-        <div v-if="data[index].question.type === 2">
-          <el-table :data="completion[index]" style="width: 100%">
-              <el-table-column label="序号" width="180">
+          <div v-if="data[index].question.type === 2">
+            <el-table
+              :data="completion[index]"
+              style="width: 100%"
+              class="table"
+            >
+              <el-table-column label="序号">
                 <template slot-scope="scope">
                   <!-- <i class="el-icon-time"></i> -->
                   <span style="margin-left: 10px">{{ scope.row.id }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="内容" width="180">
+              <el-table-column label="内容">
                 <template slot-scope="scope1">
                   <!-- <i class="el-icon-time"></i> -->
                   <span style="margin-left: 10px">{{
@@ -52,77 +72,107 @@
                 </template>
               </el-table-column> -->
             </el-table>
-        </div>
-        <div v-else>
-          <div v-if="bar[index].length !== 0">
-            <!-- <Completion :data1="completion[index]"></Completion> -->
-            <div v-if="type==0">
-              <el-table :data="completion[index]" style="width: 100%">
-                <el-table-column label="content" width="180">
-                  <template slot-scope="scope2">
-                    <!-- <i class="el-icon-time"></i> -->
-                    <span style="margin-left: 10px">{{
+          </div>
+          <div v-else>
+            <div v-if="bar[index].length !== 0">
+              <!-- <Completion :data1="completion[index]"></Completion> -->
+              <div>
+                <el-table
+                  :data="completion[index]"
+                  style="width: 100%"
+                  class="table"
+                  border
+                >
+                  <el-table-column label="content">
+                    <template slot-scope="scope2">
+                      <!-- <i class="el-icon-time"></i> -->
+                      <span style="margin-left: 10px">{{
                       scope2.row.content
                     }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="num">
+                    <template slot-scope="scope3">
+                      <!-- <i class="el-icon-time"></i> -->
+                      <span style="margin-left: 10px">{{ scope3.row.num }}</span>
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </div>
+              <div
+                style="width: 600px; height: 400px"
+                v-if="type === 1"
+              >
+                <drawBar
+                  :id="BarToString(index)"
+                  :series="bar[index]"
+                ></drawBar>
+              </div>
+              <div
+                style="width: 600px; height: 400px"
+                v-if="type === 2"
+              >
+                <drawLine
+                  :id="LineToString(index)"
+                  :series="line[index]"
+                ></drawLine>
+              </div>
+              <div
+                style="width: 600px; height: 400px"
+                v-if="type === 3"
+              >
+                <drawPie
+                  :id="PieToString(index)"
+                  :series="pie[index]"
+                ></drawPie>
+              </div>
+              <div
+                style="width: 600px; height: 400px"
+                v-if="type === 4"
+              >
+                <drawCol
+                  :id="ColToString(index)"
+                  :series="col[index]"
+                ></drawCol>
+              </div>
+              <el-button @click="goto(0)">
+                <span>表格</span>
+              </el-button>
+              <el-button @click="goto(1)">
+                <span>条形图</span>
+              </el-button>
+              <el-button @click="goto(2)">
+                <span>折线图</span>
+              </el-button>
+              <el-button @click="goto(3)">
+                <span>饼图</span>
+              </el-button>
+              <el-button @click="goto(4)">
+                <span>柱状图</span>
+              </el-button>
+
+            </div>
+            <div v-else>
+              <el-table
+                :data="completion[index]"
+                style="width: 100%"
+              >
+                <el-table-column label="id">
+                  <template slot-scope="scope">
+                    <!-- <i class="el-icon-time"></i> -->
+                    <span style="margin-left: 10px">{{ scope.row.id }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column label="num" width="180">
-                  <template slot-scope="scope3">
+                <el-table-column label="content">
+                  <template slot-scope="scope1">
                     <!-- <i class="el-icon-time"></i> -->
-                    <span style="margin-left: 10px">{{ scope3.row.num }}</span>
+                    <span style="margin-left: 10px">{{
+                    scope1.row.content
+                  }}</span>
                   </template>
                 </el-table-column>
               </el-table>
             </div>
-            <div style="width: 600px; height: 400px" v-if="type === 1">
-              <drawBar :id="BarToString(index)" :series="bar[index]"></drawBar>
-            </div>
-            <div style="width: 600px; height: 400px" v-if="type === 2">
-              <drawLine
-                :id="LineToString(index)"
-                :series="line[index]"
-              ></drawLine>
-            </div>
-            <div style="width: 600px; height: 400px" v-if="type === 3">
-              <drawPie :id="PieToString(index)" :series="pie[index]"></drawPie>
-            </div>
-            <div style="width: 600px; height: 400px" v-if="type === 4">
-              <drawCol :id="ColToString(index)" :series="col[index]"></drawCol>
-            </div>
-            <el-button @click="goto(0)">
-              <span>表格</span>
-            </el-button>
-            <el-button @click="goto(1)">
-              <span>条形图</span>
-            </el-button>
-            <el-button @click="goto(2)">
-              <span>折线图</span>
-            </el-button>
-            <el-button @click="goto(3)">
-              <span>饼图</span>
-            </el-button>
-            <el-button @click="goto(4)">
-              <span>柱状图</span>
-            </el-button>
-            
-          </div>
-          <div v-else>
-            <el-table :data="completion[index]" style="width: 100%">
-              <el-table-column label="id" width="180">
-                <template slot-scope="scope">
-                  <!-- <i class="el-icon-time"></i> -->
-                  <span style="margin-left: 10px">{{ scope.row.id }}</span>
-                </template>
-              </el-table-column>
-              <el-table-column label="content" width="180">
-                <template slot-scope="scope1">
-                  <!-- <i class="el-icon-time"></i> -->
-                  <span style="margin-left: 10px">{{
-                    scope1.row.content
-                  }}</span>
-                </template>
-              </el-table-column>
-            </el-table>
           </div>
         </div>
       </div>
@@ -158,7 +208,7 @@ export default {
       line: [],
       completion: [],
       historyList: [],
-      type:0
+      type: 0
     };
   },
   components: {
@@ -175,7 +225,7 @@ export default {
   //   this.getseries();
   // },
   mounted() {
-        this.id = this.$route.params.id;
+    this.id = this.$route.params.id;
     this.getseries();
   },
   methods: {
@@ -388,4 +438,6 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style  scoped>
+@import "../assets/css/icon/analysis.css";
+</style>
