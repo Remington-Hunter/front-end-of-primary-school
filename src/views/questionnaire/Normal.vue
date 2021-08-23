@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-container style="height: 630px;">
+    <el-container style="height: 600px;">
       <el-aside
         width="200px"
         style="overflow-x:hidden;"
@@ -9,13 +9,23 @@
           <el-submenu index="1">
             <template slot="title"><i class="el-icon-menu"></i>题目控件</template>
             <el-menu-item
-              v-for="(item, index) in problem_list0"
+              v-for="(item, index) in problem_list"
               :key="(item, index)"
               @click="newProblem(item.text, false, {})"
             >
               <v-icon>{{ item.icon }}</v-icon>
               {{ item.text }}
             </el-menu-item>
+            <div v-if="type===0">
+              <el-menu-item
+                v-for="(item, index) in problem_list0"
+                :key="(item, index)"
+                @click="newProblem(item.text, false, {})"
+              >
+                <v-icon>{{ item.icon }}</v-icon>
+                {{ item.text }}
+              </el-menu-item>
+            </div>
             <div v-if="type===1">
               <el-menu-item
                 v-for="(item, index) in problem_list1"
@@ -41,15 +51,17 @@
           <el-submenu index="2">
             <template slot="title"><i class="el-icon-setting"></i>问卷设置</template>
             <el-menu-item @click="dialogTimeVisible = true"> 时间控制</el-menu-item>
-            <el-tooltip
-              class="item"
-              effect="dark"
-              content="是否允许用户提交问卷后查看填写结果"
-              placement="right"
-            >
-              <el-menu-item> 查看结果 <el-switch v-model="see_result"></el-switch>
-              </el-menu-item>
-            </el-tooltip>
+            <div v-if="type===1">
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="是否允许用户提交问卷后查看填写结果"
+                placement="right"
+              >
+                <el-menu-item> 查看结果 <el-switch v-model="see_result"></el-switch>
+                </el-menu-item>
+              </el-tooltip>
+            </div>
           </el-submenu>
         </el-menu>
       </el-aside>
@@ -214,8 +226,7 @@ export default {
       problem_list0: [
         { text: "单选题", icon: "mdi-radiobox-marked" },
         { text: "多选题", icon: "mdi-check-bold" },
-        { text: "填空题", icon: "mdi-checkbox-blank-outline" },
-        { text: "评分题", icon: "mdi-star-outline" },
+
       ],
       problem_list1: [
         { text: "投票单选题", icon: "mdi-radiobox-marked" },
@@ -224,6 +235,10 @@ export default {
       problem_list2: [
         { text: "报名单选题", icon: "mdi-radiobox-marked" },
         { text: "报名多选题", icon: "mdi-check-bold" }
+      ],
+      problem_list: [
+        { text: "填空题", icon: "mdi-checkbox-blank-outline" },
+        { text: "评分题", icon: "mdi-star-outline" },
       ],
       total_problem: 1,
       created_problem: [],
@@ -256,7 +271,7 @@ export default {
           let z = {};
           z.content = x.selection_list[j].content;
           z.limit = x.selection_list[j].total;
-          z.comment=x.selection_list[j].comment
+          z.comment = x.selection_list[j].comment
           z.number = j + "";
           y.push(z);
         }
