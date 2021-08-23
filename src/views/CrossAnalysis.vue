@@ -19,8 +19,8 @@
       </el-button>
     </div>
     <div id="demo1" style="">
-      <div v-for="(item, index) in data" :key="(item, index)">
-        <div v-if="data[index].question.type === 2">
+      <div v-for="(item, index) in data" :key="(index)">
+        <div v-if="data[index]!=[]&&data[index]!=null&&data[index].question.type === 2">
           <div>题目{{ index + 1 }}</div>
           <Completion :data1="completion[index]"></Completion>
         </div>
@@ -30,29 +30,29 @@
             <div style="width: 600px; height: 400px">
               <drawBar :id="BarToString(index)" :series="bar[index]"></drawBar>
             </div>
-            <el-button @click="goto1(1)">
+            <el-button @click="goto(1)">
               <span>折线图</span>
             </el-button>
-            <el-button @click="goto1(2)">
+            <el-button @click="goto(2)">
               <span>饼图</span>
             </el-button>
-            <el-button @click="goto1(3)">
+            <el-button @click="goto(3)">
               <span>柱状图</span>
             </el-button>
-            <div style="width: 600px; height: 400px" v-if="type === 1">
-              <drawLine
-                :id="LineToString(index)"
-                :series="line[index]"
-              ></drawLine>
+            <div style="width: 600px; height: 400px" v-if="type1===1">
+              <drawLine :id="LineToString(index)" :series="line[index]"></drawLine>
             </div>
-            <div style="width: 600px; height: 400px" v-if="type === 2">
-              <drawPie :id="PieToString(index)" :series="pie[index]"></drawPie>
+            <div style="width: 600px; height: 400px" v-if="type1===2">
+              <drawPie :id="PieToString(index)" :series="pie[index]" ></drawPie>
             </div>
-            <div style="width: 600px; height: 400px" v-if="type === 3">
+            <div style="width: 600px; height: 400px" v-if="type1===3">
               <drawCol :id="ColToString(index)" :series="col[index]"></drawCol>
             </div>
           </div>
-          <div v-else>题目{{ index + 1 }}的数据为空</div>
+          <div v-else>
+            <div>题目{{ index + 1 }}</div>
+            <Completion :data1="[]"></Completion>
+            </div>
         </div>
       </div>
       <div>
@@ -125,6 +125,7 @@ export default {
       default: 0,
     },
   },
+
   data() {
     return {
       series: ["1", "2", "3"],
@@ -137,7 +138,7 @@ export default {
       line: [],
       completion: [],
       historyList: [],
-      type:1
+      type1:1
     };
   },
   components: {
@@ -148,11 +149,14 @@ export default {
     Completion,
   },
   //   created() {},
-  created() {
-    this.id = this.$route.params.id;
-    console.log(this.id);
-    this.getseries();
-  },
+  // beforeCreate(){
+    
+  // },
+  // created() {
+  //   this.id = this.$route.params.id;
+  //   console.log(this.id);
+  //   this.getseries();
+  // },
   mounted() {
         this.id = this.$route.params.id;
     this.getseries();
@@ -232,47 +236,34 @@ export default {
         this.getCompletionData(data);
       });
     },
-    exportData() {
-      this.excelData = this.completion; //将你要导出的数组数据（historyList）赋值给excelDate
-      this.export2Excel(); //调用export2Excel函数，填写表头（clomns里的type）和对应字段(historyList里的属性名)
-    },
-    //表格数据写入excel
-    export2Excel() {
-      var that = this;
-      require.ensure([], () => {
-        const {
-          export_json_to_excel,
-        } = require("../assets/excel/Export2Excel");
-        //这里使用绝对路径( @表示src文件夹 )，使用@/+存放export2Excel的路径【也可以写成相对于你当前"xxx.vue"文件的相对路径，例如我的页面放在assets文件夹同级下的views文件夹下的“home.vue”里，那这里路径也可以写成"../assets/excel/Export2Excel"】
-        const tHeader = [content, num]; // 导出的excel表头名信息
-        const filterVal = ["content", "num"]; // 导出的excel表头字段名，需要导出表格字段名
-        const list = that.excelData;
-        const data = that.formatJson(filterVal, list);
+    // exportData() {
+    //   this.excelData = this.completion; //将你要导出的数组数据（historyList）赋值给excelDate
+    //   this.export2Excel(); //调用export2Excel函数，填写表头（clomns里的type）和对应字段(historyList里的属性名)
+    // },
+    // //表格数据写入excel
+    // export2Excel() {
+    //   var that = this;
+    //   require.ensure([], () => {
+    //     const {
+    //       export_json_to_excel,
+    //     } = require("../assets/excel/Export2Excel");
+    //     //这里使用绝对路径( @表示src文件夹 )，使用@/+存放export2Excel的路径【也可以写成相对于你当前"xxx.vue"文件的相对路径，例如我的页面放在assets文件夹同级下的views文件夹下的“home.vue”里，那这里路径也可以写成"../assets/excel/Export2Excel"】
+    //     const tHeader = [content, num]; // 导出的excel表头名信息
+    //     const filterVal = ["content", "num"]; // 导出的excel表头字段名，需要导出表格字段名
+    //     const list = that.excelData;
+    //     const data = that.formatJson(filterVal, list);
 
-        export_json_to_excel(tHeader, data, "学生报名信息汇总"); // 导出的表格名称，根据需要自己命名
-      });
-    },
-    //格式转换，直接复制即可,不需要修改什么
-    formatJson(filterVal, jsonData) {
-      return jsonData.map((v) => filterVal.map((j) => v[j]));
-    },
-    //     exportExcel() {
-    //       require.ensure([], () => {
-    // 　　　　　　　　const { export_json_to_excel } = require('../excel/Export2Excel');
-    // 　　　　　　　　const tHeader = ['序号', 'IMSI', 'MSISDN', '证件号码', '姓名'];
-    // 　　　　　　　　const filterVal = ['ID', 'imsi', 'msisdn', 'address', 'name'];
-    // 　　　　　　　　const list = this.tableData;
-    // 　　　　　　　　const data = this.formatJson(filterVal, list);
-    // 　　　　　　　　export_json_to_excel(tHeader, data, '列表excel');
-    // 　　　　　　})
-    //     },
-    //     formatJson(filterVal, jsonData) {
-    // 　　　　　　return jsonData.map(v => filterVal.map(j => v[j]))
-    // 　　　　},
+    //     export_json_to_excel(tHeader, data, "学生报名信息汇总"); // 导出的表格名称，根据需要自己命名
+    //   });
+    // },
+    // //格式转换，直接复制即可,不需要修改什么
+    // formatJson(filterVal, jsonData) {
+    //   return jsonData.map((v) => filterVal.map((j) => v[j]));
+    // },
     goto(type) {
-      this.getseries()
-      this.type = type;
-      console.log(121);
+      // this.getseries()
+      this.type1 = type;
+      console.log(this.type1);
     },
     PieToString(val) {
       return "pie" + val;

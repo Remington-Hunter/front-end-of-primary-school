@@ -2,9 +2,9 @@
   <div class="header-container">
     <div class="header_nav">
       <router-link to="/">
-        <p id="head-title">
+        <span id="head-title">
           <v-icon color="blue darken-2">mdi-earth</v-icon> 问卷星球
-        </p>
+        </span>
       </router-link>
       <ul>
         <li>
@@ -12,11 +12,11 @@
             <v-icon color="blue darken-2">mdi-file-multiple-outline</v-icon> 我的问卷
           </router-link>
         </li>
-        <li>
+        <!-- <li>
           <router-link to="/personInfo">
             <v-icon color="blue darken-2">mdi-account</v-icon> 个人中心
           </router-link>
-        </li>
+        </li> -->
         <li v-if="$route.path != '/'">
           <router-link to="/">
             <v-icon color="blue darken-2"> mdi-home-variant</v-icon> 返回首页
