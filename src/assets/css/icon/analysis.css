@@ -2,14 +2,14 @@
 .main{
     margin-top: 3vh;
     margin-left: 15px;
+    margin-bottom: 80px;
 }
 
 .center{
     margin: 20px auto;
     width: 1000px;
-    height: 2000px;
     background-color: white;
-    padding: 30px 72px 20px;
+    padding: 30px 72px 60px;
 }
 
 .header-title {
@@ -30,5 +30,16 @@
 }
 
 .table{
-    margin-top: 20px;
+    margin: 20px auto;
+}
+
+.question-type{
+    color: #888;
+    font-size: 16px;
+    padding-left: 20px;
+}
+.d-btn{
+    float:right;
+    margin-right: 60px;
+    margin-top: -20px;
 }

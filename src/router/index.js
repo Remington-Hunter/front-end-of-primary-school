@@ -112,6 +112,11 @@ const routes = [{
         name:'VoteAnswer',
         component: () => import('../views/VoteAnswer.vue')
     },
+    {
+        path:'/stop',
+        name:'Stop',
+        component: () => import('../views/Stop.vue')
+    },
 ]
 
 const router = new VueRouter({
