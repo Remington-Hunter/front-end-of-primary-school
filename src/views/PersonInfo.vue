@@ -22,12 +22,12 @@
         <v-card-title>{{username}}</v-card-title>
         <v-card-text>
 
-          <div>Small plates, salads & sandwiches - an intimate setting with 12 indoor seats plus patio seating.</div>
+          <div>这是您的个人中心，请完善您的个人信息吧！</div>
         </v-card-text>
 
         <v-divider class="mx-4"></v-divider>
 
-        <v-card-title>Tonight's availability</v-card-title>
+        <!-- <v-card-title>Tonight's availability</v-card-title> -->
         <v-card-actions>
           <v-btn
             color="deep-purple lighten-2"
@@ -70,7 +70,7 @@
             <v-btn
               style="float:right;right:20%"
               elevation="2"
-              @click="phoneChange"
+              @click="phoneDialog=true"
             >绑定</v-btn>
           </div>
           <br>
@@ -186,17 +186,26 @@ export default
       emailData: '',
       flag: true
     }),
+    mounted(){
+      this.getData();
+    },
     methods:
     {
-      
-      phoneChange(){
-        this.phoneDialog=true;
-        var Data=new FormData();
-        Data.append('phone',this.phoneNumber)
+      getData(){
         axios({
           url:'',
           method:'post',
-
+          headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
+          },
+        }).then((res)=>{
+          if(res.data.data.phone!==null){
+            this.phoneNumber=res.data.data.phone
+          }
+          if(res.data.data.email!==null){
+            this.emailNumber=res.data.data.email
+          }
         })
       },
       goBack() {
@@ -229,7 +238,11 @@ export default
         axios({
           url: '',
           mehtod: 'post',
-          data: Data
+          data: Data,
+          headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
+          },
         }).then((res) => {
           this.phoneNumber = this.phone,
             this.phone = '',
@@ -243,7 +256,11 @@ export default
         axios({
           url: '',
           mehtod: 'post',
-          data: Data
+          data: Data,
+          headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
+          },
         }).then((res) => {
           this.emailNumber = this.emailData,
             this.emailData = '',
