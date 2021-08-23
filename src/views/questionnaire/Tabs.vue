@@ -12,6 +12,7 @@
           <normal
             @problem_change="changeState"
             @currentQuestionnaire="getCurrentQuestionnaire"
+            :type="this.questionnaire_type"
           />
         </el-tab-pane>
 
@@ -128,11 +129,11 @@ export default {
       input: '',
       lianjie: '',
       dialogVisible: false,
-      questionnaire_type:"",//问卷类型
-      is_saved:false,
-      questionnaire_id:-1,
-      questionnaire_state:"",
-      option:false,
+      questionnaire_type: "",//问卷类型
+      is_saved: false,
+      questionnaire_id: -1,
+      questionnaire_state: "",
+      option: false,
     };
   },
   methods: {
@@ -147,10 +148,10 @@ export default {
       if (this.is_creating === true || this.total_problem === 1) {
         return
       }
-      if(this.questionnaire_id !== -1){
-        this.current_questionnaire.id=this.questionnaire_id
+      if (this.questionnaire_id !== -1) {
+        this.current_questionnaire.id = this.questionnaire_id
       }
-      this.current_questionnaire.type= this.questionnaire_type
+      this.current_questionnaire.type = this.questionnaire_type
       var formData = this.current_questionnaire
       axios({
         method: "post",
@@ -163,9 +164,9 @@ export default {
       }).then((res) => {
         console.log(res);
         this.current_questionnaire.id = res.data.data;
-        if(res.data.code === 200 || res.data.code === 201){
+        if (res.data.code === 200 || res.data.code === 201) {
           this.is_saved = true
-          this.questionnaire_id=res.data.data
+          this.questionnaire_id = res.data.data
         }
         if (this.is_creating === true || this.total_problem === 1) { return }
         // var formData = this.current_questionnaire
@@ -192,13 +193,14 @@ export default {
       if (this.is_creating === true || this.total_problem === 1) {
         return
       }
-      if(this.questionnaire_id !== -1){
-        this.current_questionnaire.id=this.questionnaire_id
+      if (this.questionnaire_id !== -1) {
+        this.current_questionnaire.id = this.questionnaire_id
       }
       console.log(this.questionnaire_id);
       console.log(this.current_questionnaire.id);
-      this.current_questionnaire.type= this.questionnaire_type
+      this.current_questionnaire.type = this.questionnaire_type
       var formData = this.current_questionnaire
+      console.log(JSON.stringify(formData));
       axios({
         method: "post",
         url: "http://82.157.97.70/api/questionnaire/save_questionnaire",
@@ -210,9 +212,9 @@ export default {
       }).then((res) => {
         console.log(res);
         this.current_questionnaire.id = res.data.data;
-        if(res.data.code === 200 || res.data.code === 201){
+        if (res.data.code === 200 || res.data.code === 201) {
           this.is_saved = true
-          this.questionnaire_id=res.data.data
+          this.questionnaire_id = res.data.data
         }
       });
     },
@@ -234,9 +236,9 @@ export default {
         this.state = false
       }
     },
-    change_prepare_state(){
+    change_prepare_state() {
       var formData = new FormData();
-      formData.append("questionnaireId",this.current_questionnaire.id);
+      formData.append("questionnaireId", this.current_questionnaire.id);
       axios({
         url: "http://82.157.97.70/api/questionnaire/prepare_questionnaire",
         method: "post",
@@ -245,27 +247,27 @@ export default {
           Authorization: window.localStorage.getItem("authorization"),
         },
       }).then((res) => {
-            console.log(res);
-            this.change_option();
-        });
+        console.log(res);
+        this.change_option();
+      });
     },
-    change_start_state(){
+    change_start_state() {
       var Data = new FormData();
-      Data.append("questionnaireId",this.current_questionnaire.id)
+      Data.append("questionnaireId", this.current_questionnaire.id)
       axios({
-        url:'http://82.157.97.70/api/questionnaire/publish_questionnaire',
-        method:'post',
+        url: 'http://82.157.97.70/api/questionnaire/publish_questionnaire',
+        method: 'post',
         data: Data,
         headers: {
           Authorization: window.localStorage.getItem("authorization"),
           "Content-Type": "application/json",
         },
-      }).then((res)=>{
+      }).then((res) => {
         console.log(res);
         this.change_option();
       })
     },
-    change_option(){
+    change_option() {
       this.option = !this.option;
     },
     handleClick(tab, event) {
@@ -295,8 +297,8 @@ export default {
       });
     },
   },
-  created(){
-    this.questionnaire_type=parseInt(this.$route.params.type)
+  created() {
+    this.questionnaire_type = parseInt(this.$route.params.type)
     console.log(this.questionnaire_type);
   }
 };

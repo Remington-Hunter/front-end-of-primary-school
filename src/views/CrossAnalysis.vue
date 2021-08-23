@@ -30,25 +30,25 @@
             <div style="width: 600px; height: 400px">
               <drawBar :id="BarToString(index)" :series="bar[index]"></drawBar>
             </div>
-            <el-button @click="goto1(1)">
+            <el-button @click="goto(1)">
               <span>折线图</span>
             </el-button>
-            <el-button @click="goto1(2)">
+            <el-button @click="goto(2)">
               <span>饼图</span>
             </el-button>
-            <el-button @click="goto1(3)">
+            <el-button @click="goto(3)">
               <span>柱状图</span>
             </el-button>
-            <div style="width: 600px; height: 400px" v-show="type===1">
+            <div style="width: 600px; height: 400px" v-if="type === 1">
               <drawLine
                 :id="LineToString(index)"
                 :series="line[index]"
               ></drawLine>
             </div>
-            <div style="width: 600px; height: 400px" v-show="type===2">
+            <div style="width: 600px; height: 400px" v-if="type === 2">
               <drawPie :id="PieToString(index)" :series="pie[index]"></drawPie>
             </div>
-            <div style="width: 600px; height: 400px" v-show="type===3">
+            <div style="width: 600px; height: 400px" v-if="type === 3">
               <drawCol :id="ColToString(index)" :series="col[index]"></drawCol>
             </div>
           </div>
@@ -137,7 +137,7 @@ export default {
       line: [],
       completion: [],
       historyList: [],
-      type:3
+      type:1
     };
   },
   components: {
@@ -269,9 +269,10 @@ export default {
     //     formatJson(filterVal, jsonData) {
     // 　　　　　　return jsonData.map(v => filterVal.map(j => v[j]))
     // 　　　　},
-    goto1(id2) {
-      this.type= id2;
-      console.log(this.type)
+    goto(type) {
+      this.getseries()
+      this.type = type;
+      console.log(121);
     },
     PieToString(val) {
       return "pie" + val;
