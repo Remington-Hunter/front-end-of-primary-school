@@ -262,6 +262,7 @@ export default {
         preview_list: list,
         title: this.title,
         description: this.description,
+        questionnaire_state: "preparing"
       };
       this.$emit("currentQuestionnaire", obj1);
     },
