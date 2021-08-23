@@ -126,6 +126,7 @@ export default {
       input: '',
       lianjie: '',
       dialogVisible: false,
+      questionnaire_type:"",//问卷类型
     };
   },
   methods: {
@@ -140,7 +141,7 @@ export default {
       if (this.is_creating === true || this.total_problem === 1) {
         return
       }
-      this.current_questionnaire.type= 0
+      this.current_questionnaire.type= this.questionnaire_type
       var formData = this.current_questionnaire
       axios({
         method: "post",
@@ -235,6 +236,10 @@ export default {
         //alert(this.input);
       });
     },
+  },
+  created(){
+    this.questionnaire_type=parseInt(this.$route.params.type)
+    console.log(this.questionnaire_type);
   }
 };
 </script>

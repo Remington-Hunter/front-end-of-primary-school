@@ -30,6 +30,7 @@
             :label="'选项' + (index + 1)"
             v-model="selection_list[index]"
           ></v-text-field>
+          <v-btn @click="delete_item(index)">删除</v-btn>
         </div>
         <div>
           <el-button @click="add_selection"><i class="el-icon-plus"></i> 新建选项</el-button>
@@ -254,6 +255,11 @@ export default {
     },
   },
   methods: {
+    delete_item(index){
+      console.log(index);
+      this.selection_list.splice(index,1)
+      console.log(this.selection_list);
+    },
     copy_array(arr1) {
       var arr2 = [];
       for (var i = 0; i < arr1.length; i++) {
