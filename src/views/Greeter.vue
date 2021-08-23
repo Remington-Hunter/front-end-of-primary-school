@@ -173,17 +173,15 @@ export default {
           "Content-Type": "application/x-www-form-urlencoded"
         }
       }).then((res) => {
-        console.log(res)
-        if (this.register) {
+        // alert(res)
+        if (res.data.code === 200 && this.register) {
           this.register = false
-          alert('注册成功')
         }
         else {
           this.responseResult = JSON.stringify(res.data)
           if (res.data.code === 200) {
             localStorage.setItem
           }
-
           localStorage.setItem('userName', this.form.nickname)
           // localStorage.setItem('userName',this.ruleForm.userName);
           //获取并存储服务器返回的AuthorizationToken信息
