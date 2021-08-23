@@ -37,9 +37,9 @@
         <v-icon size=14px class="mr-2" @click="stopItem(item.id)" title="停止">
           mdi-pause-circle
         </v-icon>
-        <v-icon small @click="modifyItem(item.id)" title="修改"> mdi-pencil-outline</v-icon>
-        <v-icon small @click="lookUpLink(item.id)" title="查看链接"> mdi-magnify</v-icon>
-        <v-icon small @click="checkAnalysis(item.id)" title="统计结果"> mdi-poll</v-icon>
+        <v-icon small @click="modifyItem(item.id)" title="修改" > mdi-pencil-outline</v-icon>
+        <v-icon small @click="lookUpLink(item.id)" title="查看链接" style="margin-left: 1%"> mdi-magnify</v-icon>
+        <v-icon small @click="checkAnalysis(item.id)" title="统计结果" style="margin-left: 1%"> mdi-poll</v-icon>
       </template>
     </v-data-table>
   </v-card>
@@ -101,7 +101,7 @@ export default {
     },
     modifyItem(item) {
       var Data = new FormData();
-      Data.append('questionnaireId', item);
+      Data.append('id', item);
       axios({
         url: 'http://82.157.97.70/api/questionnaire/throw_and_get_new_questionnaire',
         method: 'post',
