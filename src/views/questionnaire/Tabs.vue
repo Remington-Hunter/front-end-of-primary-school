@@ -28,13 +28,13 @@
           />
         </el-tab-pane>
 
-        <el-tab-pane
+        <!-- <el-tab-pane
           label="统计"
           name="third"
           :disabled="state || !is_saved"
         >
           <CrossAnalysis :id="this.questionnaire_id"></CrossAnalysis>
-        </el-tab-pane>
+        </el-tab-pane> -->
       </el-tabs>
       <el-row style='position: absolute;right:100px;top:12vh;'>
         <el-button
