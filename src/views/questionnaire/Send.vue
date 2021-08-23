@@ -109,12 +109,14 @@
           </el-row>
         </el-col>
       </el-row>
-
     </div>
+    <div><el-button @click="get_link()">获得新链接</el-button></div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   props: {
     ma: {
@@ -137,6 +139,26 @@ export default {
       document.execCommand("Copy"); // 执行浏览器复制命令
       alert("内容复制成功！");
     },
+    get_link(){
+        var data1 = new FormData();
+        var questionnaireId = this.ma.split("_");
+        data1.append("id",questionnaireId[0]);
+        alert(questionnaireId[0])
+        axios({
+          url: "http://82.157.97.70/api/questionnaire/get_new_link",
+          method: "post",
+          data: data1,
+          headers: {
+            Authorization: window.localStorage.getItem("authorization"),
+          },
+        }).then((res) => {
+          console.log(res);
+          this.input = 'http://82.157.97.70/vj/';
+          this.input += res.data.data;
+          this.lianjie = 'http://82.157.97.70/api/qrcode/getQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
+          //alert(this.input);
+        });
+    }
   },
 };
 </script>
