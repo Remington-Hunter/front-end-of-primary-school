@@ -16,7 +16,7 @@
                     type="button"
                     class="ui-button"
                     id="btn"
-                    @click="copy()"
+                    v-clipboard:copy="input"
                 >复制
                 </button>
                 <div class="copy-text-input">
@@ -153,12 +153,6 @@ export default {
     console.log(this.id);
   },
   methods: {
-    copy() {
-      var text = document.getElementById("demoInput");
-      text.select();
-      document.execCommand("copy");
-      alert("复制成功")
-    },
     download_link() {
       this.download_lianjie = 'http://82.157.97.70/vj/';
       this.download_lianjie += this.input;
