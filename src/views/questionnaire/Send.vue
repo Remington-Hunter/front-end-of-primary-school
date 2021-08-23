@@ -144,7 +144,12 @@ export default {
   created() {
     this.id = this.$route.params.id;
     this.get_link()
-    this.download_lianjie = 'http://82.157.97.70/vj/';
+//     setTimeout(()=>{
+// this.download_lianjie = 'http://82.157.97.70/vj/';
+//     this.download_lianjie += this.input;
+//     this.download_lianjie = 'http://82.157.97.70/api/qrcode/downloadQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
+//     },1000)
+    this.download_lianjie += 'http://82.157.97.70/vj/';
     this.download_lianjie += this.input;
     this.download_lianjie = 'http://82.157.97.70/api/qrcode/downloadQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
   },

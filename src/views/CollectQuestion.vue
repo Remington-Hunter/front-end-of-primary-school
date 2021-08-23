@@ -139,7 +139,7 @@
         </div>
       </div>
     </div>
-    <div v-show="!can_write_state">不在填写时间内</div>
+    <div v-show="!can_write_state"><Stop/></div>
   </div>
 </template>
 
@@ -147,12 +147,14 @@
 import axios from "axios";
 import PublishQuestion from "./questionnaire/PublishQuestion.vue";
 import VoteAnswer from "./VoteAnswer.vue";
+import Stop from "./Stop.vue"
 import { dateFormat } from "../utils/dateFormat";
 export default {
   name: "CollectQuestion",
   components: {
     PublishQuestion,
-    VoteAnswer
+    VoteAnswer,
+    Stop
   },
   data() {
     return {
@@ -430,16 +432,16 @@ export default {
   },
   created() {
     this.getInfo();
-    var interval = setInterval(() => {
-      this.getInfo2();
-      if(this.type === 1){
-        clearInterval(interval);
-      }
-      if (this.end) {
-        clearInterval(interval);
-      }
-      //do whatever here..
-    }, 2000);
+    // var interval = setInterval(() => {
+    //   this.getInfo2();
+    //   if(this.type === 1){
+    //     clearInterval(interval);
+    //   }
+    //   if (this.end) {
+    //     clearInterval(interval);
+    //   }
+    //   //do whatever here..
+    // }, 2000);
   },
 };
 </script>
