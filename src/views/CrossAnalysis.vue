@@ -138,7 +138,7 @@ export default {
       })
     },
       exportData() {
-		this.excelData = this.historyList;  //将你要导出的数组数据（historyList）赋值给excelDate
+		this.excelData = this.col;  //将你要导出的数组数据（historyList）赋值给excelDate
 		this.export2Excel(); //调用export2Excel函数，填写表头（clomns里的type）和对应字段(historyList里的属性名)
 	},
 	//表格数据写入excel
@@ -149,16 +149,16 @@ export default {
           export_json_to_excel
         } = require("../assets/excel/Export2Excel");  
         //这里使用绝对路径( @表示src文件夹 )，使用@/+存放export2Excel的路径【也可以写成相对于你当前"xxx.vue"文件的相对路径，例如我的页面放在assets文件夹同级下的views文件夹下的“home.vue”里，那这里路径也可以写成"../assets/excel/Export2Excel"】
-        const tHeader = ["报名日期", "姓名", "班级", "学号","性别","邮箱","联系方式","所选导师"]; // 导出的excel表头名信息
+        const tHeader = ["选项1", "选项2", "选项3", "选项4","选项5","选项6","选项7","选项8"]; // 导出的excel表头名信息
         const filterVal = [
-          "date",
-          "name",
-          "class",
-          "studentId",
-          "sex",
-          "email",
-          "telephone",
-          "teacher"
+          "data1",
+          "data2",
+          "data3",
+          "data4",
+          "data5",
+          "data6",
+          "data7",
+          "data8"
         ]; // 导出的excel表头字段名，需要导出表格字段名
         const list = that.excelData;
         const data = that.formatJson(filterVal, list);
