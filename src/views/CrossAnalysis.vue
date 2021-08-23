@@ -20,12 +20,12 @@
         >返回
       </el-button>
     </div>
-    <div id="demo1">
+    <div id="demo1" style="">
       <div v-for="(item, index) in data" :key="(item, index)">
         
         <div v-if="data[index].question.type===2">
           <div>题目{{ index + 1 }}</div>
-          <Completion :data1="bar[index]"></Completion>
+          <Completion :data1="completion[index]"></Completion>
         </div>
         <div v-else>
           <div v-if="bar[index].length!==0">

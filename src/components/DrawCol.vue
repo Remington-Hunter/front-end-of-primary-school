@@ -53,9 +53,10 @@ export default {
         xAxis: { type: "category" },
         yAxis: {},
         series: [
-          { type: "bar" },
+          { type: "bar" ,barWidth : 40,color:'#008fff'},
           // {type: 'bar'},
           // {type: 'bar'}
+          // barWidth : 30,
         ],
       };
 

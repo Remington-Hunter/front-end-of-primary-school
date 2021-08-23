@@ -37,7 +37,7 @@ export default {
       myChart.setOption({
         title: { text: "饼状图" },
         tooltip: {},
-
+        color:['#009dff', '#40c45f', '#FFC851','#5A5476','#1869A0','#FF9393'],
         series: [
           {
             name: "访问来源",

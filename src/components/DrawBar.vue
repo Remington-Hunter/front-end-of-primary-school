@@ -52,8 +52,10 @@ export default {
           // ],
         },
         grid: { containLabel: true },
-        xAxis: {},
-        yAxis: { type: "category" },
+        xAxis: {
+          
+        },
+        yAxis: { type: "category"},
         series: [
           {
             type: "bar",
@@ -63,6 +65,8 @@ export default {
               // 将 "product" 列映射到 Y 轴。
               y: this.source1[0][0],
             },
+            barWidth : 40,
+            color:'#008fff'
           },
         ],
       };
