@@ -157,13 +157,13 @@
                 :data="completion[index]"
                 style="width: 100%"
               >
-                <el-table-column label="id">
+                <el-table-column label="序号">
                   <template slot-scope="scope">
                     <!-- <i class="el-icon-time"></i> -->
                     <span style="margin-left: 10px">{{ scope.row.id }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column label="content">
+                <el-table-column label="内容">
                   <template slot-scope="scope1">
                     <!-- <i class="el-icon-time"></i> -->
                     <span style="margin-left: 10px">{{
