@@ -108,6 +108,7 @@ export default {
         //   date2: "2020 - 8 - 4",
         // },
       ],
+      data:[]
     };
   },
   methods: {
@@ -132,9 +133,16 @@ export default {
         console.log(res);
       })
     },
+<<<<<<< HEAD
+    startItem(item){
+      var Data=new FormData();
+      console.log(111122222222)
+      Data.append("questionnaireId",item)
+=======
     startItem(item) {
       var Data = new FormData();
       Data.append("questionnaireId", item)
+>>>>>>> dev
       axios({
         url: 'http://82.157.97.70/api/questionnaire/publish_questionnaire',
         method: 'post',
@@ -145,6 +153,10 @@ export default {
         },
       }).then((res) => {
         console.log(res);
+<<<<<<< HEAD
+        // this.getItem();
+=======
+>>>>>>> dev
         for(var i=0;i<this.desserts.length;i++){
           if(this.desserts[i].id===item){
             this.desserts[i].state="已发布"
@@ -225,7 +237,8 @@ export default {
           "Content-Type": "application/json",
         },
       }).then((res) => {
-        // console.log(res);
+        console.log(res.data.data);
+        this.data=res.data.data;
         this.desserts = [];
         for (let i = 0; i < res.data.data.length; i++) {
           var state = "";
@@ -296,6 +309,7 @@ export default {
           };
           // console.log(data)
           this.desserts.push(data);
+          // this
         }
         // 没写全之后再补
       });
