@@ -57,7 +57,7 @@
             icon="el-icon-video-pause"
             :disabled="state"
             plain
-            @click="change_prepare_state"
+            @click="change_stop_state"
         >暂停回收
         </el-button>
         <el-button
@@ -241,11 +241,11 @@ export default {
         this.state = false
       }
     },
-    change_prepare_state() {
+    change_stop_state() {
       var formData = new FormData();
       formData.append("questionnaireId", this.current_questionnaire.id);
       axios({
-        url: "http://82.157.97.70/api/questionnaire/prepare_questionnaire",
+        url: "http://82.157.97.70/api/questionnaire/stop_questionnaire",
         method: "post",
         data: formData,
         headers: {
