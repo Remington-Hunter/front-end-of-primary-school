@@ -4,50 +4,50 @@
       问卷列表
       <v-spacer></v-spacer>
       <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="Search"
-        single-line
-        hide-details
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          single-line
+          hide-details
       ></v-text-field>
     </v-card-title>
     <v-data-table
-      :headers="headers"
-      :items="desserts"
-      :search="search"
-      :sort-by.sync="sortBy"
-      :sort-desc.sync="sortDesc"
-      class="elevation-1"
+        :headers="headers"
+        :items="desserts"
+        :search="search"
+        :sort-by.sync="sortBy"
+        :sort-desc.sync="sortDesc"
+        class="elevation-1"
     >
       <template v-slot:[`item.actions`]="{ item }">
         <v-icon size=14px class="mr-2" @click="copyItem(item.id)" title="复制">
           mdi-content-copy
         </v-icon>
-        <v-icon small @click="deleteItem(item.id)" title="删除"> mdi-trash-can-outline </v-icon>
+        <v-icon small @click="deleteItem(item.id)" title="删除"> mdi-trash-can-outline</v-icon>
       </template>
       <template v-slot:[`item.actions1`]="{ item }">
-        <v-icon size=14px class="mr-2" @click="startItem(item.id)" title="开始">
+        <v-icon v-if="is_publish" size=14px class="mr-2" @click="startItem(item.id)" title="开始">
           mdi-arrow-right-drop-circle
         </v-icon>
-        <v-icon small @click="modifyItem(item.id)" title="修改"> mdi-pencil-outline </v-icon>
+        <v-icon v-else size=14px class="mr-2" @click="stopItem(item.id)" title="开始">
+          mdi-pause-circle
+        </v-icon>
+        <v-icon small @click="modifyItem(item.id)" title="修改"> mdi-pencil-outline</v-icon>
         <v-icon small @click="lookUpLink(item.id)" title="查看链接"> mdi-magnify</v-icon>
         <v-icon small @click="checkAnalysis(item.id)" title="统计结果"> mdi-poll</v-icon>
       </template>
     </v-data-table>
-    <div class="text-center pt-2">
-      <v-btn color="primary" class="mr-2" @click="toggleOrder"
-        >切换排序顺序</v-btn
-      >
-    </div>
   </v-card>
 </template>
 
 
 <script>
 import axios from "axios";
+
 export default {
   data() {
     return {
+      is_publish: true,
       sortBy: "date",
       sortDesc: false,
       search: "",
@@ -57,14 +57,14 @@ export default {
           align: "start",
           value: "name",
         },
-        { text: "状态", value: "state", sortable: false },
-        { text: "ID", value: "id" },
-        { text: "回收量", value: "num" },
-        { text: "创建/发布时间", value: "date" },
+        {text: "状态", value: "state", sortable: false},
+        {text: "ID", value: "id"},
+        {text: "回收量", value: "num"},
+        {text: "创建/发布时间", value: "date"},
         // {text:'发布时间',value:'date1'},
-        { text: "截止时间", value: "date2" },
-        { text: "操作", value: "actions", sortable: false },
-        { text: "更多功能",value:"actions1",sortable:false},
+        {text: "截止时间", value: "date2"},
+        {text: "操作", value: "actions", sortable: false},
+        {text: "更多功能", value: "actions1", sortable: false},
       ],
       desserts: [
         // {
@@ -89,55 +89,77 @@ export default {
     };
   },
   methods: {
-    lookUpLink(id){
-      this.$router.push({name:'send',params:{id:id}})
+    lookUpLink(id) {
+      this.$router.push({name: 'send', params: {id: id}})
     },
-    checkAnalysis(id){
-      this.$router.push({name:'crossanalysis',params:{id:id}})
+    checkAnalysis(id) {
+      this.$router.push({name: 'crossanalysis', params: {id: id}})
     },
-    modifyItem(item){
-      var Data=new FormData();
-      Data.append('id',item);
+    change_is_publish() {
+      this.is_publish = !this.is_publish
+    },
+    modifyItem(item) {
+      var Data = new FormData();
+      Data.append('questionnaireId', item);
       axios({
-        url:'http://82.157.97.70/api/questionnaire/get_questionnaire_by_id',
-        method:'post',
+        url: 'http://82.157.97.70/api/questionnaire/throw_and_get_new_questionnaire',
+        method: 'post',
         data: Data,
         headers: {
           Authorization: window.localStorage.getItem("authorization"),
           "Content-Type": "application/json",
         },
-      }).then((res)=>{
-        console.log(res);
-      })
-    },
-    startItem(item){
-      var Data=new FormData();
-      Data.append("questionnaireId",item)
-      axios({
-        url:'http://82.157.97.70/api/questionnaire/publish_questionnaire',
-        method:'post',
-        data: Data,
-        headers: {
-          Authorization: window.localStorage.getItem("authorization"),
-          "Content-Type": "application/json",
-        },
-      }).then((res)=>{
+      }).then((res) => {
         console.log(res);
         this.getItem();
       })
     },
-    checkItem(item){
-      var Data=new FormData();
-      Data.append("id",item);
+    startItem(item) {
+      var Data = new FormData();
+      Data.append("questionnaireId", item)
       axios({
-        url:'http://82.157.97.70/api/get_questionnaire_by_id',
-        method:'post',
+        url: 'http://82.157.97.70/api/questionnaire/publish_questionnaire',
+        method: 'post',
         data: Data,
         headers: {
           Authorization: window.localStorage.getItem("authorization"),
           "Content-Type": "application/json",
         },
-      }).then((res)=>{
+      }).then((res) => {
+        console.log(res);
+        this.getItem();
+        this.change_is_publish();
+      })
+    },
+    stopItem(item) {
+      var Data = new FormData();
+      Data.append("questionnaireId", item)
+      axios({
+        url: 'http://82.157.97.70/api/questionnaire/publish_questionnaire',
+        method: 'post',
+        data: Data,
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
+        },
+      }).then((res) => {
+        console.log(res);
+        this.getItem();
+        this.change_is_publish();
+      })
+    },
+    checkItem(item) {
+      var Data = new FormData();
+      Data.append("id", item);
+      axios({
+        url: 'http://82.157.97.70/api/get_questionnaire_by_id',
+        method: 'post',
+        data: Data,
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
+        },
+      }).then((res) => {
         console.log(res);
       })
     },
@@ -154,7 +176,7 @@ export default {
       console.log(index);
       // confirm("Are you sure you want to delete this item?")
       var Data = new FormData();
-      Data.append('id',index)
+      Data.append('id', index)
       console.log(111)
       axios({
         url: "http://82.157.97.70/api/questionnaire/throw_to_trashcan",
@@ -171,12 +193,12 @@ export default {
     },
     copyItem(item) {
       const index = item;
-      var Data=new FormData();
-      Data.append('id',index)
+      var Data = new FormData();
+      Data.append('id', index)
       axios({
         url: "http://82.157.97.70/api/questionnaire/copy_questionnaire",
         method: "post",
-        data:Data,
+        data: Data,
         headers: {
           Authorization: window.localStorage.getItem("authorization"),
           "Content-Type": "application/json",
@@ -224,16 +246,16 @@ export default {
             };
             if (/(y+)/.test(fmt))
               fmt = fmt.replace(
-                RegExp.$1,
-                (this.getFullYear() + "").substr(4 - RegExp.$1.length)
+                  RegExp.$1,
+                  (this.getFullYear() + "").substr(4 - RegExp.$1.length)
               );
             for (var k in o)
               if (new RegExp("(" + k + ")").test(fmt))
                 fmt = fmt.replace(
-                  RegExp.$1,
-                  RegExp.$1.length == 1
-                    ? o[k]
-                    : ("00" + o[k]).substr(("" + o[k]).length)
+                    RegExp.$1,
+                    RegExp.$1.length == 1
+                        ? o[k]
+                        : ("00" + o[k]).substr(("" + o[k]).length)
                 );
             return fmt;
           };
@@ -242,19 +264,19 @@ export default {
 
           var time = times[0] + "T" + times[1] + "Z";
           if (
-            res.data.data[i].endTime != null &&
-            res.data.data[i].endTime < time
+              res.data.data[i].endTime != null &&
+              res.data.data[i].endTime < time
           ) {
             state = "已过期";
           }
           if (
-            res.data.data[i].endTime != null &&
-            res.data.data[i].startTime > time
+              res.data.data[i].endTime != null &&
+              res.data.data[i].startTime > time
           ) {
             state = "未开始";
           }
-          if(res.data.data[i].stopping){
-            state="已停用"
+          if (res.data.data[i].stopping) {
+            state = "已停用"
           }
           var data2 = res.data.data[i].endTime;
           if (data2 != null) {
