@@ -19,8 +19,8 @@
       </el-button>
     </div>
     <div id="demo1" style="">
-      <div v-for="(item, index) in data" :key="(item, index)">
-        <div v-if="data[index].question.type === 2">
+      <div v-for="(item, index) in data" :key="(index)">
+        <div v-if="data[index]!=[]&&data[index]!=null&&data[index].question.type === 2">
           <div>题目{{ index + 1 }}</div>
           <Completion :data1="completion[index]"></Completion>
         </div>
@@ -39,20 +39,20 @@
             <el-button @click="goto(3)">
               <span>柱状图</span>
             </el-button>
-            <div style="width: 600px; height: 400px" v-if="type === 1">
-              <drawLine
-                :id="LineToString(index)"
-                :series="line[index]"
-              ></drawLine>
+            <div style="width: 600px; height: 400px" v-if="type1===1">
+              <drawLine :id="LineToString(index)" :series="line[index]"></drawLine>
             </div>
-            <div style="width: 600px; height: 400px" v-if="type === 2">
-              <drawPie :id="PieToString(index)" :series="pie[index]"></drawPie>
+            <div style="width: 600px; height: 400px" v-if="type1===2">
+              <drawPie :id="PieToString(index)" :series="pie[index]" ></drawPie>
             </div>
-            <div style="width: 600px; height: 400px" v-if="type === 3">
+            <div style="width: 600px; height: 400px" v-if="type1===3">
               <drawCol :id="ColToString(index)" :series="col[index]"></drawCol>
             </div>
           </div>
-          <div v-else>题目{{ index + 1 }}的数据为空</div>
+          <div v-else>
+            <div>题目{{ index + 1 }}</div>
+            <Completion :data1="[]"></Completion>
+            </div>
         </div>
       </div>
       <div>
@@ -125,6 +125,7 @@ export default {
       default: 0,
     },
   },
+
   data() {
     return {
       series: ["1", "2", "3"],
@@ -137,7 +138,7 @@ export default {
       line: [],
       completion: [],
       historyList: [],
-      type:1
+      type1:1
     };
   },
   components: {
@@ -256,23 +257,10 @@ export default {
     formatJson(filterVal, jsonData) {
       return jsonData.map((v) => filterVal.map((j) => v[j]));
     },
-    //     exportExcel() {
-    //       require.ensure([], () => {
-    // 　　　　　　　　const { export_json_to_excel } = require('../excel/Export2Excel');
-    // 　　　　　　　　const tHeader = ['序号', 'IMSI', 'MSISDN', '证件号码', '姓名'];
-    // 　　　　　　　　const filterVal = ['ID', 'imsi', 'msisdn', 'address', 'name'];
-    // 　　　　　　　　const list = this.tableData;
-    // 　　　　　　　　const data = this.formatJson(filterVal, list);
-    // 　　　　　　　　export_json_to_excel(tHeader, data, '列表excel');
-    // 　　　　　　})
-    //     },
-    //     formatJson(filterVal, jsonData) {
-    // 　　　　　　return jsonData.map(v => filterVal.map(j => v[j]))
-    // 　　　　},
     goto(type) {
-      this.getseries()
-      this.type = type;
-      console.log(121);
+      // this.getseries()
+      this.type1 = type;
+      console.log(this.type1);
     },
     PieToString(val) {
       return "pie" + val;
