@@ -30,13 +30,13 @@
             <div style="width: 600px; height: 400px">
               <drawBar :id="BarToString(index)" :series="bar[index]"></drawBar>
             </div>
-            <el-button @click="goto1(1)">
+            <el-button @click="goto(1)">
               <span>折线图</span>
             </el-button>
-            <el-button @click="goto1(2)">
+            <el-button @click="goto(2)">
               <span>饼图</span>
             </el-button>
-            <el-button @click="goto1(3)">
+            <el-button @click="goto(3)">
               <span>柱状图</span>
             </el-button>
             <div style="width: 600px; height: 400px" v-if="type === 1">
