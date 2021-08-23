@@ -32,8 +32,9 @@
           label="统计"
           name="third"
           :disabled="state"
+          @click="goToCrossAnalysis"
         >
-          <CrossAnalysis></CrossAnalysis>
+          <CrossAnalysis :id="this.current_questionnaire.id"></CrossAnalysis>
         </el-tab-pane>
       </el-tabs>
       <el-row style='position: absolute;right:100px;top:12vh;'>
@@ -233,6 +234,9 @@ export default {
         //alert(this.input);
       });
     },
+    goToCrossAnalysis(){
+      
+    }
   }
 };
 </script>

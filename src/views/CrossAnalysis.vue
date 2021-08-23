@@ -64,11 +64,17 @@ import Completion from "../components/Completion";
 // import Export2Excel from '@/excel/Export2Excel'
 // import Blob from '@/excel/Blob'
 export default {
+  props:{
+    id1:{
+      type:Number,
+      default:0
+    }
+  },
   data() {
     return {
       series: ["1", "2", "3"],
       msg1: "饼状图",
-      id: 1,
+      id: this.id1,
       bar:[],
       data:[],
       pie:[],
@@ -88,6 +94,12 @@ export default {
   mounted() {
     this.getseries();
   },
+  // watch:{
+  //   $route(to){
+  //     console.log(to.query.id);
+  //     this.id=to.query.id;
+  //   }
+  // },
   methods: {
     getBarData(data){
       // console.log(data);
@@ -121,8 +133,9 @@ export default {
       console.log(this.bar)
     },
     getseries(){
+      // alert(1);
       var Data=new FormData();
-      Data.append('id',72);
+      Data.append('id',id);
       axios({
         url:'http://82.157.97.70/api/answer/get_result',
         method:'post',
