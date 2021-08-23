@@ -238,7 +238,7 @@ export default {
         for (var j = 0; j < y.optionList.length; j++) {
           let z = {};
           z.comment = y.optionList[j].comment;
-          z.total = total_answerNum+""
+          z.total = y.optionList[j].answerNum+""
           z.content = y.optionList[j].content;
           z.percentage = (y.optionList[j].answerNum / total_answerNum)*100
           var num=z.percentage
@@ -311,6 +311,9 @@ export default {
         data: formData,
       }).then((res) => {
         console.log(res);
+        if(res.data.code === 400){
+          this.can_write_state=false
+        }
         console.log(res.data.data);
         this.type = res.data.data.questionnaire.type;
         this.current_questionnaire = res.data.data;
