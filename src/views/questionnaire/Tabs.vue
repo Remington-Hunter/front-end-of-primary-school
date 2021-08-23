@@ -200,6 +200,7 @@ export default {
       console.log(this.current_questionnaire.id);
       this.current_questionnaire.type = this.questionnaire_type
       var formData = this.current_questionnaire
+      console.log(JSON.stringify(formData));
       axios({
         method: "post",
         url: "http://82.157.97.70/api/questionnaire/save_questionnaire",
