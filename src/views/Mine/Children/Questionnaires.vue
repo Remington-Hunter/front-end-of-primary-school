@@ -145,7 +145,11 @@ export default {
         },
       }).then((res) => {
         console.log(res);
-        this.getItem();
+        for(var i=0;i<this.desserts.length;i++){
+          if(this.desserts[i].id===item){
+            this.desserts[i].state="已发布"
+          }
+        }
       })
     },
     checkItem(item) {
