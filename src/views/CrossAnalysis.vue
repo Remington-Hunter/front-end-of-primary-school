@@ -1,6 +1,6 @@
 <template>
   <div class="analysis">
-      <el-button type="primary" @click="exportData" style="display:block; margin:5px auto;">导出Excel表格</el-button>
+      <!-- <el-button type="primary" @click="exportData" style="display:block; margin:5px auto;">导出Excel表格</el-button> -->
 
     <span
       >问卷标题
@@ -8,7 +8,7 @@
     </span>
     <div style="padding: 10px">
       <el-button type="primary" @click="handleDown"
-        >PDF下载-离职申请表</el-button
+        >数据分析PDF下载</el-button
       >
       <!-- <el-button type="primary" @click="handleWindowPrint( '#demo', '离职申请表' )">浏览器方式下载</el-button> -->
       <el-button
@@ -57,6 +57,64 @@
           </div>
         </div>
       </div>
+      <div>
+        <div v-for="(item,index) in col" :key="(item,index)">
+          <div v-if="data[index].question.type===2">
+            <div>题目{{ index + 1 }}</div>
+            <el-table
+              :data="completion[index]"
+              style="width: 100%">
+              <el-table-column
+                label="id"
+                width="180">
+                <template slot-scope="scope">
+                  <!-- <i class="el-icon-time"></i> -->
+                  <span style="margin-left: 10px">{{ scope.row.id }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="content"
+                width="180">
+                <template slot-scope="scope1">
+                  <!-- <i class="el-icon-time"></i> -->
+                  <span style="margin-left: 10px">{{ scope1.row.content }}</span>
+                </template>
+              </el-table-column>
+              <!-- <el-table-column
+                label="content"
+                width="180">
+                <template slot-scope="scope1">
+                  <i class="el-icon-time"></i>
+                  <span style="margin-left: 10px">{{ scope1.row.content }}</span>
+                </template>
+              </el-table-column> -->
+            </el-table>
+          </div>
+          <div v-else>
+            <div>题目{{ index + 1 }}</div>
+            <el-table
+              :data="completion[index]"
+              style="width: 100%">
+              <el-table-column
+                label="content"
+                width="180">
+                <template slot-scope="scope2">
+                  <!-- <i class="el-icon-time"></i> -->
+                  <span style="margin-left: 10px">{{ scope2.row.content }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="num"
+                width="180">
+                <template slot-scope="scope3">
+                  <!-- <i class="el-icon-time"></i> -->
+                  <span style="margin-left: 10px">{{ scope3.row.num }}</span>
+                </template>
+              </el-table-column>
+              </el-table>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -87,6 +145,7 @@ export default {
       pie:[],
       col:[],
       line:[],
+      completion:[],
       historyList:[]
     };
   },
@@ -102,6 +161,32 @@ export default {
     this.getseries();
   },
   methods: {
+    getCompletionData(data){
+      for(var i=0;i<data.length;i++){
+        // console.log(111)
+        // console.log(data[i].question.type)
+        if(data[i].question.type===2){
+          // console.log(11)
+          var data_i=data[i].answerList;
+          var item=[];
+          for(let j=0;j<data_i.length;j++){
+            var s={id:j+1,content:data_i[j].content}
+            item.push(s);
+          }
+          // console.log(item)
+          this.completion.push(item)
+        }
+        else{
+          var data_i=data[i].optionList;
+          var item=[];
+          for(let j=0;j<data_i.length;j++){
+            var s={content:data_i[j].content,num:data_i[j].answerNum}
+            item.push(s);
+          }
+          this.completion.push(item)
+        }
+      }
+    },
     getBarData(data){
       // console.log(data);
       for(var i=0;i<data.length;i++){
@@ -130,8 +215,8 @@ export default {
           // console.log(22)
         }
       }
-      console.log(31231)
-      console.log(this.bar)
+      // console.log(31231)
+      // console.log(this.bar)
     },
     getseries(){
       // alert(1);
@@ -149,10 +234,11 @@ export default {
         this.getColData(data);
         this.getPieData(data);
         this.getLineData(data);
+        this.getCompletionData(data);
       })
     },
       exportData() {
-		this.excelData = this.col;  //将你要导出的数组数据（historyList）赋值给excelDate
+		this.excelData = this.completion;  //将你要导出的数组数据（historyList）赋值给excelDate
 		this.export2Excel(); //调用export2Excel函数，填写表头（clomns里的type）和对应字段(historyList里的属性名)
 	},
 	//表格数据写入excel
@@ -163,16 +249,10 @@ export default {
           export_json_to_excel
         } = require("../assets/excel/Export2Excel");  
         //这里使用绝对路径( @表示src文件夹 )，使用@/+存放export2Excel的路径【也可以写成相对于你当前"xxx.vue"文件的相对路径，例如我的页面放在assets文件夹同级下的views文件夹下的“home.vue”里，那这里路径也可以写成"../assets/excel/Export2Excel"】
-        const tHeader = ["选项1", "选项2", "选项3", "选项4","选项5","选项6","选项7","选项8"]; // 导出的excel表头名信息
+        const tHeader = [content,num]; // 导出的excel表头名信息
         const filterVal = [
-          "data1",
-          "data2",
-          "data3",
-          "data4",
-          "data5",
-          "data6",
-          "data7",
-          "data8"
+          "content",
+          "num"
         ]; // 导出的excel表头字段名，需要导出表格字段名
         const list = that.excelData;
         const data = that.formatJson(filterVal, list);
