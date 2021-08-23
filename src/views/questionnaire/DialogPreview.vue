@@ -20,31 +20,36 @@
               v-if="question.must_write_select"
               class="question-required"
             >*</span>
-            <el-tag v-if="question.problem_type === '多选题'||question.problem_type === '投票多选题'">多选</el-tag>
+            <el-tag v-if=" ['多选题','投票多选题','报名多选题'].includes(question.problem_type)">多选</el-tag>
           </div>
           <div class="q-instruction">{{ question.instruction }}</div>
         </div>
 
         <div class="question-body ">
           <!-- 单选题 -->
-          <div v-if="question.problem_type === '单选题' ||question.problem_type === '投票单选题'">
+          <div v-if="['单选题','投票单选题','报名单选题'].includes(question.problem_type)">
             <el-radio-group v-model="radio">
               <el-radio
                 v-for="(item, index) in question.selection_list"
                 :key="index"
                 :label="index"
               >
-                {{ item.content }}</el-radio>
+                {{ item.content }}<div class="q-instruction">{{ item.comment }}</div>
+              </el-radio>
+
             </el-radio-group>
           </div>
           <!-- 多选题 -->
-          <div v-else-if="question.problem_type === '多选题'||question.problem_type === '投票多选题'">
+          <div v-else-if="['多选题','投票多选题','报名多选题'].includes(question.problem_type)">
             <el-checkbox-group v-model="checkList">
               <el-checkbox
                 v-for="(item, index) in question.selection_list"
                 :key="index"
                 :label="index"
-              >{{ item.content }}</el-checkbox>
+              >{{ item.content }} <span
+                  class="sel-total"
+                  v-show="item.total"
+                >(剩余{{item.total}})</span><span class="q-instruction">{{ item.comment }}</span></el-checkbox>
             </el-checkbox-group>
           </div>
           <!-- 评分题 -->

@@ -356,10 +356,7 @@ export default {
 .required {
   margin-bottom: 15px;
 }
-.sel-total {
-  padding-left: 10px;
-  color: #feae3a;
-}
+
 .del {
   margin-bottom: 15px;
   height: 35px;
