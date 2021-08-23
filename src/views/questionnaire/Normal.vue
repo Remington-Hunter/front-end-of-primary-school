@@ -1,13 +1,12 @@
 <template>
   <div>
     <el-container style="height: 600px;">
-      <el-aside
-        width="200px"
-        style="overflow-x:hidden;"
-      >
-        <el-menu :default-openeds="['1','2']">
+      <el-aside width="200px" style="overflow-x:hidden;">
+        <el-menu :default-openeds="['1', '2']">
           <el-submenu index="1">
-            <template slot="title"><i class="el-icon-menu"></i>题目控件</template>
+            <template slot="title"
+              ><i class="el-icon-menu"></i>题目控件</template
+            >
             <el-menu-item
               v-for="(item, index) in problem_list"
               :key="(item, index)"
@@ -16,7 +15,7 @@
               <v-icon>{{ item.icon }}</v-icon>
               {{ item.text }}
             </el-menu-item>
-            <div v-if="type===0">
+            <div v-if="type === 0">
               <el-menu-item
                 v-for="(item, index) in problem_list0"
                 :key="(item, index)"
@@ -26,7 +25,7 @@
                 {{ item.text }}
               </el-menu-item>
             </div>
-            <div v-if="type===1">
+            <div v-if="type === 1">
               <el-menu-item
                 v-for="(item, index) in problem_list1"
                 :key="(item, index)"
@@ -37,7 +36,7 @@
               </el-menu-item>
             </div>
 
-            <div v-if="type===2">
+            <div v-if="type === 2">
               <el-menu-item
                 v-for="(item, index) in problem_list2"
                 :key="(item, index)"
@@ -49,16 +48,21 @@
             </div>
           </el-submenu>
           <el-submenu index="2">
-            <template slot="title"><i class="el-icon-setting"></i>问卷设置</template>
-            <el-menu-item @click="dialogTimeVisible = true"> 时间控制</el-menu-item>
-            <div v-if="type===1">
+            <template slot="title"
+              ><i class="el-icon-setting"></i>问卷设置</template
+            >
+            <el-menu-item @click="dialogTimeVisible = true">
+              时间控制</el-menu-item
+            >
+            <div v-if="type === 1">
               <el-tooltip
                 class="item"
                 effect="dark"
                 content="是否允许用户提交问卷后查看填写结果"
                 placement="right"
               >
-                <el-menu-item> 查看结果 <el-switch v-model="see_result"></el-switch>
+                <el-menu-item>
+                  查看结果 <el-switch v-model="see_result"></el-switch>
                 </el-menu-item>
               </el-tooltip>
             </div>
@@ -70,7 +74,6 @@
         style="border-left: solid 2px #e6e6e6;overflow-y:scroll;overflow-x:hidden;height:100%"
         id="demo"
       >
-
         <div>
           <div
             @click="dialogFormVisible = true"
@@ -81,26 +84,13 @@
             <div class="header-subtitle">{{ description }}</div>
             <p class="sub">编辑问卷标题和描述</p>
           </div>
-          <el-dialog
-            title="题目"
-            :visible.sync="dialogFormVisible"
-            center
-          >
+          <el-dialog title="题目" :visible.sync="dialogFormVisible" center>
             <el-form>
-              <el-form-item
-                label="标题"
-                :label-width="formLabelWidth"
-              >
-                <el-input
-                  v-model="title"
-                  autocomplete="off"
-                ></el-input>
+              <el-form-item label="标题" :label-width="formLabelWidth">
+                <el-input v-model="title" autocomplete="off"></el-input>
               </el-form-item>
 
-              <el-form-item
-                label="描述"
-                :label-width="formLabelWidth"
-              >
+              <el-form-item label="描述" :label-width="formLabelWidth">
                 <el-input
                   v-model="description"
                   autocomplete="off"
@@ -110,23 +100,16 @@
                 ></el-input>
               </el-form-item>
             </el-form>
-            <div
-              slot="footer"
-              class="dialog-footer"
-            >
+            <div slot="footer" class="dialog-footer">
               <el-button @click="dialogFormVisible = false">取 消</el-button>
-              <el-button
-                type="primary"
-                @click="dialogFormVisible = false"
-              >确 定</el-button>
+              <el-button type="primary" @click="dialogFormVisible = false"
+                >确 定</el-button
+              >
             </div>
           </el-dialog>
 
           <v-divider></v-divider>
-          <div
-            v-for="(item, index) in created_problem"
-            :key="(item, index)"
-          >
+          <div v-for="(item, index) in created_problem" :key="(item, index)">
             <SingleSelect
               :ref="'question' + item.number"
               :id="'question' + item.number"
@@ -174,7 +157,8 @@
             @change="send_question_parent()"
           ></el-switch>
         </el-row>
-        <el-row>选择时间
+        <el-row
+          >选择时间
           <el-date-picker
             v-model="value1"
             type="datetimerange"
@@ -188,14 +172,15 @@
         </el-row>
       </div>
 
-      <span
-        slot="footer"
-        class="dialog-footer"
-      >
+      <span slot="footer" class="dialog-footer">
         <el-button
           type="primary"
-          @click="dialogTimeVisible = false;send_question_parent()"
-        >确 定</el-button>
+          @click="
+            dialogTimeVisible = false;
+            send_question_parent();
+          "
+          >确 定</el-button
+        >
       </span>
     </el-dialog>
   </div>
@@ -212,7 +197,7 @@ export default {
   components: {
     SingleSelect,
   },
-  props: ['type'],
+  props: ["type"],
   data() {
     return {
       value1: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
@@ -226,7 +211,6 @@ export default {
       problem_list0: [
         { text: "单选题", icon: "mdi-radiobox-marked" },
         { text: "多选题", icon: "mdi-check-bold" },
-
       ],
       problem_list1: [
         { text: "投票单选题", icon: "mdi-radiobox-marked" },
@@ -234,7 +218,7 @@ export default {
       ],
       problem_list2: [
         { text: "报名单选题", icon: "mdi-radiobox-marked" },
-        { text: "报名多选题", icon: "mdi-check-bold" }
+        { text: "报名多选题", icon: "mdi-check-bold" },
       ],
       problem_list: [
         { text: "填空题", icon: "mdi-checkbox-blank-outline" },
@@ -273,11 +257,20 @@ export default {
           let z = {};
           z.content = x.selection_list[j].content;
           z.limit = x.selection_list[j].total;
-          z.comment = x.selection_list[j].comment
+          z.comment = x.selection_list[j].comment;
           z.number = j + "";
           y.push(z);
         }
         item.optionList = y;
+        let y1 = [];
+        if (item.type === 3) {
+          for (var j = 0; j < 5; j++) {
+            let z = {};
+            z.number = j + "";
+            y1.push(z);
+          }
+          item.optionList = y1;
+        }
         this.created_problem_list.push(item);
       }
 
@@ -325,7 +318,7 @@ export default {
         preview_list: list,
         title: this.title,
         description: this.description,
-        questionnaire_state: "preparing"
+        questionnaire_state: "preparing",
       };
       this.$emit("currentQuestionnaire", obj1);
     },
@@ -506,5 +499,3 @@ export default {
   padding-left: 50px;
 }
 </style>
-
-

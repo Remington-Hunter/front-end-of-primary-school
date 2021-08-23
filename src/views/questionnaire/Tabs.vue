@@ -173,6 +173,22 @@ export default {
         var formData = new FormData();
         console.log(this.current_questionnaire.id);
         formData.append("questionnaireId", this.current_questionnaire.id)
+        // setTimeout(()=>{
+        //   axios({
+        //   method: "post",
+        //   url: "http://82.157.97.70/api/questionnaire/throw_questionnaire",
+        //   headers: {
+        //     Authorization: window.localStorage.getItem("authorization"),
+        //     "Content-Type": "application/json",
+        //   },
+        //   data: formData,
+        // }).then((res) => {
+        //   this.input = 'http://82.157.97.70/vj/';
+        //   this.input += res.data.data;
+        //   this.lianjie = 'http://82.157.97.70/api/qrcode/getQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
+        //   this.ma = res.data.data
+        // });
+        // })
         axios({
           method: "post",
           url: "http://82.157.97.70/api/questionnaire/throw_questionnaire",
