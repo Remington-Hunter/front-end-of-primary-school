@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-container style="height: 630px;">
+    <el-container style="height: 600px;">
       <el-aside
         width="200px"
         style="overflow-x:hidden;"
@@ -16,19 +16,52 @@
               <v-icon>{{ item.icon }}</v-icon>
               {{ item.text }}
             </el-menu-item>
+            <div v-if="type===0">
+              <el-menu-item
+                v-for="(item, index) in problem_list0"
+                :key="(item, index)"
+                @click="newProblem(item.text, false, {})"
+              >
+                <v-icon>{{ item.icon }}</v-icon>
+                {{ item.text }}
+              </el-menu-item>
+            </div>
+            <div v-if="type===1">
+              <el-menu-item
+                v-for="(item, index) in problem_list1"
+                :key="(item, index)"
+                @click="newProblem(item.text, false, {})"
+              >
+                <v-icon>{{ item.icon }}</v-icon>
+                {{ item.text }}
+              </el-menu-item>
+            </div>
+
+            <div v-if="type===2">
+              <el-menu-item
+                v-for="(item, index) in problem_list2"
+                :key="(item, index)"
+                @click="newProblem(item.text, false, {})"
+              >
+                <v-icon>{{ item.icon }}</v-icon>
+                {{ item.text }}
+              </el-menu-item>
+            </div>
           </el-submenu>
           <el-submenu index="2">
             <template slot="title"><i class="el-icon-setting"></i>问卷设置</template>
             <el-menu-item @click="dialogTimeVisible = true"> 时间控制</el-menu-item>
-            <el-tooltip
-              class="item"
-              effect="dark"
-              content="是否允许用户提交问卷后查看填写结果"
-              placement="right"
-            >
-              <el-menu-item> 查看结果 <el-switch v-model="see_result"></el-switch>
-              </el-menu-item>
-            </el-tooltip>
+            <div v-if="type===1">
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="是否允许用户提交问卷后查看填写结果"
+                placement="right"
+              >
+                <el-menu-item> 查看结果 <el-switch v-model="see_result"></el-switch>
+                </el-menu-item>
+              </el-tooltip>
+            </div>
           </el-submenu>
         </el-menu>
       </el-aside>
@@ -179,10 +212,10 @@ export default {
   components: {
     SingleSelect,
   },
+  props: ['type'],
   data() {
     return {
       value1: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
-
       title: "题目",
       description:
         "为了给您提供更好的服务，希望您能抽出几分钟时间，将您的感受和建议告诉我们，我们非常重视每位用户的宝贵意见，期待您的参与！现在我们就马上开始吧！",
@@ -190,15 +223,22 @@ export default {
       dialogFormVisible: false,
       dialogTimeVisible: false,
       question_id: "123",
-      problem_list: [
+      problem_list0: [
         { text: "单选题", icon: "mdi-radiobox-marked" },
         { text: "多选题", icon: "mdi-check-bold" },
-        { text: "填空题", icon: "mdi-checkbox-blank-outline" },
-        { text: "评分题", icon: "mdi-star-outline" },
+
+      ],
+      problem_list1: [
         { text: "投票单选题", icon: "mdi-radiobox-marked" },
         { text: "投票多选题", icon: "mdi-check-bold" },
+      ],
+      problem_list2: [
         { text: "报名单选题", icon: "mdi-radiobox-marked" },
         { text: "报名多选题", icon: "mdi-check-bold" }
+      ],
+      problem_list: [
+        { text: "填空题", icon: "mdi-checkbox-blank-outline" },
+        { text: "评分题", icon: "mdi-star-outline" },
       ],
       total_problem: 1,
       created_problem: [],
@@ -229,8 +269,9 @@ export default {
         let y = [];
         for (var j = 0; j < x.selection_list.length; j++) {
           let z = {};
-          z.content = x.selection_list[j];
-          z.limit = -1;
+          z.content = x.selection_list[j].content;
+          z.limit = x.selection_list[j].total;
+          z.comment = x.selection_list[j].comment
           z.number = j + "";
           y.push(z);
         }
@@ -400,6 +441,18 @@ export default {
           break;
         case "评分题":
           return 3;
+          break;
+        case "报名单选":
+          return 6;
+          break;
+        case "报名单选":
+          return 7;
+          break;
+        case "投票单选":
+          return 10;
+          break;
+        case "投票单选":
+          return 11;
           break;
       }
     },
