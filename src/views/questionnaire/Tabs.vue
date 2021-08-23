@@ -128,7 +128,8 @@ export default {
       dialogVisible: false,
       questionnaire_type:"",//问卷类型
       is_saved:false,
-      questionnaire_id:-1
+      questionnaire_id:-1,
+      questionnaire_state:"",
     };
   },
   methods: {
@@ -218,6 +219,7 @@ export default {
       this.preview_list = obj.preview_list
       this.title = obj.title
       this.description = obj.description
+      this.questionnaire_state = obj.questionnaire_state
     },
     changeState(index) {
       if (index === false) {
