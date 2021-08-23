@@ -12,11 +12,11 @@
             <v-icon color="blue darken-2">mdi-file-multiple-outline</v-icon> 我的问卷
           </router-link>
         </li>
-        <li>
+        <!-- <li>
           <router-link to="/personInfo">
             <v-icon color="blue darken-2">mdi-account</v-icon> 个人中心
           </router-link>
-        </li>
+        </li> -->
         <li v-if="$route.path != '/'">
           <router-link to="/">
             <v-icon color="blue darken-2"> mdi-home-variant</v-icon> 返回首页
