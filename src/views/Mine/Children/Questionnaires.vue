@@ -38,12 +38,11 @@
           mdi-pause-circle
         </v-icon>
         <!--   第一种方式-->
-        <v-icon small @click="modifyItem_first(item.id)" title="修改第一种办法" > mdi-pencil-outline</v-icon>
+<!--        <v-icon small @click="modifyItem_first(item.id)" title="修改第一种办法" > mdi-pencil-outline</v-icon>-->
         <!--   第二种方式-->
-        <v-icon small @click="modifyItem_second(item.id)" title="修改第二种办法" > mdi-pencil-outline</v-icon>
+<!--        <v-icon small @click="modifyItem_second(item.id)" title="修改第二种办法" > mdi-pencil-outline</v-icon>-->
         <!--   第三种方式-->
-        <v-icon small @click="modifyItem_third(item.id)" title="修改第三种办法" > mdi-pencil-outline</v-icon>
-
+<!--        <v-icon small @click="modifyItem_third(item.id)" title="修改第三种办法" > mdi-pencil-outline</v-icon>-->
         <v-icon small @click="lookUpLink(item.id)" title="查看链接" style="margin-left: 1%"> mdi-magnify</v-icon>
         <v-icon small @click="checkAnalysis(item.id)" title="统计结果" style="margin-left: 1%"> mdi-poll</v-icon>
       </template>
@@ -106,54 +105,84 @@ export default {
     checkAnalysis(id) {
       this.$router.push({name: 'crossanalysis', params: {id: id}})
     },
-    modifyItem_first(item) {
-      var Data = new FormData();
-      Data.append('id', item);
-      axios({
-        url: 'http://82.157.97.70/api/questionnaire/edit_qusetionnaire',
-        method: 'post',
-        data: Data,
-        headers: {
-          Authorization: window.localStorage.getItem("authorization"),
-          "Content-Type": "application/json",
-        },
-      }).then((res) => {
-        console.log(res);
-        this.getItem();
-      })
+    now_date(date){
+      Date.prototype.Format = function (fmt) {
+        // author: meizz
+        var o = {
+          "M+": this.getMonth() + 1, // 月份
+          "d+": this.getDate(), // 日
+          "h+": this.getHours(), // 小时
+          "m+": this.getMinutes(), // 分
+          "s+": this.getSeconds(), // 秒
+          "q+": Math.floor((this.getMonth() + 3) / 3), // 季度
+          S: this.getMilliseconds(), // 毫秒
+        };
+        if (/(y+)/.test(fmt))
+          fmt = fmt.replace(
+              RegExp.$1,
+              (this.getFullYear() + "").substr(4 - RegExp.$1.length)
+          );
+        for (var k in o)
+          if (new RegExp("(" + k + ")").test(fmt))
+            fmt = fmt.replace(
+                RegExp.$1,
+                RegExp.$1.length == 1
+                    ? o[k]
+                    : ("00" + o[k]).substr(("" + o[k]).length)
+            );
+        return fmt;
+      };
+      var time = new Date().Format("yyyy-MM-dd hh:mm:ss");
+      return time;
     },
-    modifyItem_third(item) {
-      var Data = new FormData();
-      Data.append('id', item);
-      axios({
-        url: 'http://82.157.97.70/api/questionnaire/throw_and_get_new_questionnaire',
-        method: 'post',
-        data: Data,
-        headers: {
-          Authorization: window.localStorage.getItem("authorization"),
-          "Content-Type": "application/json",
-        },
-      }).then((res) => {
-        console.log(res);
-        this.getItem();
-      })
-    },
-    modifyItem_second(item) {
-      var Data = new FormData();
-      Data.append('id', item);
-      axios({
-        url: 'http://82.157.97.70/api/questionnaire/delete_and_get_questionnaire_by_id',
-        method: 'post',
-        data: Data,
-        headers: {
-          Authorization: window.localStorage.getItem("authorization"),
-          "Content-Type": "application/json",
-        },
-      }).then((res) => {
-        console.log(res);
-        this.getItem();
-      })
-    },
+    // modifyItem_first(item) {
+    //   var Data = new FormData();
+    //   Data.append('id', item);
+    //   axios({
+    //     url: 'http://82.157.97.70/api/questionnaire/edit_qusetionnaire',
+    //     method: 'post',
+    //     data: Data,
+    //     headers: {
+    //       Authorization: window.localStorage.getItem("authorization"),
+    //       "Content-Type": "application/json",
+    //     },
+    //   }).then((res) => {
+    //     console.log(res);
+    //     this.getItem();
+    //   })
+    // },
+    // modifyItem_third(item) {
+    //   var Data = new FormData();
+    //   Data.append('id', item);
+    //   axios({
+    //     url: 'http://82.157.97.70/api/questionnaire/throw_and_get_new_questionnaire',
+    //     method: 'post',
+    //     data: Data,
+    //     headers: {
+    //       Authorization: window.localStorage.getItem("authorization"),
+    //       "Content-Type": "application/json",
+    //     },
+    //   }).then((res) => {
+    //     console.log(res);
+    //     this.getItem();
+    //   })
+    // },
+    // modifyItem_second(item) {
+    //   var Data = new FormData();
+    //   Data.append('id', item);
+    //   axios({
+    //     url: 'http://82.157.97.70/api/questionnaire/delete_and_get_questionnaire_by_id',
+    //     method: 'post',
+    //     data: Data,
+    //     headers: {
+    //       Authorization: window.localStorage.getItem("authorization"),
+    //       "Content-Type": "application/json",
+    //     },
+    //   }).then((res) => {
+    //     console.log(res);
+    //     this.getItem();
+    //   })
+    // },
     startItem(item) {
       var Data = new FormData();
       Data.append("questionnaireId", item)
@@ -171,6 +200,8 @@ export default {
         for (var i = 0; i < this.desserts.length; i++) {
           if (this.desserts[i].id === item) {
             this.desserts[i].state = "已发布"
+            var time = new Date();
+            this.desserts[i].date = this.now_date(time);
           }
         }
       })

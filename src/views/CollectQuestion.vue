@@ -201,7 +201,7 @@ export default {
       this.questionList = [];
       console.log(this.current_questionnaire);
       this.headerTitle = this.current_questionnaire.questionnaire.title;
-      this.subtitle = this.current_questionnaire.description;
+      this.subtitle = this.current_questionnaire.questionnaire.description;
       // this.type = this.current_questionnaire.questionnaire.type;
       var list = this.current_questionnaire.questionList;
       for (var i = 0; i < list.length; i++) {

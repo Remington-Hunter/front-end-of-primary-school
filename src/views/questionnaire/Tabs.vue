@@ -2,29 +2,29 @@
   <div>
     <div class="tabs">
       <el-tabs
-        v-model="activeName"
-        @tab-click="handleClick"
+          v-model="activeName"
+          @tab-click="handleClick"
       >
         <el-tab-pane
-          label="编辑"
-          name="first"
+            label="编辑"
+            name="first"
         >
           <normal
-            @problem_change="changeState"
-            @currentQuestionnaire="getCurrentQuestionnaire"
-            :type="this.questionnaire_type"
+              @problem_change="changeState"
+              @currentQuestionnaire="getCurrentQuestionnaire"
+              :type="this.questionnaire_type"
           />
         </el-tab-pane>
 
         <el-tab-pane
-          label="投放"
-          name="second"
-          :disabled="state"
+            label="投放"
+            name="second"
+            :disabled="state"
         >
           <send
-            :ma="ma"
-            :input="input"
-            :lianjie="lianjie"
+              :ma="ma"
+              :input="input"
+              :lianjie="lianjie"
           />
         </el-tab-pane>
 
@@ -38,62 +38,68 @@
       </el-tabs>
       <el-row style='position: absolute;right:100px;top:12vh;'>
         <el-button
-          type="primary"
-          plain
-          @click="saveQues"
-          :disabled="state"
-        >保存</el-button>
+            type="primary"
+            plain
+            @click="saveQues"
+            :disabled="state"
+        >保存
+        </el-button>
         <el-button
-          type="primary"
-          plain
-          :disabled="state"
-          @click="getProblemInfo"
-        >预览</el-button>
+            type="primary"
+            plain
+            :disabled="state"
+            @click="getProblemInfo"
+        >预览
+        </el-button>
         <el-button
-          v-if="option"
-          type="primary"
-          icon="el-icon-video-pause"
-          :disabled="state"
-          plain
-          @click="change_prepare_state"
-        >暂停回收</el-button>
+            v-if="option"
+            type="primary"
+            icon="el-icon-video-pause"
+            :disabled="state"
+            plain
+            @click="change_prepare_state"
+        >暂停回收
+        </el-button>
         <el-button
-          v-else
-          type="primary"
-          icon="el-icon-video-play"
-          :disabled="state"
-          plain
-          @click="change_start_state()"
-        >开始回收</el-button>
+            v-else
+            type="primary"
+            icon="el-icon-video-play"
+            :disabled="state"
+            plain
+            @click="change_start_state()"
+        >开始回收
+        </el-button>
         <el-button
-          type="primary"
-          @click="handleDown"
-          :disabled="state"
-          plain
+            v-if="activeName==='first'"
+            type="primary"
+            @click="handleDown"
+            :disabled="state"
+            plain
         >导出PDF<i class="el-icon-download el-icon--right"></i></el-button>
         <el-button
-          type="primary"
-          @click="$router.go(-1)"
-          plain
-        >返回</el-button>
+            type="primary"
+            @click="$router.go(-1)"
+            plain
+        >返回
+        </el-button>
       </el-row>
     </div>
     <el-dialog
-      :visible.sync="dialogVisible"
-      width="60%"
+        :visible.sync="dialogVisible"
+        width="60%"
     >
       <d-preview
-        :headerTitle="this.title"
-        :subtitle="this.description"
-        :list="this.preview_list"
+          :headerTitle="this.title"
+          :subtitle="this.description"
+          :list="this.preview_list"
       ></d-preview>
       <span
-        slot="footer"
-        class="dialog-footer"
+          slot="footer"
+          class="dialog-footer"
       >
         <el-button
-          type="primary"
-          @click="dialogVisible = false"
+            type="primary"
+            @click="dialogVisible = false"
         >确 定</el-button>
       </span>
     </el-dialog>
@@ -107,6 +113,7 @@ import DPreview from "./DialogPreview.vue"
 import axios from 'axios';
 import htmlToPdf from "@/assets/js/htmlToPdf";
 import CrossAnalysis from '@/views/CrossAnalysis'
+
 export default {
   components: {
     Normal,
@@ -140,7 +147,9 @@ export default {
       htmlToPdf.downloadPDF(document.querySelector("#demo"), "我的问卷");
     },
     getProblemInfo() {
-      if (this.is_creating === true || this.total_problem === 1) { return }
+      if (this.is_creating === true || this.total_problem === 1) {
+        return
+      }
       this.dialogVisible = true;
     },
     sendQues() {
@@ -228,8 +237,7 @@ export default {
       if (index === false) {
         this.state = true
         return
-      }
-      else {
+      } else {
         this.state = false
       }
     },
@@ -316,10 +324,11 @@ export default {
 .el-tabs__item {
   font-size: 18px !important;
 }
+
 .el-tabs__content {
   margin: 40px 100px;
   background-color: white;
   box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
-    0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+  0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
 }
 </style>
