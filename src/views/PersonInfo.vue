@@ -186,6 +186,9 @@ export default
       emailData: '',
       flag: true
     }),
+    mounted(){
+      this.getData();
+    },
     methods:
     {
       getData(){
