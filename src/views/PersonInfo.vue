@@ -192,16 +192,19 @@ export default
     methods:
     {
       getData(){
+        console.log('ffwf')
         axios({
-          url:'',
+          url:'http://82.157.97.70/api/user/get_info',
           method:'post',
           headers: {
-          Authorization: window.localStorage.getItem("authorization"),
-          "Content-Type": "application/json",
+          'Authorization': window.localStorage.getItem("authorization"),
+          // "Content-Type": "application/json",
           },
         }).then((res)=>{
+          console.log(res)
+          console.log('daf2t1')
           if(res.data.data.phone!==null){
-            this.phoneNumber=res.data.data.phone
+            this.phoneNumber=res.data.phone
           }
           if(res.data.data.email!==null){
             this.emailNumber=res.data.data.email
@@ -236,7 +239,7 @@ export default
         this.phoneDialog = true
         Data.append('phone', this.phoneNumber)
         axios({
-          url: '',
+          url: 'http://82.157.97.70/api/user/set_phone',
           mehtod: 'post',
           data: Data,
           headers: {
@@ -254,7 +257,7 @@ export default
         this.emailDialog = true
         Data.append('email', this.email)
         axios({
-          url: '',
+          url: 'http://82.157.97.70/api/user/set_email',
           mehtod: 'post',
           data: Data,
           headers: {

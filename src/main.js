@@ -11,8 +11,8 @@ import htmlToPdf from '@/assets/js/htmlToPdf'
 import VueClipboard from 'vue-clipboard2'
 
 Vue.use(VueClipboard)
-// import Blob from './excel/Blob'
-// import Export2Excel from './excel/Export2Excel.js'
+    // import Blob from './excel/Blob'
+    // import Export2Excel from './excel/Export2Excel.js'
 const echarts = require('echarts');
 Vue.use(VueClipboard)
 Vue.prototype.$echarts = echarts
