@@ -229,8 +229,9 @@ export default {
         let y = [];
         for (var j = 0; j < x.selection_list.length; j++) {
           let z = {};
-          z.content = x.selection_list[j];
-          z.limit = -1;
+          z.content = x.selection_list[j].content;
+          z.limit = x.selection_list[j].total;
+          z.comment=x.selection_list[j].comment
           z.number = j + "";
           y.push(z);
         }
@@ -400,6 +401,18 @@ export default {
           break;
         case "评分题":
           return 3;
+          break;
+        case "报名单选":
+          return 6;
+          break;
+        case "报名单选":
+          return 7;
+          break;
+        case "投票单选":
+          return 10;
+          break;
+        case "投票单选":
+          return 11;
           break;
       }
     },
