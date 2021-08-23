@@ -35,6 +35,10 @@
                 :label="index"
               >
                 {{ item.content }}
+                <span
+                  class="sel-total"
+                  v-show="item.total>=0 && question.type === 6"
+                >(剩余{{item.total}})</span>
                 <div class="q-instruction">{{ item.comment }}</div>
               </el-radio>
             </el-radio-group>
@@ -48,7 +52,7 @@
                 :label="index"
               >{{ item.content }} <span
                   class="sel-total"
-                  v-show="item.total"
+                  v-show="item.total>=0 && question.type===7"
                 >(剩余{{item.total}})</span>
                 <span class="q-instruction">{{ item.comment }}</span>
               </el-checkbox>
@@ -161,7 +165,7 @@ export default {
         var z = {};
         var y = this.questionList[i];
         z.questionId = y.questionId;
-        if (y.type === 0) {
+        if (y.type === 0 || y.type===6 ||　y.type===10) {
           if (y.required) {
             if (y.radio === "") {
               alert("您有必选项未完成!");
@@ -174,7 +178,7 @@ export default {
             z.number = y.radio + "";
             z.content = "";
           }
-        } else if (y.type === 1) {
+        } else if (y.type === 1 || y.type===7) {
           if (y.required) {
             if (y.checkList.length === 0) {
               alert("您有必选项未完成!");
@@ -225,6 +229,7 @@ export default {
         },
         data: JSON.stringify(x),
       }).then((res) => {
+        this.$emit('endAnswer');
         alert(res.data.message)
         console.log(res);
         this.state = true;
