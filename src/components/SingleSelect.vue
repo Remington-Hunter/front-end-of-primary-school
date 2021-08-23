@@ -9,8 +9,8 @@
           <div>
             <v-text-field
               label="请输入题目"
+              :rules="[rules.required]"
               v-model="name"
-              style="font-size: small"
             ></v-text-field>
             <v-text-field
               label="备注"
@@ -53,6 +53,7 @@
             <v-text-field
               label="请输入题目"
               v-model="name"
+              :rules="[rules.required]"
             ></v-text-field>
             <v-text-field
               label="备注"
@@ -83,7 +84,7 @@
             <v-text-field
               label="请输入题目"
               v-model="name"
-              style="font-size: small"
+              :rules="[rules.required]"
             ></v-text-field>
             <v-text-field
               label="备注"
@@ -113,7 +114,10 @@
               cols="12"
               sm="2"
             >
-              <v-text-field label="名额设置"></v-text-field>
+              <v-text-field
+                label="名额设置"
+                type=number
+              ></v-text-field>
             </v-col>
           </v-row>
         </div>
@@ -290,6 +294,9 @@ export default {
       iconClasses: ['icon-rate-face-1', 'icon-rate-face-2', 'icon-rate-face-3'],
       has_exchanged: false,
       problem_type: this.problem_type_copy,
+      rules: {
+        required: value => !!value || '',
+      }
     };
   },
   created() {
