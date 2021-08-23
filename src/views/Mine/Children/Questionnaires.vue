@@ -30,8 +30,8 @@
           mdi-arrow-right-drop-circle
         </v-icon>
         <v-icon small @click="modifyItem(item.id)" title="修改"> mdi-pencil-outline </v-icon>
-        <v-icon small @click="checkItem(item.id)" title="查看预览"> mdi-magnify</v-icon>
-
+        <v-icon small @click="checkItem(item.id)" title="查看链接"> mdi-magnify</v-icon>
+        <v-icon small @click="checkItem(item.id)" title="统计结果"> mdi-poll</v-icon>
       </template>
     </v-data-table>
     <div class="text-center pt-2">
