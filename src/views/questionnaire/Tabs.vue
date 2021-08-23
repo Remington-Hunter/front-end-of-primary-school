@@ -28,13 +28,13 @@
           />
         </el-tab-pane>
 
-        <el-tab-pane
+        <!-- <el-tab-pane
           label="统计"
           name="third"
           :disabled="state || !is_saved"
         >
-          <CrossAnalysis :id="this.current_questionnaire.id"></CrossAnalysis>
-        </el-tab-pane>
+          <CrossAnalysis :id="this.questionnaire_id"></CrossAnalysis>
+        </el-tab-pane> -->
       </el-tabs>
       <el-row style='position: absolute;right:100px;top:12vh;'>
         <el-button
@@ -170,6 +170,7 @@ export default {
         if (this.is_creating === true || this.total_problem === 1) { return }
         // var formData = this.current_questionnaire
         var formData = new FormData();
+        console.log(this.current_questionnaire.id);
         formData.append("questionnaireId", this.current_questionnaire.id)
         axios({
           method: "post",
