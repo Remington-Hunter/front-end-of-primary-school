@@ -100,7 +100,8 @@
 
 <script>
 import axios from 'axios';
-import QS from 'qs'
+import QS from 'qs';
+import Element from "element-ui";
 export default {
   data() {
     var validatePass = (rule, value, callback) => {
@@ -149,6 +150,14 @@ export default {
     }
   },
   methods: {
+    open() {
+         this.$alert('请继续登录', '注册成功', {
+          dangerouslyUseHTMLString: true
+        });
+      },
+      openfalse() {
+         
+      },
     submitForm() {
       var password1 = this.form.pass;
       var Data = new FormData();
@@ -175,13 +184,24 @@ export default {
       }).then((res) => {
         // alert(res)
         if (res.data.code === 200 && this.register) {
-          this.register = false
+          this.open();
+          this.register = false;
+        }
+        else{
+          this.$alert('继续注册', '注册失败', {
+            dangerouslyUseHTMLString: true
+          });
+        }
+        if(!(res.data.code === 200 && !this.register)){
+          this.$alert('继续登录', '登录失败', {
+            dangerouslyUseHTMLString: true
+          });
         }
         else {
           this.responseResult = JSON.stringify(res.data)
-          if (res.data.code === 200) {
-            localStorage.setItem
-          }
+          // if (res.data.code === 200) {
+          //   localStorage.setItem
+          // }
           localStorage.setItem('userName', this.form.nickname)
           // localStorage.setItem('userName',this.ruleForm.userName);
           //获取并存储服务器返回的AuthorizationToken信息
@@ -189,6 +209,9 @@ export default {
           localStorage.setItem('authorization', authorization);
           localStorage.setItem('user_id', res.data.data.user_id)
           //登录成功跳转页面
+          this.$alert('', '登录成功', {
+            dangerouslyUseHTMLString: true
+          });
           this.$router.push('/')
         }
       })
