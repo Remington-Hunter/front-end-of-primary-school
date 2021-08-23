@@ -45,7 +45,7 @@
                 :href="download_lianjie"
             >下载二维码</a></el-col>
 
-            <el-col :span="4"> <el-button @click="get_new_link()">获得新链接</el-button></el-col>
+           <el-button @click="get_new_link()" style="font-size:16px;background:  #f5f5f5;color: #333333" >获得新链接</el-button>
 <!--            <el-col-->
 <!--                :span="4"-->
 <!--                id="share-method-qq"-->
