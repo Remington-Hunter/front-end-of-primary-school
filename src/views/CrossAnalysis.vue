@@ -243,7 +243,18 @@ export default {
           }
           // console.log(item)
           this.completion.push(item);
-        } else {
+        }
+        else if(data[i].question.type === 3){
+          var data_i = data[i].optionList;
+          var item = [];
+          for (let j = 0; j < data_i.length; j++) {
+            var c=''+(j+1)+'分';
+            var s = { content:c, num: data_i[j].answerNum };
+            item.push(s);
+          }
+          this.completion.push(item);
+        } 
+        else {
           var data_i = data[i].optionList;
           var item = [];
           for (let j = 0; j < data_i.length; j++) {
@@ -269,7 +280,20 @@ export default {
           }
           // console.log(item)
           this.bar.push(item);
-        } else {
+        } 
+        else if(data[i].question.type === 3){
+          var data_i = data[i].optionList;
+          var item = [];
+          
+          for (let j = 0; j < data_i.length; j++) {
+            var c=''+(j+1)+'分';
+            var s = [data_i[j].answerNum, c];
+            console.log(c);
+            item.push(s);
+          }
+          this.bar.push(item);
+        }
+        else {
           var data_i = data[i].optionList;
           var item = [];
           for (let j = 0; j < data_i.length; j++) {
@@ -376,7 +400,18 @@ export default {
             item.push(data_i[j]);
           }
           this.col.push(item);
-        } else {
+        } 
+        else if(data[i].question.type==3){
+          var data_i = data[i].optionList;
+          var item = [];
+          for (let j = 0; j < data_i.length; j++) {
+            s=''+(j+1)+'分'
+            var s = { 选项: s, 数量: data_i[j].answerNum };
+            item.push(s);
+          }
+          this.col.push(item);
+        }
+        else {
           var data_i = data[i].optionList;
           var item = [];
           for (let j = 0; j < data_i.length; j++) {
@@ -399,7 +434,17 @@ export default {
             item.push(data_i[j]);
           }
           this.pie.push(item);
-        } else {
+        }else if(data[i].question.type == 3){
+          var data_i = data[i].optionList;
+          var item = [];
+          for (let j = 0; j < data_i.length; j++) {
+            var c=''+(j+1)+'分'
+            var s = { value: data_i[j].answerNum, name: c };
+            item.push(s);
+          }
+          this.pie.push(item);
+        } 
+        else {
           var data_i = data[i].optionList;
           var item = [];
           for (let j = 0; j < data_i.length; j++) {
@@ -416,7 +461,22 @@ export default {
           var data_i = data[i].answerList;
           var item = [];
           this.line.push(item);
-        } else {
+        }else if(data[i].question.type == 3){
+          var data_i = data[i].optionList;
+          var item = [];
+          var col1 = [];
+          var col2 = [];
+          for (let j = 0; j < data_i.length; j++) {
+            // var s={value:data_i[j].answerNum,name:data_i[j].content}
+            var c=''+(j+1)+'分';
+            col1.push(c);
+            col2.push(data_i[j].answerNum);
+          }
+          item.push(col1);
+          item.push(col2);
+          this.line.push(item);
+        } 
+        else {
           var data_i = data[i].optionList;
           var item = [];
           var col1 = [];

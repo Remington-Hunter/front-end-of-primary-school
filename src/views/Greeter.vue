@@ -184,7 +184,9 @@ export default {
       }).then((res) => {
         // alert(res)
         if (res.data.code === 200 && this.register) {
-          this.open();
+          this.$alert(res.data.message, '注册成功', {
+          dangerouslyUseHTMLString: true
+        });
           this.register = false;
         }
         else{
