@@ -22,12 +22,15 @@
     </div>
     <div id="demo1">
       <div v-for="(item, index) in data" :key="(item, index)">
-        <div>题目{{ index + 1 }}</div>
+        
         <div v-if="data[index].question.type===2">
-          <Completion ></Completion>
+          <div>题目{{ index + 1 }}</div>
+          <Completion :data1="bar[index]"></Completion>
         </div>
         <div v-else>
-          <div style="width: 600px; height: 400px">
+          <div v-if="bar[index].length!==0">
+            <div>题目{{ index + 1 }}</div>
+            <div style="width: 600px; height: 400px">
             <drawBar :id="BarToString(index)" :series="bar[index]"></drawBar>
           </div>
           <el-button @click="goto(1)">
@@ -47,6 +50,10 @@
           </div>
           <div style="width: 600px; height: 400px" v-if="id === 3">
             <drawCol :id="ColToString(index)" :series="col[index]"></drawCol>
+          </div>
+          </div>
+          <div v-else>
+            题目{{index+1}}的数据为空
           </div>
         </div>
       </div>
@@ -136,7 +143,7 @@ export default {
         data:Data
       }).then((res)=>{
         var data=res.data.data;
-        console.log(res);
+        // console.log(res);
         this.data=data;
         this.getBarData(data);
         this.getColData(data);
@@ -232,8 +239,8 @@ export default {
           this.col.push(item)
         }
       }
-      console.log("col")
-      console.log(this.col);
+      // console.log("col")
+      // console.log(this.col);
     },
     getPieData(data){
       for(var i=0;i<data.length;i++){
