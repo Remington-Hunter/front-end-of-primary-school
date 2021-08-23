@@ -31,9 +31,9 @@
         <el-tab-pane
           label="统计"
           name="third"
-          :disabled="state"
+          :disabled="state || !is_saved"
         >
-          <CrossAnalysis></CrossAnalysis>
+          <CrossAnalysis :id="this.current_questionnaire.id"></CrossAnalysis>
         </el-tab-pane>
       </el-tabs>
       <el-row style='position: absolute;right:100px;top:12vh;'>
@@ -127,7 +127,8 @@ export default {
       lianjie: '',
       dialogVisible: false,
       questionnaire_type:"",//问卷类型
-      questionnaire_state:""
+      questionnaire_state:"",
+      is_saved:false
     };
   },
   methods: {
@@ -155,6 +156,7 @@ export default {
       }).then((res) => {
         console.log(res);
         this.current_questionnaire.id = res.data.data;
+        this.is_saved = true
         if (this.is_creating === true || this.total_problem === 1) { return }
         // var formData = this.current_questionnaire
         var formData = new FormData();
@@ -192,7 +194,7 @@ export default {
       }).then((res) => {
         console.log(res);
         this.current_questionnaire.id = res.data.data;
-
+        this.is_saved = true
       });
     },
     getCurrentQuestionnaire(obj) {
