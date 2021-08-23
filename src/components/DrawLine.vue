@@ -45,6 +45,7 @@ export default {
           {
             data: this.source1[1],
             type: "line",
+            color:'#008fff'
           },
         ],
 
