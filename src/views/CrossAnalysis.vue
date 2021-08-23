@@ -149,6 +149,7 @@ export default {
   //   created() {},
   created() {
     this.id = this.$route.params.id;
+    console.log(this.id);
     this.getseries();
   },
   mounted() {
