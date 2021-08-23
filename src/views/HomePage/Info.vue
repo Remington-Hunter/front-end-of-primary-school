@@ -32,6 +32,12 @@
         <p class="bold">扫描关注微信公众号</p>
       </div>
     </div>
+    <div style="">
+      <span style="margin-left:650px;color: #999;font-size: 10px;">ICP证:鲁ICP2021031002号   鲁ICP备2021031002号-1</span>
+    </div>
+    <div style="">
+      <a style="margin-left:625px;color: #999;font-size: 10px;" href="https://beian.miit.gov.cn">工业和信息化部政务服务平台ICP/IP地址/域名信息备案管理网址</a>
+    </div>
   </div>
 </template>
 

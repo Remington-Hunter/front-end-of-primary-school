@@ -2,6 +2,8 @@
   <div id="homepage">
     <car />
     <info />
+    
+    
   </div>
 </template>
 

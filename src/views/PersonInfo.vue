@@ -70,7 +70,7 @@
             <v-btn
               style="float:right;right:20%"
               elevation="2"
-              @click="phoneDialog = true"
+              @click="phoneChange"
             >绑定</v-btn>
           </div>
           <br>
@@ -188,6 +188,16 @@ export default
     }),
     methods:
     {
+      phoneChange(){
+        this.phoneDialog=true;
+        var Data=new FormData();
+        Data.append('phone',this.phoneNumber)
+        axios({
+          url:'',
+          method:'post',
+
+        })
+      },
       goBack() {
         this.$router.go(-1)
       },
