@@ -86,7 +86,7 @@ const routes = [{
             import ('../views/CollectQuestion.vue')
     },
     {
-        path: '/crossanalysis',
+        path: '/crossanalysis/:id',
         name: 'crossanalysis',
         component: () =>
             import ('../views/CrossAnalysis.vue')

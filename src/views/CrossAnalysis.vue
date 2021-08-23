@@ -157,6 +157,10 @@ export default {
     Completion,
   },
 //   created() {},
+  created(){
+this.getseries();
+this.id=this.$route.params.id
+  },
   mounted() {
     this.getseries();
   },
@@ -221,14 +225,14 @@ export default {
     getseries(){
       // alert(1);
       var Data=new FormData();
-      Data.append('id',121);
+      Data.append('id',this.id);
       axios({
         url:'http://82.157.97.70/api/answer/get_result',
         method:'post',
         data:Data
       }).then((res)=>{
         var data=res.data.data;
-        // console.log(res);
+        console.log(res);
         this.data=data;
         this.getBarData(data);
         this.getColData(data);
