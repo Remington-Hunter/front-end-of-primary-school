@@ -34,7 +34,7 @@
                 :key="index"
                 :label="index"
               >
-                {{ item }}</el-radio>
+                {{ item.content }}</el-radio>
             </el-radio-group>
           </div>
           <!-- 多选题 -->
@@ -44,7 +44,7 @@
                 v-for="(item, index) in question.selection_list"
                 :key="index"
                 :label="index"
-              >{{ item }}</el-checkbox>
+              >{{ item.content }}</el-checkbox>
             </el-checkbox-group>
           </div>
           <!-- 评分题 -->
