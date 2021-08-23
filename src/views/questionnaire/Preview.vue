@@ -24,7 +24,7 @@
           </div>
         </div>
 
-        <div class="question-body ">
+        <div class="question-body">
           <!-- 单选题 -->
           <div v-if="question.type === 0">
             <el-radio-group v-model="question.radio">
