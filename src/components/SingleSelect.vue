@@ -2,7 +2,7 @@
   <div class="content">
     <div class="question">
       <div v-show="
-        ismodify && (['单选题', '多选题','投票单选题','投票多选题'].includes(problem_type) )
+        ismodify && (['单选题', '多选题','投票单选题','投票多选题','报名单选题','报名多选题'].includes(problem_type) )
       ">
         <div>{{ problem_type }}</div>
         <template>
@@ -26,11 +26,28 @@
           v-for="(item, index) in selection_list"
           :key="(item, index)"
         >
-
-          <v-text-field
-            label="选项内容"
-            v-model="selection_list[index].content"
-          ></v-text-field>
+          <v-row>
+            <v-col
+              cols="12"
+              sm="10"
+            >
+              <v-text-field
+                :label="'选项' + (index + 1)"
+                v-model="selection_list[index].content"
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="12"
+              sm="2"
+              v-if="problem_type === '报名单选题'||problem_type === '报名多选题'"
+            >
+              <v-text-field
+                label="名额设置"
+                type=number
+                v-model="selection_list[index].total"
+              ></v-text-field>
+            </v-col>
+          </v-row>
           <v-text-field
             label="备注"
             v-model="selection_list[index].comment"
@@ -88,70 +105,6 @@
           @click="cancel"
           v-show="cancel_button"
         >取消</el-button>
-      </div>
-
-      <div v-show="
-        ismodify && (problem_type === '报名单选题'||problem_type === '报名多选题')
-      ">
-        <div>{{ problem_type }}</div>
-        <template>
-          <div>
-            <v-text-field
-              label="请输入题目"
-              v-model="name"
-              :rules="[rules.required]"
-            ></v-text-field>
-            <v-text-field
-              label="备注"
-              v-model="instruction"
-            ></v-text-field>
-          </div>
-        </template>
-        <div class="required">
-          是否必填：<el-switch v-model="must_write_select">
-          </el-switch>
-        </div>
-        <div
-          v-for="(item, index) in selection_list"
-          :key="(item, index)"
-        >
-          <v-row>
-            <v-col
-              cols="12"
-              sm="10"
-            >
-              <v-text-field
-                :label="'选项' + (index + 1)"
-                v-model="selection_list[index].content"
-              ></v-text-field>
-            </v-col>
-            <v-col
-              cols="12"
-              sm="2"
-            >
-              <v-text-field
-                label="名额设置"
-                type=number
-                v-model="selection_list[index].total"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-text-field
-            label="备注"
-            v-model="selection_list[index].comment"
-          ></v-text-field>
-        </div>
-        <div>
-          <el-button @click="add_selection"><i class="el-icon-plus"></i> 新建选项</el-button>
-          <el-button
-            @click="selectConfirm"
-            :disabled="confirmstate"
-          >确认</el-button>
-          <el-button
-            @click="cancel"
-            v-show="cancel_button"
-          >取消</el-button>
-        </div>
       </div>
 
       <div v-show="!ismodify">
@@ -409,7 +362,7 @@ export default {
 }
 .del {
   margin-bottom: 15px;
-  height: 25px;
+  height: 35px;
 }
 </style>
 
