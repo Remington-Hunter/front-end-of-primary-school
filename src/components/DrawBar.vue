@@ -27,7 +27,7 @@ export default {
   // created: {},
   mounted() {
     //   alert(111)
-    // console.log(this.id)
+    console.log(111)
     console.log(this.source1)
     this.drawfunc()
   },
@@ -38,6 +38,7 @@ export default {
       // 指定图表的配置项和数据
       var option = {
         dataset: {
+          // dimensions: ["数量","选项" ],
           source:this.source1
           //     [
           //   ["score", "amount", "product"],

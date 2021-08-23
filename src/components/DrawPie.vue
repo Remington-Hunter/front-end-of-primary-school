@@ -27,7 +27,7 @@ export default {
   // created: {},
   mounted() {
     //   alert(111)
-    console.log(this.id)
+    // console.log(this.id)
     this.drawfunc()
   },
   methods: {
@@ -40,7 +40,7 @@ export default {
         color:['#009dff', '#40c45f', '#FFC851','#5A5476','#1869A0','#FF9393'],
         series: [
           {
-            name: "访问来源",
+            name: "选项:数量",
             type: "pie", // 设置图表类型为饼图
             radius: "55%", // 饼图的半径，外半径为可视区尺寸（容器高宽中较小一项）的 55% 长度。
             data:this.source1
