@@ -21,21 +21,24 @@
         class="elevation-1"
       >
         <template v-slot:[`item.actions`]="{ item }">
-          <v-icon small @click="deleteItem(item.id)" title="删除">
+          <v-icon
+            small
+            @click="deleteItem(item.id)"
+            title="删除"
+          >
             mdi-trash-can-outline
           </v-icon>
-          <v-btn text color="primary" @click="recoveryItem(item.id)">
+          <v-btn
+            text
+            color="primary"
+            @click="recoveryItem(item.id)"
+          >
             <v-icon small> mdi-restore </v-icon>
             <span style="padding-left: 5px">恢复 </span>
           </v-btn>
         </template>
       </v-data-table>
-      <div class="text-center pt-2">
-        <v-btn color="primary" class="mr-2" @click="toggleOrder"
-          >切换排序顺序</v-btn
-        >
-        <v-btn color="primary" @click="nextSort">对下一列进行排序</v-btn>
-      </div>
+
     </v-card>
   </div>
 </template>
