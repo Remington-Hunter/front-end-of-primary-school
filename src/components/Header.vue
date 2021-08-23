@@ -2,9 +2,9 @@
   <div class="header-container">
     <div class="header_nav">
       <router-link to="/">
-        <p id="head-title">
+        <span id="head-title">
           <v-icon color="blue darken-2">mdi-earth</v-icon> 问卷星球
-        </p>
+        </span>
       </router-link>
       <ul>
         <li>

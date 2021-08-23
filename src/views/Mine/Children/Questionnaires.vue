@@ -108,7 +108,7 @@ export default {
         //   date2: "2020 - 8 - 4",
         // },
       ],
-      data:[]
+      data: []
     };
   },
   methods: {
@@ -146,9 +146,10 @@ export default {
         },
       }).then((res) => {
         console.log(res);
-        for(var i=0;i<this.desserts.length;i++){
-          if(this.desserts[i].id===item){
-            this.desserts[i].state="已发布"
+        // this.getItem();
+        for (var i = 0; i < this.desserts.length; i++) {
+          if (this.desserts[i].id === item) {
+            this.desserts[i].state = "已发布"
           }
         }
       })
@@ -227,7 +228,7 @@ export default {
         },
       }).then((res) => {
         console.log(res.data.data);
-        this.data=res.data.data;
+        this.data = res.data.data;
         this.desserts = [];
         for (let i = 0; i < res.data.data.length; i++) {
           var state = "";

@@ -38,7 +38,7 @@ export default {
   data() {
     return {
       slides: [
-        ['多方式创建编辑问卷', '自由创建、导入问卷、使用模板三种方式随意选择', require("../../assets/pic/1.png")],
+        ['多方式创建编辑问卷', '自由创建，多种问卷类型随意选择', require("../../assets/pic/1.png")],
         ['简约好用的问卷系统', '简约好用，轻松开启在线调试', require("../../assets/pic/2.png")],
         ['数据实时在线统计分析', '回收数据实时在线统计，图表化展示，清晰直观', require("../../assets/pic/3.png")],
       ],
@@ -62,5 +62,9 @@ export default {
 }
 .row {
   flex-direction: column;
+}
+.text-h3,
+.text-h6 {
+  margin-bottom: 15px;
 }
 </style>

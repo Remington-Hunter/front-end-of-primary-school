@@ -18,18 +18,23 @@
           >qinzhe@buaa.edu.com</a><br>
           官方邮箱2：<a
             target="_blank"
-            href="mailto:qinzhe@buaa.edu.com"
-          >qinzhe@buaa.edu.com</a><br>
+            href="mailto:18377011@buaa.edu.com"
+          >18377011@buaa.edu.com</a><br>
           官方QQ群：<a
             target="_blank"
             title="问卷星球反馈群"
           >850743462</a><br>
-          客服QQ：<a>123456</a>
+          客服QQ1：<a>981507892</a><br>
+          客服QQ2：<a>2320092610</a>
 
         </p>
       </div>
       <div class="wx_qrcode">
-        <p class="bold">扫描关注微信公众号</p>
+        <img
+          src="../../assets/wx.jpg"
+          class="qrcode"
+        >
+        <p class="bold">扫描添加客服微信号</p>
       </div>
     </div>
     <div style="margin-top:50px">
@@ -95,6 +100,11 @@ export default {
   vertical-align: top;
   display: inline-block;
 }
+.wx_qrcode {
+  text-align: center;
+  width: 130px;
+  margin-top: 18px;
+}
 .contact_us {
   width: 230px;
   margin-top: -6px;
@@ -109,5 +119,14 @@ export default {
   font-size: 13px;
   line-height: 190%;
   color: #999;
+}
+.qrcode {
+  margin-top: -5px;
+  width: 100px;
+  height: 100px;
+}
+.bold {
+  color: #999;
+  font-size: 13px;
 }
 </style>
