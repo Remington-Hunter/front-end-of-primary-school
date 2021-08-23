@@ -14,7 +14,7 @@
       class="center"
       id="demo1"
     >
-      <div class="header-title">这里是问卷题目</div>
+      <div class="header-title" style="color:#999;font-size:20px">问卷ID:<span style="font-size:20px;color:#999">{{this.id}}</span></div>
       <div class="content">
         <div
           v-for="(item, index) in data"
