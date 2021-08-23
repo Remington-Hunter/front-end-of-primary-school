@@ -91,7 +91,7 @@
       </div>
 
       <div v-show="
-        ismodify && (problem_type === '报名题')
+        ismodify && (problem_type === '报名单选题'||problem_type === '报名多选题')
       ">
         <div>{{ problem_type }}</div>
         <template>
@@ -187,25 +187,25 @@
           </div>
         </div>
 
-        <div v-else-if="problem_type==='多选题' || problem_type==='投票多选题' || problem_type==='报名题'">
+        <div v-else-if="['多选题','报名多选题','投票多选题'].includes(problem_type)">
           <div>
             <el-checkbox-group v-model="checkList">
               <el-checkbox
                 v-for="(item, index) in selection_list"
                 :key="(item, index)"
                 :label="item.content"
-              >{{item.content}}<span class="q-instruction">{{ item.comment }}</span>
-                <span
+              >{{item.content}} <span
                   class="sel-total"
                   v-show="item.total"
-                >(剩余{{item.total}})</span>
+                >(剩余{{item.total}})</span><span class="q-instruction">{{ item.comment }}</span>
+
               </el-checkbox>
 
             </el-checkbox-group>
           </div>
         </div>
 
-        <div v-else-if="problem_type==='单选题' || problem_type==='投票单选题'">
+        <div v-else-if="['单选题' ,'投票单选题','报名单选题'].includes(problem_type)">
           <div
             v-for="(item, index) in selection_list"
             :key="(item, index)"
@@ -213,9 +213,13 @@
             <el-radio
               v-model="radio"
               :label="index"
-            >{{ item.content }}
+            >{{ item.content }}<span
+                class="sel-total"
+                v-show="item.total"
+              >(剩余{{item.total}})</span>
             </el-radio>
             <div class="q-instruction">{{ item.comment }}</div>
+
           </div>
         </div>
       </div>
