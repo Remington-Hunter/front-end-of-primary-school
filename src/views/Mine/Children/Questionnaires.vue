@@ -31,6 +31,7 @@
         </v-icon>
         <v-icon small @click="modifyItem(item.id)" title="修改"> mdi-pencil-outline </v-icon>
         <v-icon small @click="checkItem(item.id)" title="查看链接"> mdi-magnify</v-icon>
+        <v-icon small @click="checkItem(item.id)" title="统计结果"> mdi-poll</v-icon>
       </template>
     </v-data-table>
     <div class="text-center pt-2">
@@ -105,9 +106,9 @@ export default {
     },
     startItem(item){
       var Data=new FormData();
-      Data.append("id",item)
+      Data.append("questionnaireId",item)
       axios({
-        url:'http://82.157.97.70/api/questionnaire/get_questionnaire_by_id',
+        url:'http://82.157.97.70/api/questionnaire/publish_questionnaire',
         method:'post',
         data: Data,
         headers: {
@@ -116,6 +117,7 @@ export default {
         },
       }).then((res)=>{
         console.log(res);
+        this.getItem();
       })
     },
     checkItem(item){
