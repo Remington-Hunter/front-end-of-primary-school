@@ -33,7 +33,7 @@
           name="third"
           :disabled="state || !is_saved"
         >
-          <CrossAnalysis></CrossAnalysis>
+          <CrossAnalysis :id="this.current_questionnaire.id"></CrossAnalysis>
         </el-tab-pane>
       </el-tabs>
       <el-row style='position: absolute;right:100px;top:12vh;'>

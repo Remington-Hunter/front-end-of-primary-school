@@ -12,14 +12,16 @@ export default {
     //   default: "单选题",
     },
     series: {
-      type: Object,
+      type: Array,
       default: () => {
-        return {};
+        return [];
       },
     },
   },
   data() {
-    return {};
+    return {
+      source1:this.series
+    };
   },
   // components: {},
   // created: {},
@@ -34,14 +36,14 @@ export default {
       var option = {
         xAxis: {
           type: "category",
-          data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+          data: this.source1[0],
         },
         yAxis: {
           type: "value",
         },
         series: [
           {
-            data: [450, 232, 301, 734, 1090, 830, 500],
+            data: this.source1[1],
             type: "line",
           },
         ],
