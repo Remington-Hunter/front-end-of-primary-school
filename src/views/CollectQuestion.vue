@@ -1,121 +1,13 @@
 <template>
   <div>
-    <div id="prev">
-      <div class="s-main ">
-        <!-- 问卷标题 -->
-        <div class="header-title">{{ headerTitle }}</div>
-        <!-- 问卷副标题 -->
-        <div class="header-subtitle">{{ subtitle }}</div>
-        <!-- 题目列表 -->
-        <div
-          class="question-list"
-          v-for="(question, index) in questionList"
-          :key="index"
-        >
-          <!-- 题目标题 -->
-          <div class="question-head ">
-            <div class="question-title">
-              <span class="question-seq"
-                ><b>{{ index + 1 }}</b></span
-              >
-              <span class="text">{{ question.text }}</span>
-              <span v-if="question.required" class="question-required">*</span>
-              <el-tag v-if="[1, 4, 7, 11].includes(question.type)">多选</el-tag>
-            </div>
-            <div class="q-instruction">{{ question.comment }}</div>
-          </div>
-
-          <div class="question-body ">
-            <!-- 单选题 -->
-            <div v-if="[0, 6, 10].includes(question.type)">
-              <el-radio-group v-model="question.radio">
-                <el-radio
-                  v-for="(item, index) in question.selectionList"
-                  :key="index"
-                  :label="index"
-                >
-                  {{ item.content }}
-                  <span
-                    class="sel-total"
-                    v-show="item.total >= 0 && question.type === 6"
-                    >(剩余{{ item.total }})</span
-                  >
-                  <div class="q-instruction">{{ item.comment }}</div>
-                </el-radio>
-              </el-radio-group>
-            </div>
-            <!-- 多选题 -->
-            <div v-else-if="[1, 4, 7, 11].includes(question.type)">
-              <el-checkbox-group v-model="question.checkList">
-                <el-checkbox
-                  v-for="(item, index) in question.selectionList"
-                  :key="index"
-                  :label="index"
-                  >{{ item.content }}
-                  <span
-                    class="sel-total"
-                    v-show="item.total >= 0 && question.type === 7"
-                    >(剩余{{ item.total }})</span
-                  >
-                  <span class="q-instruction">{{ item.comment }}</span>
-                </el-checkbox>
-              </el-checkbox-group>
-            </div>
-            <!-- 评分题 -->
-            <div v-else-if="question.type === 3">
-              <el-rate
-                v-model="question.rating"
-                :icon-classes="iconClasses"
-                void-icon-class="icon-rate-face-off"
-                :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
-              >
-              </el-rate>
-            </div>
-            <!-- 填空题 -->
-            <div v-else-if="question.type === 2">
-              <el-input
-                type="textarea"
-                autosize
-                placeholder="请输入内容"
-                v-model="question.answer"
-              >
-              </el-input>
-            </div>
-          </div>
-        </div>
-        <!-- <div class="page-control">
-        <el-button type="primary" id="btn" @click="submit" :disabled="state"
-          >提交</el-button
-        >
-      </div> -->
-        <div class="page-control">
-          <el-button type="text" @click="dialogVisible = true" :disabled="state"
-            >提交</el-button
-          >
-        </div>
-
-        <el-dialog
-          title="提示"
-          :visible.sync="dialogVisible"
-          width="30%"
-          :before-close="handleClose"
-        >
-          <span>提交后不能够更改,确定提交?</span>
-          <span slot="footer" class="dialog-footer">
-            <el-button
-              type="primary"
-              @click="
-                dialogVisible = false;
-                submit();
-              "
-              >确 定</el-button
-            >
-            <el-button @click="dialogVisible = false">取 消</el-button>
-          </span>
-        </el-dialog>
+    <div v-show="can_write_state">
+      <div v-show="state && this.type === 1">
+        <VoteAnswer
+        :headerTitle="headerTitle"
+        :subtitle="subtitle"
+        :questionList="questionList_vote"/>
       </div>
-    </div>
-    <!-- <PublishQuestion
+      <!-- <PublishQuestion
       :headerTitle="headerTitle"
       :subtitle="subtitle"
       :questionList="questionList"
@@ -124,6 +16,129 @@
       v-show="can_write_state"
     /> -->
     <!-- <div  type="primary" style="text-align: center;display: block" @click="send_Info()"><el-button big>提交</el-button></div> -->
+      <div id="prev" v-show="!(state && this.type === 1)">
+        <div class="s-main ">
+          <!-- 问卷标题 -->
+          <div class="header-title">{{ headerTitle }}</div>
+          <!-- 问卷副标题 -->
+          <div class="header-subtitle">{{ subtitle }}</div>
+          <!-- 题目列表 -->
+          <div
+            class="question-list"
+            v-for="(question, index) in questionList"
+            :key="index"
+          >
+            <!-- 题目标题 -->
+            <div class="question-head ">
+              <div class="question-title">
+                <span class="question-seq"
+                  ><b>{{ index + 1 }}</b></span
+                >
+                <span class="text">{{ question.text }}</span>
+                <span v-if="question.required" class="question-required"
+                  >*</span
+                >
+                <el-tag v-if="[1, 4, 7, 11].includes(question.type)"
+                  >多选</el-tag
+                >
+              </div>
+              <div class="q-instruction">{{ question.comment }}</div>
+            </div>
+
+            <div class="question-body ">
+              <!-- 单选题 -->
+              <div v-if="[0, 6, 10].includes(question.type)">
+                <el-radio-group v-model="question.radio">
+                  <el-radio
+                    v-for="(item, index) in question.selectionList"
+                    :key="index"
+                    :label="index"
+                  >
+                    {{ item.content }}
+                    <span
+                      class="sel-total"
+                      v-show="item.total >= 0 && question.type === 6"
+                      >(剩余{{ item.total }})</span
+                    >
+                    <div class="q-instruction">{{ item.comment }}</div>
+                  </el-radio>
+                </el-radio-group>
+              </div>
+              <!-- 多选题 -->
+              <div v-else-if="[1, 4, 7, 11].includes(question.type)">
+                <el-checkbox-group v-model="question.checkList">
+                  <el-checkbox
+                    v-for="(item, index) in question.selectionList"
+                    :key="index"
+                    :label="index"
+                    >{{ item.content }}
+                    <span
+                      class="sel-total"
+                      v-show="item.total >= 0 && question.type === 7"
+                      >(剩余{{ item.total }})</span
+                    >
+                    <span class="q-instruction">{{ item.comment }}</span>
+                  </el-checkbox>
+                </el-checkbox-group>
+              </div>
+              <!-- 评分题 -->
+              <div v-else-if="question.type === 3">
+                <el-rate
+                  v-model="question.rating"
+                  :icon-classes="iconClasses"
+                  void-icon-class="icon-rate-face-off"
+                  :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
+                >
+                </el-rate>
+              </div>
+              <!-- 填空题 -->
+              <div v-else-if="question.type === 2">
+                <el-input
+                  type="textarea"
+                  autosize
+                  placeholder="请输入内容"
+                  v-model="question.answer"
+                >
+                </el-input>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="page-control">
+        <el-button type="primary" id="btn" @click="submit" :disabled="state"
+          >提交</el-button
+        >
+      </div> -->
+          <div class="page-control">
+            <el-button
+              type="text"
+              @click="dialogVisible = true"
+              :disabled="state"
+              >提交</el-button
+            >
+          </div>
+
+          <el-dialog
+            title="提示"
+            :visible.sync="dialogVisible"
+            width="30%"
+            :before-close="handleClose"
+          >
+            <span>提交后不能够更改,确定提交?</span>
+            <span slot="footer" class="dialog-footer">
+              <el-button
+                type="primary"
+                @click="
+                  dialogVisible = false;
+                  submit();
+                "
+                >确 定</el-button
+              >
+              <el-button @click="dialogVisible = false">取 消</el-button>
+            </span>
+          </el-dialog>
+        </div>
+      </div>
+    </div>
     <div v-show="!can_write_state">不在填写时间内</div>
   </div>
 </template>
@@ -131,11 +146,13 @@
 <script>
 import axios from "axios";
 import PublishQuestion from "./questionnaire/PublishQuestion.vue";
+import VoteAnswer from "./VoteAnswer.vue";
 import { dateFormat } from "../utils/dateFormat";
 export default {
   name: "CollectQuestion",
   components: {
     PublishQuestion,
+    VoteAnswer
   },
   data() {
     return {
@@ -151,10 +168,12 @@ export default {
       questionList: [],
       can_write_state: true,
       end: false,
+      type: -1,
+      questionList_vote:[]
     };
   },
   methods: {
-    showInfo1() {
+    showInfo2() {
       console.log(this.questionList);
       var list = this.current_questionnaire.questionList;
       for (var i = 0; i < list.length; i++) {
@@ -167,7 +186,7 @@ export default {
         }
       }
     },
-    getInfo1() {
+    getInfo2() {
       var formData = new FormData();
       formData.append("md5", this.ma);
       axios({
@@ -175,8 +194,11 @@ export default {
         url: "http://82.157.97.70/api/questionnaire/get_questionnaire",
         data: formData,
       }).then((res) => {
+        console.log(res);
         console.log(res.data.data);
+        this.type = res.data.data.questionnaire.type;
         this.current_questionnaire = res.data.data;
+        console.log(dateFormat(new Date()));
         if (
           this.current_questionnaire.questionnaire.startTime === null ||
           this.current_questionnaire.questionnaire.startTime === null
@@ -194,6 +216,54 @@ export default {
             this.can_write_state = false;
           }
         }
+        this.showInfo2();
+      });
+    },
+    showInfo1() {
+      this.questionList_vote = [];
+      // this.type = this.current_questionnaire.questionnaire.type;
+      var list = this.current_questionnaire.questionList;
+      for (var i = 0; i < list.length; i++) {
+        let x = {};
+        var y = list[i];
+        x.type = y.question.type;
+        x.text = y.question.content;
+        x.selectionList = [];
+        var total_answerNum=0
+        for (var j = 0; j < y.optionList.length; j++) {
+          total_answerNum+=y.optionList[j].answerNum
+        }
+        for (var j = 0; j < y.optionList.length; j++) {
+          let z = {};
+          z.comment = y.optionList[j].comment;
+          z.total = total_answerNum+""
+          z.content = y.optionList[j].content;
+          z.percentage = (y.optionList[j].answerNum / total_answerNum)*100
+          var num=z.percentage
+          z.percentage=num.toFixed(2)
+          x.selectionList.push(z);
+        }
+        x.required = y.question.required;
+        x.radio = "";
+        (x.checkList = []),
+          (x.answer = ""),
+          (x.rating = 0),
+          (x.comment = y.question.comment);
+        x.questionId = y.question.id;
+        this.questionList_vote.push(x);
+      }
+      console.log(this.questionList_vote);
+    },
+    getInfo1() {
+      var formData = new FormData();
+      formData.append("md5", this.ma);
+      axios({
+        method: "post",
+        url: "http://82.157.97.70/api/questionnaire/get_questionnaire",
+        data: formData,
+      }).then((res) => {
+        console.log(res.data.data);
+        this.current_questionnaire = res.data.data;
         this.showInfo1();
       });
     },
@@ -201,7 +271,7 @@ export default {
       this.questionList = [];
       console.log(this.current_questionnaire);
       this.headerTitle = this.current_questionnaire.questionnaire.title;
-      this.subtitle = this.current_questionnaire.description;
+      this.subtitle = this.current_questionnaire.questionnaire.description;
       // this.type = this.current_questionnaire.questionnaire.type;
       var list = this.current_questionnaire.questionList;
       for (var i = 0; i < list.length; i++) {
@@ -240,7 +310,7 @@ export default {
       }).then((res) => {
         console.log(res);
         console.log(res.data.data);
-        this.type=res.data.data.questionnaire.type
+        this.type = res.data.data.questionnaire.type;
         this.current_questionnaire = res.data.data;
         console.log(dateFormat(new Date()));
         if (
@@ -294,7 +364,7 @@ export default {
             z.number = y.radio + "";
             z.content = "";
           }
-        } else if (y.type === 1 || y.type === 7) {
+        } else if (y.type === 1 || y.type === 7 || y.type === 11) {
           if (y.required) {
             if (y.checkList.length === 0) {
               alert("您有必选项未完成!");
@@ -349,34 +419,27 @@ export default {
         console.log(res.data.message);
         alert(res.data.message);
         console.log(res);
-        this.state = true;
+        if(res.data.code === 200 || res.data.code === 201){
+          this.state = true;
+          if(this.type === 1){
+            this.getInfo1()
+          }
+        }
       });
     },
   },
-  // send_Info() {
-  //   var formData = {};
-  //   formData.questionnaireID = 1;
-
-  //   axios({
-  //     method: "post",
-  //     url: "http://82.157.97.70/api/answer/submit_answer",
-  //     data: formData,
-  //   }).then((res) => {
-  //     console.log(res.data.data);
-
-  //   });
-  // },
   created() {
     this.getInfo();
-    console.log(this.type);
-    // console.log(this.current_questionnaire);
-    //   var interval = setInterval(() => {
-    //     this.getInfo1();
-    //     if (this.end) {
-    //       clearInterval(interval);
-    //     }
-    //     //do whatever here..
-    //   }, 5000);
+    var interval = setInterval(() => {
+      this.getInfo2();
+      if(this.type === 1){
+        clearInterval(interval);
+      }
+      if (this.end) {
+        clearInterval(interval);
+      }
+      //do whatever here..
+    }, 2000);
   },
 };
 </script>

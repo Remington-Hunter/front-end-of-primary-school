@@ -40,7 +40,7 @@
                 {{ item.content }}<span class="q-instruction">{{ item.comment }}</span>
                 <span class="sel-total">({{item.total}}票)</span>
                 <el-progress
-                  :percentage="percentage"
+                  :percentage="item.percentage"
                   :color="customColor"
                 ></el-progress>
               </el-radio>
@@ -60,7 +60,7 @@
                 <span class="q-instruction">{{ item.comment }}</span>
                 <span class="sel-total">({{item.total}}票)</span>
                 <el-progress
-                  :percentage="percentage"
+                  :percentage="item.percentage"
                   :color="customColor"
                 ></el-progress>
               </el-checkbox>
@@ -99,54 +99,71 @@
 
 <script>
 export default {
+  name:"VoteAnswer",
+  props:{
+    headerTitle:{
+      type:String,
+      default:""
+    },
+    subtitle:{
+      type:String,
+      default:""
+    },
+    questionList:{
+      type:Array,
+      default:()=>{
+        return []
+      }
+    }
+  },
   data() {
     return {
-      percentage: 50,
       headerTitle: "社交网站满意度问卷",
       subtitle:
         "为了给您提供更好的服务，希望您能抽出几分钟时间，将您的感受和建议告诉我们，我们非常重视每位用户的宝贵意见，期待您的参与！现在我们就马上开始吧！",
       questionList: [
-        {
-          type: 0, //问题种类：单选
-          text: "您是否使用过xx社交网站？",
-          selectionList: [{ content: "a选项", total: "10", comment: "我是备注" },
-          { content: "b选项", total: "10", comment: "" },
-          { content: "c选项", total: "10", comment: "" },],
-          radio: 1,
-          checkList: [],
-          answer: "输入你的答案",
-          rating: 0,
-          required: true, //是否必填
-        },
-        {
-          type: 1, //问题种类：多选
-          text: "您使用xx社交网站的目的是？",
-          selectionList: [{ content: "a选项", total: "10", comment: "我是备注" },
-          { content: "b选项", total: "10", comment: "" },
-          { content: "c选项", total: "10", comment: "" },],
-          radio: "",
-          checkList: [0, 1],
-          answer: "输入你的答案",
-          rating: 0,
-          required: false,
-        },
-        {
-          type: 2, //问题种类：填空
-          text: "您使用xx社交网站的目的是？",
-          answer: "你的答案",
-          required: false,
-        },
-        {
-          type: 3, //问题种类：评分
-          text: "您使用xx社交网站的目的是？",
-          rating: 4,
-          required: false,
-        },
+        // {
+        //   type: 0, //问题种类：单选
+        //   text: "您是否使用过xx社交网站？",
+        //   selectionList: [{ content: "a选项", total: "5", comment: "我是备注",percentage:10 },
+        //   { content: "b选项", total: "10", comment: "",percentage:20 },
+        //   { content: "c选项", total: "10", comment: "",percentage:70 },],
+        //   radio: 1,
+        //   checkList: [],
+        //   answer: "输入你的答案",
+        //   rating: 0,
+        //   required: true, //是否必填
+        // },
+        // {
+        //   type: 1, //问题种类：多选
+        //   text: "您使用xx社交网站的目的是？",
+        //   selectionList: [{ content: "a选项", total: "10", comment: "我是备注",percentage:10.3 },
+        //   { content: "b选项", total: "10", comment: "",percentage:20 },
+        //   { content: "c选项", total: "10", comment: "" ,percentage:70}],
+        //   radio: "",
+        //   checkList: [0, 1],
+        //   answer: "输入你的答案",
+        //   rating: 0,
+        //   required: false,
+        // },
+        // {
+        //   type: 2, //问题种类：填空
+        //   text: "您使用xx社交网站的目的是？",
+        //   answer: "你的答案",
+        //   required: false,
+        // },
+        // {
+        //   type: 3, //问题种类：评分
+        //   text: "您使用xx社交网站的目的是？",
+        //   rating: 4,
+        //   required: false,
+        // },
       ],
       iconClasses: ['icon-rate-face-1', 'icon-rate-face-2', 'icon-rate-face-3'],
     };
   },
-
+  created(){
+  }
 };
 </script>
 
