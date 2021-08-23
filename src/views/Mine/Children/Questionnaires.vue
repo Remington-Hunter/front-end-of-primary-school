@@ -30,7 +30,6 @@
       <v-btn color="primary" class="mr-2" @click="toggleOrder"
         >切换排序顺序</v-btn
       >
-      <v-btn color="primary" @click="nextSort">对下一列进行排序</v-btn>
     </div>
   </v-card>
 </template>
