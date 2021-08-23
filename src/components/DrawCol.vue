@@ -27,7 +27,8 @@ export default {
   // created: {},
   mounted() {
     //   alert(111)
-    console.log(this.id)
+    // console.log(this.id)
+    // console.log(this.source1)
     this.drawfunc()
   },
   methods: {
@@ -40,7 +41,7 @@ export default {
         dataset: {
           // 这里指定了维度名的顺序，从而可以利用默认的维度到坐标轴的映射。
           // 如果不指定 dimensions，也可以通过指定 series.encode 完成映射，参见后文。
-          dimensions: ["题目", "数量"],
+          dimensions: ["选项", "数量"],
           source: this.source1
           //     [
           //   { product: "Matcha Latte", 2015: 43.3 },

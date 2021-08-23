@@ -117,6 +117,7 @@
       </el-container>
     </el-container>
     <el-dialog
+    @close="send_question_parent()"
       :visible.sync="dialogTimeVisible"
       width="45%"
       center
@@ -126,6 +127,7 @@
           开启控制<el-switch
             v-model="has_time"
             style="margin-left:20px"
+            @change="send_question_parent()"
           ></el-switch>
         </el-row>
         <el-row>选择时间
@@ -148,7 +150,7 @@
       >
         <el-button
           type="primary"
-          @click="dialogTimeVisible = false"
+          @click="dialogTimeVisible = false;send_question_parent()"
         >确 定</el-button>
       </span>
     </el-dialog>
@@ -221,9 +223,11 @@ export default {
       }
 
       var formData = {};
+      console.log(this.has_time);
       if(this.has_time === true){
         formData.startTime = dateFormat(this.value1[0]);
         formData.endTime = dateFormat(this.value1[1]);
+        console.log(formData.startTime);
       }
       formData.description = this.description;
       formData.limit = -1;
