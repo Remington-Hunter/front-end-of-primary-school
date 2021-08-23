@@ -435,16 +435,16 @@ export default {
   },
   created() {
     this.getInfo();
-    // var interval = setInterval(() => {
-    //   this.getInfo2();
-    //   if(this.type === 1){
-    //     clearInterval(interval);
-    //   }
-    //   if (this.end) {
-    //     clearInterval(interval);
-    //   }
-    //   //do whatever here..
-    // }, 2000);
+    var interval = setInterval(() => {
+      this.getInfo2();
+      if(this.type === 1){
+        clearInterval(interval);
+      }
+      if (this.end) {
+        clearInterval(interval);
+      }
+      //do whatever here..
+    }, 2000);
   },
 };
 </script>
