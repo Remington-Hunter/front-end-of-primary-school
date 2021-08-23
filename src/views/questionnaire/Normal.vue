@@ -266,6 +266,8 @@ export default {
         item.required = x.must_write_select ? 1 : 0;
         item.point = 0;
         item.type = this.problem_type_number(x.problem_type);
+        console.log(this.problem_type_number(x.problem_type));
+        console.log(item.type);
         let y = [];
         for (var j = 0; j < x.selection_list.length; j++) {
           let z = {};
@@ -442,16 +444,16 @@ export default {
         case "评分题":
           return 3;
           break;
-        case "报名单选":
+        case "报名单选题":
           return 6;
           break;
-        case "报名单选":
+        case "报名多选题":
           return 7;
           break;
-        case "投票单选":
+        case "投票单选题":
           return 10;
           break;
-        case "投票单选":
+        case "投票多选题":
           return 11;
           break;
       }
