@@ -50,11 +50,12 @@
           @click="getProblemInfo"
         >预览</el-button>
         <el-button
-          v-if="state"
+          v-if="option"
           type="primary"
           icon="el-icon-pause"
           :disabled="state"
           plain
+          @click="change_prepare_state"
         >暂停回收</el-button>
         <el-button
           v-else
@@ -62,7 +63,7 @@
           icon="el-icon-video-play"
           :disabled="state"
           plain
-          @click="change_state()"
+          @click="change_start_state()"
         >开始回收</el-button>
         <el-button
           type="primary"
@@ -131,6 +132,7 @@ export default {
       is_saved:false,
       questionnaire_id:-1,
       questionnaire_state:"",
+      option:false,
     };
   },
   methods: {
@@ -231,9 +233,9 @@ export default {
         this.state = false
       }
     },
-    change_state(){
+    change_prepare_state(){
       var formData = new FormData();
-      formData.append("ID",this.current_questionnaire.id);
+      formData.append("questionnaireId",this.current_questionnaire.id);
       axios({
         url: "http://82.157.97.70/api/questionnaire/prepare_questionnaire",
         method: "post",
@@ -243,8 +245,27 @@ export default {
         },
       }).then((res) => {
             console.log(res);
-            this.changeState(index);
+            this.change_option();
         });
+    },
+    change_start_state(){
+      var Data = new FormData();
+      Data.append("questionnaireId",this.current_questionnaire.id)
+      axios({
+        url:'http://82.157.97.70/api/questionnaire/publish_questionnaire',
+        method:'post',
+        data: Data,
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
+        },
+      }).then((res)=>{
+        console.log(res);
+        this.change_option();
+      })
+    },
+    change_option(){
+      this.option = !this.option;
     },
     handleClick(tab, event) {
       console.log(tab, event);
