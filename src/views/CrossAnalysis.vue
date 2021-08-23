@@ -94,12 +94,6 @@ export default {
   mounted() {
     this.getseries();
   },
-  // watch:{
-  //   $route(to){
-  //     console.log(to.query.id);
-  //     this.id=to.query.id;
-  //   }
-  // },
   methods: {
     getBarData(data){
       // console.log(data);
