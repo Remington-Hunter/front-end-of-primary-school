@@ -69,3 +69,25 @@
     padding-left: 10px;
     color: #feae3a;
   }
+.el-progress{
+  width: 600px;
+}
+.el-checkbox__label {
+  white-space: pre-line;
+  word-wrap: break-word;
+  overflow: hidden;
+}
+.el-checkbox.is-disabled.is-checked .el-checkbox__inner {
+  color: #FFFFFF;
+  background-color: #1890ff;
+  border-color: #1890ff;
+}
+
+.el-radio.is-disabled.is-checked .el-radio__inner {
+  color: #FFFFFF;
+  background-color: #1890ff;
+  border-color: #1890ff;
+}
+
+
+ 
