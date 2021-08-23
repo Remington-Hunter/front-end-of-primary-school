@@ -148,26 +148,7 @@ export default {
       if (this.is_creating === true || this.total_problem === 1) {
         return
       }
-      if (this.questionnaire_id !== -1) {
-        this.current_questionnaire.id = this.questionnaire_id
-      }
-      this.current_questionnaire.type = this.questionnaire_type
-      var formData = this.current_questionnaire
-      axios({
-        method: "post",
-        url: "http://82.157.97.70/api/questionnaire/save_questionnaire",
-        headers: {
-          Authorization: window.localStorage.getItem("authorization"),
-          "Content-Type": "application/json",
-        },
-        data: JSON.stringify(formData),
-      }).then((res) => {
-        console.log(res);
-        this.current_questionnaire.id = res.data.data;
-        if (res.data.code === 200 || res.data.code === 201) {
-          this.is_saved = true
-          this.questionnaire_id = res.data.data
-        }
+        this.current_questionnaire.id = this.questionnaire_id;
         if (this.is_creating === true || this.total_problem === 1) { return }
         // var formData = this.current_questionnaire
         var formData = new FormData();
@@ -187,7 +168,6 @@ export default {
           this.lianjie = 'http://82.157.97.70/api/qrcode/getQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
           this.ma = res.data.data
         });
-      });
     },
     saveQues() {
       if (this.is_creating === true || this.total_problem === 1) {
