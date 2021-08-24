@@ -220,13 +220,18 @@ export default {
         },
       }).then((res) => {
         console.log(res);
-        var type = "";
+        var types = "";
+        for (var i = 0; i < this.desserts.length; i++) {
+          if (this.desserts[i].id === item) {
+            types = this.desserts[i].type;
+          }
+        }
         var index = 0;
-        if (type === "普通问卷") {
+        if (types === "普通问卷") {
           index = 0;
-        } else if (type === "投票问卷") {
+        } else if (types === "投票问卷") {
           index = 1;
-        } else if (type === "报名问卷") {
+        } else if (types === "报名问卷") {
           index = 2;
         }
         this.$router.push({
