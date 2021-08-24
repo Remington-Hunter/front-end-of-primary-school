@@ -42,7 +42,7 @@
                 class="ui-button"
                 id="down"
                 target="_blank"
-                :href="download_lianjie"
+                :href="lianjie"
             >下载二维码</a></el-col>
 
            <el-button @click="get_new_link()" style="font-size:16px;background:  #f5f5f5;color: #333333" >获得新链接</el-button>
@@ -145,11 +145,9 @@ export default {
     this.id = this.$route.params.id;
     this.get_link()
     // var ss = this.input
-//     setTimeout(()=>{
-// this.download_lianjie = 'http://82.157.97.70/vj/';
-//     this.download_lianjie += this.input;
-//     this.download_lianjie = 'http://82.157.97.70/api/qrcode/downloadQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
-//     },1000)
+    // setTimeout(()=>{
+    // this.download_lianjie = 'http://82.157.97.70/api/qrcode/downloadQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
+    // },1000)
 //     this.download_lianjie += 'http://82.157.97.70/vj/';
 //     this.download_lianjie += this.input;
   },
@@ -184,7 +182,8 @@ export default {
         this.input += res.data.data;
         this.ma = res.data.data;
         this.lianjie = 'http://82.157.97.70/api/qrcode/getQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
-        this.download_lianjie = 'http://82.157.97.70/api/qrcode/downloadQRCode/?content=' + res.data.data + '&logoUrl=http://82.157.97.70/api/getIcon';
+        // this.download_lianjie = this.lianjie.replace("getQRCode","downloadQRCode")
+        // this.download_lianjie = 'http://82.157.97.70/api/qrcode/downloadQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
         //alert(this.input);
         // this.download_lianjie = 'http://82.157.97.70/api/qrcode/downloadQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
       });
@@ -207,7 +206,7 @@ export default {
         this.input += res.data.data;
         this.lianjie = 'http://82.157.97.70/api/qrcode/getQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
         //alert(this.input);
-        // this.download_lianjie =  this.download_lianjie = 'http://82.157.97.70/api/qrcode/downloadQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
+        this.download_lianjie = 'http://82.157.97.70/api/qrcode/downloadQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
       });
     }
   },
