@@ -92,6 +92,7 @@ export default {
   },
   methods: {
     deleteItem(item) {
+
       const index = item;
       console.log(index);
       // confirm("Are you sure you want to delete this item?")
@@ -109,6 +110,9 @@ export default {
       }).then((res) => {
         console.log(res);
         this.getItem();
+        if(res.data.code===200 || res.data.code === 201){
+
+        }
       });
     },
     getItem() {
