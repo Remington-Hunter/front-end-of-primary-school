@@ -53,6 +53,11 @@
         <!--   第二种方式-->
         <!--        <v-icon small @click="modifyItem_second(item.id)" title="修改第二种办法" > mdi-pencil-outline</v-icon>-->
         <!--   第三种方式-->
+<<<<<<< HEAD
+        <v-icon small @click="modifyItem_third(item.id)" title="修改第三种办法" > mdi-pencil-outline</v-icon>
+        <v-icon small @click="lookUpLink(item.id)" title="查看链接" style="margin-left: 1%"> mdi-magnify</v-icon>
+        <v-icon small @click="checkAnalysis(item.id)" title="统计结果" style="margin-left: 1%"> mdi-poll</v-icon>
+=======
         <v-icon small @click="modifyItem_third(item.id)" title="修改">
           mdi-pencil-outline</v-icon
         >
@@ -72,6 +77,7 @@
         >
           mdi-poll</v-icon
         >
+>>>>>>> e98659df9ebb1070532f1382cc948f76d1158938
       </template>
     </v-data-table>
   </v-card>
@@ -196,9 +202,8 @@ export default {
         this.$router.push({
           path: "/edit1/" + index,
           query: {
-            id: res.data.id,
-            // types:index,}
-          },
+            id: res.data.data,
+            types:index,}
         });
       });
     },
@@ -262,13 +267,12 @@ export default {
           index = 2;
         }
         this.$router.push({
-          path: "/edit1/" + index,
-          query: {
-            id: res.data.id,
-            types: index,
-          },
-        });
-      });
+          path:'/edit1/'+index,
+          query:{
+            id:res.data.data,
+            types:index,}
+        })
+      })
     },
     startItem(item) {
       var Data = new FormData();
