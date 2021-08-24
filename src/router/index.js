@@ -117,6 +117,12 @@ const routes = [{
         name:'Stop',
         component: () => import('../views/Stop.vue')
     },
+    {
+        path: '/edit1/:type',
+        name: 'Edit1',
+        component: () =>
+            import ('../views/questionnaire/Edit.vue')
+    }
 ]
 
 const router = new VueRouter({
