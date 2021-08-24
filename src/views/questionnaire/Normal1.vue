@@ -1,12 +1,36 @@
 <template>
   <div>
     <el-container style="height: 600px;">
-      <el-aside width="200px" style="overflow-x:hidden;">
+      <el-aside
+        width="200px"
+        style="overflow-x:hidden;"
+      >
+        <!-- <el-button
+          @click="copyQuestionnaireInfo();state12=true"
+          :disabled="state12"
+        >拷贝原内容</el-button> -->
+
+        <el-dialog
+          title="提示"
+          :visible.sync="copyVisible"
+          width="30%"
+          :before-close="handleClose"
+        >
+          <span>该编辑操作将新建副本</span>
+          <span
+            slot="footer"
+            class="dialog-footer"
+          >
+            <el-button
+              type="primary"
+              @click="copyVisible = false;copyQuestionnaireInfo()"
+            >确 定</el-button>
+          </span>
+        </el-dialog>
+
         <el-menu :default-openeds="['1', '2']">
           <el-submenu index="1">
-            <template slot="title"
-              ><i class="el-icon-menu"></i>题目控件</template
-            >
+            <template slot="title"><i class="el-icon-menu"></i>题目控件</template>
             <el-menu-item
               v-for="(item, index) in problem_list"
               :key="(item, index)"
@@ -48,12 +72,9 @@
             </div>
           </el-submenu>
           <el-submenu index="2">
-            <template slot="title"
-              ><i class="el-icon-setting"></i>问卷设置</template
-            >
+            <template slot="title"><i class="el-icon-setting"></i>问卷设置</template>
             <el-menu-item @click="dialogTimeVisible = true">
-              时间控制</el-menu-item
-            >
+              时间控制</el-menu-item>
             <div v-if="type === 1">
               <el-tooltip
                 class="item"
@@ -74,7 +95,7 @@
         style="border-left: solid 2px #e6e6e6;overflow-y:scroll;overflow-x:hidden;height:100%"
         id="demo"
       >
-        <div>
+        <div style="min-width: -webkit-fill-available">
           <div
             @click="dialogFormVisible = true"
             style="cursor: pointer;"
@@ -84,13 +105,26 @@
             <div class="header-subtitle">{{ description }}</div>
             <p class="sub">编辑问卷标题和描述</p>
           </div>
-          <el-dialog title="题目" :visible.sync="dialogFormVisible" center>
+          <el-dialog
+            title="题目"
+            :visible.sync="dialogFormVisible"
+            center
+          >
             <el-form>
-              <el-form-item label="标题" :label-width="formLabelWidth">
-                <el-input v-model="title" autocomplete="off"></el-input>
+              <el-form-item
+                label="标题"
+                :label-width="formLabelWidth"
+              >
+                <el-input
+                  v-model="title"
+                  autocomplete="off"
+                ></el-input>
               </el-form-item>
 
-              <el-form-item label="描述" :label-width="formLabelWidth">
+              <el-form-item
+                label="描述"
+                :label-width="formLabelWidth"
+              >
                 <el-input
                   v-model="description"
                   autocomplete="off"
@@ -100,16 +134,23 @@
                 ></el-input>
               </el-form-item>
             </el-form>
-            <div slot="footer" class="dialog-footer">
+            <div
+              slot="footer"
+              class="dialog-footer"
+            >
               <el-button @click="dialogFormVisible = false">取 消</el-button>
-              <el-button type="primary" @click="dialogFormVisible = false"
-                >确 定</el-button
-              >
+              <el-button
+                type="primary"
+                @click="dialogFormVisible = false"
+              >确 定</el-button>
             </div>
           </el-dialog>
 
           <v-divider></v-divider>
-          <div v-for="(item, index) in created_problem" :key="(item, index)">
+          <div
+            v-for="(item, index) in created_problem"
+            :key="(item, index)"
+          >
             <SingleSelect
               :ref="'question' + item.number"
               :id="'question' + item.number"
@@ -157,8 +198,7 @@
             @change="send_question_parent()"
           ></el-switch>
         </el-row>
-        <el-row
-          >选择时间
+        <el-row>选择时间
           <el-date-picker
             v-model="value1"
             type="datetimerange"
@@ -172,18 +212,20 @@
         </el-row>
       </div>
 
-      <span slot="footer" class="dialog-footer">
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
         <el-button
           type="primary"
           @click="
             dialogTimeVisible = false;
             send_question_parent();
           "
-          >确 定</el-button
-        >
+        >确 定</el-button>
       </span>
     </el-dialog>
-    <el-button @click="copyQuestionnaireInfo();state12=true" :disabled="state12">拷贝原内容</el-button>
+
   </div>
 </template>
 
@@ -216,11 +258,11 @@ export default {
   //   ],
   data() {
     return {
-    state12:false,
+      copyVisible: true,
       value1: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
-      title: "题目",
+      title: "",
       description:
-        "为了给您提供更好的服务，希望您能抽出几分钟时间，将您的感受和建议告诉我们，我们非常重视每位用户的宝贵意见，期待您的参与！现在我们就马上开始吧！",
+        "",
       formLabelWidth: "100px",
       dialogFormVisible: false,
       dialogTimeVisible: false,
@@ -253,29 +295,29 @@ export default {
   },
   methods: {
     copyQuestionnaireInfo() {
-        this.title=this.copy_questionnaire_info.questionnaire.title
-        this.description=this.copy_questionnaire_info.questionnaire.description
-        var x=this.copy_questionnaire_info.questionList
-        for (var i = 0; i < x.length; i++) {
-          let item = {};
-          item.type = this.problem_type_info(x[i].question.type);
-          var obj = {};
-          obj.problem_type = this.problem_type_info(x[i].question.type);
-          obj.name = x[i].question.content;
-          obj.instruction = x[i].question.comment;
-          obj.must_write_select = x[i].question.required;
-          var list = [];
-          console.log(x[i].optionList.length);
-          for (var j = 0; j < x[i].optionList.length; j++) {
-            var listitem = {};
-            listitem.content = x[i].optionList[j].content;
-            listitem.total = x[i].optionList[j].limit;
-            listitem.comment = x[i].optionList[j].comment;
-            list.push(listitem);
-          }
-          obj.selection_list = list;
-          this.newProblem1(item.type, true, obj);
+      this.title = this.copy_questionnaire_info.questionnaire.title
+      this.description = this.copy_questionnaire_info.questionnaire.description
+      var x = this.copy_questionnaire_info.questionList
+      for (var i = 0; i < x.length; i++) {
+        let item = {};
+        item.type = this.problem_type_info(x[i].question.type);
+        var obj = {};
+        obj.problem_type = this.problem_type_info(x[i].question.type);
+        obj.name = x[i].question.content;
+        obj.instruction = x[i].question.comment;
+        obj.must_write_select = x[i].question.required;
+        var list = [];
+        console.log(x[i].optionList.length);
+        for (var j = 0; j < x[i].optionList.length; j++) {
+          var listitem = {};
+          listitem.content = x[i].optionList[j].content;
+          listitem.total = x[i].optionList[j].limit;
+          listitem.comment = x[i].optionList[j].comment;
+          list.push(listitem);
         }
+        obj.selection_list = list;
+        this.newProblem1(item.type, true, obj);
+      }
     },
     current_questionnaire() {
       this.created_problem_list = [];
