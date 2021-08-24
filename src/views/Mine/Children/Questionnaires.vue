@@ -172,11 +172,7 @@ export default {
         },
       }).then((res) => {
         console.log(res);
-        for(var i=0;i<this.desserts.path;i++){
-          if(this.desserts[i].id===item){
-            this.$router.push({path:"/edit1/0",query:{id:this.item}})
-          }
-        }
+        this.$router.push({path:"/edit1/0",query:{id:this.item}})
       })
     },
     modifyItem_second(item) {

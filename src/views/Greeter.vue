@@ -5,7 +5,7 @@
         <div class="logo"><img
             src="../assets/logo.png"
             class="img"
-          ></div>
+          /></div>
         <el-form
           :model="form"
           status-icon
@@ -184,20 +184,26 @@ export default {
       }).then((res) => {
         // alert(res)
         if (res.data.code === 200 && this.register) {
-          this.$alert(res.data.message, '注册成功', {
-          dangerouslyUseHTMLString: true
-        });
+        //   this.$alert(res.data.message, '注册成功', {
+        //   dangerouslyUseHTMLString: true
+        // });
+          this.$message({
+            message: '注册成功',
+            type: 'success'
+          });
           this.register = false;
         }
         else{
-          this.$alert('继续注册', '注册失败', {
-            dangerouslyUseHTMLString: true
-          });
+          // this.$alert('继续注册', '注册失败', {
+          //   dangerouslyUseHTMLString: true
+          // });
+          this.$message.error(res.data.message);
         }
         if(!(res.data.code === 200 && !this.register)){
-          this.$alert('继续登录', '登录失败', {
-            dangerouslyUseHTMLString: true
-          });
+          // this.$alert('继续登录', '登录失败', {
+          //   dangerouslyUseHTMLString: true
+          // });
+          this.$message.error(res.data.message);
         }
         else {
           this.responseResult = JSON.stringify(res.data)
@@ -211,8 +217,12 @@ export default {
           localStorage.setItem('authorization', authorization);
           localStorage.setItem('user_id', res.data.data.user_id)
           //登录成功跳转页面
-          this.$alert('', '登录成功', {
-            dangerouslyUseHTMLString: true
+          // this.$alert('', '登录成功', {
+          //   dangerouslyUseHTMLString: true
+          // });
+          this.$message({
+            message: '登录成功',
+            type: 'success'
           });
           this.$router.push('/')
         }
