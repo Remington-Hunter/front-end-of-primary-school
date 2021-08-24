@@ -206,6 +206,12 @@ export default
           if(res.data.data.email!==null){
             this.email=res.data.data.email
           }
+          if(res.data.code===200 || res.data.code===201){
+            this.$message({message:'绑定成功',type:'success'})
+          }
+          else if(res.data.code === 400){
+            this.$message.error('邮箱格式不正确')
+          }
           console.log(this.email)
 
         })

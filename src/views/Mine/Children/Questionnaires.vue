@@ -41,7 +41,7 @@
         <!--   第二种方式-->
 <!--        <v-icon small @click="modifyItem_second(item.id)" title="修改第二种办法" > mdi-pencil-outline</v-icon>-->
         <!--   第三种方式-->
-<!--        <v-icon small @click="modifyItem_third(item.id)" title="修改第三种办法" > mdi-pencil-outline</v-icon>-->
+        <v-icon small @click="modifyItem_third(item.id)" title="修改第三种办法" > mdi-pencil-outline</v-icon>
         <v-icon small @click="lookUpLink(item.id)" title="查看链接" style="margin-left: 1%"> mdi-magnify</v-icon>
         <v-icon small @click="checkAnalysis(item.id)" title="统计结果" style="margin-left: 1%"> mdi-poll</v-icon>
       </template>
@@ -168,12 +168,7 @@ export default {
         else if(type==="报名问卷"){
           index = 2;
         }
-        this.$router.push({
-          path:'/edit1/'+index,
-          query:{
-            id:res.data.id,
-            types:index,}
-        })
+        this.$router.push({path:'/edit1/'+index, query:{id:res.data.id}})
       })
     },
     modifyItem_third(item) {
@@ -206,12 +201,7 @@ export default {
         else if(type==="报名问卷"){
           index = 2;
         }
-        this.$router.push({
-          path:'/edit1/'+index,
-          query:{
-            id:res.data.id,
-            types:index,}
-        })
+        this.$router.push({path:'/edit1/'+index, query:{id:res.data.data}})
       })
     },
     modifyItem_second(item) {
@@ -247,7 +237,7 @@ export default {
         this.$router.push({
           path:'/edit1/'+index,
           query:{
-            id:res.data.id,
+            id:res.data.data,
             types:index,}
         })
       })
