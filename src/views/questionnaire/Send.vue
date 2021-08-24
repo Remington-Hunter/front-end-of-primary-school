@@ -42,9 +42,8 @@
                 class="ui-button"
                 id="down"
                 target="_blank"
-                :href="download_lianjie"
+                :href="this.download_lianjie"
             >下载二维码</a></el-col>
-
            <el-button @click="get_new_link()" style="font-size:16px;background:  #f5f5f5;color: #333333" >获得新链接</el-button>
 <!--            <el-col-->
 <!--                :span="4"-->
@@ -143,8 +142,8 @@ export default {
   },
   created() {
     this.id = this.$route.params.id;
-    this.get_link()
-    this.download_lianjie = 'http://82.157.97.70/vj/';
+    this.get_link();
+    this.download_lianjie += 'http://82.157.97.70/vj/';
     this.download_lianjie += this.input;
     this.download_lianjie = 'http://82.157.97.70/api/qrcode/downloadQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
   },
