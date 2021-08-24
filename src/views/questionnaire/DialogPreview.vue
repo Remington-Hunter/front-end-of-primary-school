@@ -115,4 +115,7 @@ export default {
   background-color: rgb(255, 255, 255);
   overflow: hidden;
 }
+.question-title {
+  font-size: 16px;
+}
 </style>
