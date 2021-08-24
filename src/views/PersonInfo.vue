@@ -76,7 +76,7 @@
           <br>
           <br>
           <div style="margin-left:15px">
-            <span>我的邮箱:{{emile}}</span>
+            <span>我的邮箱:{{email}}</span>
             <v-btn
               elevation="2"
               style="float:right;right:20%"
@@ -121,7 +121,7 @@
         >
           <v-card>
             <v-card-text>
-              <v-text-field label="请输入新的电话号码"></v-text-field>
+              <v-text-field label="请输入新的电话号码" v-model="phone"></v-text-field>
 
               <!-- <small class="grey--text">：</small> -->
             </v-card-text>
@@ -147,14 +147,11 @@
             <v-card-text>
               <v-text-field
                 label="请输入新的邮箱"
-                v-model="phone"
+                v-model="emailData"
               ></v-text-field>
-
             </v-card-text>
-
             <v-card-actions>
               <v-spacer></v-spacer>
-
               <v-btn
                 text
                 color="primary"
@@ -194,7 +191,7 @@ export default
       getData(){
         console.log('ffwf')
         axios({
-          url:'http://82.157.97.70/api/user/get_info',
+          url:'http://82.157.97.70/api/get_info',
           method:'post',
           headers: {
           'Authorization': window.localStorage.getItem("authorization"),
@@ -204,11 +201,13 @@ export default
           console.log(res)
           console.log('daf2t1')
           if(res.data.data.phone!==null){
-            this.phoneNumber=res.data.phone
+            this.phoneNumber=res.data.data.phone
           }
           if(res.data.data.email!==null){
-            this.emailNumber=res.data.data.email
+            this.email=res.data.data.email
           }
+          console.log(this.email)
+
         })
       },
       goBack() {
@@ -237,17 +236,20 @@ export default
       updatePhone() {
         var Data = new FormData();
         this.phoneDialog = true
-        Data.append('phone', this.phoneNumber)
+        console.log(this.phone)
+        Data.append('phone', this.phone)
         axios({
-          url: 'http://82.157.97.70/api/user/set_phone',
-          mehtod: 'post',
+          url: 'http://82.157.97.70/api/set_phone',
+          method: 'post',
           data: Data,
           headers: {
           Authorization: window.localStorage.getItem("authorization"),
           "Content-Type": "application/json",
           },
         }).then((res) => {
-          this.phoneNumber = this.phone,
+          console.log(res)
+          this.getData();
+            // this.phoneNumber = this.phone,
             this.phone = '',
             this.phoneDialog = false
         })
@@ -255,17 +257,17 @@ export default
       updateEmail() {
         var Data = new FormData();
         this.emailDialog = true
-        Data.append('email', this.email)
+        Data.append('email', this.emailData)
         axios({
-          url: 'http://82.157.97.70/api/user/set_email',
-          mehtod: 'post',
+          url: 'http://82.157.97.70/api/set_email',
+          method: 'post',
           data: Data,
           headers: {
           Authorization: window.localStorage.getItem("authorization"),
           "Content-Type": "application/json",
           },
         }).then((res) => {
-          this.emailNumber = this.emailData,
+          this.getData();
             this.emailData = '',
             this.emailDialog = false
         })

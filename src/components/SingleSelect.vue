@@ -112,12 +112,16 @@
         >取消</el-button>
       </div>
 
-      <div v-show="!ismodify">
+      <div
+        v-show="!ismodify"
+        class="q-content"
+      >
         <div class="question-seq">{{ problem_number }}.</div>
         <div class="text">{{ name }} <span
             v-if="must_write_select"
             class="question-required"
-          >*</span></div>
+          >*</span>
+        </div>
 
         <div class="q-instruction">{{ instruction }}</div>
         <div
@@ -134,7 +138,7 @@
         </div>
 
         <div v-else-if="problem_type === '评分题'">
-          <div class="text-left">
+          <div class="rate">
             <el-rate
               v-model="rating"
               :icon-classes="iconClasses"
@@ -372,6 +376,14 @@ export default {
 .el-input-number {
   padding-left: 20px;
 }
+.q-content {
+  white-space: pre-line;
+  word-wrap: break-word;
+  overflow: hidden;
+}
+.rate {
+  padding-bottom: 15px;
+}
 </style>
 
 <style lang="scss">
@@ -385,6 +397,5 @@ export default {
 }
 .el-checkbox__label {
   padding-left: 10px;
-  line-height: 10px;
 }
 </style>
