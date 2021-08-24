@@ -37,12 +37,11 @@
         <v-icon size=14px class="mr-2" @click="stopItem(item.id)" title="停止">
           mdi-pause-circle
         </v-icon>
-        <!--   第一种方式-->
 <!--        <v-icon small @click="modifyItem_first(item.id)" title="修改第一种办法" > mdi-pencil-outline</v-icon>-->
         <!--   第二种方式-->
 <!--        <v-icon small @click="modifyItem_second(item.id)" title="修改第二种办法" > mdi-pencil-outline</v-icon>-->
         <!--   第三种方式-->
-<!--        <v-icon small @click="modifyItem_third(item.id)" title="修改第三种办法" > mdi-pencil-outline</v-icon>-->
+        <v-icon small @click="modifyItem_third(item.id)" title="修改第三种办法" > mdi-pencil-outline</v-icon>
         <v-icon small @click="lookUpLink(item.id)" title="查看链接" style="margin-left: 1%"> mdi-magnify</v-icon>
         <v-icon small @click="checkAnalysis(item.id)" title="统计结果" style="margin-left: 1%"> mdi-poll</v-icon>
       </template>
@@ -65,6 +64,10 @@ export default {
           text: "问卷名称",
           align: "start",
           value: "name",
+        },
+        {
+          text:"问卷种类",
+          value: "type",sortable: false
         },
         {text: "状态", value: "state", sortable: false},
         {text: "ID", value: "id"},
@@ -135,54 +138,63 @@ export default {
       var time = new Date().Format("yyyy-MM-dd hh:mm:ss");
       return time;
     },
-    // modifyItem_first(item) {
-    //   var Data = new FormData();
-    //   Data.append('id', item);
-    //   axios({
-    //     url: 'http://82.157.97.70/api/questionnaire/edit_qusetionnaire',
-    //     method: 'post',
-    //     data: Data,
-    //     headers: {
-    //       Authorization: window.localStorage.getItem("authorization"),
-    //       "Content-Type": "application/json",
-    //     },
-    //   }).then((res) => {
-    //     console.log(res);
-    //     this.getItem();
-    //   })
-    // },
-    // modifyItem_third(item) {
-    //   var Data = new FormData();
-    //   Data.append('id', item);
-    //   axios({
-    //     url: 'http://82.157.97.70/api/questionnaire/throw_and_get_new_questionnaire',
-    //     method: 'post',
-    //     data: Data,
-    //     headers: {
-    //       Authorization: window.localStorage.getItem("authorization"),
-    //       "Content-Type": "application/json",
-    //     },
-    //   }).then((res) => {
-    //     console.log(res);
-    //     this.getItem();
-    //   })
-    // },
-    // modifyItem_second(item) {
-    //   var Data = new FormData();
-    //   Data.append('id', item);
-    //   axios({
-    //     url: 'http://82.157.97.70/api/questionnaire/delete_and_get_questionnaire_by_id',
-    //     method: 'post',
-    //     data: Data,
-    //     headers: {
-    //       Authorization: window.localStorage.getItem("authorization"),
-    //       "Content-Type": "application/json",
-    //     },
-    //   }).then((res) => {
-    //     console.log(res);
-    //     this.getItem();
-    //   })
-    // },
+    modifyItem_first(item) {
+      var Data = new FormData();
+      Data.append('id', item);
+      axios({
+        url: 'http://82.157.97.70/api/questionnaire/edit_qusetionnaire',
+        method: 'post',
+        data: Data,
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
+        },
+      }).then((res) => {
+        console.log(res);
+        // this.getItem();
+        for(var i=0;i<this.desserts.path;i++){
+          if(this.desserts[i].id===item){
+            this.$router.push({path:"/edit1/0",query:{id:this.item}})
+          }
+        }
+      })
+    },
+    modifyItem_third(item) {
+      var Data = new FormData();
+      Data.append('id', item);
+      axios({
+        url: 'http://82.157.97.70/api/questionnaire/throw_and_get_new_questionnaire',
+        method: 'post',
+        data: Data,
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
+        },
+      }).then((res) => {
+        console.log(res);
+        for(var i=0;i<this.desserts.path;i++){
+          if(this.desserts[i].id===item){
+            this.$router.push({path:"/edit1/0",query:{id:this.item}})
+          }
+        }
+      })
+    },
+    modifyItem_second(item) {
+      var Data = new FormData();
+      Data.append('id', item);
+      axios({
+        url: 'http://82.157.97.70/api/questionnaire/delete_and_get_questionnaire_by_id',
+        method: 'post',
+        data: Data,
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
+        },
+      }).then((res) => {
+        console.log(res);
+        this.getItem();
+      })
+    },
     startItem(item) {
       var Data = new FormData();
       Data.append("questionnaireId", item)
@@ -361,8 +373,19 @@ export default {
           if (data2 != null) {
             data2 = data2.replace("T", " ");
           }
+          var questionnaire_type = ""
+          if(res.data.data[i].type===0){
+            questionnaire_type = "普通问卷"
+          }
+          else if(res.data.data[i].type===1){
+            questionnaire_type = "投票问卷"
+          }
+          else if(res.data.data[i].type===2){
+            questionnaire_type = "报名问卷"
+          }
           var data = {
             name: res.data.data[i].title,
+            type:questionnaire_type,
             state: state,
             id: res.data.data[i].id,
             num: res.data.data[i].answerNum,
