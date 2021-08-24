@@ -183,23 +183,30 @@ export default {
         }
       }).then((res) => {
         // alert(res)
+                  console.log(res.data.code)
+          console.log(this.register)
         if (res.data.code === 200 && this.register) {
           this.$alert(res.data.message, '注册成功', {
           dangerouslyUseHTMLString: true
         });
           this.register = false;
         }
-        else{
+        else if(this.register){
           this.$alert('继续注册', '注册失败', {
             dangerouslyUseHTMLString: true
           });
         }
-        if(!(res.data.code === 200 && !this.register)){
+        else if(!(res.data.code === 200 && !this.register)){
           this.$alert('继续登录', '登录失败', {
             dangerouslyUseHTMLString: true
           });
         }
         else {
+          this.$alert('', '登录成功', {
+            dangerouslyUseHTMLString: true
+          });
+          // alert(1111)
+
           this.responseResult = JSON.stringify(res.data)
           // if (res.data.code === 200) {
           //   localStorage.setItem
@@ -211,9 +218,7 @@ export default {
           localStorage.setItem('authorization', authorization);
           localStorage.setItem('user_id', res.data.data.user_id)
           //登录成功跳转页面
-          this.$alert('', '登录成功', {
-            dangerouslyUseHTMLString: true
-          });
+          
           this.$router.push('/')
         }
       })
