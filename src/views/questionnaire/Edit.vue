@@ -194,6 +194,9 @@ export default {
           this.input += res.data.data;
           this.lianjie = 'http://82.157.97.70/api/qrcode/getQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
           this.ma = res.data.data
+          if(res.data.code===200||res.data.code===201){
+            this.$message({message:'投放成功',type:'success'})
+          }
         });
       });
     },
@@ -219,6 +222,9 @@ export default {
         data: JSON.stringify(formData),
       }).then((res) => {
         console.log(res);
+        if(res.data.code===200||res.data.code===201){
+          this.$message({message:'保存成功',type:'success'})
+        }
         // this.current_questionnaire.id = res.data.data;
         // if (res.data.code === 200 || res.data.code === 201) {
         //   this.is_saved = true
@@ -256,6 +262,9 @@ export default {
       }).then((res) => {
         console.log(res);
         this.change_option();
+        if(res.data.code===200||res.data.code===201){
+          this.$message({message:'问卷已停止回收',type:'success'})
+        }
       });
     },
     change_start_state() {
@@ -272,6 +281,9 @@ export default {
       }).then((res) => {
         console.log(res);
         this.change_option();
+        if(res.data.code===200||res.data.code===201){
+          this.$message({message:'问卷已开始回收',type:'success'})
+        }
       })
     },
     change_option() {
