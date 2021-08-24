@@ -120,8 +120,11 @@
           max-width="500px"
         >
           <v-card>
-            <v-card-text>
-              <v-text-field label="请输入新的电话号码" v-model="phone"></v-text-field>
+            <v-card-text style="padding-top:30px">
+              <v-text-field
+                label="请输入新的电话号码"
+                v-model="phone"
+              ></v-text-field>
 
               <!-- <small class="grey--text">：</small> -->
             </v-card-text>
@@ -143,7 +146,7 @@
           v-model="emailDialog"
           max-width="500px"
         >
-          <v-card>
+          <v-card style="padding-top:30px">
             <v-card-text>
               <v-text-field
                 label="请输入新的邮箱"
@@ -183,28 +186,28 @@ export default
       emailData: '',
       flag: true
     }),
-    mounted(){
+    mounted() {
       this.getData();
     },
     methods:
     {
-      getData(){
+      getData() {
         console.log('ffwf')
         axios({
-          url:'http://82.157.97.70/api/get_info',
-          method:'post',
+          url: 'http://82.157.97.70/api/get_info',
+          method: 'post',
           headers: {
-          'Authorization': window.localStorage.getItem("authorization"),
-          // "Content-Type": "application/json",
+            'Authorization': window.localStorage.getItem("authorization"),
+            // "Content-Type": "application/json",
           },
-        }).then((res)=>{
+        }).then((res) => {
           console.log(res)
           console.log('daf2t1')
-          if(res.data.data.phone!==null){
-            this.phoneNumber=res.data.data.phone
+          if (res.data.data.phone !== null) {
+            this.phoneNumber = res.data.data.phone
           }
-          if(res.data.data.email!==null){
-            this.email=res.data.data.email
+          if (res.data.data.email !== null) {
+            this.email = res.data.data.email
           }
           console.log(this.email)
 
@@ -243,14 +246,14 @@ export default
           method: 'post',
           data: Data,
           headers: {
-          Authorization: window.localStorage.getItem("authorization"),
-          "Content-Type": "application/json",
+            Authorization: window.localStorage.getItem("authorization"),
+            "Content-Type": "application/json",
           },
         }).then((res) => {
           console.log(res)
           this.getData();
-            // this.phoneNumber = this.phone,
-            this.phone = '',
+          // this.phoneNumber = this.phone,
+          this.phone = '',
             this.phoneDialog = false
         })
       },
@@ -263,12 +266,12 @@ export default
           method: 'post',
           data: Data,
           headers: {
-          Authorization: window.localStorage.getItem("authorization"),
-          "Content-Type": "application/json",
+            Authorization: window.localStorage.getItem("authorization"),
+            "Content-Type": "application/json",
           },
         }).then((res) => {
           this.getData();
-            this.emailData = '',
+          this.emailData = '',
             this.emailDialog = false
         })
       }
