@@ -151,12 +151,29 @@ export default {
         },
       }).then((res) => {
         console.log(res);
-        // this.getItem();
-        for(var i=0;i<this.desserts.path;i++){
+        var type = ""
+        for(var i=0;i<this.desserts.length;i++){
           if(this.desserts[i].id===item){
-            this.$router.push({path:"/edit1/0",query:{id:this.item}})
+            type = this.desserts[i].type
           }
         }
+        var index = 0;
+        if(type==="普通问卷"){
+          index = 0;
+        }
+        else if(type==="投票问卷")
+        {
+          index = 1;
+        }
+        else if(type==="报名问卷"){
+          index = 2;
+        }
+        this.$router.push({
+          path:'/edit1/'+index,
+          query:{
+            id:res.data.id,
+            types:index,}
+        })
       })
     },
     modifyItem_third(item) {
@@ -172,7 +189,29 @@ export default {
         },
       }).then((res) => {
         console.log(res);
-        this.$router.push({path:"/edit1/0",query:{id:this.item}})
+        var type = ""
+        for(var i=0;i<this.desserts.length;i++){
+          if(this.desserts[i].id===item){
+              type = this.desserts[i].type
+          }
+        }
+        var index = 0;
+        if(type==="普通问卷"){
+          index = 0;
+        }
+        else if(type==="投票问卷")
+        {
+          index = 1;
+        }
+        else if(type==="报名问卷"){
+          index = 2;
+        }
+        this.$router.push({
+          path:'/edit1/'+index,
+          query:{
+            id:res.data.id,
+            types:index,}
+        })
       })
     },
     modifyItem_second(item) {
@@ -188,7 +227,29 @@ export default {
         },
       }).then((res) => {
         console.log(res);
-        this.getItem();
+        var type = ""
+        for(var i=0;i<this.desserts.length;i++){
+          if(this.desserts[i].id===item){
+            type = this.desserts[i].type
+          }
+        }
+        var index = 0;
+        if(type==="普通问卷"){
+          index = 0;
+        }
+        else if(type==="投票问卷")
+        {
+          index = 1;
+        }
+        else if(type==="报名问卷"){
+          index = 2;
+        }
+        this.$router.push({
+          path:'/edit1/'+index,
+          query:{
+            id:res.data.id,
+            types:index,}
+        })
       })
     },
     startItem(item) {
