@@ -41,7 +41,7 @@
         <!--   第二种方式-->
 <!--        <v-icon small @click="modifyItem_second(item.id)" title="修改第二种办法" > mdi-pencil-outline</v-icon>-->
         <!--   第三种方式-->
-        <v-icon small @click="modifyItem_third(item.id)" title="修改第三种办法" > mdi-pencil-outline</v-icon>
+<!--        <v-icon small @click="modifyItem_third(item.id)" title="修改第三种办法" > mdi-pencil-outline</v-icon>-->
         <v-icon small @click="lookUpLink(item.id)" title="查看链接" style="margin-left: 1%"> mdi-magnify</v-icon>
         <v-icon small @click="checkAnalysis(item.id)" title="统计结果" style="margin-left: 1%"> mdi-poll</v-icon>
       </template>
@@ -151,12 +151,29 @@ export default {
         },
       }).then((res) => {
         console.log(res);
-        // this.getItem();
-        for(var i=0;i<this.desserts.path;i++){
+        var type = ""
+        for(var i=0;i<this.desserts.length;i++){
           if(this.desserts[i].id===item){
-            this.$router.push({path:"/edit1/0",query:{id:this.item}})
+            type = this.desserts[i].type
           }
         }
+        var index = 0;
+        if(type==="普通问卷"){
+          index = 0;
+        }
+        else if(type==="投票问卷")
+        {
+          index = 1;
+        }
+        else if(type==="报名问卷"){
+          index = 2;
+        }
+        this.$router.push({
+          path:'/edit1/'+index,
+          query:{
+            id:res.data.id,
+            types:index,}
+        })
       })
     },
     modifyItem_third(item) {
@@ -172,7 +189,29 @@ export default {
         },
       }).then((res) => {
         console.log(res);
-        this.$router.push({path:"/edit1/0",query:{id:this.item}})
+        var type = ""
+        for(var i=0;i<this.desserts.length;i++){
+          if(this.desserts[i].id===item){
+              type = this.desserts[i].type
+          }
+        }
+        var index = 0;
+        if(type==="普通问卷"){
+          index = 0;
+        }
+        else if(type==="投票问卷")
+        {
+          index = 1;
+        }
+        else if(type==="报名问卷"){
+          index = 2;
+        }
+        this.$router.push({
+          path:'/edit1/'+index,
+          query:{
+            id:res.data.id,
+            types:index,}
+        })
       })
     },
     modifyItem_second(item) {
@@ -188,7 +227,29 @@ export default {
         },
       }).then((res) => {
         console.log(res);
-        this.getItem();
+        var type = ""
+        for(var i=0;i<this.desserts.length;i++){
+          if(this.desserts[i].id===item){
+            type = this.desserts[i].type
+          }
+        }
+        var index = 0;
+        if(type==="普通问卷"){
+          index = 0;
+        }
+        else if(type==="投票问卷")
+        {
+          index = 1;
+        }
+        else if(type==="报名问卷"){
+          index = 2;
+        }
+        this.$router.push({
+          path:'/edit1/'+index,
+          query:{
+            id:res.data.id,
+            types:index,}
+        })
       })
     },
     startItem(item) {
@@ -275,6 +336,10 @@ export default {
       }).then((res) => {
         console.log(res);
         this.getItem();
+        // this.$message({message:'问卷已移至回收站',type:'success'})
+        if(res.data.code === 200 || res.data.code === 201 ){
+          this.$message({message:'问卷已移至回收站',type:'success'})
+        }
       });
     },
     copyItem(item) {
@@ -293,6 +358,9 @@ export default {
         // console.log(res);
         //  这里的思路应该是发送一个有关这个item的数据，数据库再加上一条,还要生成新的内容
         this.getItem();
+        if(res.data.code === 200 || res.data.code === 201 ){
+          this.$message({message:'复制成功',type:'success'})
+        }
       });
       //   复制问卷
     },

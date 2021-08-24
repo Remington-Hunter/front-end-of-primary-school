@@ -29,18 +29,18 @@
 
         <!-- <v-card-title>Tonight's availability</v-card-title> -->
         <v-card-actions>
-          <v-btn
+          <!-- <v-btn
             color="deep-purple lighten-2"
             text
             @click="reserve(true)"
           >
             我的账户
-          </v-btn>
+          </v-btn> -->
           <v-btn
             color="deep-purple lighten-2"
             text
             @click="goBack"
-            style="left:45%"
+            style="left:35%"
           >
             返回
           </v-btn>
@@ -88,8 +88,8 @@
           <br>
           <br>
           <div>
-            <v-card-title>我的资源</v-card-title>
-            <v-card
+            <!-- <v-card-title>我的资源</v-card-title> -->
+            <!-- <v-card
               :loading="loading"
               class="mx-auto my-12"
               max-width="250"
@@ -111,7 +111,7 @@
                 短信条数不受限制
               </div>
               <br>
-            </v-card>
+            </v-card> -->
           </div>
 
         </v-card-text>

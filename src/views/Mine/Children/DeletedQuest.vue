@@ -92,24 +92,39 @@ export default {
   },
   methods: {
     deleteItem(item) {
-      const index = item;
-      console.log(index);
-      // confirm("Are you sure you want to delete this item?")
-      var Data = new FormData();
-      Data.append("id", index);
-      console.log(111);
-      axios({
-        url: "http://82.157.97.70/api/questionnaire/delete_questionnaire",
-        method: "post",
-        data: Data,
-        headers: {
-          Authorization: window.localStorage.getItem("authorization"),
-          "Content-Type": "application/json",
-        },
-      }).then((res) => {
-        console.log(res);
-        this.getItem();
-      });
+      this.$confirm("此操作将彻底删除该问卷, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+          .then(() => {
+            this.$message({
+              type: "success",
+              message: "删除成功!",
+            });
+            const index = item;
+            // this.desserts.splice(index, 1)
+            var Data = new FormData();
+            Data.append("id", index);
+            axios({
+              url: "http://82.157.97.70/api/questionnaire/delete_questionnaire",
+              method: "post",
+              data: Data,
+              headers: {
+                Authorization: window.localStorage.getItem("authorization"),
+                "Content-Type": "application/json",
+              },
+            }).then((res) => {
+              console.log(res);
+              this.getItem();
+            });
+          })
+          .catch(() => {
+            this.$message({
+              type: "info",
+              message: "已取消删除",
+            });
+          });
     },
     getItem() {
       console.log(13123);
@@ -236,7 +251,7 @@ export default {
         .catch(() => {
           this.$message({
             type: "info",
-            message: "已取消删除",
+            message: "已取消恢复",
           });
         });
       // const index = this.desserts.indexOf(item)

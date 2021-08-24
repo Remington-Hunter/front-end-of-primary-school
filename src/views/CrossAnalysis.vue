@@ -101,7 +101,7 @@
               </div>
               <div
                 style="width: 600px; height: 400px"
-                v-if="type === 1"
+                v-if="states[index]  === 1"
               >
                 <drawBar
                   :id="BarToString(index)"
@@ -110,7 +110,7 @@
               </div>
               <div
                 style="width: 600px; height: 400px"
-                v-if="type === 2"
+                v-if="states[index]  === 2"
               >
                 <drawLine
                   :id="LineToString(index)"
@@ -119,7 +119,7 @@
               </div>
               <div
                 style="width: 600px; height: 400px"
-                v-if="type === 3"
+                v-if="states[index] === 3"
               >
                 <drawPie
                   :id="PieToString(index)"
@@ -128,26 +128,27 @@
               </div>
               <div
                 style="width: 600px; height: 400px"
-                v-if="type === 4"
+                
+                v-if="states[index] === 4"
               >
                 <drawCol
                   :id="ColToString(index)"
                   :series="col[index]"
                 ></drawCol>
               </div>
-              <el-button @click="goto(0)">
+              <el-button @click="setStates(index,0)">
                 <span>表格</span>
               </el-button>
-              <el-button @click="goto(1)">
+              <el-button @click="setStates(index,1)">
                 <span>条形图</span>
               </el-button>
-              <el-button @click="goto(2)">
+              <el-button @click="setStates(index,2)">
                 <span>折线图</span>
               </el-button>
-              <el-button @click="goto(3)">
+              <el-button @click="setStates(index,3)">
                 <span>饼图</span>
               </el-button>
-              <el-button @click="goto(4)">
+              <el-button @click="setStates(index,4)">
                 <span>柱状图</span>
               </el-button>
 
@@ -208,7 +209,9 @@ export default {
       line: [],
       completion: [],
       historyList: [],
-      type: 0
+      type: 0,
+      states:[],
+      s:{}
     };
   },
   components: {
@@ -228,7 +231,27 @@ export default {
     this.id = this.$route.params.id;
     this.getseries();
   },
+  
   methods: {
+    initStates(){
+
+      for(var i=0;i<this.data.length;i++){
+        // this.states.i=0;
+        this.states[i]=0;
+        // this.states.i=0;
+      }
+      this.s.states=this.states;
+    },
+    getStates(index){
+      // console.log(this.states[index])
+      return this.states[index];
+    },
+    setStates(index,num){
+      this.$set(this.states, index, num);
+      // console.log(num)
+      // this.s.states[index]=num;
+      
+    },
     getCompletionData(data) {
       for (var i = 0; i < data.length; i++) {
         // console.log(111)
@@ -325,6 +348,7 @@ export default {
         this.getPieData(data);
         this.getLineData(data);
         this.getCompletionData(data);
+        this.initStates();
       });
     },
     exportData() {
