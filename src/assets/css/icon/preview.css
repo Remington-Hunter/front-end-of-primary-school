@@ -73,10 +73,14 @@
   width: 600px;
 }
 .el-checkbox__label {
-  white-space: pre-line;
+  word-break: normal;
+  white-space:pre-line;
   word-wrap: break-word;
   overflow: hidden;
+  line-height: 18px;
+  vertical-align: middle;
 }
+
 .el-checkbox.is-disabled.is-checked .el-checkbox__inner {
   color: #FFFFFF;
   background-color: #1890ff;
@@ -88,6 +92,17 @@
   background-color: #1890ff;
   border-color: #1890ff;
 }
+
+.el-radio__label {
+  text-overflow: ellipsis;
+  white-space: normal;
+  line-height: 18px;
+  vertical-align: middle;
+  display: inline-block;
+
+}
+
+
 
 
  
