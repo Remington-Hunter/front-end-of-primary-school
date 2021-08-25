@@ -53,15 +53,27 @@
           >
             mdi-pause-circle
           </v-icon>
+          <v-icon small  @click="dialog=true;get_id(item.id)" title="修改样" > mdi-pencil-outline</v-icon>
+            <el-dialog
+                :visible.sync="dialog"
+                width="50%"
+                height="100%"
+            >
+              <!--          <span>修改后可能会造成数据丢失，现提供以下三种方式</span>-->
+              <v-btn @click="dialog = false">修改一</v-btn>
+              <v-btn  @click="dialog = false">修改二</v-btn>
+              <v-btn @click="modifyItem_third(questionnaire_id)">修改三</v-btn>
+            </el-dialog>
+<!--          第一种方式-->
           <!--        <v-icon small @click="modifyItem_first(item.id)" title="修改第一种办法" > mdi-pencil-outline</v-icon>-->
           <!--   第二种方式-->
           <!--        <v-icon small @click="modifyItem_second(item.id)" title="修改第二种办法" > mdi-pencil-outline</v-icon>-->
           <!--   第三种方式-->
-          <v-icon
-            small
-            @click="modifyItem_third(item.id)"
-            title="修改"
-          > mdi-pencil-outline</v-icon>
+<!--          <v-icon-->
+<!--            small-->
+<!--            @click="modifyItem_third(item.id)"-->
+<!--            title="修改"-->
+<!--          > mdi-pencil-outline</v-icon>-->
           <v-icon
             small
             @click="lookUpLink(item.id)"
@@ -80,14 +92,12 @@
             title="预览"
             style="margin-left: 1%"
           > mdi-eye-outline</v-icon>
-
         </template>
       </v-data-table>
     </v-card>
     <el-dialog
       :visible.sync="dialogVisible"
-      width="60%"
-    >
+      width="60%">
       <d-preview
         :headerTitle="this.title"
         :subtitle="this.description"
@@ -103,6 +113,7 @@
         >确 定</el-button>
       </span>
     </el-dialog>
+
   </div>
 </template>
 
@@ -117,12 +128,14 @@ export default {
   data() {
     return {
       preview_list: [],
+      questionnaire_id:'',
       title: "题目",
       description: "",
-      dialogVisible: false,
       sortBy: "date",
       sortDesc: true,
       search: "",
+      dialogVisible:false,
+      dialog:false,
       headers: [
         {
           text: "问卷名称",
@@ -156,6 +169,10 @@ export default {
     checkAnalysis(id) {
       this.$router.push({ name: "crossanalysis", params: { id: id } });
     },
+    get_id(id){
+      this.dialog = true;
+      this.questionnaire_id = id;
+    },
     now_date(date) {
       Date.prototype.Format = function (fmt) {
         // author: meizz
@@ -186,7 +203,15 @@ export default {
       var time = new Date().Format("yyyy-MM-dd hh:mm:ss");
       return time;
     },
+    modify(){
+      this.$confirm("此操作将会重新复制一个副本进行修改?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+    },
     modifyItem_first(item) {
+      this.dialog = false;
       var Data = new FormData();
       Data.append("id", item);
       axios({
@@ -223,6 +248,7 @@ export default {
       });
     },
     modifyItem_third(item) {
+      this.dialog = false;
       var Data = new FormData();
       Data.append("id", item);
       axios({
@@ -260,6 +286,7 @@ export default {
       });
     },
     modifyItem_second(item) {
+      this.dialog = false;
       var Data = new FormData();
       Data.append("id", item);
       axios({
@@ -343,7 +370,7 @@ export default {
       var Data = new FormData();
       Data.append("id", item);
       axios({
-        url: "https://www.azur1tee.top/api//questionnaire/get_questionnaire_by_id",
+        url: "https://www.azur1tee.top/api/questionnaire/get_questionnaire_by_id",
         method: "post",
         data: Data,
         headers: {
