@@ -1,11 +1,12 @@
 <template>
-  <div>
+  <div id="c-top">
     <div v-show="can_write_state">
       <div v-show="state && this.type === 1">
         <VoteAnswer
-        :headerTitle="headerTitle"
-        :subtitle="subtitle"
-        :questionList="questionList_vote"/>
+          :headerTitle="headerTitle"
+          :subtitle="subtitle"
+          :questionList="questionList_vote"
+        />
       </div>
       <!-- <PublishQuestion
       :headerTitle="headerTitle"
@@ -15,8 +16,11 @@
       @endAnswer="end=true"
       v-show="can_write_state"
     /> -->
-    <!-- <div  type="primary" style="text-align: center;display: block" @click="send_Info()"><el-button big>提交</el-button></div> -->
-      <div id="prev" v-show="!(state && this.type === 1)">
+      <!-- <div  type="primary" style="text-align: center;display: block" @click="send_Info()"><el-button big>提交</el-button></div> -->
+      <div
+        id="pre"
+        v-show="!(state && this.type === 1)"
+      >
         <div class="s-main ">
           <!-- 问卷标题 -->
           <div class="header-title">{{ headerTitle }}</div>
@@ -31,16 +35,13 @@
             <!-- 题目标题 -->
             <div class="question-head ">
               <div class="question-title">
-                <span class="question-seq"
-                  ><b>{{ index + 1 }}</b></span
-                >
+                <span class="question-seq"><b>{{ index + 1 }}</b></span>
                 <span class="text">{{ question.text }}</span>
-                <span v-if="question.required" class="question-required"
-                  >*</span
-                >
-                <el-tag v-if="[1, 4, 7, 11].includes(question.type)"
-                  >多选</el-tag
-                >
+                <span
+                  v-if="question.required"
+                  class="question-required"
+                >*</span>
+                <el-tag v-if="[1, 4, 7, 11].includes(question.type)">多选</el-tag>
               </div>
               <div class="q-instruction">{{ question.comment }}</div>
             </div>
@@ -58,8 +59,7 @@
                     <span
                       class="sel-total"
                       v-show="item.total >= 0 && question.type === 6"
-                      >(剩余{{ item.total }})</span
-                    >
+                    >(剩余{{ item.total }})</span>
                     <div class="q-instruction">{{ item.comment }}</div>
                   </el-radio>
                 </el-radio-group>
@@ -71,12 +71,11 @@
                     v-for="(item, index) in question.selectionList"
                     :key="index"
                     :label="index"
-                    >{{ item.content }}
+                  >{{ item.content }}
                     <span
                       class="sel-total"
                       v-show="item.total >= 0 && question.type === 7"
-                      >(剩余{{ item.total }})</span
-                    >
+                    >(剩余{{ item.total }})</span>
                     <span class="q-instruction">{{ item.comment }}</span>
                   </el-checkbox>
                 </el-checkbox-group>
@@ -113,8 +112,7 @@
               type="text"
               @click="dialogVisible = true"
               :disabled="state"
-              >提交</el-button
-            >
+            >提交</el-button>
           </div>
 
           <el-dialog
@@ -124,22 +122,26 @@
             :before-close="handleClose"
           >
             <span>提交后不能够更改,确定提交?</span>
-            <span slot="footer" class="dialog-footer">
+            <span
+              slot="footer"
+              class="dialog-footer"
+            >
               <el-button
                 type="primary"
                 @click="
                   dialogVisible = false;
                   submit();
                 "
-                >确 定</el-button
-              >
+              >确 定</el-button>
               <el-button @click="dialogVisible = false">取 消</el-button>
             </span>
           </el-dialog>
         </div>
       </div>
     </div>
-    <div v-show="!can_write_state"><Stop/></div>
+    <div v-show="!can_write_state">
+      <Stop />
+    </div>
   </div>
 </template>
 
@@ -171,7 +173,7 @@ export default {
       can_write_state: true,
       end: false,
       type: -1,
-      questionList_vote:[]
+      questionList_vote: []
     };
   },
   methods: {
@@ -209,9 +211,9 @@ export default {
         } else {
           if (
             dateFormat(new Date()) >=
-              this.current_questionnaire.questionnaire.startTime &&
+            this.current_questionnaire.questionnaire.startTime &&
             dateFormat(new Date()) <=
-              this.current_questionnaire.questionnaire.endTime
+            this.current_questionnaire.questionnaire.endTime
           ) {
             this.can_write_state = true;
           } else {
@@ -231,18 +233,18 @@ export default {
         x.type = y.question.type;
         x.text = y.question.content;
         x.selectionList = [];
-        var total_answerNum=0
+        var total_answerNum = 0
         for (var j = 0; j < y.optionList.length; j++) {
-          total_answerNum+=y.optionList[j].answerNum
+          total_answerNum += y.optionList[j].answerNum
         }
         for (var j = 0; j < y.optionList.length; j++) {
           let z = {};
           z.comment = y.optionList[j].comment;
-          z.total = y.optionList[j].answerNum+""
+          z.total = y.optionList[j].answerNum + ""
           z.content = y.optionList[j].content;
-          z.percentage = (y.optionList[j].answerNum / total_answerNum)*100
-          var num=z.percentage
-          z.percentage=num.toFixed(2)
+          z.percentage = (y.optionList[j].answerNum / total_answerNum) * 100
+          var num = z.percentage
+          z.percentage = num.toFixed(2)
           x.selectionList.push(z);
         }
         x.required = y.question.required;
@@ -311,8 +313,8 @@ export default {
         data: formData,
       }).then((res) => {
         console.log(res);
-        if(res.data.code === 400){
-          this.can_write_state=false
+        if (res.data.code === 400) {
+          this.can_write_state = false
         }
         console.log(res.data.data);
         this.type = res.data.data.questionnaire.type;
@@ -326,9 +328,9 @@ export default {
         } else {
           if (
             dateFormat(new Date()) >=
-              this.current_questionnaire.questionnaire.startTime &&
+            this.current_questionnaire.questionnaire.startTime &&
             dateFormat(new Date()) <=
-              this.current_questionnaire.questionnaire.endTime
+            this.current_questionnaire.questionnaire.endTime
           ) {
             this.can_write_state = true;
           } else {
@@ -344,7 +346,7 @@ export default {
         .then((_) => {
           done();
         })
-        .catch((_) => {});
+        .catch((_) => { });
     },
     submit() {
       var x = {};
@@ -424,9 +426,9 @@ export default {
         console.log(res.data.message);
         alert(res.data.message);
         console.log(res);
-        if(res.data.code === 200 || res.data.code === 201){
+        if (res.data.code === 200 || res.data.code === 201) {
           this.state = true;
-          if(this.type === 1){
+          if (this.type === 1) {
             this.getInfo1()
           }
         }
@@ -437,7 +439,7 @@ export default {
     this.getInfo();
     var interval = setInterval(() => {
       this.getInfo2();
-      if(this.type === 1){
+      if (this.type === 1) {
         clearInterval(interval);
       }
       if (this.end) {
@@ -449,48 +451,16 @@ export default {
 };
 </script>
 
-<style>
-.el-button {
-  display: inline-block;
-  line-height: 1;
-  white-space: nowrap;
-  cursor: pointer;
-  background: #0095ff;
-  border: 1px solid #dcdfe6;
-  color: #fff;
-  -webkit-appearance: none;
-  text-align: center;
-  box-sizing: border-box;
-  outline: 0;
-  margin: 0;
-  transition: 0.1s;
-  font-weight: 500;
-  padding: 12px 20px;
-  font-size: 14px;
-  border-radius: 4px;
+<style scoped>
+@import "../assets/css/icon/preview.css";
+#pre {
+  width: 1000px;
+  min-height: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
 }
-
-#top {
-  padding: 20px 120px;
-}
-#top:hover {
-  background-color: rgb(245, 245, 245);
-}
-.sub {
-  color: lightgrey;
-  padding-top: 10px;
-}
-.q-head {
-  display: block;
-}
-.header-title {
-  font-size: 22px;
-}
-.header-subtitle {
-  margin-top: 20px;
-}
-.el-row {
-  margin-bottom: 20px;
-  padding-left: 50px;
+#c-top {
+  margin-top: 30px;
 }
 </style>

@@ -95,7 +95,7 @@ a {
   background: rgb(255, 255, 255);
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
   top: 0;
 }
@@ -106,7 +106,7 @@ a {
   color: #333333;
 }
 .header_nav > ul {
-  margin: 0 2cm;
+  margin: 0;
   list-style: none;
   display: flex;
   align-items: center;
