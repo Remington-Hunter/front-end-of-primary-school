@@ -275,63 +275,18 @@
           </div>
         </div>
       </div>
-      <div>
+      <div v-show="false">
         <div >
         <div
-          v-for="(item, index) in data"
+          v-for="(item, index) in answerData"
           :key="(index)"
         >
           <el-divider></el-divider>
-          <div class="question-head ">
-            <div class="question-title">
-              <span class="question-seq"><b>第{{ index + 1 }}题：</b></span>
-              <span class="text">{{data[index].question.content}}</span>
-              <span
-                v-if="data[index].question.type==0"
-                class="question-type"
-              >单选题</span>
-              <span
-                v-if="data[index].question.type==1"
-                class="question-type"
-              >多选题</span>
-              <span
-                v-if="data[index].question.type==2"
-                class="question-type"
-              >填空题</span>
-              <span
-                v-if="data[index].question.type==3"
-                class="question-type"
-              >评分题</span>
-            </div>
-          </div>
-          <div v-if="data[index].question.type === 2">
-            <el-table
-              :data="excel[index]"
-              style="width: 100%"
-              class="table"
-            >
-              <el-table-column label="">
-                <template slot-scope="scope">
-                  <!-- <i class="el-icon-time"></i> -->
-                  <span style="margin-left: 10px">{{ scope.row.id }}</span>
-                </template>
-              </el-table-column>
-              <el-table-column label="">
-                <template slot-scope="scope1">
-                  <!-- <i class="el-icon-time"></i> -->
-                  <span style="margin-left: 10px">{{
-                    scope1.row.content
-                  }}</span>
-                </template>
-              </el-table-column>
-            </el-table>
-          </div>
-          <div v-else>
-            <div v-if="excel[index].length !== 0">
+          <div >
               <!-- <Completion :data1="completion[index]"></Completion> -->
               <div>
                 <el-table
-                  :data="excel[index]"
+                  :data="answer[index]"
                   style="width: 100%"
                   class="table"
                   border
@@ -353,28 +308,26 @@
                 </el-table>
               </div>
             </div>
-            <div v-else>
+            <!-- <div v-else>
               <el-table
                 :data="excel[index]"
                 style="width: 100%"
               >
                 <el-table-column label="">
                   <template slot-scope="scope">
-                    <!-- <i class="el-icon-time"></i> -->
                     <span style="margin-left: 10px">{{ scope.row.id }}</span>
                   </template>
                 </el-table-column>
                 <el-table-column label="">
                   <template slot-scope="scope1">
-                    <!-- <i class="el-icon-time"></i> -->
+
                     <span style="margin-left: 10px">{{
                     scope1.row.content
                   }}</span>
                   </template>
                 </el-table-column>
               </el-table>
-            </div>
-          </div>
+            </div> -->
         </div>
       </div>
       </div>
@@ -430,6 +383,7 @@ export default {
   mounted() {
     this.id = this.$route.params.id;
     this.getseries();
+    this.getAnswerData();
   },
   
   methods: {
@@ -530,7 +484,6 @@ export default {
       return wbout;
     },
     initStates(){
-
       for(var i=0;i<this.data.length;i++){
         this.states[i]=0;
       }
@@ -643,27 +596,87 @@ export default {
       var Data=new FormData();
       Data.append("id",this.id);
       axios({
-        url:'https://www.azur1tee.top/api/',
+        url:'https://www.azur1tee.top/api/answer/get_result_by_questionnaire',
         method:'post',
         data:Data,
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+        },
       }).then((res)=>{
         var data=res.data.data;
-        this.answerData=data;
-        this.getAnswerData(data);
+        this.answerData=data.answerInfo;
+        // console.log(data)
+        // console.log(res);
+        // this.getAnswerData(data);
+        this.getAnswerExcel(data);
       })
     },
-    getAnswerExce(data){
-      for (var i=0;i<data.length;i++){
-        var number=data[i];
+    getAnswerExcel(data){
+      console.log(1111);
+      console.log(data);
+      var answerInfo=data.answerInfo;
+      var questionInfo=data.questionInfo;
+      console.log(answerInfo);
+      console.log(questionInfo)
+      var item1=[];
+      var c={content:'',num:''}
+      item1.push(c);
+      c={content:'',num:''}
+      item1.push(c);
+      c={content:'',num:''}
+      item1.push(c);
+      c={content:'',num:''}
+      item1.push(c);
+      console.log(answerInfo.length)
+      for (var i=0;i<answerInfo.length;i++){
         var item=[];
-        var c={content:'第'+(i+1)+'份问卷',num:''};
+        var number1=answerInfo[i].answerList;
+        c={content:'第'+(i+1)+'份问卷',num:''};
         item.push(c);
-        for(var j=0;j<number.length;j++){
-          if(number[j].type===0){
-            c={content:''+(j+1)+'.单选题',num:number[i].content};
-            item.psuh(c);
+        // console.log(number1.length)
+        console.log(i);
+        for(var j=0;j<number1.length;j++){
+          
+          if(questionInfo[j].info.type===0){
+            c={content:''+(j+1)+'.单选题',num:'题目内容:'+questionInfo[j].info.content};
+            item.push(c);
+            var t=number1[j].number-'0';
+            c={content:'所选内容',num:''+questionInfo[j].optionList[t].content}
+            item.push(c)
+          }
+          else if(questionInfo[j].info.type===1){
+            c={content:''+(j+1)+'.多选题',num:'题目内容:'+questionInfo[j].info.content};
+            item.push(c);
+            var ss='';
+            // console.log(number1[j].number.length)
+            for(var t=0;t<number1[j].number.length;t++){
+              if(ss.length==0){
+                ss=questionInfo[j].optionList[number1[j].number[t]-'0'].content
+              }
+              else{
+                ss+='、'+questionInfo[j].optionList[number1[j].number[t]-'0'].content;
+              }
+            }
+            // console.log(ss);
+            c={content:'所选内容',num:ss}
+            item.push(c)
+          }
+          else if(questionInfo[j].info.type===2){
+            c={content:''+(j+1)+'.填空题',num:'题目内容:'+questionInfo[j].info.content};
+            item.push(c);
+            c={content:'作答内容',num:number1[j].content}
+            item.push(c)
+          }
+          else{
+            c={content:''+(j+1)+'.评分题',num:'题目内容:'+questionInfo[j].info.content};
+            item.push(c);
+            var t=number1[j].number-'0'+1;
+            c={content:'所选内容',num:''+t+'星'}
+            item.push(c)
           }
         }
+      this.answer.push(item) 
+      console.log(item)
       }
     },
     exportData() {
