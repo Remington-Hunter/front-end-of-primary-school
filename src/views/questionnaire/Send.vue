@@ -180,7 +180,7 @@ export default {
         this.input = 'https://www.azur1tee.top/vj/';
         this.input += res.data.data;
         this.ma = res.data.data;
-        this.lianjie = 'https://www.azur1tee.top/api/qrcode/getQRCode/?content=' + this.input + '&logoUrl=https://www.azur1tee.top/api/getIcon';
+        this.lianjie = 'https://www.azur1tee.top/api/qrcode/getQRCode?content=' + this.input + '&logoUrl=https://www.azur1tee.top/api/getIcon';
         this.download_lianjie = this.lianjie.replace("getQRCode","downloadQRCode")
         // this.download_lianjie = 'https://www.azur1tee.top/api/qrcode/downloadQRCode/?content=' + this.input + '&logoUrl=https://www.azur1tee.top/api/getIcon';
         //alert(this.input);
@@ -203,7 +203,7 @@ export default {
         console.log(res);
         this.input = 'https://www.azur1tee.top/vj/';
         this.input += res.data.data;
-        this.lianjie = 'https://www.azur1tee.top/api/qrcode/getQRCode/?content=' + this.input + '&logoUrl=https://www.azur1tee.top/api/getIcon';
+        this.lianjie = 'https://www.azur1tee.top/api/qrcode/getQRCode?content=' + this.input + '&logoUrl=https://www.azur1tee.top/api/getIcon';
         //alert(this.input);
         this.download_lianjie = 'https://www.azur1tee.top/api/qrcode/downloadQRCode/?content=' + this.input + '&logoUrl=https://www.azur1tee.top/api/getIcon';
       });
