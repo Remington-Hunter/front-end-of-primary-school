@@ -53,15 +53,27 @@
           >
             mdi-pause-circle
           </v-icon>
+          <v-icon small  @click="dialog=true;get_id(item.id)" title="修改样" > mdi-pencil-outline</v-icon>
+            <el-dialog
+                :visible.sync="dialog"
+                width="50%"
+                height="100%"
+            >
+              <!--          <span>修改后可能会造成数据丢失，现提供以下三种方式</span>-->
+              <v-btn @click="dialog = false">修改一</v-btn>
+              <v-btn  @click="dialog = false">修改二</v-btn>
+              <v-btn @click="modifyItem_third(questionnaire_id)">修改三</v-btn>
+            </el-dialog>
+<!--          第一种方式-->
           <!--        <v-icon small @click="modifyItem_first(item.id)" title="修改第一种办法" > mdi-pencil-outline</v-icon>-->
           <!--   第二种方式-->
           <!--        <v-icon small @click="modifyItem_second(item.id)" title="修改第二种办法" > mdi-pencil-outline</v-icon>-->
           <!--   第三种方式-->
-          <v-icon
-            small
-            @click="modifyItem_third(item.id)"
-            title="修改"
-          > mdi-pencil-outline</v-icon>
+<!--          <v-icon-->
+<!--            small-->
+<!--            @click="modifyItem_third(item.id)"-->
+<!--            title="修改"-->
+<!--          > mdi-pencil-outline</v-icon>-->
           <v-icon
             small
             @click="lookUpLink(item.id)"
@@ -80,93 +92,12 @@
             title="预览"
             style="margin-left: 1%"
           > mdi-eye-outline</v-icon>
-
         </template>
       </v-data-table>
     </v-card>
     <el-dialog
       :visible.sync="dialogVisible"
-      width="60%"
-    >
-      <template v-slot:[`item.actions`]="{ item }">
-        <v-icon
-          size="14px"
-          class="mr-2"
-          @click="copyItem(item.id)"
-          title="复制"
-        >
-          mdi-content-copy
-        </v-icon>
-        <v-icon small @click="deleteItem(item.id)" title="删除">
-          mdi-trash-can-outline</v-icon
-        >
-      </template>
-      <template v-slot:[`item.actions1`]="{ item }">
-        <v-icon
-          size="14px"
-          class="mr-2"
-          @click="startItem(item.id)"
-          title="发布"
-        >
-          mdi-arrow-right-drop-circle
-        </v-icon>
-        <v-icon
-          size="14px"
-          class="mr-2"
-          @click="stopItem(item.id)"
-          title="停止"
-        >
-          mdi-pause-circle
-        </v-icon>
-        <!--        <v-icon small @click="modifyItem_first(item.id)" title="修改第一种办法" > mdi-pencil-outline</v-icon>-->
-        <!--   第二种方式-->
-        <!--        <v-icon small @click="modifyItem_second(item.id)" title="修改第二种办法" > mdi-pencil-outline</v-icon>-->
-        <!--   第三种方式-->
-        <v-icon small  @click="dialogVisible=true" title="修改样" > mdi-pencil-outline</v-icon>
-        <el-dialog
-            :visible.sync="dialogVisible"
-            width="50%"
-            height="100%"
-        >
-<!--          <span>修改后可能会造成数据丢失，现提供以下三种方式</span>-->
-          <span
-              slot="footer"
-              class="dialog-footer"
-          >
-              <el-button
-                  type="primary"
-                  @click="dialogVisible = false;"
-              >修改一</el-button>
-              <el-button type="primary" @click="dialogVisible = false">修改二</el-button>
-            <el-button type="primary" @click="modifyItem_third(item.id)">修改三</el-button>
-            </span>
-        </el-dialog>
-        <v-icon small @click="modifyItem_third(item.id)" title="修改" > mdi-pencil-outline</v-icon>
-        <v-icon small @click="lookUpLink(item.id)" title="查看链接" style="margin-left: 1%"> mdi-magnify</v-icon>
-        <v-icon small @click="checkAnalysis(item.id)" title="统计结果" style="margin-left: 1%"> mdi-poll</v-icon>
-        <v-icon small @click="checkItem(item.id)" title="预览" style="margin-left: 1%"> mdi-eye-outline</v-icon>
-<!--=======-->
-<!--        <v-icon small @click="modifyItem_third(item.id)" title="修改">-->
-<!--          mdi-pencil-outline</v-icon-->
-<!--        >-->
-<!--        <v-icon-->
-<!--          small-->
-<!--          @click="lookUpLink(item.id)"-->
-<!--          title="查看链接"-->
-<!--          style="margin-left: 1%"-->
-<!--        >-->
-<!--          mdi-magnify</v-icon-->
-<!--        >-->
-<!--        <v-icon-->
-<!--          small-->
-<!--          @click="checkAnalysis(item.id)"-->
-<!--          title="统计结果"-->
-<!--          style="margin-left: 1%"-->
-<!--        >-->
-<!--          mdi-poll</v-icon-->
-<!--        >-->
-<!--&gt;>>>>>> e98659df9ebb1070532f1382cc948f76d1158938-->
-      </template>
+      width="60%">
       <d-preview
         :headerTitle="this.title"
         :subtitle="this.description"
@@ -182,6 +113,7 @@
         >确 定</el-button>
       </span>
     </el-dialog>
+
   </div>
 </template>
 
@@ -196,12 +128,14 @@ export default {
   data() {
     return {
       preview_list: [],
+      questionnaire_id:'',
       title: "题目",
       description: "",
       sortBy: "date",
       sortDesc: true,
       search: "",
       dialogVisible:false,
+      dialog:false,
       headers: [
         {
           text: "问卷名称",
@@ -234,6 +168,10 @@ export default {
     },
     checkAnalysis(id) {
       this.$router.push({ name: "crossanalysis", params: { id: id } });
+    },
+    get_id(id){
+      this.dialog = true;
+      this.questionnaire_id = id;
     },
     now_date(date) {
       Date.prototype.Format = function (fmt) {
@@ -273,6 +211,7 @@ export default {
       })
     },
     modifyItem_first(item) {
+      this.dialog = false;
       var Data = new FormData();
       Data.append("id", item);
       axios({
@@ -309,7 +248,7 @@ export default {
       });
     },
     modifyItem_third(item) {
-      this.dialogVisible = false;
+      this.dialog = false;
       var Data = new FormData();
       Data.append("id", item);
       axios({
@@ -347,6 +286,7 @@ export default {
       });
     },
     modifyItem_second(item) {
+      this.dialog = false;
       var Data = new FormData();
       Data.append("id", item);
       axios({
