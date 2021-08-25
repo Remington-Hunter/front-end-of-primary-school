@@ -7,7 +7,6 @@ import Element from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './assets/css/icon/iconfont.css'
 import '@/assets/fonts/style.css'
-import md5 from 'js-md5';
 import htmlToPdf from '@/assets/js/htmlToPdf'
 import VueClipboard from 'vue-clipboard2'
 
