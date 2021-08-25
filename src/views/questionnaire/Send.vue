@@ -42,12 +42,7 @@
                 class="ui-button"
                 id="down"
                 target="_blank"
-<<<<<<< HEAD
-                :href="download_lianjie"
-                @click="downloadImg"
-=======
                 :href="lianjie"
->>>>>>> dev
             >下载二维码</a></el-col>
 
            <el-button @click="get_new_link()" style="font-size:16px;background:  #f5f5f5;color: #333333" >获得新链接</el-button>
