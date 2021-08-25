@@ -551,6 +551,9 @@ export default {
         export_json_to_excel(tHeader, data, "学生报名信息汇总"); // 导出的表格名称，根据需要自己命名
       });
     },
+    getAnswerData(){
+      
+    },
     //格式转换，直接复制即可,不需要修改什么
     formatJson(filterVal, jsonData) {
       return jsonData.map((v) => filterVal.map((j) => v[j]));
