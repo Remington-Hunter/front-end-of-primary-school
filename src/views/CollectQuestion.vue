@@ -1,6 +1,12 @@
 <template>
   <div id="c-top">
     <div v-show="can_write_state">
+      <div class="skin-header"><img
+          src="../assets/background_1.png"
+          class="background-image"
+          alt="皮肤背景图"
+        >
+      </div>
       <div v-show="state && this.type === 1">
         <VoteAnswer
           :headerTitle="headerTitle"
@@ -8,15 +14,6 @@
           :questionList="questionList_vote"
         />
       </div>
-      <!-- <PublishQuestion
-      :headerTitle="headerTitle"
-      :subtitle="subtitle"
-      :questionList="questionList"
-      :questionnaireId="current_questionnaire.questionnaire.id"
-      @endAnswer="end=true"
-      v-show="can_write_state"
-    /> -->
-      <!-- <div  type="primary" style="text-align: center;display: block" @click="send_Info()"><el-button big>提交</el-button></div> -->
       <div
         id="pre"
         v-show="!(state && this.type === 1)"
@@ -92,7 +89,7 @@
               </div>
               <!-- 填空题 -->
               <div v-else-if="question.type === 2">
-                <el-input
+                <el-https://www.azur1tee.top
                   type="textarea"
                   autosize
                   placeholder="请输入内容"
@@ -137,6 +134,8 @@
             </span>
           </el-dialog>
         </div>
+      </div>
+      <div class="c-foot"><span>系统由问卷星球提供</span>
       </div>
     </div>
     <div v-show="!can_write_state">
@@ -461,6 +460,31 @@ export default {
   position: relative;
 }
 #c-top {
-  margin-top: 30px;
+  margin-top: -8vh;
+  padding-top: 100px;
+  background: rgba(235, 246, 254, 1);
+  min-height: 100vh;
+}
+.skin-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+.background-image {
+  height: 640px;
+  overflow: hidden;
+  width: 100%;
+  background-size: cover;
+  object-fit: cover;
+  object-position: top;
+}
+.c-foot {
+  padding: 10px 0 40px;
+  text-align: center;
+  color: #999;
+  position: relative;
+  z-index: 10;
 }
 </style>
+
