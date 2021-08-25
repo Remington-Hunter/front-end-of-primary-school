@@ -28,9 +28,12 @@
         >
           mdi-content-copy
         </v-icon>
-        <v-icon small @click="deleteItem(item.id)" title="删除">
-          mdi-trash-can-outline</v-icon
+        <v-icon
+          small
+          @click="deleteItem(item.id)"
+          title="删除"
         >
+          mdi-trash-can-outline</v-icon>
       </template>
       <template v-slot:[`item.actions1`]="{ item }">
         <v-icon
@@ -53,30 +56,44 @@
         <!--   第二种方式-->
         <!--        <v-icon small @click="modifyItem_second(item.id)" title="修改第二种办法" > mdi-pencil-outline</v-icon>-->
         <!--   第三种方式-->
-        <v-icon small @click="modifyItem_third(item.id)" title="修改" > mdi-pencil-outline</v-icon>
-        <v-icon small @click="lookUpLink(item.id)" title="查看链接" style="margin-left: 1%"> mdi-magnify</v-icon>
-        <v-icon small @click="checkAnalysis(item.id)" title="统计结果" style="margin-left: 1%"> mdi-poll</v-icon>
-<!--=======-->
-<!--        <v-icon small @click="modifyItem_third(item.id)" title="修改">-->
-<!--          mdi-pencil-outline</v-icon-->
-<!--        >-->
-<!--        <v-icon-->
-<!--          small-->
-<!--          @click="lookUpLink(item.id)"-->
-<!--          title="查看链接"-->
-<!--          style="margin-left: 1%"-->
-<!--        >-->
-<!--          mdi-magnify</v-icon-->
-<!--        >-->
-<!--        <v-icon-->
-<!--          small-->
-<!--          @click="checkAnalysis(item.id)"-->
-<!--          title="统计结果"-->
-<!--          style="margin-left: 1%"-->
-<!--        >-->
-<!--          mdi-poll</v-icon-->
-<!--        >-->
-<!--&gt;>>>>>> e98659df9ebb1070532f1382cc948f76d1158938-->
+        <v-icon
+          small
+          @click="modifyItem_third(item.id)"
+          title="修改"
+        > mdi-pencil-outline</v-icon>
+        <v-icon
+          small
+          @click="lookUpLink(item.id)"
+          title="查看链接"
+          style="margin-left: 1%"
+        > mdi-link-variant</v-icon>
+        <v-icon
+          small
+          @click="checkAnalysis(item.id)"
+          title="统计结果"
+          style="margin-left: 1%"
+        > mdi-poll</v-icon>
+        <!--=======-->
+        <!--        <v-icon small @click="modifyItem_third(item.id)" title="修改">-->
+        <!--          mdi-pencil-outline</v-icon-->
+        <!--        >-->
+        <!--        <v-icon-->
+        <!--          small-->
+        <!--          @click="lookUpLink(item.id)"-->
+        <!--          title="查看链接"-->
+        <!--          style="margin-left: 1%"-->
+        <!--        >-->
+        <!--          mdi-magnify</v-icon-->
+        <!--        >-->
+        <!--        <v-icon-->
+        <!--          small-->
+        <!--          @click="checkAnalysis(item.id)"-->
+        <!--          title="统计结果"-->
+        <!--          style="margin-left: 1%"-->
+        <!--        >-->
+        <!--          mdi-poll</v-icon-->
+        <!--        >-->
+        <!--&gt;>>>>>> e98659df9ebb1070532f1382cc948f76d1158938-->
       </template>
     </v-data-table>
   </v-card>
@@ -142,7 +159,7 @@ export default {
       this.$router.push({ name: "crossanalysis", params: { id: id } });
     },
     now_date(date) {
-      Date.prototype.Format = function(fmt) {
+      Date.prototype.Format = function (fmt) {
         // author: meizz
         var o = {
           "M+": this.getMonth() + 1, // 月份
@@ -202,7 +219,8 @@ export default {
           path: "/edit1/" + index,
           query: {
             id: res.data.data,
-            types:index,}
+            types: index,
+          }
         });
       });
     },
@@ -237,8 +255,9 @@ export default {
         this.$router.push({
           path: "/edit1/" + index,
           query: {
-            id:res.data.data, 
-            type:index},
+            id: res.data.data,
+            type: index
+          },
         });
       });
     },
@@ -271,10 +290,11 @@ export default {
           index = 2;
         }
         this.$router.push({
-          path:'/edit1/'+index,
-          query:{
-            id:res.data.data,
-            types:index,}
+          path: '/edit1/' + index,
+          query: {
+            id: res.data.data,
+            types: index,
+          }
         })
       })
     },
@@ -414,7 +434,7 @@ export default {
           } else if (res.data.data[i].using) {
             state = "已发布";
           }
-          Date.prototype.Format = function(fmt) {
+          Date.prototype.Format = function (fmt) {
             // author: meizz
             var o = {
               "M+": this.getMonth() + 1, // 月份
