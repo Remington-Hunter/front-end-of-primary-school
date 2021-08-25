@@ -471,8 +471,9 @@ export default {
           } else if (res.data.data[i].type === 2) {
             questionnaire_type = "报名问卷";
           }
+
           var data = {
-            name: res.data.data[i].title,
+            name: res.data.data[i].title.length>15?res.data.data[i].title.slice(0,15)+'...':res.data.data[i].title,
             type: questionnaire_type,
             state: state,
             id: res.data.data[i].id,
