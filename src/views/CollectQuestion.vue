@@ -16,9 +16,17 @@
         />
         <!-- :questionList="questionList_vote" -->
       </div>
-      <div id="pre" v-show="!(state && this.type === 1 && this.can_see_result)">
-        <div v-if="state">感谢您提交问卷</div>
-        <div class="s-main " v-else>
+      <div
+        id="pre"
+        v-show="!(state && this.type === 1 && this.can_see_result)"
+      >
+        <div v-if="state">
+          <success></success>
+        </div>
+        <div
+          class="s-main "
+          v-else
+        >
           <!-- 问卷标题 -->
           <div class="header-title">{{ headerTitle }}</div>
           <!-- 问卷副标题 -->
@@ -32,16 +40,13 @@
             <!-- 题目标题 -->
             <div class="question-head ">
               <div class="question-title">
-                <span class="question-seq"
-                  ><b>{{ index + 1 }}</b></span
-                >
+                <span class="question-seq"><b>{{ index + 1 }}</b></span>
                 <span class="text">{{ question.text }}</span>
-                <span v-if="question.required" class="question-required"
-                  >*</span
-                >
-                <el-tag v-if="[1, 4, 7, 11].includes(question.type)"
-                  >多选</el-tag
-                >
+                <span
+                  v-if="question.required"
+                  class="question-required"
+                >*</span>
+                <el-tag v-if="[1, 4, 7, 11].includes(question.type)">多选</el-tag>
               </div>
               <div class="q-instruction">{{ question.comment }}</div>
             </div>
@@ -59,8 +64,7 @@
                     <span
                       class="sel-total"
                       v-show="item.total >= 0 && question.type === 6"
-                      >(剩余{{ item.total }})</span
-                    >
+                    >(剩余{{ item.total }})</span>
                     <div class="q-instruction">{{ item.comment }}</div>
                   </el-radio>
                 </el-radio-group>
@@ -72,12 +76,11 @@
                     v-for="(item, index) in question.selectionList"
                     :key="index"
                     :label="index"
-                    >{{ item.content }}
+                  >{{ item.content }}
                     <span
                       class="sel-total"
                       v-show="item.total >= 0 && question.type === 7"
-                      >(剩余{{ item.total }})</span
-                    >
+                    >(剩余{{ item.total }})</span>
                     <span class="q-instruction">{{ item.comment }}</span>
                   </el-checkbox>
                 </el-checkbox-group>
@@ -113,8 +116,7 @@
             <el-button
               type="text"
               @click="dialogVisible = judge()"
-              >提交</el-button
-            >
+            >提交</el-button>
           </div>
 
           <el-dialog
@@ -124,15 +126,17 @@
             :before-close="handleClose"
           >
             <span>提交后不能够更改,确定提交?</span>
-            <span slot="footer" class="dialog-footer">
+            <span
+              slot="footer"
+              class="dialog-footer"
+            >
               <el-button
                 type="primary"
                 @click="
                   dialogVisible = false;
                   submit();
                 "
-                >确 定</el-button
-              >
+              >确 定</el-button>
               <el-button @click="dialogVisible = false">取 消</el-button>
             </span>
           </el-dialog>
@@ -151,6 +155,7 @@ import axios from "axios";
 import PublishQuestion from "./questionnaire/PublishQuestion.vue";
 import VoteAnswer from "./VoteAnswer.vue";
 import Stop from "./Stop.vue";
+import Success from "./Success.vue"
 import { dateFormat } from "../utils/dateFormat";
 export default {
   name: "CollectQuestion",
@@ -158,6 +163,7 @@ export default {
     PublishQuestion,
     VoteAnswer,
     Stop,
+    Success
   },
   data() {
     return {
@@ -175,7 +181,7 @@ export default {
       end: false,
       type: -1,
       questionList_vote: [],
-      can_see_result:false
+      can_see_result: false
     };
   },
   methods: {
@@ -212,9 +218,9 @@ export default {
         } else {
           if (
             dateFormat(new Date()) >=
-              this.current_questionnaire.questionnaire.startTime &&
+            this.current_questionnaire.questionnaire.startTime &&
             dateFormat(new Date()) <=
-              this.current_questionnaire.questionnaire.endTime
+            this.current_questionnaire.questionnaire.endTime
           ) {
             this.can_write_state = true;
           } else {
@@ -326,7 +332,7 @@ export default {
         console.log(res.data.data);
         this.type = res.data.data.questionnaire.type;
         this.current_questionnaire = res.data.data;
-        this.can_see_result=res.data.data.questionnaire.canSee===1?true:false
+        this.can_see_result = res.data.data.questionnaire.canSee === 1 ? true : false
         console.log(dateFormat(new Date()));
         if (
           this.current_questionnaire.questionnaire.startTime === null ||
@@ -336,9 +342,9 @@ export default {
         } else {
           if (
             dateFormat(new Date()) >=
-              this.current_questionnaire.questionnaire.startTime &&
+            this.current_questionnaire.questionnaire.startTime &&
             dateFormat(new Date()) <=
-              this.current_questionnaire.questionnaire.endTime
+            this.current_questionnaire.questionnaire.endTime
           ) {
             this.can_write_state = true;
           } else {
@@ -354,7 +360,7 @@ export default {
         .then((_) => {
           done();
         })
-        .catch((_) => {});
+        .catch((_) => { });
     },
     judge() {
       var x = {};
