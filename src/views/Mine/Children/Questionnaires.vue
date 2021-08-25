@@ -1,110 +1,125 @@
 <template>
-  <v-card>
-    <v-card-title>
-      问卷列表
-      <v-spacer></v-spacer>
-      <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="Search"
-        single-line
-        hide-details
-      ></v-text-field>
-    </v-card-title>
-    <v-data-table
-      :headers="headers"
-      :items="desserts"
-      :search="search"
-      :sort-by.sync="sortBy"
-      :sort-desc.sync="sortDesc"
-      class="elevation-1"
+  <div>
+    <v-card>
+      <v-card-title>
+        问卷列表
+        <v-spacer></v-spacer>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          single-line
+          hide-details
+        ></v-text-field>
+      </v-card-title>
+      <v-data-table
+        :headers="headers"
+        :items="desserts"
+        :search="search"
+        :sort-by.sync="sortBy"
+        :sort-desc.sync="sortDesc"
+        class="elevation-1"
+      >
+        <template v-slot:[`item.actions`]="{ item }">
+          <v-icon
+            size="14px"
+            class="mr-2"
+            @click="copyItem(item.id)"
+            title="复制"
+          >
+            mdi-content-copy
+          </v-icon>
+          <v-icon
+            small
+            @click="deleteItem(item.id)"
+            title="删除"
+          >
+            mdi-trash-can-outline</v-icon>
+        </template>
+        <template v-slot:[`item.actions1`]="{ item }">
+          <v-icon
+            size="14px"
+            class="mr-2"
+            @click="startItem(item.id)"
+            title="发布"
+          >
+            mdi-arrow-right-drop-circle
+          </v-icon>
+          <v-icon
+            size="14px"
+            class="mr-2"
+            @click="stopItem(item.id)"
+            title="停止"
+          >
+            mdi-pause-circle
+          </v-icon>
+          <!--        <v-icon small @click="modifyItem_first(item.id)" title="修改第一种办法" > mdi-pencil-outline</v-icon>-->
+          <!--   第二种方式-->
+          <!--        <v-icon small @click="modifyItem_second(item.id)" title="修改第二种办法" > mdi-pencil-outline</v-icon>-->
+          <!--   第三种方式-->
+          <v-icon
+            small
+            @click="modifyItem_third(item.id)"
+            title="修改"
+          > mdi-pencil-outline</v-icon>
+          <v-icon
+            small
+            @click="lookUpLink(item.id)"
+            title="查看链接"
+            style="margin-left: 1%"
+          > mdi-link-variant</v-icon>
+          <v-icon
+            small
+            @click="checkAnalysis(item.id)"
+            title="统计结果"
+            style="margin-left: 1%"
+          > mdi-poll</v-icon>
+          <v-icon
+            small
+            @click="checkItem(item.id)"
+            title="预览"
+            style="margin-left: 1%"
+          > mdi-eye-outline</v-icon>
+
+        </template>
+      </v-data-table>
+    </v-card>
+    <el-dialog
+      :visible.sync="dialogVisible"
+      width="60%"
     >
-      <template v-slot:[`item.actions`]="{ item }">
-        <v-icon
-          size="14px"
-          class="mr-2"
-          @click="copyItem(item.id)"
-          title="复制"
-        >
-          mdi-content-copy
-        </v-icon>
-        <v-icon
-          small
-          @click="deleteItem(item.id)"
-          title="删除"
-        >
-          mdi-trash-can-outline</v-icon>
-      </template>
-      <template v-slot:[`item.actions1`]="{ item }">
-        <v-icon
-          size="14px"
-          class="mr-2"
-          @click="startItem(item.id)"
-          title="发布"
-        >
-          mdi-arrow-right-drop-circle
-        </v-icon>
-        <v-icon
-          size="14px"
-          class="mr-2"
-          @click="stopItem(item.id)"
-          title="停止"
-        >
-          mdi-pause-circle
-        </v-icon>
-        <!--        <v-icon small @click="modifyItem_first(item.id)" title="修改第一种办法" > mdi-pencil-outline</v-icon>-->
-        <!--   第二种方式-->
-        <!--        <v-icon small @click="modifyItem_second(item.id)" title="修改第二种办法" > mdi-pencil-outline</v-icon>-->
-        <!--   第三种方式-->
-        <v-icon
-          small
-          @click="modifyItem_third(item.id)"
-          title="修改"
-        > mdi-pencil-outline</v-icon>
-        <v-icon
-          small
-          @click="lookUpLink(item.id)"
-          title="查看链接"
-          style="margin-left: 1%"
-        > mdi-link-variant</v-icon>
-        <v-icon
-          small
-          @click="checkAnalysis(item.id)"
-          title="统计结果"
-          style="margin-left: 1%"
-        > mdi-poll</v-icon>
-        <!--=======-->
-        <!--        <v-icon small @click="modifyItem_third(item.id)" title="修改">-->
-        <!--          mdi-pencil-outline</v-icon-->
-        <!--        >-->
-        <!--        <v-icon-->
-        <!--          small-->
-        <!--          @click="lookUpLink(item.id)"-->
-        <!--          title="查看链接"-->
-        <!--          style="margin-left: 1%"-->
-        <!--        >-->
-        <!--          mdi-magnify</v-icon-->
-        <!--        >-->
-        <!--        <v-icon-->
-        <!--          small-->
-        <!--          @click="checkAnalysis(item.id)"-->
-        <!--          title="统计结果"-->
-        <!--          style="margin-left: 1%"-->
-        <!--        >-->
-        <!--          mdi-poll</v-icon-->
-        <!--        >-->
-        <!--&gt;>>>>>> e98659df9ebb1070532f1382cc948f76d1158938-->
-      </template>
-    </v-data-table>
-  </v-card>
+      <d-preview
+        :headerTitle="this.title"
+        :subtitle="this.description"
+        :list="this.preview_list"
+      ></d-preview>
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button
+          type="primary"
+          @click="dialogVisible = false"
+        >确 定</el-button>
+      </span>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
 import axios from "axios";
+import DPreview from "../../questionnaire/DialogPreview.vue";
 
 export default {
+  components: {
+    DPreview
+  },
   data() {
     return {
+      preview_list: [],
+      title: "题目",
+      description: "",
+      dialogVisible: false,
       sortBy: "date",
       sortDesc: true,
       search: "",
@@ -129,24 +144,7 @@ export default {
         { text: "更多功能", value: "actions1", sortable: false },
       ],
       desserts: [
-        // {
-        //   name: "问卷1",
-        //   state: 0,
-        //   id: 123456,
-        //   num: 2,
-        //   date: "2020 - 8 - 1",
-        //   // date1:'2020 - 8 - 2',
-        //   date2: "2020 - 8 - 3",
-        // },
-        // {
-        //   name: "问卷2",
-        //   state: 1,
-        //   id: 234567,
-        //   num: 24,
-        //   date: "2021 - 8 - 1",
-        //   // date1:'2020 - 8 - 2',
-        //   date2: "2020 - 8 - 4",
-        // },
+
       ],
       data: [],
     };
@@ -345,7 +343,7 @@ export default {
       var Data = new FormData();
       Data.append("id", item);
       axios({
-        url: "https://www.azur1tee.top/api/get_questionnaire_by_id",
+        url: "https://www.azur1tee.top/api//questionnaire/get_questionnaire_by_id",
         method: "post",
         data: Data,
         headers: {
@@ -353,7 +351,11 @@ export default {
           "Content-Type": "application/json",
         },
       }).then((res) => {
-        console.log(res);
+        let q = res.data.data
+        this.title = q.questionnaire.title
+        this.description = q.questionnaire.description
+        this.preview_list = q.questionList
+        this.dialogVisible = true;
       });
     },
     toggleOrder() {
@@ -492,7 +494,7 @@ export default {
             questionnaire_type = "报名问卷";
           }
           var data = {
-            name: res.data.data[i].title.length>15?res.data.data[i].title.slice(0,15)+'...':res.data.data[i].title,
+            name: res.data.data[i].title.length > 15 ? res.data.data[i].title.slice(0, 15) + '...' : res.data.data[i].title,
             type: questionnaire_type,
             state: state,
             id: res.data.data[i].id,
