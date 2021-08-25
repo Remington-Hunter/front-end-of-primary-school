@@ -351,10 +351,28 @@ export default {
           "Content-Type": "application/json",
         },
       }).then((res) => {
+        this.preview_list = [];
         let q = res.data.data
         this.title = q.questionnaire.title
         this.description = q.questionnaire.description
-        this.preview_list = q.questionList
+        let x = q.questionList
+        for (var i = 0; i < x.length; i++) {
+          var obj = {};
+          obj.problem_type = this.problem_type_info(x[i].question.type);
+          obj.name = x[i].question.content;
+          obj.instruction = x[i].question.comment;
+          obj.must_write_select = x[i].question.required;
+          var list = [];
+          for (var j = 0; j < x[i].optionList.length; j++) {
+            var listitem = {};
+            listitem.content = x[i].optionList[j].content;
+            listitem.total = x[i].optionList[j].limit;
+            listitem.comment = x[i].optionList[j].comment;
+            list.push(listitem);
+          }
+          obj.selection_list = list;
+          this.preview_list.push(obj);
+        }
         this.dialogVisible = true;
       });
     },
@@ -508,6 +526,34 @@ export default {
         }
         // 没写全之后再补
       });
+    },
+    problem_type_info(num) {
+      switch (num) {
+        case 0:
+          return "单选题";
+          break;
+        case 1:
+          return "多选题";
+          break;
+        case 2:
+          return "填空题";
+          break;
+        case 3:
+          return "评分题";
+          break;
+        case 6:
+          return "报名单选题";
+          break;
+        case 7:
+          return "报名多选题";
+          break;
+        case 10:
+          return "投票单选题";
+          break;
+        case 11:
+          return "投票多选题";
+          break;
+      }
     },
   },
   mounted() {
