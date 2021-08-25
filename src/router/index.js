@@ -74,31 +74,41 @@ const routes = [{
             import ('../views/CrossAnalysis.vue')
     },
     {
-        path:'/send/:id',
+        path: '/send/:id',
         name: 'send',
-        component: () => import('../views/questionnaire/Send.vue')
+        component: () =>
+            import ('../views/questionnaire/Send.vue')
     },
 
     {
-        path:'/vote',
-        name:'VoteAnswer',
-        component: () => import('../views/VoteAnswer.vue')
+        path: '/vote',
+        name: 'VoteAnswer',
+        component: () =>
+            import ('../views/VoteAnswer.vue')
     },
     {
-        path:'/stop',
-        name:'Stop',
-        component: () => import('../views/Stop.vue')
+        path: '/stop',
+        name: 'Stop',
+        component: () =>
+            import ('../views/Stop.vue')
     },
     {
         path: '/edit1/:type',
         name: 'Edit1',
         component: () =>
             import ('../views/questionnaire/Edit.vue')
-    },{
-        path:'/success',
-        name:'Success',
-        component: () => import('../views/Success.vue')
+    }, {
+        path: '/success',
+        name: 'Success',
+        component: () =>
+            import ('../views/Success.vue')
     },
+    {
+        path: '/getanalysis',
+        name: 'getanalysis',
+        component: () =>
+            import ('../views/getCrossAnalysis.vue')
+    }
 ]
 
 const router = new VueRouter({

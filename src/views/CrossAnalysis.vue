@@ -5,7 +5,8 @@
       content="统计分析"
     >
     </el-page-header>
-    <el-button  @click="exportExcel" type="primary" class="d-btn">导出2412414</el-button>
+    <el-button  @click="checkCrossAnalysis()" type="primary" class="d-btn">交叉分析</el-button>
+    <el-button  @click="exportExcel" type="primary" class="d-btn">导出excel</el-button>
     <el-button
       type="primary"
       @click="handleDown"
@@ -387,6 +388,11 @@ export default {
   },
   
   methods: {
+    checkCrossAnalysis(){
+      console.log(11111);
+      console.log(this.id);
+      this.$router.push({ name: "getanalysis", params: { id: this.id } });
+    },
     getExcelData(){
       var data=this.data;
       for (var i = 0; i < data.length; i++) {
