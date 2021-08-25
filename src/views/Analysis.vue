@@ -285,7 +285,7 @@ export default {
       var Data = new FormData();
       Data.append("id", this.id);
       axios({
-        url: "http://82.157.97.70/api/answer/get_result",
+        url: "https://www.azur1tee.top/api/answer/get_result",
         method: "post",
         data: Data,
       }).then((res) => {

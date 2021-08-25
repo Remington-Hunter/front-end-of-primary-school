@@ -42,11 +42,7 @@
                 class="ui-button"
                 id="down"
                 target="_blank"
-<<<<<<< HEAD
-                :href="this.download_lianjie"
-=======
                 :href="lianjie"
->>>>>>> dev
             >下载二维码</a></el-col>
            <el-button @click="get_new_link()" style="font-size:16px;background:  #f5f5f5;color: #333333" >获得新链接</el-button>
 <!--            <el-col-->
@@ -131,7 +127,7 @@ export default {
     },
     input: {
       type: String,
-      defalut: 'http://82.157.97.70/vj/'
+      defalut: 'https://www.azur1tee.top/vj/'
     },
     lianjie: {
       type: String,
@@ -146,20 +142,13 @@ export default {
   },
   created() {
     this.id = this.$route.params.id;
-<<<<<<< HEAD
-    this.get_link();
-    this.download_lianjie += 'http://82.157.97.70/vj/';
-    this.download_lianjie += this.input;
-    this.download_lianjie = 'http://82.157.97.70/api/qrcode/downloadQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
-=======
     this.get_link()
     // var ss = this.input
     // setTimeout(()=>{
-    // this.download_lianjie = 'http://82.157.97.70/api/qrcode/downloadQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
+    // this.download_lianjie = 'https://www.azur1tee.top/api/qrcode/downloadQRCode/?content=' + this.input + '&logoUrl=https://www.azur1tee.top/api/getIcon';
     // },1000)
-//     this.download_lianjie += 'http://82.157.97.70/vj/';
+//     this.download_lianjie += 'https://www.azur1tee.top/vj/';
 //     this.download_lianjie += this.input;
->>>>>>> dev
   },
   mounted() {
     this.id = this.$router.query.id;
@@ -171,16 +160,16 @@ export default {
       alert("复制成功")
     },
     download_link() {
-      // this.download_lianjie = 'http://82.157.97.70/vj/';
+      // this.download_lianjie = 'https://www.azur1tee.top/vj/';
       // this.download_lianjie += this.input;
-      // this.download_lianjie = 'http://82.157.97.70/api/qrcode/downloadQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
+      // this.download_lianjie = 'https://www.azur1tee.top/api/qrcode/downloadQRCode/?content=' + this.input + '&logoUrl=https://www.azur1tee.top/api/getIcon';
       console.log(this.download_lianjie);
     },
     get_link() {
       var data = new FormData();
       data.append("id", this.id);
       axios({
-        url: "http://82.157.97.70/api/questionnaire/get_link",
+        url: "https://www.azur1tee.top/api/questionnaire/get_link",
         method: "post",
         data: data,
         headers: {
@@ -188,14 +177,14 @@ export default {
         },
       }).then((res) => {
         console.log(res);
-        this.input = 'http://82.157.97.70/vj/';
+        this.input = 'https://www.azur1tee.top/vj/';
         this.input += res.data.data;
         this.ma = res.data.data;
-        this.lianjie = 'http://82.157.97.70/api/qrcode/getQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
+        this.lianjie = 'https://www.azur1tee.top/api/qrcode/getQRCode/?content=' + this.input + '&logoUrl=https://www.azur1tee.top/api/getIcon';
         // this.download_lianjie = this.lianjie.replace("getQRCode","downloadQRCode")
-        // this.download_lianjie = 'http://82.157.97.70/api/qrcode/downloadQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
+        // this.download_lianjie = 'https://www.azur1tee.top/api/qrcode/downloadQRCode/?content=' + this.input + '&logoUrl=https://www.azur1tee.top/api/getIcon';
         //alert(this.input);
-        // this.download_lianjie = 'http://82.157.97.70/api/qrcode/downloadQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
+        // this.download_lianjie = 'https://www.azur1tee.top/api/qrcode/downloadQRCode/?content=' + this.input + '&logoUrl=https://www.azur1tee.top/api/getIcon';
       });
     },
     get_new_link() {
@@ -204,7 +193,7 @@ export default {
       data1.append("id", questionnaireId[0]);
       // alert(questionnaireId[0])
       axios({
-        url: "http://82.157.97.70/api/questionnaire/get_new_link",
+        url: "https://www.azur1tee.top/api/questionnaire/get_new_link",
         method: "post",
         data: data1,
         headers: {
@@ -212,11 +201,11 @@ export default {
         },
       }).then((res) => {
         console.log(res);
-        this.input = 'http://82.157.97.70/vj/';
+        this.input = 'https://www.azur1tee.top/vj/';
         this.input += res.data.data;
-        this.lianjie = 'http://82.157.97.70/api/qrcode/getQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
+        this.lianjie = 'https://www.azur1tee.top/api/qrcode/getQRCode/?content=' + this.input + '&logoUrl=https://www.azur1tee.top/api/getIcon';
         //alert(this.input);
-        this.download_lianjie = 'http://82.157.97.70/api/qrcode/downloadQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
+        this.download_lianjie = 'https://www.azur1tee.top/api/qrcode/downloadQRCode/?content=' + this.input + '&logoUrl=https://www.azur1tee.top/api/getIcon';
       });
     }
   },

@@ -3,7 +3,7 @@ import axios from "axios";
 import router from './router'
 import store from './store'
 
-axios.defaults.baseURL = 'http://82.157.97.70/api'
+axios.defaults.baseURL = 'https://www.azur1tee.top/api'
     // axios.defaults.baseURL = 'http://172.20.10.4:8081'
 
 // 前置拦截

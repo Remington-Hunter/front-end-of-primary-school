@@ -175,7 +175,7 @@ export default {
       var Data = new FormData();
       Data.append("id", item);
       axios({
-        url: "http://82.157.97.70/api/questionnaire/edit_qusetionnaire",
+        url: "https://www.azur1tee.top/api/questionnaire/edit_qusetionnaire",
         method: "post",
         data: Data,
         headers: {
@@ -211,7 +211,7 @@ export default {
       Data.append("id", item);
       axios({
         url:
-          "http://82.157.97.70/api/questionnaire/throw_and_get_new_questionnaire",
+          "https://www.azur1tee.top/api/questionnaire/throw_and_get_new_questionnaire",
         method: "post",
         data: Data,
         headers: {
@@ -247,7 +247,7 @@ export default {
       Data.append("id", item);
       axios({
         url:
-          "http://82.157.97.70/api/questionnaire/delete_and_get_questionnaire_by_id",
+          "https://www.azur1tee.top/api/questionnaire/delete_and_get_questionnaire_by_id",
         method: "post",
         data: Data,
         headers: {
@@ -282,7 +282,7 @@ export default {
       var Data = new FormData();
       Data.append("questionnaireId", item);
       axios({
-        url: "http://82.157.97.70/api/questionnaire/publish_questionnaire",
+        url: "https://www.azur1tee.top/api/questionnaire/publish_questionnaire",
         method: "post",
         data: Data,
         headers: {
@@ -305,7 +305,7 @@ export default {
       var Data = new FormData();
       Data.append("questionnaireId", item);
       axios({
-        url: "http://82.157.97.70/api/questionnaire/stop_questionnaire",
+        url: "https://www.azur1tee.top/api/questionnaire/stop_questionnaire",
         method: "post",
         data: Data,
         headers: {
@@ -325,7 +325,7 @@ export default {
       var Data = new FormData();
       Data.append("id", item);
       axios({
-        url: "http://82.157.97.70/api/get_questionnaire_by_id",
+        url: "https://www.azur1tee.top/api/get_questionnaire_by_id",
         method: "post",
         data: Data,
         headers: {
@@ -352,7 +352,7 @@ export default {
       Data.append("id", index);
       console.log(111);
       axios({
-        url: "http://82.157.97.70/api/questionnaire/throw_to_trashcan",
+        url: "https://www.azur1tee.top/api/questionnaire/throw_to_trashcan",
         method: "post",
         data: Data,
         headers: {
@@ -373,7 +373,7 @@ export default {
       var Data = new FormData();
       Data.append("id", index);
       axios({
-        url: "http://82.157.97.70/api/questionnaire/copy_questionnaire",
+        url: "https://www.azur1tee.top/api/questionnaire/copy_questionnaire",
         method: "post",
         data: Data,
         headers: {
@@ -393,7 +393,7 @@ export default {
     getItem() {
       console.log(13123);
       axios({
-        url: "http://82.157.97.70/api/questionnaire/get_questionnaire_list",
+        url: "https://www.azur1tee.top/api/questionnaire/get_questionnaire_list",
         method: "post",
         data: {},
         headers: {

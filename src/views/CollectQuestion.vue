@@ -193,7 +193,7 @@ export default {
       formData.append("md5", this.ma);
       axios({
         method: "post",
-        url: "http://82.157.97.70/api/questionnaire/get_questionnaire",
+        url: "https://www.azur1tee.top/api/questionnaire/get_questionnaire",
         data: formData,
       }).then((res) => {
         console.log(res);
@@ -261,7 +261,7 @@ export default {
       formData.append("md5", this.ma);
       axios({
         method: "post",
-        url: "http://82.157.97.70/api/questionnaire/get_questionnaire",
+        url: "https://www.azur1tee.top/api/questionnaire/get_questionnaire",
         data: formData,
       }).then((res) => {
         console.log(res.data.data);
@@ -307,7 +307,7 @@ export default {
       formData.append("md5", this.ma);
       axios({
         method: "post",
-        url: "http://82.157.97.70/api/questionnaire/get_questionnaire",
+        url: "https://www.azur1tee.top/api/questionnaire/get_questionnaire",
         data: formData,
       }).then((res) => {
         console.log(res);
@@ -414,7 +414,7 @@ export default {
       console.log(JSON.stringify(x));
       axios({
         method: "post",
-        url: "http://82.157.97.70/api/answer/submit_answer",
+        url: "https://www.azur1tee.top/api/answer/submit_answer",
         headers: {
           "Content-Type": "application/json",
         },

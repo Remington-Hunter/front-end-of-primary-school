@@ -166,12 +166,12 @@ export default {
         Data.append("password", password1)
         Data.append("username", this.form.nickname)
         Data.append('checkPassword', password1)
-        url1 = 'http://82.157.97.70/api/sign_up_username_password'
+        url1 = 'https://www.azur1tee.top/api/sign_up_username_password'
       }
       else {
         Data.append("password", password1)
         Data.append("username", this.form.nickname)
-        url1 = 'http://82.157.97.70/api/login_username_password'
+        url1 = 'https://www.azur1tee.top/api/login_username_password'
       }
       console.log(this.form.pass)
       axios({

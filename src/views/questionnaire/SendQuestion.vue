@@ -48,7 +48,7 @@ export default {
       var data1 = new FormData();
       data1.append("id", window.localStorage.getItem("user_id"));
       axios({
-        url: "http://82.157.97.70/api/questionnaire/get_link",
+        url: "https://www.azur1tee.top/api/questionnaire/get_link",
         method: "post",
         data: data1,
         headers: {
@@ -56,9 +56,9 @@ export default {
         },
       }).then((res) => {
         console.log(res);
-        this.input += 'http://82.157.97.70/vj/';
+        this.input += 'https://www.azur1tee.top/vj/';
         this.input += res.data.data;
-        this.lianjie = 'http://82.157.97.70/api/qrcode/getQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
+        this.lianjie = 'https://www.azur1tee.top/api/qrcode/getQRCode/?content=' + this.input + '&logoUrl=https://www.azur1tee.top/api/getIcon';
         //alert(this.input);
       });
     },
