@@ -85,9 +85,11 @@ export default {
   },
   mounted() {
     this.check_is_login();
+    this.user.username=window.localStorage.getItem('userName');
   },
   updated() {
     this.check_is_login();
+    this.user.username=window.localStorage.getItem('userName');
   },
   // create(){
   //   this.check_is_login();
