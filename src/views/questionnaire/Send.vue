@@ -156,6 +156,16 @@ export default {
     console.log(this.id);
   },
   methods: {
+                downloadImg() {
+                var oQrcode = document.querySelectorAll('.channelQrcode img')
+                var url = oQrcode[0].src
+                var a = document.createElement('a')
+                var event = new MouseEvent('click')
+                // 自定义下载后图片的名称
+                a.download = '二维码'
+                a.href = url
+                a.dispatchEvent(event)
+            },
     onCopy: function () {
       alert("复制成功")
     },

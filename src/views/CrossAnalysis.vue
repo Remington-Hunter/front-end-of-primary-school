@@ -5,11 +5,13 @@
       content="统计分析"
     >
     </el-page-header>
+    <el-button  @click="exportExcel" type="primary" class="d-btn">导出2412414</el-button>
     <el-button
       type="primary"
       @click="handleDown"
       class="d-btn"
     ><i class="el-icon-download"></i> 下载PDF</el-button>
+    
     <div
       class="center"
       id="demo1"
@@ -63,14 +65,6 @@
                   }}</span>
                 </template>
               </el-table-column>
-              <!-- <el-table-column
-                label="content"
-                width="180">
-                <template slot-scope="scope1">
-                  <i class="el-icon-time"></i>
-                  <span style="margin-left: 10px">{{ scope1.row.content }}</span>
-                </template>
-              </el-table-column> -->
             </el-table>
           </div>
           <div v-else>
@@ -83,7 +77,7 @@
                   class="table"
                   border
                 >
-                  <el-table-column label="content">
+                  <el-table-column label="选项">
                     <template slot-scope="scope2">
                       <!-- <i class="el-icon-time"></i> -->
                       <span style="margin-left: 10px">{{
@@ -91,7 +85,7 @@
                     }}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column label="num">
+                  <el-table-column label="选择人数">
                     <template slot-scope="scope3">
                       <!-- <i class="el-icon-time"></i> -->
                       <span style="margin-left: 10px">{{ scope3.row.num }}</span>
@@ -178,6 +172,110 @@
         </div>
       </div>
     </div>
+    <!-- 下面的内容不用管，我是不会让他显示的，只是为了导出数据 -->
+    <div id="demo2" v-show="false">
+      <div >
+        <div
+          v-for="(item, index) in data"
+          :key="(index)"
+        >
+          <el-divider></el-divider>
+          <div class="question-head ">
+            <div class="question-title">
+              <span class="question-seq"><b>第{{ index + 1 }}题：</b></span>
+              <span class="text">{{data[index].question.content}}</span>
+              <span
+                v-if="data[index].question.type==0"
+                class="question-type"
+              >单选题</span>
+              <span
+                v-if="data[index].question.type==1"
+                class="question-type"
+              >多选题</span>
+              <span
+                v-if="data[index].question.type==2"
+                class="question-type"
+              >填空题</span>
+              <span
+                v-if="data[index].question.type==3"
+                class="question-type"
+              >评分题</span>
+            </div>
+          </div>
+          <div v-if="data[index].question.type === 2">
+            <el-table
+              :data="excel[index]"
+              style="width: 100%"
+              class="table"
+            >
+              <el-table-column label="">
+                <template slot-scope="scope">
+                  <!-- <i class="el-icon-time"></i> -->
+                  <span style="margin-left: 10px">{{ scope.row.id }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="">
+                <template slot-scope="scope1">
+                  <!-- <i class="el-icon-time"></i> -->
+                  <span style="margin-left: 10px">{{
+                    scope1.row.content
+                  }}</span>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+          <div v-else>
+            <div v-if="excel[index].length !== 0">
+              <!-- <Completion :data1="completion[index]"></Completion> -->
+              <div>
+                <el-table
+                  :data="excel[index]"
+                  style="width: 100%"
+                  class="table"
+                  border
+                >
+                  <el-table-column label="">
+                    <template slot-scope="scope2">
+                      <!-- <i class="el-icon-time"></i> -->
+                      <span style="margin-left: 10px">{{
+                      scope2.row.content
+                    }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="">
+                    <template slot-scope="scope3">
+                      <!-- <i class="el-icon-time"></i> -->
+                      <span style="margin-left: 10px">{{ scope3.row.num }}</span>
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </div>
+            </div>
+            <div v-else>
+              <el-table
+                :data="excel[index]"
+                style="width: 100%"
+              >
+                <el-table-column label="">
+                  <template slot-scope="scope">
+                    <!-- <i class="el-icon-time"></i> -->
+                    <span style="margin-left: 10px">{{ scope.row.id }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="">
+                  <template slot-scope="scope1">
+                    <!-- <i class="el-icon-time"></i> -->
+                    <span style="margin-left: 10px">{{
+                    scope1.row.content
+                  }}</span>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -190,6 +288,8 @@ import htmlToPdf from "@/assets/js/htmlToPdf";
 import Completion from "../components/Completion";
 // import Export2Excel from '@/excel/Export2Excel'
 // import Blob from '@/excel/Blob'
+import FileSaver from "file-saver";
+import XLSX from "xlsx";
 export default {
   props: {
     id1: {
@@ -211,7 +311,8 @@ export default {
       historyList: [],
       type: 0,
       states:[],
-      s:{}
+      s:{},
+      excel:[]
     };
   },
   components: {
@@ -221,41 +322,120 @@ export default {
     drawCol,
     Completion,
   },
-  //   created() {},
-  // created() {
-  //   this.id = this.$route.params.id;
-  //   console.log(this.id);
-  //   this.getseries();
-  // },
   mounted() {
     this.id = this.$route.params.id;
     this.getseries();
   },
   
   methods: {
+    getExcelData(){
+      var data=this.data;
+      for (var i = 0; i < data.length; i++) {
+        if (data[i].question.type === 2) {
+          // console.log(11)
+          var data_i = data[i].answerList;
+          var item = [];
+          // var c={id:'',content:''}
+          // item.push(c);
+          var c={id:'第'+(i+1)+'题 填空题',content:'题目内容:'+data[i].question.content};
+          item.push(c);
+          c={id:'序号',content:'答题内容'}
+          item.push(c)
+          for (let j = 0; j < data_i.length; j++) {
+            var s = { id: j + 1, content: data_i[j].content };
+            item.push(s);
+          }
+          this.excel.push(item);
+        }
+        else if(data[i].question.type === 3){
+          var data_i = data[i].optionList;
+          var item = [];
+          // var c={content:'',num:''}
+          // item.push(c);
+          var c1={content:'第'+(i+1)+'题 评分题',num:'题目内容:'+data[i].question.content};
+          item.push(c1);
+          c={content:'选项内容',num:'选择人数'}
+          item.push(c)
+          for (let j = 0; j < data_i.length; j++) {
+            var c=''+(j+1)+'分';
+            var s = { content:c, num: data_i[j].answerNum };
+            item.push(s);
+          }
+          this.excel.push(item);
+        } 
+        else if(data[i].question.type===1){
+          var data_i = data[i].optionList;
+          var item = [];
+          // var c={content:'',num:''}
+          // item.push(c);
+          var c={content:'第'+(i+1)+'题 多选题',num:'题目内容:'+data[i].question.content};
+          item.push(c);
+          c={content:'选项内容',num:'选择人数'}
+          item.push(c)
+          for (let j = 0; j < data_i.length; j++) {
+            var s = { content: data_i[j].content, num: data_i[j].answerNum };
+            item.push(s);
+          }
+          this.excel.push(item);
+        }
+        else {
+          var data_i = data[i].optionList;
+          var item = [];
+          // var c={content:'',num:''}
+          // item.push(c);
+          var c={content:'第'+(i+1)+'题 单选题',num:'题目内容:'+data[i].question.content};
+          item.push(c);
+          c={content:'选项内容',num:'选择人数'}
+          item.push(c)
+          for (let j = 0; j < data_i.length; j++) {
+            var s = { content: data_i[j].content, num: data_i[j].answerNum };
+            item.push(s);
+          }
+          this.excel.push(item);
+        }
+      }
+    },
+    exportExcel() {
+      // 设置当前日期
+      let time = new Date();
+      let year = time.getFullYear();
+      let month = time.getMonth() + 1;
+      let day = time.getDate();
+      let name = year + "" + month + "" + day;
+      // console.log(name)
+      /* generate workbook object from table */
+      //  .table要导出的是哪一个表格
+      var wb = XLSX.utils.table_to_book(document.querySelector("#demo2"));
+      console.log(wb.Sheets.Sheet1)
+      /* get binary string as output */
+      var wbout = XLSX.write(wb, {
+        bookType: "xlsx",
+        bookSST: true,
+        type: "array"
+      });
+      try {
+        //  name+'.xlsx'表示导出的excel表格名字
+        FileSaver.saveAs(
+          new Blob([wbout], { type: "application/octet-stream" }),
+          name + ".xlsx"
+        );
+      } catch (e) {
+        if (typeof console !== "undefined") console.log(e, wbout);
+      }
+      return wbout;
+    },
     initStates(){
 
       for(var i=0;i<this.data.length;i++){
-        // this.states.i=0;
         this.states[i]=0;
-        // this.states.i=0;
       }
       this.s.states=this.states;
     },
-    getStates(index){
-      // console.log(this.states[index])
-      return this.states[index];
-    },
     setStates(index,num){
       this.$set(this.states, index, num);
-      // console.log(num)
-      // this.s.states[index]=num;
-      
     },
     getCompletionData(data) {
-      for (var i = 0; i < data.length; i++) {
-        // console.log(111)
-        // console.log(data[i].question.type)
+      for (var i = 0; i < this.data.length; i++) {
         if (data[i].question.type === 2) {
           // console.log(11)
           var data_i = data[i].answerList;
@@ -264,7 +444,6 @@ export default {
             var s = { id: j + 1, content: data_i[j].content };
             item.push(s);
           }
-          // console.log(item)
           this.completion.push(item);
         }
         else if(data[i].question.type === 3){
@@ -349,6 +528,7 @@ export default {
         this.getLineData(data);
         this.getCompletionData(data);
         this.initStates();
+        this.getExcelData();
       });
     },
     exportData() {
@@ -370,6 +550,9 @@ export default {
 
         export_json_to_excel(tHeader, data, "学生报名信息汇总"); // 导出的表格名称，根据需要自己命名
       });
+    },
+    getAnswerData(){
+      
     },
     //格式转换，直接复制即可,不需要修改什么
     formatJson(filterVal, jsonData) {
