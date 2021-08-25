@@ -53,9 +53,29 @@
         <!--   第二种方式-->
         <!--        <v-icon small @click="modifyItem_second(item.id)" title="修改第二种办法" > mdi-pencil-outline</v-icon>-->
         <!--   第三种方式-->
+        <v-icon small  @click="dialogVisible=true" title="修改样" > mdi-pencil-outline</v-icon>
+        <el-dialog
+            :visible.sync="dialogVisible"
+            width="50%"
+            height="100%"
+        >
+<!--          <span>修改后可能会造成数据丢失，现提供以下三种方式</span>-->
+          <span
+              slot="footer"
+              class="dialog-footer"
+          >
+              <el-button
+                  type="primary"
+                  @click="dialogVisible = false;"
+              >修改一</el-button>
+              <el-button type="primary" @click="dialogVisible = false">修改二</el-button>
+            <el-button type="primary" @click="modifyItem_third(item.id)">修改三</el-button>
+            </span>
+        </el-dialog>
         <v-icon small @click="modifyItem_third(item.id)" title="修改" > mdi-pencil-outline</v-icon>
         <v-icon small @click="lookUpLink(item.id)" title="查看链接" style="margin-left: 1%"> mdi-magnify</v-icon>
         <v-icon small @click="checkAnalysis(item.id)" title="统计结果" style="margin-left: 1%"> mdi-poll</v-icon>
+        <v-icon small @click="checkItem(item.id)" title="预览" style="margin-left: 1%"> mdi-eye-outline</v-icon>
 <!--=======-->
 <!--        <v-icon small @click="modifyItem_third(item.id)" title="修改">-->
 <!--          mdi-pencil-outline</v-icon-->
@@ -91,6 +111,7 @@ export default {
       sortBy: "date",
       sortDesc: true,
       search: "",
+      dialogVisible:false,
       headers: [
         {
           text: "问卷名称",
@@ -171,6 +192,13 @@ export default {
       var time = new Date().Format("yyyy-MM-dd hh:mm:ss");
       return time;
     },
+    modify(){
+      this.$confirm("此操作将会重新复制一个副本进行修改?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+    },
     modifyItem_first(item) {
       var Data = new FormData();
       Data.append("id", item);
@@ -207,6 +235,7 @@ export default {
       });
     },
     modifyItem_third(item) {
+      this.dialogVisible = false;
       var Data = new FormData();
       Data.append("id", item);
       axios({
@@ -325,7 +354,7 @@ export default {
       var Data = new FormData();
       Data.append("id", item);
       axios({
-        url: "https://www.azur1tee.top/api/get_questionnaire_by_id",
+        url: "https://www.azur1tee.top/api/questionnaire/get_questionnaire_by_id",
         method: "post",
         data: Data,
         headers: {
