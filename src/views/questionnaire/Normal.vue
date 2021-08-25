@@ -59,9 +59,9 @@
                 content="是否允许用户提交问卷后查看填写结果"
                 placement="right"
               >
-                <!-- <el-menu-item>
-                  查看结果 <el-switch v-model="see_result"></el-switch>
-                </el-menu-item> -->
+                <el-menu-item>
+                  查看结果 <el-switch v-model="see_result" @change="seeResultChange"></el-switch>
+                </el-menu-item>
               </el-tooltip>
             </div>
           </el-submenu>
@@ -254,6 +254,9 @@ export default {
     };
   },
   methods: {
+    seeResultChange(){
+      this.send_question_parent()
+    },
     current_questionnaire() {
       this.created_problem_list = [];
       for (var i = 1; i < this.total_problem; i++) {
@@ -306,6 +309,7 @@ export default {
       formData.needNum = -1;
       formData.userId = window.localStorage.getItem("user_id");
       formData.questionList = this.created_problem_list;
+      formData.canSee=this.see_result?1:0
       return formData;
     },
     send_question_parent() {

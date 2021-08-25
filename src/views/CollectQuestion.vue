@@ -8,7 +8,7 @@
           alt="皮肤背景图"
         />
       </div>
-      <div v-show="state && this.type === 1">
+      <div v-show="state && this.type === 1 && this.can_see_result">
         <VoteAnswer
           :headerTitle="headerTitle"
           :subtitle="subtitle"
@@ -16,8 +16,9 @@
         />
         <!-- :questionList="questionList_vote" -->
       </div>
-      <div id="pre" v-show="!(state && this.type === 1)">
-        <div class="s-main ">
+      <div id="pre" v-show="!(state && this.type === 1 && this.can_see_result)">
+        <div v-if="state">感谢您提交问卷</div>
+        <div class="s-main " v-else>
           <!-- 问卷标题 -->
           <div class="header-title">{{ headerTitle }}</div>
           <!-- 问卷副标题 -->
@@ -112,7 +113,6 @@
             <el-button
               type="text"
               @click="dialogVisible = judge()"
-              :disabled="state"
               >提交</el-button
             >
           </div>
@@ -175,6 +175,7 @@ export default {
       end: false,
       type: -1,
       questionList_vote: [],
+      can_see_result:false
     };
   },
   methods: {
@@ -325,6 +326,7 @@ export default {
         console.log(res.data.data);
         this.type = res.data.data.questionnaire.type;
         this.current_questionnaire = res.data.data;
+        this.can_see_result=res.data.data.questionnaire.canSee===1?true:false
         console.log(dateFormat(new Date()));
         if (
           this.current_questionnaire.questionnaire.startTime === null ||

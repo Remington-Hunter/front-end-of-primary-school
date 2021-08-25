@@ -83,9 +83,9 @@
                 content="是否允许用户提交问卷后查看填写结果"
                 placement="right"
               >
-                <!-- <el-menu-item>
+                <el-menu-item>
                   查看结果 <el-switch v-model="see_result"></el-switch>
-                </el-menu-item> -->
+                </el-menu-item>
               </el-tooltip>
             </div>
           </el-submenu>
@@ -260,7 +260,7 @@ export default {
   data() {
     return {
       copyVisible: true,
-      value1: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
+      value1: [new Date(), new Date()],
       title: "",
       description:
         "",
