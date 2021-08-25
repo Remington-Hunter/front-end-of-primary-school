@@ -1,6 +1,12 @@
 <template>
   <div>
-    <el-button @click="clearItem()">清空回收站</el-button>
+    <div style="height:60px">
+      <el-button
+        @click="clearItem()"
+        id="del-all"
+        type="primary"
+      > <i class="el-icon-delete"></i> 清空</el-button>
+    </div>
     <v-card>
       <v-card-title>
         回收站
@@ -102,31 +108,31 @@ export default {
         cancelButtonText: "取消",
         type: "warning",
       })
-          .then(() => {
-            this.$message({
-              type: "success",
-              message: "清空完成!",
-            });
-            console.log(111)
-            axios({
-              url: "https://www.azur1tee.top/api/questionnaire/clear_trashcan",
-              method: "post",
-              data: {},
-              headers: {
-                Authorization: window.localStorage.getItem("authorization"),
-                "Content-Type": "application/json",
-              },
-            }).then((res) => {
-              console.log(res);
-              this.getItem();
-            });
-          })
-          .catch(() => {
-            this.$message({
-              type: "info",
-              message: "已取消清空",
-            });
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "清空完成!",
           });
+          console.log(111)
+          axios({
+            url: "https://www.azur1tee.top/api/questionnaire/clear_trashcan",
+            method: "post",
+            data: {},
+            headers: {
+              Authorization: window.localStorage.getItem("authorization"),
+              "Content-Type": "application/json",
+            },
+          }).then((res) => {
+            console.log(res);
+            this.getItem();
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消清空",
+          });
+        });
     },
     deleteItem(item) {
       this.$confirm("此操作将彻底删除该问卷, 是否继续?", "提示", {
@@ -134,34 +140,34 @@ export default {
         cancelButtonText: "取消",
         type: "warning",
       })
-          .then(() => {
-            this.$message({
-              type: "success",
-              message: "删除成功!",
-            });
-            const index = item;
-            // this.desserts.splice(index, 1)
-            var Data = new FormData();
-            Data.append("id", index);
-            axios({
-              url: "https://www.azur1tee.top/api/questionnaire/delete_questionnaire",
-              method: "post",
-              data: Data,
-              headers: {
-                Authorization: window.localStorage.getItem("authorization"),
-                "Content-Type": "application/json",
-              },
-            }).then((res) => {
-              console.log(res);
-              this.getItem();
-            });
-          })
-          .catch(() => {
-            this.$message({
-              type: "info",
-              message: "已取消删除",
-            });
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "删除成功!",
           });
+          const index = item;
+          // this.desserts.splice(index, 1)
+          var Data = new FormData();
+          Data.append("id", index);
+          axios({
+            url: "https://www.azur1tee.top/api/questionnaire/delete_questionnaire",
+            method: "post",
+            data: Data,
+            headers: {
+              Authorization: window.localStorage.getItem("authorization"),
+              "Content-Type": "application/json",
+            },
+          }).then((res) => {
+            console.log(res);
+            this.getItem();
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
     getItem() {
       console.log(13123);
@@ -244,7 +250,7 @@ export default {
             questionnaire_type = "报名问卷";
           }
           var data = {
-            name: res.data.data[i].title,
+            name: res.data.data[i].title.length>15?res.data.data[i].title.slice(0,15)+'...':res.data.data[i].title,
             type:questionnaire_type,
             state: state,
             id: res.data.data[i].id,
@@ -310,5 +316,9 @@ export default {
 <style scoped>
 .v-card {
   margin: 0 5%;
+}
+#del-all {
+  margin-right: 5%;
+  float: right;
 }
 </style>
