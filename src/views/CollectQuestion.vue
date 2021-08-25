@@ -89,7 +89,7 @@
               </div>
               <!-- 填空题 -->
               <div v-else-if="question.type === 2">
-                <el-input
+                <el-https://www.azur1tee.top
                   type="textarea"
                   autosize
                   placeholder="请输入内容"
