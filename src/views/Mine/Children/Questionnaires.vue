@@ -158,6 +158,7 @@ export default {
     checkAnalysis(id) {
       this.$router.push({ name: "crossanalysis", params: { id: id } });
     },
+    
     now_date(date) {
       Date.prototype.Format = function (fmt) {
         // author: meizz
