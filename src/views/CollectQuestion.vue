@@ -312,6 +312,11 @@ export default {
         data: formData,
       }).then((res) => {
         console.log(res);
+        if(res.data.data.questionnaire.using !== 1){
+          this.can_write_state=false
+          this.$message.error("不在填写时间内");
+          return
+        }
         if (res.data.code === 400) {
           this.can_write_state = false
         }

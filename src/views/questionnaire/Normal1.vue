@@ -23,7 +23,7 @@
           >
             <el-button
               type="primary"
-              @click="copyVisible = false;copyQuestionnaireInfo()"
+              @click="copyVisible = false;copyQuestionnaireInfo();"
             >确 定</el-button>
           </span>
         </el-dialog>
@@ -307,7 +307,6 @@ export default {
         obj.instruction = x[i].question.comment;
         obj.must_write_select = x[i].question.required;
         var list = [];
-        console.log(x[i].optionList.length);
         for (var j = 0; j < x[i].optionList.length; j++) {
           var listitem = {};
           listitem.content = x[i].optionList[j].content;
@@ -394,6 +393,7 @@ export default {
         item.must_write_select = x.must_write_select; //题目是否必选
         list.push(item);
       }
+      console.log(1);
       var obj1 = {};
       var obj1 = {
         data: this.current_questionnaire(),
@@ -404,6 +404,7 @@ export default {
         description: this.description,
         questionnaire_state: "preparing",
       };
+      console.log(1);
       this.$emit("currentQuestionnaire", obj1);
     },
     total_problem_change() {

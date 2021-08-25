@@ -18,7 +18,7 @@
         </el-tab-pane>
 
         <el-tab-pane
-            label="投放"
+            label="发布"
             name="second"
             :disabled="state"
         >
@@ -51,24 +51,6 @@
             :disabled="state"
             @click="getProblemInfo"
         >预览
-        </el-button>
-        <el-button
-            v-if="option"
-            type="primary"
-            icon="el-icon-video-pause"
-            :disabled="state"
-            plain
-            @click="change_stop_state"
-        >暂停回收
-        </el-button>
-        <el-button
-            v-else
-            type="primary"
-            icon="el-icon-video-play"
-            :disabled="state"
-            plain
-            @click="change_start_state()"
-        >开始回收
         </el-button>
         <el-button
             v-if="activeName==='first'"
@@ -156,15 +138,15 @@ export default {
     },
     sendQues() {
       if (this.is_creating === true || this.total_problem === 1) {
-        return
+        return;
       }
       if (this.questionnaire_id !== -1) {
-        this.current_questionnaire.id = this.questionnaire_id
+        this.current_questionnaire.id = this.questionnaire_id;
       }
       console.log(this.questionnaire_id);
       console.log(this.current_questionnaire.id);
-      this.current_questionnaire.type = this.questionnaire_type
-      var formData = this.current_questionnaire
+      this.current_questionnaire.type = this.questionnaire_type;
+      var formData = this.current_questionnaire;
       console.log(JSON.stringify(formData));
       axios({
         method: "post",
@@ -180,7 +162,7 @@ export default {
         // var formData = this.current_questionnaire
         var formData = new FormData();
         // alert(this.current_questionnaire.id);
-        formData.append("questionnaireId", this.current_questionnaire.id)
+        formData.append("questionnaireId", this.current_questionnaire.id);
         axios({
           method: "post",
           url: "https://www.azur1tee.top/api/questionnaire/throw_questionnaire",
@@ -190,12 +172,33 @@ export default {
           },
           data: formData,
         }).then((res) => {
-          this.input = 'https://www.azur1tee.top/vj/';
+          this.input = "https://www.azur1tee.top/vj/";
           this.input += res.data.data;
-          this.lianjie = 'https://www.azur1tee.top/api/qrcode/getQRCode/?content=' + this.input + '&logoUrl=https://www.azur1tee.top/api/getIcon';
-          this.ma = res.data.data
-          if(res.data.code===200||res.data.code===201){
-            this.$message({message:'投放成功',type:'success'})
+          this.lianjie =
+            "https://www.azur1tee.top/api/qrcode/getQRCode/?content=" +
+            this.input +
+            "&logoUrl=https://www.azur1tee.top/api/getIcon";
+          this.ma = res.data.data;
+          if (res.data.code === 200 || res.data.code === 201) {
+            var Data1 = new FormData();
+            Data1.append("questionnaireId", this.current_questionnaire.id);
+            axios({
+              url:
+                "https://www.azur1tee.top/api/questionnaire/publish_questionnaire",
+              method: "post",
+              data: Data1,
+              headers: {
+                Authorization: window.localStorage.getItem("authorization"),
+                "Content-Type": "application/json",
+              },
+            }).then((res) => {
+              console.log(res);
+              if (res.data.code === 200 || res.data.code === 201) {
+                this.$message({ message: "问卷已发布", type: "success" });
+              }
+            });
+          } else {
+            this.$message.error("获取链接失败");
           }
         });
       });
@@ -233,6 +236,7 @@ export default {
       });
     },
     getCurrentQuestionnaire(obj) {
+      console.log(1);
       this.current_questionnaire = obj.data
       this.is_creating = obj.is_creating
       this.total_problem = obj.total_problem
@@ -240,6 +244,7 @@ export default {
       this.title = obj.title
       this.description = obj.description
       this.questionnaire_state = obj.questionnaire_state
+      console.log(this.total_problem);
     },
     changeState(index) {
       if (index === false) {
