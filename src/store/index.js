@@ -15,7 +15,7 @@ export default new Vuex.Store({
 //   plugins: [vuexAlong({
 //     name: 'vuex-along',
 //     local: {
-//         list: [],
+//         list: ['userID'],
 //         // 填写需要的内容
 //         isFilter: true
 //     },

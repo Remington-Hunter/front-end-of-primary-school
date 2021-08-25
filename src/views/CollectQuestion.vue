@@ -107,7 +107,7 @@
           <div class="page-control">
             <el-button
               type="text"
-              @click="dialogVisible = true"
+              @click="dialogVisible = judge()"
               :disabled="state"
             >提交</el-button>
           </div>
@@ -162,7 +162,7 @@ export default {
       iconClasses: ["icon-rate-face-1", "icon-rate-face-2", "icon-rate-face-3"],
       state: false,
       dialogVisible: false,
-
+      // judge_required:false,
       ma: this.$route.params.ma,
       current_questionnaire: { questionnaire: { id: 0 } },
       headerTitle: "社交网站满意度问卷",
@@ -203,7 +203,6 @@ export default {
         this.current_questionnaire = res.data.data;
         console.log(dateFormat(new Date()));
         if (
-          this.current_questionnaire.questionnaire.startTime === null ||
           this.current_questionnaire.questionnaire.startTime === null
         ) {
           this.can_write_state = true;
@@ -321,7 +320,7 @@ export default {
         console.log(dateFormat(new Date()));
         if (
           this.current_questionnaire.questionnaire.startTime === null ||
-          this.current_questionnaire.questionnaire.startTime === null
+          this.current_questionnaire.questionnaire.endTime === null
         ) {
           this.can_write_state = true;
         } else {
@@ -347,7 +346,7 @@ export default {
         })
         .catch((_) => { });
     },
-    submit() {
+    judge() {
       var x = {};
       x.questionnaireId = this.current_questionnaire.questionnaire.id;
       var list = [];
@@ -361,7 +360,7 @@ export default {
           if (y.required) {
             if (y.radio === "") {
               alert("您有必选项未完成!");
-              return;
+              return false;
             } else {
               z.number = y.radio + "";
               z.content = "";
@@ -374,7 +373,7 @@ export default {
           if (y.required) {
             if (y.checkList.length === 0) {
               alert("您有必选项未完成!");
-              return;
+              return false;
             } else {
               z.number = "";
               for (var j = 0; j < y.checkList.length; j++) {
@@ -396,6 +395,72 @@ export default {
           if (y.required) {
             if (y.answer === "") {
               alert("您有必选项未完成!");
+              return false;
+            } else {
+              z.number = "";
+              z.content = y.answer;
+            }
+          } else {
+            z.number = "";
+            z.content = y.answer;
+          }
+        } else if (y.type === 3) {
+          z.number = "" + y.rating;
+          z.content = "";
+        }
+        list.push(z);
+        return true;
+      }
+    },
+    submit() {
+      var x = {};
+      x.questionnaireId = this.current_questionnaire.questionnaire.id;
+      var list = [];
+      console.log(this.questionList.length);
+      console.log(this.questionList);
+      for (var i = 0; i < this.questionList.length; i++) {
+        var z = {};
+        var y = this.questionList[i];
+        z.questionId = y.questionId;
+        if (y.type === 0 || y.type === 6 || y.type === 10) {
+          if (y.required) {
+            if (y.radio === "") {
+              // alert("您有必选项未完成!");
+              return;
+            } else {
+              z.number = y.radio + "";
+              z.content = "";
+            }
+          } else {
+            z.number = y.radio + "";
+            z.content = "";
+          }
+        } else if (y.type === 1 || y.type === 7 || y.type === 11) {
+          if (y.required) {
+            if (y.checkList.length === 0) {
+              // alert("您有必选项未完成!");
+              return;
+            } else {
+              z.number = "";
+              for (var j = 0; j < y.checkList.length; j++) {
+                z.number += y.checkList[j];
+              }
+              z.content = "";
+            }
+          } else {
+            z.number = "";
+            for (var k = 0; k < y.checkList.length; k++) {
+              z.number += y.checkList[k];
+            }
+            z.content = "";
+          }
+        } else if (y.type === 3) {
+          z.number = "" + y.rating;
+          z.content = "";
+        } else if (y.type === 2) {
+          if (y.required) {
+            if (y.answer === "") {
+              // alert("您有必选项未完成!");
               return;
             } else {
               z.number = "";
