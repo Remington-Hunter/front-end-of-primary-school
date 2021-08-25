@@ -59,9 +59,9 @@
                 content="是否允许用户提交问卷后查看填写结果"
                 placement="right"
               >
-                <!-- <el-menu-item>
-                  查看结果 <el-switch v-model="see_result"></el-switch>
-                </el-menu-item> -->
+                <el-menu-item>
+                  查看结果 <el-switch v-model="see_result" @change="seeResultChange"></el-switch>
+                </el-menu-item>
               </el-tooltip>
             </div>
           </el-submenu>
@@ -219,7 +219,7 @@ export default {
   props: ["type"],
   data() {
     return {
-      value1: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
+      value1: [new Date(), new Date()],
       title: "题目",
       description:
         "为了给您提供更好的服务，希望您能抽出几分钟时间，将您的感受和建议告诉我们，我们非常重视每位用户的宝贵意见，期待您的参与！现在我们就马上开始吧！",
@@ -254,6 +254,9 @@ export default {
     };
   },
   methods: {
+    seeResultChange(){
+      this.send_question_parent()
+    },
     current_questionnaire() {
       this.created_problem_list = [];
       for (var i = 1; i < this.total_problem; i++) {
@@ -306,6 +309,7 @@ export default {
       formData.needNum = -1;
       formData.userId = window.localStorage.getItem("user_id");
       formData.questionList = this.created_problem_list;
+      formData.canSee=this.see_result?1:0
       return formData;
     },
     send_question_parent() {
