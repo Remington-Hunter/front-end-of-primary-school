@@ -14,6 +14,7 @@
               @currentQuestionnaire="getCurrentQuestionnaire"
               :type="this.questionnaire_type"
               :copy_questionnaire_info="copy_questionnaire_info"
+              @problem_store="saveQues(1)"
           />
         </el-tab-pane>
 
@@ -41,7 +42,7 @@
         <el-button
             type="primary"
             plain
-            @click="saveQues"
+            @click="saveQues(0)"
             :disabled="state"
         >保存
         </el-button>
@@ -203,7 +204,8 @@ export default {
         });
       });
     },
-    saveQues() {
+    saveQues(index) {
+      console.log(this.is_creating);
       if (this.is_creating === true || this.total_problem === 1) {
         return
       }
@@ -225,7 +227,7 @@ export default {
         data: JSON.stringify(formData),
       }).then((res) => {
         console.log(res);
-        if(res.data.code===200||res.data.code===201){
+        if((res.data.code===200||res.data.code===201) && index===0){
           this.$message({message:'保存成功',type:'success'})
         }
         // this.current_questionnaire.id = res.data.data;
@@ -236,7 +238,6 @@ export default {
       });
     },
     getCurrentQuestionnaire(obj) {
-      console.log(1);
       this.current_questionnaire = obj.data
       this.is_creating = obj.is_creating
       this.total_problem = obj.total_problem
