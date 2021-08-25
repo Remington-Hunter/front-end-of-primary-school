@@ -384,48 +384,43 @@ export default {
       this.total_problem_change();
       this.send_question_parent();
     },
+    changeOrder(index1,index2){
+      let refnamebefore = "question" + index1;
+      let refname = "question" + index2;
+      let x = this.$refs[refname]["0"];
+      let y = this.$refs[refnamebefore]["0"];
+      problem_exchange(x, y);
+    },
     upMove(index) {
       if (index === 1) {
         return;
       }
-      let refnamebefore = "question" + (index - 1);
-      let refname = "question" + index;
-      let x = this.$refs[refname]["0"];
-      let y = this.$refs[refnamebefore]["0"];
-      problem_exchange(x, y);
+      this.changeOrder(index-1,index)
       this.send_question_parent();
     },
     upMoveFirst(index) {
       if (index === 1) {
         return;
       }
-      let refnamebefore = "question" + 1;
-      let refname = "question" + index;
-      let x = this.$refs[refname]["0"];
-      let y = this.$refs[refnamebefore]["0"];
-      problem_exchange(x, y);
+      for(var i=1;i<=index;i++){
+        this.changeOrder(index,i)
+      }
       this.send_question_parent();
     },
     downMove(index) {
       if (index === this.total_problem - 1) {
         return;
       }
-      let refnameafter = "question" + (index + 1);
-      let refname = "question" + index;
-      let x = this.$refs[refname]["0"];
-      let y = this.$refs[refnameafter]["0"];
-      problem_exchange(x, y);
+      this.changeOrder(index,index+1)
       this.send_question_parent();
     },
     downMoveLast(index) {
       if (index === this.total_problem - 1) {
         return;
       }
-      let refnameafter = "question" + (this.total_problem - 1);
-      let refname = "question" + index;
-      let x = this.$refs[refname]["0"];
-      let y = this.$refs[refnameafter]["0"];
-      problem_exchange(x, y);
+      for(var i=this.total_problem-1;i>=index;i--){
+        this.changeOrder(index,i)
+      }
       this.send_question_parent();
     },
     copy(index) {
