@@ -55,7 +55,11 @@ export default {
         },
         grid: { containLabel: true },
         xAxis: {
-          
+          nameLocation:'end',//坐标轴名称显示位置。
+            axisLabel : {//坐标轴刻度标签的相关设置。
+                interval:0,
+                rotate:"45"
+            }
         },
         yAxis: { type: "category"},
         series: [

@@ -28,7 +28,7 @@ export default {
   mounted() {
     //   alert(111)
     // console.log(this.id)
-    // console.log(this.source1)
+    console.log(this.source1)
     this.drawfunc()
   },
   methods: {
@@ -50,7 +50,13 @@ export default {
           //   { product: "Walnut Brownie", 2015: 72.4 },
           // ],
         },
-        xAxis: { type: "category" },
+        xAxis: { type: "category",
+        // nameLocation:'end',//坐标轴名称显示位置。
+        //     axisLabel : {//坐标轴刻度标签的相关设置。
+        //         interval:0,
+        //         rotate:"45"
+        //     }
+        },
         yAxis: {},
         series: [
           { type: "bar" ,barWidth : 40,color:'#008fff'},

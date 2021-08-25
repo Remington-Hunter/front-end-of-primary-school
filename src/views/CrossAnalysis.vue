@@ -622,7 +622,11 @@ export default {
           var data_i = data[i].optionList;
           var item = [];
           for (let j = 0; j < data_i.length; j++) {
-            var s = { 选项: data_i[j].content, 数量: data_i[j].answerNum };
+            var ss=data_i[j].content;
+            if(ss.length>5){
+              ss=ss.slice(0,5)+'...'
+            }
+            var s = { 选项: ss, 数量: data_i[j].answerNum };
             item.push(s);
           }
           this.col.push(item);
@@ -690,7 +694,11 @@ export default {
           var col2 = [];
           for (let j = 0; j < data_i.length; j++) {
             // var s={value:data_i[j].answerNum,name:data_i[j].content}
-            col1.push(data_i[j].content);
+            var ss=data_i[j].content;
+            if(ss.length>5){
+              ss=ss.slice(0,5)+'...'
+            }
+            col1.push(ss);
             col2.push(data_i[j].answerNum);
           }
           item.push(col1);
