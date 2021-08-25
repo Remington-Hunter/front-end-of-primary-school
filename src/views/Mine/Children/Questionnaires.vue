@@ -241,7 +241,7 @@ export default {
         this.$router.push({
           path: "/edit1/" + index,
           query: {
-            id: res.data.data,
+            id: this.questionnaire_id,
             types: index,
           }
         });
@@ -279,7 +279,7 @@ export default {
         this.$router.push({
           path: "/edit1/" + index,
           query: {
-            id: this.questionnaire_id,
+            id: res.data.data,
             type: index
           },
         });
