@@ -59,6 +59,7 @@
           ></v-text-field>
           <div class="del">
             <v-btn
+            v-show="!modify_limit"
               @click="delete_item(index)"
               text
               color="primary"
@@ -201,7 +202,7 @@
       >
         <v-icon small>mdi-pencil</v-icon>修改
       </el-button>
-      <el-button
+      <el-button v-show="!modify_limit"
         @click="deleteProblem"
         size="small"
       >
@@ -213,7 +214,7 @@
       >
         <v-icon small>mdi-content-copy</v-icon>复制
       </el-button>
-      <el-button
+      <el-button v-show="!modify_limit"
         @click="$emit('upMove', problem_number)"
         size="small"
       >
@@ -221,19 +222,19 @@
         <v-icon small>mdi-arrow-up</v-icon>上移
       </el-button>
 
-      <el-button
+      <el-button v-show="!modify_limit"
         @click="$emit('upMoveFirst', problem_number)"
         size="small"
       >
         <v-icon small>mdi-arrow-collapse-up</v-icon>上移到最前
       </el-button>
-      <el-button
+      <el-button v-show="!modify_limit"
         @click="$emit('downMove', problem_number)"
         size="small"
       >
         <v-icon small>mdi-arrow-down</v-icon>下移
       </el-button>
-      <el-button
+      <el-button v-show="!modify_limit"
         @click="$emit('downMoveLast', problem_number)"
         size="small"
       >
@@ -287,7 +288,8 @@ export default {
       problem_type: this.problem_type_copy,
       rules: {
         required: value => !!value || '',
-      }
+      },
+      modify_limit:this.iscopy? (this.copy_info.modify_limit === undefined? false :true):false
     };
   },
   created() {

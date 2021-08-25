@@ -299,7 +299,7 @@ export default {
     seeResultChange(){
       this.send_question_parent()
     },
-    copyQuestionnaireInfo() {
+    copyQuestionnaireInfo(index) {
       this.title = this.copy_questionnaire_info.questionnaire.title
       this.description = this.copy_questionnaire_info.questionnaire.description
       var x = this.copy_questionnaire_info.questionList
@@ -320,6 +320,9 @@ export default {
           list.push(listitem);
         }
         obj.selection_list = list;
+        if(index===1){
+          obj.modify_limit = true
+        }
         this.newProblem1(item.type, true, obj);
       }
       this.is_creating=false
@@ -590,7 +593,7 @@ export default {
       if (JSON.stringify(this.copy_questionnaire_info) !== '{}') {
         clearInterval(interval);
         console.log(this.copy_questionnaire_info);
-        this.copyQuestionnaireInfo()
+        this.copyQuestionnaireInfo(1)
         this.total_problem_change();
       }
     }, 1000);
