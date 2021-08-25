@@ -212,19 +212,7 @@ export default {
     },
     modifyItem_first(item) {
       this.dialog = false;
-      var Data = new FormData();
-      Data.append("id", item);
-      axios({
-        url: "https://www.azur1tee.top/api/questionnaire/edit_qusetionnaire",
-        method: "post",
-        data: Data,
-        headers: {
-          Authorization: window.localStorage.getItem("authorization"),
-          "Content-Type": "application/json",
-        },
-      }).then((res) => {
-        console.log(res);
-        var type = "";
+      var type = "";
         for (var i = 0; i < this.desserts.length; i++) {
           if (this.desserts[i].id === item) {
             type = this.desserts[i].type;
@@ -243,9 +231,9 @@ export default {
           query: {
             id: this.questionnaire_id,
             types: index,
+            modify_type:1
           }
         });
-      });
     },
     modifyItem_third(item) {
       this.dialog = false;
@@ -280,26 +268,14 @@ export default {
           path: "/edit1/" + index,
           query: {
             id: res.data.data,
-            type: index
+            type: index,
+            modify_type:3
           },
         });
       });
     },
     modifyItem_second(item) {
       this.dialog = false;
-      var Data = new FormData();
-      Data.append("id", item);
-      axios({
-        url:
-          "https://www.azur1tee.top/api/questionnaire/delete_and_get_questionnaire_by_id",
-        method: "post",
-        data: Data,
-        headers: {
-          Authorization: window.localStorage.getItem("authorization"),
-          "Content-Type": "application/json",
-        },
-      }).then((res) => {
-        console.log(res);
         var type = "";
         for (var i = 0; i < this.desserts.length; i++) {
           if (this.desserts[i].id === item) {
@@ -319,9 +295,9 @@ export default {
           query: {
             id: this.questionnaire_id,
             types: index,
+            modify_type:2
           }
         })
-      })
     },
     startItem(item) {
       var Data = new FormData();
