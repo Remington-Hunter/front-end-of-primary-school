@@ -22,23 +22,20 @@
       >
         <template v-slot:[`item.actions`]="{ item }">
           <v-icon
-            size="14px"
+            size="22px"
             class="mr-2"
             @click="copyItem(item.id)"
             title="复制"
           >
             mdi-content-copy
           </v-icon>
-          <v-icon
-            small
-            @click="deleteItem(item.id)"
-            title="删除"
+          <v-icon size="22px" @click="deleteItem(item.id)" title="删除">
+            mdi-trash-can-outline</v-icon
           >
-            mdi-trash-can-outline</v-icon>
         </template>
         <template v-slot:[`item.actions1`]="{ item }">
           <v-icon
-            size="14px"
+            size="22px"
             class="mr-2"
             @click="startItem(item.id)"
             title="发布"
@@ -46,74 +43,78 @@
             mdi-arrow-right-drop-circle
           </v-icon>
           <v-icon
-            size="14px"
+            size="22px"
             class="mr-2"
             @click="stopItem(item.id)"
             title="停止"
           >
             mdi-pause-circle
           </v-icon>
-          <v-icon small  @click="dialog=true;get_id(item.id)" title="修改" > mdi-pencil-outline</v-icon>
-            <el-dialog
-                :visible.sync="dialog"
-                width="50%"
-                height="100%"
-            >
-              <!--          <span>修改后可能会造成数据丢失，现提供以下三种方式</span>-->
-              <v-btn @click="modifyItem_first(questionnaire_id)">修改一</v-btn>
-              <v-btn  @click="modifyItem_second(questionnaire_id)">修改二</v-btn>
-              <v-btn @click="modifyItem_third(questionnaire_id)">修改三</v-btn>
-            </el-dialog>
-<!--          第一种方式-->
+          <v-icon
+            size="22px"
+            @click="
+              dialog = true;
+              get_id(item.id);
+            "
+            title="修改"
+          >
+            mdi-pencil-outline</v-icon
+          >
+          <el-dialog :visible.sync="dialog" width="50%" height="100%">
+            <!--          <span>修改后可能会造成数据丢失，现提供以下三种方式</span>-->
+            <v-btn @click="modifyItem_first(questionnaire_id)">修改一</v-btn>
+            <v-btn @click="modifyItem_second(questionnaire_id)">修改二</v-btn>
+            <v-btn @click="modifyItem_third(questionnaire_id)">修改三</v-btn>
+          </el-dialog>
+          <!--          第一种方式-->
           <!--        <v-icon small @click="modifyItem_first(item.id)" title="修改第一种办法" > mdi-pencil-outline</v-icon>-->
           <!--   第二种方式-->
           <!--        <v-icon small @click="modifyItem_second(item.id)" title="修改第二种办法" > mdi-pencil-outline</v-icon>-->
           <!--   第三种方式-->
-<!--          <v-icon-->
-<!--            small-->
-<!--            @click="modifyItem_third(item.id)"-->
-<!--            title="修改"-->
-<!--          > mdi-pencil-outline</v-icon>-->
+          <!--          <v-icon-->
+          <!--            small-->
+          <!--            @click="modifyItem_third(item.id)"-->
+          <!--            title="修改"-->
+          <!--          > mdi-pencil-outline</v-icon>-->
           <v-icon
-            small
+          size="22px"
             @click="lookUpLink(item.id)"
             title="查看链接"
             style="margin-left: 1%"
-          > mdi-link-variant</v-icon>
+          >
+            mdi-link-variant</v-icon
+          >
           <v-icon
-            small
+          size="22px"
             @click="checkAnalysis(item.id)"
             title="统计结果"
             style="margin-left: 1%"
-          > mdi-poll</v-icon>
+          >
+            mdi-poll</v-icon
+          >
           <v-icon
-            small
+          size="22px"
             @click="checkItem(item.id)"
             title="预览"
             style="margin-left: 1%"
-          > mdi-eye-outline</v-icon>
+          >
+            mdi-eye-outline</v-icon
+          >
         </template>
       </v-data-table>
     </v-card>
-    <el-dialog
-      :visible.sync="dialogVisible"
-      width="60%">
+    <el-dialog :visible.sync="dialogVisible" width="60%">
       <d-preview
         :headerTitle="this.title"
         :subtitle="this.description"
         :list="this.preview_list"
       ></d-preview>
-      <span
-        slot="footer"
-        class="dialog-footer"
-      >
-        <el-button
-          type="primary"
-          @click="dialogVisible = false"
-        >确 定</el-button>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogVisible = false"
+          >确 定</el-button
+        >
       </span>
     </el-dialog>
-
   </div>
 </template>
 
@@ -123,19 +124,19 @@ import DPreview from "../../questionnaire/DialogPreview.vue";
 
 export default {
   components: {
-    DPreview
+    DPreview,
   },
   data() {
     return {
       preview_list: [],
-      questionnaire_id:'',
+      questionnaire_id: "",
       title: "题目",
       description: "",
       sortBy: "date",
       sortDesc: true,
       search: "",
-      dialogVisible:false,
-      dialog:false,
+      dialogVisible: false,
+      dialog: false,
       headers: [
         {
           text: "问卷名称",
@@ -156,9 +157,7 @@ export default {
         { text: "操作", value: "actions", sortable: false },
         { text: "更多功能", value: "actions1", sortable: false },
       ],
-      desserts: [
-
-      ],
+      desserts: [],
       data: [],
     };
   },
@@ -169,12 +168,12 @@ export default {
     checkAnalysis(id) {
       this.$router.push({ name: "crossanalysis", params: { id: id } });
     },
-    get_id(id){
+    get_id(id) {
       this.dialog = true;
       this.questionnaire_id = id;
     },
     now_date(date) {
-      Date.prototype.Format = function (fmt) {
+      Date.prototype.Format = function(fmt) {
         // author: meizz
         var o = {
           "M+": this.getMonth() + 1, // 月份
@@ -203,37 +202,37 @@ export default {
       var time = new Date().Format("yyyy-MM-dd hh:mm:ss");
       return time;
     },
-    modify(){
+    modify() {
       this.$confirm("此操作将会重新复制一个副本进行修改?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
-      })
+      });
     },
     modifyItem_first(item) {
       this.dialog = false;
       var type = "";
-        for (var i = 0; i < this.desserts.length; i++) {
-          if (this.desserts[i].id === item) {
-            type = this.desserts[i].type;
-          }
+      for (var i = 0; i < this.desserts.length; i++) {
+        if (this.desserts[i].id === item) {
+          type = this.desserts[i].type;
         }
-        var index = 0;
-        if (type === "普通问卷") {
-          index = 0;
-        } else if (type === "投票问卷") {
-          index = 1;
-        } else if (type === "报名问卷") {
-          index = 2;
-        }
-        this.$router.push({
-          path: "/edit1/" + index,
-          query: {
-            id: this.questionnaire_id,
-            types: index,
-            modify_type:1
-          }
-        });
+      }
+      var index = 0;
+      if (type === "普通问卷") {
+        index = 0;
+      } else if (type === "投票问卷") {
+        index = 1;
+      } else if (type === "报名问卷") {
+        index = 2;
+      }
+      this.$router.push({
+        path: "/edit1/" + index,
+        query: {
+          id: this.questionnaire_id,
+          types: index,
+          modify_type: 1,
+        },
+      });
     },
     modifyItem_third(item) {
       this.dialog = false;
@@ -269,35 +268,35 @@ export default {
           query: {
             id: res.data.data,
             type: index,
-            modify_type:3
+            modify_type: 3,
           },
         });
       });
     },
     modifyItem_second(item) {
       this.dialog = false;
-        var type = "";
-        for (var i = 0; i < this.desserts.length; i++) {
-          if (this.desserts[i].id === item) {
-            type = this.desserts[i].type;
-          }
+      var type = "";
+      for (var i = 0; i < this.desserts.length; i++) {
+        if (this.desserts[i].id === item) {
+          type = this.desserts[i].type;
         }
-        var index = 0;
-        if (type === "普通问卷") {
-          index = 0;
-        } else if (type === "投票问卷") {
-          index = 1;
-        } else if (type === "报名问卷") {
-          index = 2;
-        }
-        this.$router.push({
-          path: '/edit1/' + index,
-          query: {
-            id: this.questionnaire_id,
-            types: index,
-            modify_type:2
-          }
-        })
+      }
+      var index = 0;
+      if (type === "普通问卷") {
+        index = 0;
+      } else if (type === "投票问卷") {
+        index = 1;
+      } else if (type === "报名问卷") {
+        index = 2;
+      }
+      this.$router.push({
+        path: "/edit1/" + index,
+        query: {
+          id: this.questionnaire_id,
+          types: index,
+          modify_type: 2,
+        },
+      });
     },
     startItem(item) {
       var Data = new FormData();
@@ -346,7 +345,8 @@ export default {
       var Data = new FormData();
       Data.append("id", item);
       axios({
-        url: "https://www.azur1tee.top/api/questionnaire/get_questionnaire_by_id",
+        url:
+          "https://www.azur1tee.top/api/questionnaire/get_questionnaire_by_id",
         method: "post",
         data: Data,
         headers: {
@@ -355,10 +355,10 @@ export default {
         },
       }).then((res) => {
         this.preview_list = [];
-        let q = res.data.data
-        this.title = q.questionnaire.title
-        this.description = q.questionnaire.description
-        let x = q.questionList
+        let q = res.data.data;
+        this.title = q.questionnaire.title;
+        this.description = q.questionnaire.description;
+        let x = q.questionList;
         for (var i = 0; i < x.length; i++) {
           var obj = {};
           obj.problem_type = this.problem_type_info(x[i].question.type);
@@ -436,7 +436,8 @@ export default {
     getItem() {
       console.log(13123);
       axios({
-        url: "https://www.azur1tee.top/api/questionnaire/get_questionnaire_list",
+        url:
+          "https://www.azur1tee.top/api/questionnaire/get_questionnaire_list",
         method: "post",
         data: {},
         headers: {
@@ -457,7 +458,7 @@ export default {
           } else if (res.data.data[i].using) {
             state = "已发布";
           }
-          Date.prototype.Format = function (fmt) {
+          Date.prototype.Format = function(fmt) {
             // author: meizz
             var o = {
               "M+": this.getMonth() + 1, // 月份
@@ -515,13 +516,16 @@ export default {
             questionnaire_type = "报名问卷";
           }
           var data = {
-            name: res.data.data[i].title.length > 15 ? res.data.data[i].title.slice(0, 15) + '...' : res.data.data[i].title,
+            name:
+              res.data.data[i].title.length > 15
+                ? res.data.data[i].title.slice(0, 15) + "..."
+                : res.data.data[i].title,
             type: questionnaire_type,
             state: state,
             id: res.data.data[i].id,
             num: res.data.data[i].answerNum,
             date: res.data.data[i].createTime.replace("T", " "),
-            date2: data2
+            date2: data2,
           };
           // console.log(data)
           this.desserts.push(data);
@@ -568,7 +572,5 @@ export default {
 <style scoped>
 .v-card {
   margin: 0 5%;
-  
 }
-
 </style>

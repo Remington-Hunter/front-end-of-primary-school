@@ -410,7 +410,6 @@ export default {
         item.must_write_select = x.must_write_select; //题目是否必选
         list.push(item);
       }
-      console.log(1);
       var obj1 = {};
       var obj1 = {
         data: this.current_questionnaire(),
@@ -478,6 +477,8 @@ export default {
       this.total_problem -= 1;
       this.total_problem_change();
       this.send_question_parent();
+      this.$emit('problem_store')
+      console.log(1);
     },
     upMove(index) {
       if (index === 1) {
@@ -489,6 +490,7 @@ export default {
       let y = this.$refs[refnamebefore]["0"];
       problem_exchange(x, y);
       this.send_question_parent();
+      this.$emit('problem_store')
     },
     upMoveFirst(index) {
       if (index === 1) {
@@ -500,6 +502,7 @@ export default {
       let y = this.$refs[refnamebefore]["0"];
       problem_exchange(x, y);
       this.send_question_parent();
+      this.$emit('problem_store')
     },
     downMove(index) {
       if (index === this.total_problem - 1) {
@@ -511,6 +514,7 @@ export default {
       let y = this.$refs[refnameafter]["0"];
       problem_exchange(x, y);
       this.send_question_parent();
+      this.$emit('problem_store')
     },
     downMoveLast(index) {
       if (index === this.total_problem - 1) {
@@ -522,6 +526,7 @@ export default {
       let y = this.$refs[refnameafter]["0"];
       problem_exchange(x, y);
       this.send_question_parent();
+      this.$emit('problem_store')
     },
     copy(index) {
       let refname = "question" + index;
