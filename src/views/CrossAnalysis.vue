@@ -518,6 +518,10 @@ export default {
         url: "https://www.azur1tee.top/api/answer/get_result",
         method: "post",
         data: Data,
+        headers: {
+          'Authorization': window.localStorage.getItem("authorization"),
+          // "Content-Type": "application/json",
+        },
       }).then((res) => {
         var data = res.data.data;
         console.log(res);
