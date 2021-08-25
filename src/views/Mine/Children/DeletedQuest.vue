@@ -1,5 +1,6 @@
 <template>
   <div>
+    <el-button @click="clearItem()">清空回收站</el-button>
     <v-card>
       <v-card-title>
         回收站
@@ -38,11 +39,10 @@
           </v-btn>
         </template>
       </v-data-table>
-
     </v-card>
+
   </div>
 </template>
-
 
 <script>
 import axios from "axios";
@@ -51,7 +51,7 @@ export default {
     return {
       dialogVisible: true,
       sortBy: "date",
-      sortDesc: false,
+      sortDesc: true,
       user_id: window.localStorage.getItem("user_id"),
       search: "",
       headers: [
@@ -59,6 +59,11 @@ export default {
           text: "问卷名称",
           align: "start",
           value: "name",
+        },
+        {
+          text: "问卷种类",
+          value: "type",
+          sortable: false,
         },
         { text: "状态", value: "state", sortable: false },
         { text: "ID", value: "id" },
@@ -91,6 +96,38 @@ export default {
     this.getItem();
   },
   methods: {
+    clearItem() {
+      this.$confirm("此操作将清空回收站, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+          .then(() => {
+            this.$message({
+              type: "success",
+              message: "清空完成!",
+            });
+            console.log(111)
+            axios({
+              url: "https://www.azur1tee.top/api/questionnaire/clear_trashcan",
+              method: "post",
+              data: {},
+              headers: {
+                Authorization: window.localStorage.getItem("authorization"),
+                "Content-Type": "application/json",
+              },
+            }).then((res) => {
+              console.log(res);
+              this.getItem();
+            });
+          })
+          .catch(() => {
+            this.$message({
+              type: "info",
+              message: "已取消清空",
+            });
+          });
+    },
     deleteItem(item) {
       this.$confirm("此操作将彻底删除该问卷, 是否继续?", "提示", {
         confirmButtonText: "确定",
@@ -198,8 +235,17 @@ export default {
           if (data2 != null) {
             data2 = data2.replace("T", " ");
           }
+          var questionnaire_type = "";
+          if (res.data.data[i].type === 0) {
+            questionnaire_type = "普通问卷";
+          } else if (res.data.data[i].type === 1) {
+            questionnaire_type = "投票问卷";
+          } else if (res.data.data[i].type === 2) {
+            questionnaire_type = "报名问卷";
+          }
           var data = {
             name: res.data.data[i].title,
+            type:questionnaire_type,
             state: state,
             id: res.data.data[i].id,
             num: res.data.data[i].answerNum,

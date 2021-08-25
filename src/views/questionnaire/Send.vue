@@ -42,7 +42,7 @@
                 class="ui-button"
                 id="down"
                 target="_blank"
-                :href="lianjie"
+                :href="download_lianjie"
             >下载二维码</a></el-col>
            <el-button @click="get_new_link()" style="font-size:16px;background:  #f5f5f5;color: #333333" >获得新链接</el-button>
 <!--            <el-col-->
@@ -181,7 +181,7 @@ export default {
         this.input += res.data.data;
         this.ma = res.data.data;
         this.lianjie = 'https://www.azur1tee.top/api/qrcode/getQRCode/?content=' + this.input + '&logoUrl=https://www.azur1tee.top/api/getIcon';
-        // this.download_lianjie = this.lianjie.replace("getQRCode","downloadQRCode")
+        this.download_lianjie = this.lianjie.replace("getQRCode","downloadQRCode")
         // this.download_lianjie = 'https://www.azur1tee.top/api/qrcode/downloadQRCode/?content=' + this.input + '&logoUrl=https://www.azur1tee.top/api/getIcon';
         //alert(this.input);
         // this.download_lianjie = 'https://www.azur1tee.top/api/qrcode/downloadQRCode/?content=' + this.input + '&logoUrl=https://www.azur1tee.top/api/getIcon';
