@@ -14,15 +14,6 @@
           :questionList="questionList_vote"
         />
       </div>
-      <!-- <PublishQuestion
-      :headerTitle="headerTitle"
-      :subtitle="subtitle"
-      :questionList="questionList"
-      :questionnaireId="current_questionnaire.questionnaire.id"
-      @endAnswer="end=true"
-      v-show="can_write_state"
-    /> -->
-      <!-- <div  type="primary" style="text-align: center;display: block" @click="send_Info()"><el-button big>提交</el-button></div> -->
       <div
         id="pre"
         v-show="!(state && this.type === 1)"
