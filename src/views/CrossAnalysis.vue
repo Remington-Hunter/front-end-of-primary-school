@@ -275,6 +275,109 @@
           </div>
         </div>
       </div>
+      <div>
+        <div >
+        <div
+          v-for="(item, index) in data"
+          :key="(index)"
+        >
+          <el-divider></el-divider>
+          <div class="question-head ">
+            <div class="question-title">
+              <span class="question-seq"><b>第{{ index + 1 }}题：</b></span>
+              <span class="text">{{data[index].question.content}}</span>
+              <span
+                v-if="data[index].question.type==0"
+                class="question-type"
+              >单选题</span>
+              <span
+                v-if="data[index].question.type==1"
+                class="question-type"
+              >多选题</span>
+              <span
+                v-if="data[index].question.type==2"
+                class="question-type"
+              >填空题</span>
+              <span
+                v-if="data[index].question.type==3"
+                class="question-type"
+              >评分题</span>
+            </div>
+          </div>
+          <div v-if="data[index].question.type === 2">
+            <el-table
+              :data="excel[index]"
+              style="width: 100%"
+              class="table"
+            >
+              <el-table-column label="">
+                <template slot-scope="scope">
+                  <!-- <i class="el-icon-time"></i> -->
+                  <span style="margin-left: 10px">{{ scope.row.id }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="">
+                <template slot-scope="scope1">
+                  <!-- <i class="el-icon-time"></i> -->
+                  <span style="margin-left: 10px">{{
+                    scope1.row.content
+                  }}</span>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+          <div v-else>
+            <div v-if="excel[index].length !== 0">
+              <!-- <Completion :data1="completion[index]"></Completion> -->
+              <div>
+                <el-table
+                  :data="excel[index]"
+                  style="width: 100%"
+                  class="table"
+                  border
+                >
+                  <el-table-column label="">
+                    <template slot-scope="scope2">
+                      <!-- <i class="el-icon-time"></i> -->
+                      <span style="margin-left: 10px">{{
+                      scope2.row.content
+                    }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="">
+                    <template slot-scope="scope3">
+                      <!-- <i class="el-icon-time"></i> -->
+                      <span style="margin-left: 10px">{{ scope3.row.num }}</span>
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </div>
+            </div>
+            <div v-else>
+              <el-table
+                :data="excel[index]"
+                style="width: 100%"
+              >
+                <el-table-column label="">
+                  <template slot-scope="scope">
+                    <!-- <i class="el-icon-time"></i> -->
+                    <span style="margin-left: 10px">{{ scope.row.id }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="">
+                  <template slot-scope="scope1">
+                    <!-- <i class="el-icon-time"></i> -->
+                    <span style="margin-left: 10px">{{
+                    scope1.row.content
+                  }}</span>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
     </div>
   </div>
 </template>
@@ -312,7 +415,9 @@ export default {
       type: 0,
       states:[],
       s:{},
-      excel:[]
+      excel:[],
+      answer:[],
+      answerData:[],
     };
   },
   components: {
@@ -531,6 +636,33 @@ export default {
         this.getExcelData();
       });
     },
+    getAnswerData(){
+      var Data=new FormData();
+      Data.append("id",this.id);
+      axios({
+        url:'https://www.azur1tee.top/api/',
+        method:'post',
+        data:Data,
+      }).then((res)=>{
+        var data=res.data.data;
+        this.answerData=data;
+        this.getAnswerData(data);
+      })
+    },
+    getAnswerExce(data){
+      for (var i=0;i<data.length;i++){
+        var number=data[i];
+        var item=[];
+        var c={content:'第'+(i+1)+'份问卷',num:''};
+        item.push(c);
+        for(var j=0;j<number.length;j++){
+          if(number[j].type===0){
+            c={content:''+(j+1)+'.单选题',num:number[i].content};
+            item.psuh(c);
+          }
+        }
+      }
+    },
     exportData() {
       this.excelData = this.completion; //将你要导出的数组数据（historyList）赋值给excelDate
       this.export2Excel(); //调用export2Excel函数，填写表头（clomns里的type）和对应字段(historyList里的属性名)
@@ -551,30 +683,15 @@ export default {
         export_json_to_excel(tHeader, data, "学生报名信息汇总"); // 导出的表格名称，根据需要自己命名
       });
     },
-    getAnswerData(){
-      
-    },
+   
     //格式转换，直接复制即可,不需要修改什么
     formatJson(filterVal, jsonData) {
       return jsonData.map((v) => filterVal.map((j) => v[j]));
     },
-    //     exportExcel() {
-    //       require.ensure([], () => {
-    // 　　　　　　　　const { export_json_to_excel } = require('../excel/Export2Excel');
-    // 　　　　　　　　const tHeader = ['序号', 'IMSI', 'MSISDN', '证件号码', '姓名'];
-    // 　　　　　　　　const filterVal = ['ID', 'imsi', 'msisdn', 'address', 'name'];
-    // 　　　　　　　　const list = this.tableData;
-    // 　　　　　　　　const data = this.formatJson(filterVal, list);
-    // 　　　　　　　　export_json_to_excel(tHeader, data, '列表excel');
-    // 　　　　　　})
-    //     },
-    //     formatJson(filterVal, jsonData) {
-    // 　　　　　　return jsonData.map(v => filterVal.map(j => v[j]))
-    // 　　　　},
     goto(type) {
       // this.getseries()
       this.type = type;
-      console.log(121);
+      // console.log(121);
     },
     ComToString(val) {
       return "com" + val;
