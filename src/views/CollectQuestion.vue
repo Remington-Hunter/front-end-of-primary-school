@@ -1,6 +1,12 @@
 <template>
   <div id="c-top">
     <div v-show="can_write_state">
+      <div class="skin-header"><img
+          src="../assets/background_1.png"
+          class="background-image"
+          alt="皮肤背景图"
+        >
+      </div>
       <div v-show="state && this.type === 1">
         <VoteAnswer
           :headerTitle="headerTitle"
@@ -137,6 +143,8 @@
             </span>
           </el-dialog>
         </div>
+      </div>
+      <div class="c-foot"><span>系统由问卷星球提供</span>
       </div>
     </div>
     <div v-show="!can_write_state">
@@ -461,6 +469,31 @@ export default {
   position: relative;
 }
 #c-top {
-  margin-top: 30px;
+  margin-top: -8vh;
+  padding-top: 100px;
+  background: rgba(235, 246, 254, 1);
+  min-height: 100vh;
+}
+.skin-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+.background-image {
+  height: 640px;
+  overflow: hidden;
+  width: 100%;
+  background-size: cover;
+  object-fit: cover;
+  object-position: top;
+}
+.c-foot {
+  padding: 10px 0 40px;
+  text-align: center;
+  color: #999;
+  position: relative;
+  z-index: 10;
 }
 </style>
+

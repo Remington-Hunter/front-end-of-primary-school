@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <v-app>
-      <Header v-show="!this.$route.path.includes('vj/')"/>
+      <Header v-show="!this.$route.path.includes('vj/')" />
       <div id="main">
 
         <router-view />
