@@ -60,8 +60,8 @@
                 height="100%"
             >
               <!--          <span>修改后可能会造成数据丢失，现提供以下三种方式</span>-->
-              <v-btn @click="dialog = false">修改一</v-btn>
-              <v-btn  @click="dialog = false">修改二</v-btn>
+              <v-btn @click="modifyItem_first(questionnaire_id)">修改一</v-btn>
+              <v-btn  @click="modifyItem_second(questionnaire_id)">修改二</v-btn>
               <v-btn @click="modifyItem_third(questionnaire_id)">修改三</v-btn>
             </el-dialog>
 <!--          第一种方式-->
@@ -279,7 +279,7 @@ export default {
         this.$router.push({
           path: "/edit1/" + index,
           query: {
-            id: res.data.data,
+            id: this.questionnaire_id,
             type: index
           },
         });
@@ -317,7 +317,7 @@ export default {
         this.$router.push({
           path: '/edit1/' + index,
           query: {
-            id: res.data.data,
+            id: this.questionnaire_id,
             types: index,
           }
         })
