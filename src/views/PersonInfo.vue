@@ -29,18 +29,18 @@
 
         <!-- <v-card-title>Tonight's availability</v-card-title> -->
         <v-card-actions>
-          <v-btn
+          <!-- <v-btn
             color="deep-purple lighten-2"
             text
             @click="reserve(true)"
           >
             我的账户
-          </v-btn>
+          </v-btn> -->
           <v-btn
             color="deep-purple lighten-2"
             text
             @click="goBack"
-            style="left:45%"
+            style="left:35%"
           >
             返回
           </v-btn>
@@ -76,7 +76,7 @@
           <br>
           <br>
           <div style="margin-left:15px">
-            <span>我的邮箱:{{emile}}</span>
+            <span>我的邮箱:{{email}}</span>
             <v-btn
               elevation="2"
               style="float:right;right:20%"
@@ -88,8 +88,8 @@
           <br>
           <br>
           <div>
-            <v-card-title>我的资源</v-card-title>
-            <v-card
+            <!-- <v-card-title>我的资源</v-card-title> -->
+            <!-- <v-card
               :loading="loading"
               class="mx-auto my-12"
               max-width="250"
@@ -111,7 +111,7 @@
                 短信条数不受限制
               </div>
               <br>
-            </v-card>
+            </v-card> -->
           </div>
 
         </v-card-text>
@@ -120,8 +120,11 @@
           max-width="500px"
         >
           <v-card>
-            <v-card-text>
-              <v-text-field label="请输入新的电话号码"></v-text-field>
+            <v-card-text style="padding-top:30px">
+              <v-text-field
+                label="请输入新的电话号码"
+                v-model="phone"
+              ></v-text-field>
 
               <!-- <small class="grey--text">：</small> -->
             </v-card-text>
@@ -143,18 +146,15 @@
           v-model="emailDialog"
           max-width="500px"
         >
-          <v-card>
+          <v-card style="padding-top:30px">
             <v-card-text>
               <v-text-field
                 label="请输入新的邮箱"
-                v-model="phone"
+                v-model="emailData"
               ></v-text-field>
-
             </v-card-text>
-
             <v-card-actions>
               <v-spacer></v-spacer>
-
               <v-btn
                 text
                 color="primary"
@@ -180,35 +180,36 @@ export default
       phone: '',
       phoneNumber: '未绑定',
       phoneDialog: false,
-      emile: '未绑定',
+      email: '未绑定',
       emailDialog: false,
       username: window.localStorage.getItem('userName'),
       emailData: '',
       flag: true
     }),
-    mounted(){
+    mounted() {
       this.getData();
     },
     methods:
     {
-      getData(){
+      getData() {
         console.log('ffwf')
         axios({
-          url:'http://82.157.97.70/api/user/get_info',
-          method:'post',
+          url: 'http://82.157.97.70/api/get_info',
+          method: 'post',
           headers: {
-          'Authorization': window.localStorage.getItem("authorization"),
-          // "Content-Type": "application/json",
+            'Authorization': window.localStorage.getItem("authorization"),
+            // "Content-Type": "application/json",
           },
-        }).then((res)=>{
+        }).then((res) => {
           console.log(res)
           console.log('daf2t1')
-          if(res.data.data.phone!==null){
-            this.phoneNumber=res.data.phone
+          if (res.data.data.phone !== null) {
+            this.phoneNumber = res.data.data.phone
           }
-          if(res.data.data.email!==null){
-            this.emailNumber=res.data.data.email
+          if (res.data.data.email !== null) {
+            this.email = res.data.data.email
           }
+          console.log(this.email)
         })
       },
       goBack() {
@@ -237,37 +238,49 @@ export default
       updatePhone() {
         var Data = new FormData();
         this.phoneDialog = true
-        Data.append('phone', this.phoneNumber)
+        console.log(this.phone)
+        Data.append('phone', this.phone)
         axios({
-          url: 'http://82.157.97.70/api/user/set_phone',
-          mehtod: 'post',
+          url: 'http://82.157.97.70/api/set_phone',
+          method: 'post',
           data: Data,
           headers: {
-          Authorization: window.localStorage.getItem("authorization"),
-          "Content-Type": "application/json",
+            Authorization: window.localStorage.getItem("authorization"),
+            "Content-Type": "application/json",
           },
         }).then((res) => {
-          this.phoneNumber = this.phone,
-            this.phone = '',
+          console.log(res)
+          this.getData();
+          // this.phoneNumber = this.phone,
+          this.phone = '',
             this.phoneDialog = false
+          if(res.data.code===200 || res.data.code===201){
+            this.$message({message:'绑定成功',type:'success'})
+          }
         })
       },
       updateEmail() {
         var Data = new FormData();
         this.emailDialog = true
-        Data.append('email', this.email)
+        Data.append('email', this.emailData)
         axios({
-          url: 'http://82.157.97.70/api/user/set_email',
-          mehtod: 'post',
+          url: 'http://82.157.97.70/api/set_email',
+          method: 'post',
           data: Data,
           headers: {
-          Authorization: window.localStorage.getItem("authorization"),
-          "Content-Type": "application/json",
+            Authorization: window.localStorage.getItem("authorization"),
+            "Content-Type": "application/json",
           },
         }).then((res) => {
-          this.emailNumber = this.emailData,
-            this.emailData = '',
+          this.getData();
+          this.emailData = ''
             this.emailDialog = false
+          if(res.data.code===200 || res.data.code===201){
+            this.$message({message:'绑定成功',type:'success'})
+          }
+          else if(res.data.code === 400){
+            this.$message.error('邮箱格式不正确')
+          }
         })
       }
     }

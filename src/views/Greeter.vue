@@ -5,7 +5,7 @@
         <div class="logo"><img
             src="../assets/logo.png"
             class="img"
-          ></div>
+          /></div>
         <el-form
           :model="form"
           status-icon
@@ -85,12 +85,12 @@
               </div>
             </el-button>
             <el-divider direction="vertical"></el-divider>
-            <el-button
+            <!-- <el-button
               type="text"
               @click="$router.push('/resetpassword')"
             >
               <div class="text-grey">重置密码</div>
-            </el-button>
+            </el-button> -->
           </el-form-item>
         </el-form>
       </el-card>
@@ -151,13 +151,13 @@ export default {
   },
   methods: {
     open() {
-         this.$alert('请继续登录', '注册成功', {
-          dangerouslyUseHTMLString: true
-        });
-      },
-      openfalse() {
-         
-      },
+      this.$alert('请继续登录', '注册成功', {
+        dangerouslyUseHTMLString: true
+      });
+    },
+    openfalse() {
+
+    },
     submitForm() {
       var password1 = this.form.pass;
       var Data = new FormData();
@@ -183,21 +183,40 @@ export default {
         }
       }).then((res) => {
         // alert(res)
+        console.log(res.data.code)
+        console.log(this.register)
         if (res.data.code === 200 && this.register) {
-          this.open();
+          //   this.$alert(res.data.message, '注册成功', {
+          //   dangerouslyUseHTMLString: true
+          // });
+          this.$message({
+            message: '注册成功',
+            type: 'success'
+          });
           this.register = false;
         }
-        else{
-          this.$alert('继续注册', '注册失败', {
-            dangerouslyUseHTMLString: true
-          });
+        else if (this.register) {
+          // this.$alert('继续注册', '注册失败', {
+          //   dangerouslyUseHTMLString: true
+          // });
+          this.$message.error(res.data.message)
         }
-        if(!(res.data.code === 200 && !this.register)){
-          this.$alert('继续登录', '登录失败', {
-            dangerouslyUseHTMLString: true
-          });
+        else if (!(res.data.code === 200 && !this.register)) {
+          // this.$alert('继续登录', '登录失败', {
+          //   dangerouslyUseHTMLString: true
+          // });
+          this.$message.error(res.data.message)
         }
         else {
+          // this.$alert('', '登录成功', {
+          //   dangerouslyUseHTMLString: true
+          // });
+          this.$message({
+            message: '登录成功',
+            type: 'success'
+          });
+          // alert(1111)
+
           this.responseResult = JSON.stringify(res.data)
           // if (res.data.code === 200) {
           //   localStorage.setItem
@@ -209,9 +228,6 @@ export default {
           localStorage.setItem('authorization', authorization);
           localStorage.setItem('user_id', res.data.data.user_id)
           //登录成功跳转页面
-          this.$alert('', '登录成功', {
-            dangerouslyUseHTMLString: true
-          });
           this.$router.push('/')
         }
       })

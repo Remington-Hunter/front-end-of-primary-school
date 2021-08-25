@@ -1,5 +1,5 @@
 import axios from "axios";
-import Element from "element-ui";
+// import Element from "element-ui";
 import router from './router'
 import store from './store'
 
@@ -20,22 +20,15 @@ axios.interceptors.response.use(response => {
         console.log("===============")
 
         if (res.code === 200) {
-            Element.Message({
-                showClose: true,
+           this.$message({
                 message: response.data.message,
                 type: 'success',
-                duration: 2000
             })
             return response
         } else if (res.code === 201) {
             return response
         } else if (res.code / 100 === 4){
-            Element.Message({
-                showClose: true,
-                message: response.data.message,
-                type: 'error',
-                duration: 2000
-            })
+           this.$message.error(response.data.message)
             console.log("response")
             return Promise.reject(response.data.message)
         }
@@ -48,12 +41,7 @@ axios.interceptors.response.use(response => {
         } else {
             error.message
         }
-        Element.Message({
-            showClose: true,
-            message: error.response.data.message,
-            type: 'error',
-            duration: 2000
-        });
+        this.$message.error(error.response.data.message);
         console.log("error")
         return Promise.reject(error)
 

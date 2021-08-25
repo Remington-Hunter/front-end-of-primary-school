@@ -1,12 +1,13 @@
 <template>
   <div>
     <el-container style="height: 600px;">
-      <el-aside width="200px" style="overflow-x:hidden;">
+      <el-aside
+        width="200px"
+        style="overflow-x:hidden;"
+      >
         <el-menu :default-openeds="['1', '2']">
           <el-submenu index="1">
-            <template slot="title"
-              ><i class="el-icon-menu"></i>题目控件</template
-            >
+            <template slot="title"><i class="el-icon-menu"></i>题目控件</template>
             <el-menu-item
               v-for="(item, index) in problem_list"
               :key="(item, index)"
@@ -48,12 +49,9 @@
             </div>
           </el-submenu>
           <el-submenu index="2">
-            <template slot="title"
-              ><i class="el-icon-setting"></i>问卷设置</template
-            >
+            <template slot="title"><i class="el-icon-setting"></i>问卷设置</template>
             <el-menu-item @click="dialogTimeVisible = true">
-              时间控制</el-menu-item
-            >
+              时间控制</el-menu-item>
             <div v-if="type === 1">
               <el-tooltip
                 class="item"
@@ -71,10 +69,10 @@
       </el-aside>
 
       <el-container
-        style="border-left: solid 2px #e6e6e6;overflow-y:scroll;overflow-x:hidden;height:100%"
+        style=" border-left: solid 2px #e6e6e6;overflow-y:scroll;overflow-x:hidden;height:100%"
         id="demo"
       >
-        <div>
+        <div style="min-width: -webkit-fill-available">
           <div
             @click="dialogFormVisible = true"
             style="cursor: pointer;"
@@ -84,13 +82,26 @@
             <div class="header-subtitle">{{ description }}</div>
             <p class="sub">编辑问卷标题和描述</p>
           </div>
-          <el-dialog title="题目" :visible.sync="dialogFormVisible" center>
+          <el-dialog
+            title="题目"
+            :visible.sync="dialogFormVisible"
+            center
+          >
             <el-form>
-              <el-form-item label="标题" :label-width="formLabelWidth">
-                <el-input v-model="title" autocomplete="off"></el-input>
+              <el-form-item
+                label="标题"
+                :label-width="formLabelWidth"
+              >
+                <el-input
+                  v-model="title"
+                  autocomplete="off"
+                ></el-input>
               </el-form-item>
 
-              <el-form-item label="描述" :label-width="formLabelWidth">
+              <el-form-item
+                label="描述"
+                :label-width="formLabelWidth"
+              >
                 <el-input
                   v-model="description"
                   autocomplete="off"
@@ -100,16 +111,23 @@
                 ></el-input>
               </el-form-item>
             </el-form>
-            <div slot="footer" class="dialog-footer">
+            <div
+              slot="footer"
+              class="dialog-footer"
+            >
               <el-button @click="dialogFormVisible = false">取 消</el-button>
-              <el-button type="primary" @click="dialogFormVisible = false"
-                >确 定</el-button
-              >
+              <el-button
+                type="primary"
+                @click="dialogFormVisible = false"
+              >确 定</el-button>
             </div>
           </el-dialog>
 
           <v-divider></v-divider>
-          <div v-for="(item, index) in created_problem" :key="(item, index)">
+          <div
+            v-for="(item, index) in created_problem"
+            :key="(item, index)"
+          >
             <SingleSelect
               :ref="'question' + item.number"
               :id="'question' + item.number"
@@ -157,8 +175,7 @@
             @change="send_question_parent()"
           ></el-switch>
         </el-row>
-        <el-row
-          >选择时间
+        <el-row>选择时间
           <el-date-picker
             v-model="value1"
             type="datetimerange"
@@ -172,15 +189,17 @@
         </el-row>
       </div>
 
-      <span slot="footer" class="dialog-footer">
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
         <el-button
           type="primary"
           @click="
             dialogTimeVisible = false;
             send_question_parent();
           "
-          >确 定</el-button
-        >
+        >确 定</el-button>
       </span>
     </el-dialog>
   </div>
