@@ -1,11 +1,12 @@
 <template>
   <div id="c-top">
     <div v-show="can_write_state">
-      <div class="skin-header"><img
+      <div class="skin-header">
+        <img
           src="../assets/background_1.png"
           class="background-image"
           alt="皮肤背景图"
-        >
+        />
       </div>
       <div v-show="state && this.type === 1">
         <VoteAnswer
@@ -13,11 +14,9 @@
           :subtitle="subtitle"
           :questionList="questionList_vote"
         />
+        <!-- :questionList="questionList_vote" -->
       </div>
-      <div
-        id="pre"
-        v-show="!(state && this.type === 1)"
-      >
+      <div id="pre" v-show="!(state && this.type === 1)">
         <div class="s-main ">
           <!-- 问卷标题 -->
           <div class="header-title">{{ headerTitle }}</div>
@@ -32,13 +31,16 @@
             <!-- 题目标题 -->
             <div class="question-head ">
               <div class="question-title">
-                <span class="question-seq"><b>{{ index + 1 }}</b></span>
+                <span class="question-seq"
+                  ><b>{{ index + 1 }}</b></span
+                >
                 <span class="text">{{ question.text }}</span>
-                <span
-                  v-if="question.required"
-                  class="question-required"
-                >*</span>
-                <el-tag v-if="[1, 4, 7, 11].includes(question.type)">多选</el-tag>
+                <span v-if="question.required" class="question-required"
+                  >*</span
+                >
+                <el-tag v-if="[1, 4, 7, 11].includes(question.type)"
+                  >多选</el-tag
+                >
               </div>
               <div class="q-instruction">{{ question.comment }}</div>
             </div>
@@ -56,7 +58,8 @@
                     <span
                       class="sel-total"
                       v-show="item.total >= 0 && question.type === 6"
-                    >(剩余{{ item.total }})</span>
+                      >(剩余{{ item.total }})</span
+                    >
                     <div class="q-instruction">{{ item.comment }}</div>
                   </el-radio>
                 </el-radio-group>
@@ -68,11 +71,12 @@
                     v-for="(item, index) in question.selectionList"
                     :key="index"
                     :label="index"
-                  >{{ item.content }}
+                    >{{ item.content }}
                     <span
                       class="sel-total"
                       v-show="item.total >= 0 && question.type === 7"
-                    >(剩余{{ item.total }})</span>
+                      >(剩余{{ item.total }})</span
+                    >
                     <span class="q-instruction">{{ item.comment }}</span>
                   </el-checkbox>
                 </el-checkbox-group>
@@ -109,7 +113,8 @@
               type="text"
               @click="dialogVisible = judge()"
               :disabled="state"
-            >提交</el-button>
+              >提交</el-button
+            >
           </div>
 
           <el-dialog
@@ -119,24 +124,21 @@
             :before-close="handleClose"
           >
             <span>提交后不能够更改,确定提交?</span>
-            <span
-              slot="footer"
-              class="dialog-footer"
-            >
+            <span slot="footer" class="dialog-footer">
               <el-button
                 type="primary"
                 @click="
                   dialogVisible = false;
                   submit();
                 "
-              >确 定</el-button>
+                >确 定</el-button
+              >
               <el-button @click="dialogVisible = false">取 消</el-button>
             </span>
           </el-dialog>
         </div>
       </div>
-      <div class="c-foot"><span>系统由问卷星球提供</span>
-      </div>
+      <div class="c-foot"><span>系统由问卷星球提供</span></div>
     </div>
     <div v-show="!can_write_state">
       <Stop />
@@ -148,14 +150,14 @@
 import axios from "axios";
 import PublishQuestion from "./questionnaire/PublishQuestion.vue";
 import VoteAnswer from "./VoteAnswer.vue";
-import Stop from "./Stop.vue"
+import Stop from "./Stop.vue";
 import { dateFormat } from "../utils/dateFormat";
 export default {
   name: "CollectQuestion",
   components: {
     PublishQuestion,
     VoteAnswer,
-    Stop
+    Stop,
   },
   data() {
     return {
@@ -172,7 +174,7 @@ export default {
       can_write_state: true,
       end: false,
       type: -1,
-      questionList_vote: []
+      questionList_vote: [],
     };
   },
   methods: {
@@ -209,9 +211,9 @@ export default {
         } else {
           if (
             dateFormat(new Date()) >=
-            this.current_questionnaire.questionnaire.startTime &&
+              this.current_questionnaire.questionnaire.startTime &&
             dateFormat(new Date()) <=
-            this.current_questionnaire.questionnaire.endTime
+              this.current_questionnaire.questionnaire.endTime
           ) {
             this.can_write_state = true;
           } else {
@@ -225,31 +227,32 @@ export default {
       this.questionList_vote = [];
       // this.type = this.current_questionnaire.questionnaire.type;
       var list = this.current_questionnaire.questionList;
+      console.log(this.questionList);
       for (var i = 0; i < list.length; i++) {
         let x = {};
         var y = list[i];
         x.type = y.question.type;
         x.text = y.question.content;
         x.selectionList = [];
-        var total_answerNum = 0
+        var total_answerNum = 0;
         for (var j = 0; j < y.optionList.length; j++) {
-          total_answerNum += y.optionList[j].answerNum
+          total_answerNum += y.optionList[j].answerNum;
         }
         for (var j = 0; j < y.optionList.length; j++) {
           let z = {};
           z.comment = y.optionList[j].comment;
-          z.total = y.optionList[j].answerNum + ""
+          z.total = y.optionList[j].answerNum + "";
           z.content = y.optionList[j].content;
-          z.percentage = (y.optionList[j].answerNum / total_answerNum) * 100
-          var num = z.percentage
-          z.percentage = num.toFixed(2)
+          z.percentage = (y.optionList[j].answerNum / total_answerNum) * 100;
+          var num = z.percentage;
+          z.percentage = num.toFixed(2);
           x.selectionList.push(z);
         }
         x.required = y.question.required;
-        x.radio = "";
-        (x.checkList = []),
-          (x.answer = ""),
-          (x.rating = 0),
+        x.radio = this.questionList[i].radio;
+        (x.checkList = this.questionList[i].checkList),
+          (x.answer = this.questionList[i].answer),
+          (x.rating = this.questionList[i].rating),
           (x.comment = y.question.comment);
         x.questionId = y.question.id;
         this.questionList_vote.push(x);
@@ -311,13 +314,13 @@ export default {
         data: formData,
       }).then((res) => {
         console.log(res);
-        if(res.data.data.questionnaire.using !== 1){
-          this.can_write_state=false
+        if (res.data.data.questionnaire.using !== 1) {
+          this.can_write_state = false;
           this.$message.error("不在填写时间内");
-          return
+          return;
         }
         if (res.data.code === 400) {
-          this.can_write_state = false
+          this.can_write_state = false;
         }
         console.log(res.data.data);
         this.type = res.data.data.questionnaire.type;
@@ -331,9 +334,9 @@ export default {
         } else {
           if (
             dateFormat(new Date()) >=
-            this.current_questionnaire.questionnaire.startTime &&
+              this.current_questionnaire.questionnaire.startTime &&
             dateFormat(new Date()) <=
-            this.current_questionnaire.questionnaire.endTime
+              this.current_questionnaire.questionnaire.endTime
           ) {
             this.can_write_state = true;
           } else {
@@ -349,7 +352,7 @@ export default {
         .then((_) => {
           done();
         })
-        .catch((_) => { });
+        .catch((_) => {});
     },
     judge() {
       var x = {};
@@ -498,7 +501,7 @@ export default {
         if (res.data.code === 200 || res.data.code === 201) {
           this.state = true;
           if (this.type === 1) {
-            this.getInfo1()
+            this.getInfo1();
           }
         }
       });
@@ -557,4 +560,3 @@ export default {
   z-index: 10;
 }
 </style>
-
