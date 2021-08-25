@@ -15,6 +15,7 @@
           :visible.sync="copyVisible"
           width="30%"
           :before-close="handleClose"
+          :show-close="false"
         >
           <span>该编辑操作将新建副本</span>
           <span
