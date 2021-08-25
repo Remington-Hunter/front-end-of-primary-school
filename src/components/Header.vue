@@ -58,7 +58,7 @@ export default {
   data() {
     return {
       user: {
-        username: '用户名',
+        username: window.localStorage.getItem('userName'),
         avatar: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
         // avatar: 'http://101.200.164.148/assets/avatars/khKXwpT86OF3hj3K.png'
       },
@@ -71,7 +71,6 @@ export default {
       window.localStorage.removeItem('authorization')
       window.localStorage.removeItem('userName')
       this.check_is_login();
-
     },
     check_is_login() {
       if (window.localStorage.getItem('user_id') != null) {
