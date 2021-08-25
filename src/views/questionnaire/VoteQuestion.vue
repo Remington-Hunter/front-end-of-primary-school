@@ -247,7 +247,7 @@ export default {
       formData.questionList = this.created_problem_list;
       axios({
         method: "post",
-        url: "http://82.157.97.70/api/questionnaire/questionnaire/publish_questionnaire",
+        url: "https://www.azur1tee.top/api/questionnaire/questionnaire/publish_questionnaire",
         headers: {
           Authorization: window.localStorage.getItem("authorization"),
           "Content-Type": "application/json",
@@ -458,7 +458,7 @@ export default {
       formData.questionList = this.created_problem_list;
       axios({
         method: "post",
-        url: "http://82.157.97.70/api/questionnaire/save_questionnaire",
+        url: "https://www.azur1tee.top/api/questionnaire/save_questionnaire",
         headers: {
           Authorization: window.localStorage.getItem("authorization"),
           "Content-Type": "application/json",
