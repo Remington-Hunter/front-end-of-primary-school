@@ -38,7 +38,7 @@
           </li>
         </div>
         <li
-          v-if="$route.path != '/'"
+          v-if="$route.path !== '/'"
           id="h-home"
         >
           <router-link to="/">
@@ -57,6 +57,7 @@ export default {
   name: "Header",
   data() {
     return {
+      // usernames:window.localStorage.getItem('userName'),
       user: {
         username: window.localStorage.getItem('userName'),
         avatar: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
@@ -93,12 +94,12 @@ export default {
   // create(){
   //   this.check_is_login();
   // }
-  created() {
-    if (this.$store.getters.getUser.username) {
-      this.user.username = this.$store.getters.getUser.username
-      this.hasLogin = true
-    }
-  }
+  // created() {
+  //   if (this.$store.getters.getUser.username) {
+  //     this.user.username = this.$store.getters.getUser.username
+  //     this.hasLogin = true
+  //   }
+  // }
 }
 </script>
 

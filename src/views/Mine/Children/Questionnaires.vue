@@ -492,13 +492,13 @@ export default {
             questionnaire_type = "报名问卷";
           }
           var data = {
-            name: res.data.data[i].title,
+            name: res.data.data[i].title.length>15?res.data.data[i].title.slice(0,15)+'...':res.data.data[i].title,
             type: questionnaire_type,
             state: state,
             id: res.data.data[i].id,
             num: res.data.data[i].answerNum,
             date: res.data.data[i].createTime.replace("T", " "),
-            date2: data2,
+            date2: data2
           };
           // console.log(data)
           this.desserts.push(data);
