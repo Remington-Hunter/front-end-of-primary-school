@@ -289,7 +289,8 @@ export default {
       rules: {
         required: value => !!value || '',
       },
-      modify_limit:this.iscopy? (this.copy_info.modify_limit === undefined? false :true):false
+      modify_limit:this.iscopy? (this.copy_info.modify_limit === undefined? false :true):false,
+      question_id:this.iscopy?(this.copy_info.question_id === undefined?  undefined:this.copy_info.question_id):undefined
     };
   },
   created() {

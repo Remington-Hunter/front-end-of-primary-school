@@ -311,6 +311,7 @@ export default {
         obj.name = x[i].question.content;
         obj.instruction = x[i].question.comment;
         obj.must_write_select = x[i].question.required;
+        obj.question_id=x[i].question.id
         var list = [];
         for (var j = 0; j < x[i].optionList.length; j++) {
           var listitem = {};
@@ -337,6 +338,9 @@ export default {
         item.number = x.problem_number;
         item.content = x.name;
         item.comment = x.instruction;
+        if(i<=this.copy_questionnaire_info.questionList.length){
+          item.id=this.copy_questionnaire_info.questionList[i-1].question.id
+        }
         // item.selection_list = x.selection_list;
         item.answer = "";
         item.required = x.must_write_select ? 1 : 0;
@@ -347,6 +351,9 @@ export default {
         let y = [];
         for (var j = 0; j < x.selection_list.length; j++) {
           let z = {};
+          if(i<=this.copy_questionnaire_info.questionList.length && j<this.copy_questionnaire_info.questionList[i-1].optionList.length){
+            z.id=this.copy_questionnaire_info.questionList[i-1].optionList[j].id
+          }
           z.content = x.selection_list[j].content;
           z.limit = x.selection_list[j].total;
           z.comment = x.selection_list[j].comment;
@@ -524,11 +531,6 @@ export default {
       problem_change(y, x);
       console.log(y);
       this.newProblem(x.problem_type, true, y);
-      // this.is_creating = false;
-
-      // let refnamelast = "question" + (this.total_problem - 1);
-      // let y = this.$refs[refnamelast]["0"];
-      // problem_change(y, x);
     },
     problem_type_number(str) {
       switch (str) {
@@ -588,13 +590,13 @@ export default {
     },
   },
   mounted() {
+    var xx=true
     var interval = setInterval(() => {
-      console.log(1);
-      if (JSON.stringify(this.copy_questionnaire_info) !== '{}') {
+      if (JSON.stringify(this.copy_questionnaire_info) !== '{}' && xx===true) {
         clearInterval(interval);
         console.log(this.copy_questionnaire_info);
-        this.copyQuestionnaireInfo(1)
-        this.total_problem_change();
+        this.copyQuestionnaireInfo(this.copy_questionnaire_info.modify_type)
+        xx=false
       }
     }, 1000);
     var x = this.copy_questionnaire_info.questionList;

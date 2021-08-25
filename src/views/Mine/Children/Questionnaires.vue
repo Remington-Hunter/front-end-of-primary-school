@@ -53,7 +53,7 @@
           >
             mdi-pause-circle
           </v-icon>
-          <v-icon small  @click="dialog=true;get_id(item.id)" title="修改样" > mdi-pencil-outline</v-icon>
+          <v-icon small  @click="dialog=true;get_id(item.id)" title="修改" > mdi-pencil-outline</v-icon>
             <el-dialog
                 :visible.sync="dialog"
                 width="50%"
@@ -568,5 +568,7 @@ export default {
 <style scoped>
 .v-card {
   margin: 0 5%;
+  
 }
+
 </style>
