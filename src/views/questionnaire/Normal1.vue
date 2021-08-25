@@ -10,11 +10,12 @@
           :disabled="state12"
         >拷贝原内容</el-button> -->
 
-        <el-dialog
+        <!-- <el-dialog
           title="提示"
           :visible.sync="copyVisible"
           width="30%"
           :before-close="handleClose"
+          :show-close="false"
         >
           <span>该编辑操作将新建副本</span>
           <span
@@ -23,10 +24,10 @@
           >
             <el-button
               type="primary"
-              @click="copyVisible = false;copyQuestionnaireInfo()"
+              @click="copyVisible = false;copyQuestionnaireInfo();"
             >确 定</el-button>
           </span>
-        </el-dialog>
+        </el-dialog> -->
 
         <el-menu :default-openeds="['1', '2']">
           <el-submenu index="1">
@@ -82,9 +83,9 @@
                 content="是否允许用户提交问卷后查看填写结果"
                 placement="right"
               >
-                <!-- <el-menu-item>
-                  查看结果 <el-switch v-model="see_result"></el-switch>
-                </el-menu-item> -->
+                <el-menu-item>
+                  查看结果 <el-switch v-model="see_result" @change="seeResultChange"></el-switch>
+                </el-menu-item>
               </el-tooltip>
             </div>
           </el-submenu>
@@ -168,6 +169,7 @@
                 is_creating = false;
                 total_problem_change();
                 send_question_parent();
+                $emit('problem_store')
               "
               @deleteProblem="deleteProblem"
               @upMove="upMove"
@@ -259,7 +261,7 @@ export default {
   data() {
     return {
       copyVisible: true,
-      value1: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
+      value1: [new Date(), new Date()],
       title: "",
       description:
         "",
@@ -294,6 +296,9 @@ export default {
     };
   },
   methods: {
+    seeResultChange(){
+      this.send_question_parent()
+    },
     copyQuestionnaireInfo() {
       this.title = this.copy_questionnaire_info.questionnaire.title
       this.description = this.copy_questionnaire_info.questionnaire.description
@@ -307,7 +312,6 @@ export default {
         obj.instruction = x[i].question.comment;
         obj.must_write_select = x[i].question.required;
         var list = [];
-        console.log(x[i].optionList.length);
         for (var j = 0; j < x[i].optionList.length; j++) {
           var listitem = {};
           listitem.content = x[i].optionList[j].content;
@@ -318,6 +322,7 @@ export default {
         obj.selection_list = list;
         this.newProblem1(item.type, true, obj);
       }
+      this.is_creating=false
     },
     current_questionnaire() {
       this.created_problem_list = [];
@@ -371,6 +376,7 @@ export default {
       formData.needNum = -1;
       formData.userId = window.localStorage.getItem("user_id");
       formData.questionList = this.created_problem_list;
+      formData.canSee=this.see_result?1:0
       return formData;
     },
     send_question_parent() {
@@ -394,6 +400,7 @@ export default {
         item.must_write_select = x.must_write_select; //题目是否必选
         list.push(item);
       }
+      console.log(1);
       var obj1 = {};
       var obj1 = {
         data: this.current_questionnaire(),
@@ -404,6 +411,7 @@ export default {
         description: this.description,
         questionnaire_state: "preparing",
       };
+      console.log(1);
       this.$emit("currentQuestionnaire", obj1);
     },
     total_problem_change() {
@@ -578,31 +586,12 @@ export default {
   },
   mounted() {
     var interval = setInterval(() => {
-      if (this.copy_questionnaire_info !== {}) {
+      console.log(1);
+      if (JSON.stringify(this.copy_questionnaire_info) !== '{}') {
         clearInterval(interval);
         console.log(this.copy_questionnaire_info);
-        // this.title=this.copy_questionnaire_info.questionnaire.title
-        // this.description=this.copy_questionnaire_info.questionnaire.description
-        // for (var i = 0; i < x.length; i++) {
-        //   let item = {};
-        //   item.type = this.problem_type_info(x[i].question.type);
-        //   var obj = {};
-        //   obj.problem_type = this.problem_type_info(x[i].question.type);
-        //   obj.name = x[i].question.content;
-        //   obj.instruction = x[i].question.comment;
-        //   obj.must_write_select = x[i].question.required;
-        //   var list = [];
-        //   console.log(x[i].optionList.length);
-        //   for (var j = 0; j < x[i].optionList.length; j++) {
-        //     var listitem = {};
-        //     listitem.content = x[i].optionList[j].content;
-        //     listitem.total = x[i].optionList[j].limit;
-        //     listitem.comment = x[i].optionList[j].comment;
-        //     list.push(listitem);
-        //   }
-        //   obj.selection_list = list;
-        //   this.newProblem1(item.type, true, obj);
-        // }
+        this.copyQuestionnaireInfo()
+        this.total_problem_change();
       }
     }, 1000);
     var x = this.copy_questionnaire_info.questionList;

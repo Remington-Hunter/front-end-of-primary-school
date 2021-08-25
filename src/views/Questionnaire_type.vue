@@ -149,7 +149,7 @@ export default {
       }).then((res) => {
         console.log(res);
         this.current_questionnaire.id = res.data.data;
-        this.$router.push({path:"/edit/0",query:{id:this.current_questionnaire.id}})
+        this.$router.push({path:"/edit1/0",query:{id:this.current_questionnaire.id}})
         if (res.data.code === 200 || res.data.code === 201) {
           this.is_saved = true
           this.questionnaire_id = res.data.data
@@ -175,7 +175,7 @@ export default {
       }).then((res) => {
         console.log(res);
         this.current_questionnaire.id = res.data.data;
-        this.$router.push({path:"/edit/1",query:{id:this.current_questionnaire.id}})
+        this.$router.push({path:"/edit1/1",query:{id:this.current_questionnaire.id}})
         if (res.data.code === 200 || res.data.code === 201) {
           this.is_saved = true
           this.questionnaire_id = res.data.data
@@ -200,7 +200,7 @@ export default {
       }).then((res) => {
         console.log(res);
         this.current_questionnaire.id = res.data.data;
-        this.$router.push({path:"/edit/2",query:{id:this.current_questionnaire.id}})
+        this.$router.push({path:"/edit1/2",query:{id:this.current_questionnaire.id}})
         if (res.data.code === 200 || res.data.code === 201) {
           this.is_saved = true
           this.questionnaire_id = res.data.data

@@ -59,9 +59,9 @@
                 content="是否允许用户提交问卷后查看填写结果"
                 placement="right"
               >
-                <!-- <el-menu-item>
-                  查看结果 <el-switch v-model="see_result"></el-switch>
-                </el-menu-item> -->
+                <el-menu-item>
+                  查看结果 <el-switch v-model="see_result" @change="seeResultChange"></el-switch>
+                </el-menu-item>
               </el-tooltip>
             </div>
           </el-submenu>
@@ -220,7 +220,7 @@ export default {
   data() {
     return {
       value1: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
-      title: "题目",
+      title: "无标题",
       description:
         "为了给您提供更好的服务，希望您能抽出几分钟时间，将您的感受和建议告诉我们，我们非常重视每位用户的宝贵意见，期待您的参与！现在我们就马上开始吧！",
       formLabelWidth: "100px",
@@ -254,6 +254,9 @@ export default {
     };
   },
   methods: {
+    seeResultChange(){
+      this.send_question_parent()
+    },
     current_questionnaire() {
       this.created_problem_list = [];
       for (var i = 1; i < this.total_problem; i++) {
@@ -306,6 +309,7 @@ export default {
       formData.needNum = -1;
       formData.userId = window.localStorage.getItem("user_id");
       formData.questionList = this.created_problem_list;
+      formData.canSee=this.see_result?1:0
       return formData;
     },
     send_question_parent() {
@@ -384,7 +388,7 @@ export default {
       this.total_problem_change();
       this.send_question_parent();
     },
-    changeOrder(index1,index2){
+    changeOrder(index1, index2) {
       let refnamebefore = "question" + index1;
       let refname = "question" + index2;
       let x = this.$refs[refname]["0"];
@@ -395,15 +399,15 @@ export default {
       if (index === 1) {
         return;
       }
-      this.changeOrder(index-1,index)
+      this.changeOrder(index - 1, index)
       this.send_question_parent();
     },
     upMoveFirst(index) {
       if (index === 1) {
         return;
       }
-      for(var i=1;i<=index;i++){
-        this.changeOrder(index,i)
+      for (var i = 1; i <= index; i++) {
+        this.changeOrder(index, i)
       }
       this.send_question_parent();
     },
@@ -411,15 +415,15 @@ export default {
       if (index === this.total_problem - 1) {
         return;
       }
-      this.changeOrder(index,index+1)
+      this.changeOrder(index, index + 1)
       this.send_question_parent();
     },
     downMoveLast(index) {
       if (index === this.total_problem - 1) {
         return;
       }
-      for(var i=this.total_problem-1;i>=index;i--){
-        this.changeOrder(index,i)
+      for (var i = this.total_problem - 1; i >= index; i--) {
+        this.changeOrder(index, i)
       }
       this.send_question_parent();
     },

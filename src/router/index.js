@@ -28,18 +28,6 @@ const routes = [{
             import ('../views/PersonInfo.vue'),
     },
     {
-        path: '/normalquestion',
-        name: 'NormalQuestion',
-        component: () =>
-            import ('../views/questionnaire/NormalQuestion')
-    },
-    {
-        path: '/votequestion',
-        name: 'VoteQuestion',
-        component: () =>
-            import ('../views/questionnaire/VoteQuestion')
-    },
-    {
         path: '/mine',
         component: () =>
             import ('../views/Mine/Mine.vue'),
@@ -54,12 +42,6 @@ const routes = [{
                     import ('../views/Mine/Children/DeletedQuest.vue')
             }
         ]
-    },
-    {
-        path: '/sendQuestionnaire',
-        name: 'SendQuestionnaire',
-        component: () =>
-            import ('../views/questionnaire/SendQuestion.vue')
     },
     {
         path: '/preview',

@@ -43,7 +43,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-main style="margin-top:30px">
+    <v-main style="margin:30px 0">
       <router-view></router-view>
     </v-main>
   </div>
