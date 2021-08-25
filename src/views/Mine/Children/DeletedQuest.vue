@@ -107,7 +107,7 @@ export default {
             var Data = new FormData();
             Data.append("id", index);
             axios({
-              url: "http://82.157.97.70/api/questionnaire/delete_questionnaire",
+              url: "https://www.azur1tee.top/api/questionnaire/delete_questionnaire",
               method: "post",
               data: Data,
               headers: {
@@ -129,7 +129,7 @@ export default {
     getItem() {
       console.log(13123);
       axios({
-        url: "http://82.157.97.70/api/questionnaire/get_questionnaire_list",
+        url: "https://www.azur1tee.top/api/questionnaire/get_questionnaire_list",
         method: "post",
         data: {},
         headers: {
@@ -236,7 +236,7 @@ export default {
           var Data = new FormData();
           Data.append("id", index);
           axios({
-            url: "http://82.157.97.70/api/questionnaire/take_out_from_trashcan",
+            url: "https://www.azur1tee.top/api/questionnaire/take_out_from_trashcan",
             method: "post",
             data: Data,
             headers: {

@@ -223,7 +223,7 @@ export default {
       console.log(JSON.stringify(x));
       axios({
         method: "post",
-        url: "http://82.157.97.70/api/answer/submit_answer",
+        url: "https://www.azur1tee.top/api/answer/submit_answer",
         headers: {
           "Content-Type": "application/json",
         },

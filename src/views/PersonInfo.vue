@@ -194,7 +194,7 @@ export default
       getData() {
         console.log('ffwf')
         axios({
-          url: 'http://82.157.97.70/api/get_info',
+          url: 'https://www.azur1tee.top/api/get_info',
           method: 'post',
           headers: {
             'Authorization': window.localStorage.getItem("authorization"),
@@ -241,7 +241,7 @@ export default
         console.log(this.phone)
         Data.append('phone', this.phone)
         axios({
-          url: 'http://82.157.97.70/api/set_phone',
+          url: 'https://www.azur1tee.top/api/set_phone',
           method: 'post',
           data: Data,
           headers: {
@@ -264,7 +264,7 @@ export default
         this.emailDialog = true
         Data.append('email', this.emailData)
         axios({
-          url: 'http://82.157.97.70/api/set_email',
+          url: 'https://www.azur1tee.top/api/set_email',
           method: 'post',
           data: Data,
           headers: {

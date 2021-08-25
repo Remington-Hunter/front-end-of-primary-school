@@ -166,7 +166,7 @@ export default {
       console.log(JSON.stringify(formData));
       axios({
         method: "post",
-        url: "http://82.157.97.70/api/questionnaire/save_questionnaire",
+        url: "https://www.azur1tee.top/api/questionnaire/save_questionnaire",
         headers: {
           Authorization: window.localStorage.getItem("authorization"),
           "Content-Type": "application/json",
@@ -181,16 +181,16 @@ export default {
         formData.append("questionnaireId", this.current_questionnaire.id)
         axios({
           method: "post",
-          url: "http://82.157.97.70/api/questionnaire/throw_questionnaire",
+          url: "https://www.azur1tee.top/api/questionnaire/throw_questionnaire",
           headers: {
             Authorization: window.localStorage.getItem("authorization"),
             "Content-Type": "application/json",
           },
           data: formData,
         }).then((res) => {
-          this.input = 'http://82.157.97.70/vj/';
+          this.input = 'https://www.azur1tee.top/vj/';
           this.input += res.data.data;
-          this.lianjie = 'http://82.157.97.70/api/qrcode/getQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
+          this.lianjie = 'https://www.azur1tee.top/api/qrcode/getQRCode/?content=' + this.input + '&logoUrl=https://www.azur1tee.top/api/getIcon';
           this.ma = res.data.data
           if(res.data.code===200||res.data.code===201){
             this.$message({message:'投放成功',type:'success'})
@@ -212,7 +212,7 @@ export default {
       console.log(JSON.stringify(formData));
       axios({
         method: "post",
-        url: "http://82.157.97.70/api/questionnaire/save_questionnaire",
+        url: "https://www.azur1tee.top/api/questionnaire/save_questionnaire",
         headers: {
           Authorization: window.localStorage.getItem("authorization"),
           "Content-Type": "application/json",
@@ -251,7 +251,7 @@ export default {
       var formData = new FormData();
       formData.append("questionnaireId", this.current_questionnaire.id);
       axios({
-        url: "http://82.157.97.70/api/questionnaire/stop_questionnaire",
+        url: "https://www.azur1tee.top/api/questionnaire/stop_questionnaire",
         method: "post",
         data: formData,
         headers: {
@@ -269,7 +269,7 @@ export default {
       var Data = new FormData();
       Data.append("questionnaireId", this.current_questionnaire.id)
       axios({
-        url: 'http://82.157.97.70/api/questionnaire/publish_questionnaire',
+        url: 'https://www.azur1tee.top/api/questionnaire/publish_questionnaire',
         method: 'post',
         data: Data,
         headers: {
@@ -299,7 +299,7 @@ export default {
       var data1 = new FormData();
       data1.append("id", window.localStorage.getItem("user_id"));
       axios({
-        url: "http://82.157.97.70/api/questionnaire/get_link",
+        url: "https://www.azur1tee.top/api/questionnaire/get_link",
         method: "post",
         data: data1,
         headers: {
@@ -307,9 +307,9 @@ export default {
         },
       }).then((res) => {
         console.log(res);
-        this.input = 'http://82.157.97.70/vj/';
+        this.input = 'https://www.azur1tee.top/vj/';
         this.input += res.data.data;
-        this.lianjie = 'http://82.157.97.70/api/qrcode/getQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
+        this.lianjie = 'https://www.azur1tee.top/api/qrcode/getQRCode/?content=' + this.input + '&logoUrl=https://www.azur1tee.top/api/getIcon';
         //alert(this.input);
       });
     },

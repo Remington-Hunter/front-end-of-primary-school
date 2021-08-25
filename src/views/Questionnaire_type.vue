@@ -140,7 +140,7 @@ export default {
       console.log(JSON.stringify(formData));
       axios({
         method: "post",
-        url: "http://82.157.97.70/api/questionnaire/save_questionnaire",
+        url: "https://www.azur1tee.top/api/questionnaire/save_questionnaire",
         headers: {
           Authorization: window.localStorage.getItem("authorization"),
           "Content-Type": "application/json",
@@ -166,7 +166,7 @@ export default {
       console.log(JSON.stringify(formData));
       axios({
         method: "post",
-        url: "http://82.157.97.70/api/questionnaire/save_questionnaire",
+        url: "https://www.azur1tee.top/api/questionnaire/save_questionnaire",
         headers: {
           Authorization: window.localStorage.getItem("authorization"),
           "Content-Type": "application/json",
@@ -191,7 +191,7 @@ export default {
       console.log(JSON.stringify(formData));
       axios({
         method: "post",
-        url: "http://82.157.97.70/api/questionnaire/save_questionnaire",
+        url: "https://www.azur1tee.top/api/questionnaire/save_questionnaire",
         headers: {
           Authorization: window.localStorage.getItem("authorization"),
           "Content-Type": "application/json",
