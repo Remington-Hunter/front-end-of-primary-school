@@ -40,12 +40,19 @@
         </el-table-column>
       </template>
     </el-table>
+    <draw-more-col id="Col" :series="col"></draw-more-col>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+// import DrawMoreCol from '@/components/DrawMoreCol'
+import DrawMoreCol from '../components/DrawMoreCol.vue';
 export default {
+    components:{
+        DrawMoreCol
+        // DrawMoreCol,
+    },
   data() {
     return {
       id: 0,
@@ -59,12 +66,14 @@ export default {
       ishow: false,
       table1: [],
       headArr:[],
+      col:[],
     };
   },
   mounted() {
     this.id = this.$route.params.id;
     // console.log(this.id);
     this.getAnswerData();
+    
   },
   methods: {
       getString(str){
@@ -224,8 +233,32 @@ export default {
       }
     //   console.log(this.table1);
     this.getprops();
-    
+    this.getCol();
     },
+    getCol(){
+        var item=[];
+        for(var i=0;i<this.headArr.length;i++){
+            item.push(this.headArr[i].label);
+        }
+        console.log(this.headArr.length);
+        this.col.push(item);
+        
+        for(var i=0;i<this.table1.length;i++){
+            item=[];
+            console.log(i);
+            console.log(this.table1[i])
+            var len=this.headArr.length;
+            for(var j=0;j<len;j++){
+                console.log(222);
+                var c=j.toString();
+                console.log(this.table1[i][c])
+                item.push(this.table1[i][c]);
+            }
+            this.col.push(item);
+        }
+        console.log(1111111111)
+        console.log(this.col);
+    }
     
   },
 };
