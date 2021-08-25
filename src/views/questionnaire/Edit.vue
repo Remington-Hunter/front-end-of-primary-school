@@ -9,10 +9,11 @@
             label="编辑"
             name="first"
         >
-          <normal
+          <normal1
               @problem_change="changeState"
               @currentQuestionnaire="getCurrentQuestionnaire"
               :type="this.questionnaire_type"
+              :copy_questionnaire_info="copy_questionnaire_info"
           />
         </el-tab-pane>
 
@@ -106,7 +107,7 @@
   </div>
 </template>
 <script>
-import Normal from "./Normal.vue"
+import Normal1 from "./Normal1.vue"
 // import Normal from "./NormalQuestion"
 import Send from "./Send.vue"
 import DPreview from "./DialogPreview.vue"
@@ -116,7 +117,7 @@ import CrossAnalysis from '@/views/CrossAnalysis'
 
 export default {
   components: {
-    Normal,
+    Normal1,
     Send,
     CrossAnalysis,
     DPreview,
@@ -140,6 +141,7 @@ export default {
       questionnaire_id: -1,
       questionnaire_state: "",
       option: false,
+      copy_questionnaire_info:{}
     };
   },
   methods: {
@@ -192,6 +194,9 @@ export default {
           this.input += res.data.data;
           this.lianjie = 'http://82.157.97.70/api/qrcode/getQRCode/?content=' + this.input + '&logoUrl=http://82.157.97.70/api/getIcon';
           this.ma = res.data.data
+          if(res.data.code===200||res.data.code===201){
+            this.$message({message:'投放成功',type:'success'})
+          }
         });
       });
     },
@@ -217,6 +222,9 @@ export default {
         data: JSON.stringify(formData),
       }).then((res) => {
         console.log(res);
+        if(res.data.code===200||res.data.code===201){
+          this.$message({message:'保存成功',type:'success'})
+        }
         // this.current_questionnaire.id = res.data.data;
         // if (res.data.code === 200 || res.data.code === 201) {
         //   this.is_saved = true
@@ -254,6 +262,9 @@ export default {
       }).then((res) => {
         console.log(res);
         this.change_option();
+        if(res.data.code===200||res.data.code===201){
+          this.$message({message:'问卷已停止回收',type:'success'})
+        }
       });
     },
     change_start_state() {
@@ -270,6 +281,9 @@ export default {
       }).then((res) => {
         console.log(res);
         this.change_option();
+        if(res.data.code===200||res.data.code===201){
+          this.$message({message:'问卷已开始回收',type:'success'})
+        }
       })
     },
     change_option() {
@@ -308,7 +322,20 @@ export default {
     this.questionnaire_id = query.id;
     // alert(this.questionnaire_id)
     console.log(this.questionnaire_id)
-    console.log(this.questionnaire_type);
+    // console.log(this.questionnaire_type);
+    var formData=new FormData()
+    formData.append("id",this.questionnaire_id)
+    axios({
+        url: "http://82.157.97.70/api/questionnaire/get_questionnaire_by_id",
+        method: "post",
+        data: formData,
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+        },
+    }).then(res=>{
+        var x=res.data.data
+        this.copy_questionnaire_info=x
+    })
   }
 };
 </script>

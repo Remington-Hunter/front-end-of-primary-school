@@ -10,6 +10,7 @@
       @click="handleDown"
       class="d-btn"
     ><i class="el-icon-download"></i> 下载PDF</el-button>
+                <el-button  @click="exportExcel" type="primary" class="button" style="width:70px;position:absolute;top:0;right:30px">导出</el-button>
     <div
       class="center"
       id="demo1"
@@ -63,14 +64,6 @@
                   }}</span>
                 </template>
               </el-table-column>
-              <!-- <el-table-column
-                label="content"
-                width="180">
-                <template slot-scope="scope1">
-                  <i class="el-icon-time"></i>
-                  <span style="margin-left: 10px">{{ scope1.row.content }}</span>
-                </template>
-              </el-table-column> -->
             </el-table>
           </div>
           <div v-else>
@@ -190,6 +183,8 @@ import htmlToPdf from "@/assets/js/htmlToPdf";
 import Completion from "../components/Completion";
 // import Export2Excel from '@/excel/Export2Excel'
 // import Blob from '@/excel/Blob'
+import FileSaver from "file-saver";
+import XLSX from "xlsx";
 export default {
   props: {
     id1: {
@@ -221,41 +216,55 @@ export default {
     drawCol,
     Completion,
   },
-  //   created() {},
-  // created() {
-  //   this.id = this.$route.params.id;
-  //   console.log(this.id);
-  //   this.getseries();
-  // },
   mounted() {
     this.id = this.$route.params.id;
     this.getseries();
   },
   
   methods: {
+    exportExcel() {
+      // 设置当前日期
+      let time = new Date();
+      let year = time.getFullYear();
+      let month = time.getMonth() + 1;
+      let day = time.getDate();
+      let name = year + "" + month + "" + day;
+      // console.log(name)
+      /* generate workbook object from table */
+      //  .table要导出的是哪一个表格
+      var wb = XLSX.utils.table_to_book(document.querySelector(".table"));
+      /* get binary string as output */
+      var wbout = XLSX.write(wb, {
+        bookType: "xlsx",
+        bookSST: true,
+        type: "array"
+      });
+      try {
+        //  name+'.xlsx'表示导出的excel表格名字
+        FileSaver.saveAs(
+          new Blob([wbout], { type: "application/octet-stream" }),
+          name + ".xlsx"
+        );
+      } catch (e) {
+        if (typeof console !== "undefined") console.log(e, wbout);
+      }
+      return wbout;
+    },
     initStates(){
 
       for(var i=0;i<this.data.length;i++){
-        // this.states.i=0;
         this.states[i]=0;
-        // this.states.i=0;
       }
       this.s.states=this.states;
     },
     getStates(index){
-      // console.log(this.states[index])
       return this.states[index];
     },
     setStates(index,num){
       this.$set(this.states, index, num);
-      // console.log(num)
-      // this.s.states[index]=num;
-      
     },
     getCompletionData(data) {
       for (var i = 0; i < data.length; i++) {
-        // console.log(111)
-        // console.log(data[i].question.type)
         if (data[i].question.type === 2) {
           // console.log(11)
           var data_i = data[i].answerList;
@@ -264,7 +273,6 @@ export default {
             var s = { id: j + 1, content: data_i[j].content };
             item.push(s);
           }
-          // console.log(item)
           this.completion.push(item);
         }
         else if(data[i].question.type === 3){
