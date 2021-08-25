@@ -96,17 +96,7 @@ const routes = [{
         name: 'send',
         component: () => import('../views/questionnaire/Send.vue')
     },
-    {
-        path: '/try',
-        name: 'Try',
-        component: () =>
-            import ('../views/Mine/Children/Try.vue')
-    },
-    {
-        path:'/ana',
-        name:'Analysis',
-        component: () => import('../views/Analysis.vue')
-    },
+
     {
         path:'/vote',
         name:'VoteAnswer',
