@@ -94,7 +94,11 @@ const routes = [{
         name: 'Edit1',
         component: () =>
             import ('../views/questionnaire/Edit.vue')
-    }
+    },{
+        path:'/success',
+        name:'Success',
+        component: () => import('../views/Success.vue')
+    },
 ]
 
 const router = new VueRouter({

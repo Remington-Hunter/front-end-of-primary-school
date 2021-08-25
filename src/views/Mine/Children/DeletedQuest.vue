@@ -275,7 +275,7 @@ export default {
     recoveryItem(item) {
       this.$confirm("此操作将恢复该问卷, 是否继续?", "提示", {
         confirmButtonText: "确定",
-        cancelButtonText: "取消",
+
         type: "warning",
       })
         .then(() => {

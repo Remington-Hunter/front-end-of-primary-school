@@ -1,113 +1,141 @@
 <template>
-  <v-card>
-    <v-card-title>
-      问卷列表
-      <v-spacer></v-spacer>
-      <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="Search"
-        single-line
-        hide-details
-      ></v-text-field>
-    </v-card-title>
-    <v-data-table
-      :headers="headers"
-      :items="desserts"
-      :search="search"
-      :sort-by.sync="sortBy"
-      :sort-desc.sync="sortDesc"
-      class="elevation-1"
-    >
-      <template v-slot:[`item.actions`]="{ item }">
-        <v-icon
-          size="14px"
-          class="mr-2"
-          @click="copyItem(item.id)"
-          title="复制"
-        >
-          mdi-content-copy
-        </v-icon>
-        <v-icon
-          small
-          @click="deleteItem(item.id)"
-          title="删除"
-        >
-          mdi-trash-can-outline</v-icon>
-      </template>
-      <template v-slot:[`item.actions1`]="{ item }">
-        <v-icon
-          size="14px"
-          class="mr-2"
-          @click="startItem(item.id)"
-          title="发布"
-        >
-          mdi-arrow-right-drop-circle
-        </v-icon>
-        <v-icon
-          size="14px"
-          class="mr-2"
-          @click="stopItem(item.id)"
-          title="停止"
-        >
-          mdi-pause-circle
-        </v-icon>
-        <!--        <v-icon small @click="modifyItem_first(item.id)" title="修改第一种办法" > mdi-pencil-outline</v-icon>-->
-        <!--   第二种方式-->
-        <!--        <v-icon small @click="modifyItem_second(item.id)" title="修改第二种办法" > mdi-pencil-outline</v-icon>-->
-        <!--   第三种方式-->
-        <v-icon
-          small
-          @click="modifyItem_third(item.id)"
-          title="修改"
-        > mdi-pencil-outline</v-icon>
-        <v-icon
-          small
-          @click="lookUpLink(item.id)"
-          title="查看链接"
-          style="margin-left: 1%"
-        > mdi-link-variant</v-icon>
-        <v-icon
-          small
-          @click="checkAnalysis(item.id)"
-          title="统计结果"
-          style="margin-left: 1%"
-        > mdi-poll</v-icon>
-        <!--=======-->
-        <!--        <v-icon small @click="modifyItem_third(item.id)" title="修改">-->
-        <!--          mdi-pencil-outline</v-icon-->
-        <!--        >-->
-        <!--        <v-icon-->
-        <!--          small-->
-        <!--          @click="lookUpLink(item.id)"-->
-        <!--          title="查看链接"-->
-        <!--          style="margin-left: 1%"-->
-        <!--        >-->
-        <!--          mdi-magnify</v-icon-->
-        <!--        >-->
-        <!--        <v-icon-->
-        <!--          small-->
-        <!--          @click="checkAnalysis(item.id)"-->
-        <!--          title="统计结果"-->
-        <!--          style="margin-left: 1%"-->
-        <!--        >-->
-        <!--          mdi-poll</v-icon-->
-        <!--        >-->
-        <!--&gt;>>>>>> e98659df9ebb1070532f1382cc948f76d1158938-->
-      </template>
-    </v-data-table>
-  </v-card>
+  <div>
+    <v-card>
+      <v-card-title>
+        问卷列表
+        <v-spacer></v-spacer>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          single-line
+          hide-details
+        ></v-text-field>
+      </v-card-title>
+      <v-data-table
+        :headers="headers"
+        :items="desserts"
+        :search="search"
+        :sort-by.sync="sortBy"
+        :sort-desc.sync="sortDesc"
+        class="elevation-1"
+      >
+        <template v-slot:[`item.actions`]="{ item }">
+          <v-icon
+            size="14px"
+            class="mr-2"
+            @click="copyItem(item.id)"
+            title="复制"
+          >
+            mdi-content-copy
+          </v-icon>
+          <v-icon
+            small
+            @click="deleteItem(item.id)"
+            title="删除"
+          >
+            mdi-trash-can-outline</v-icon>
+        </template>
+        <template v-slot:[`item.actions1`]="{ item }">
+          <v-icon
+            size="14px"
+            class="mr-2"
+            @click="startItem(item.id)"
+            title="发布"
+          >
+            mdi-arrow-right-drop-circle
+          </v-icon>
+          <v-icon
+            size="14px"
+            class="mr-2"
+            @click="stopItem(item.id)"
+            title="停止"
+          >
+            mdi-pause-circle
+          </v-icon>
+          <v-icon small  @click="dialog=true;get_id(item.id)" title="修改样" > mdi-pencil-outline</v-icon>
+            <el-dialog
+                :visible.sync="dialog"
+                width="50%"
+                height="100%"
+            >
+              <!--          <span>修改后可能会造成数据丢失，现提供以下三种方式</span>-->
+              <v-btn @click="modifyItem_first(questionnaire_id)">修改一</v-btn>
+              <v-btn  @click="modifyItem_second(questionnaire_id)">修改二</v-btn>
+              <v-btn @click="modifyItem_third(questionnaire_id)">修改三</v-btn>
+            </el-dialog>
+<!--          第一种方式-->
+          <!--        <v-icon small @click="modifyItem_first(item.id)" title="修改第一种办法" > mdi-pencil-outline</v-icon>-->
+          <!--   第二种方式-->
+          <!--        <v-icon small @click="modifyItem_second(item.id)" title="修改第二种办法" > mdi-pencil-outline</v-icon>-->
+          <!--   第三种方式-->
+<!--          <v-icon-->
+<!--            small-->
+<!--            @click="modifyItem_third(item.id)"-->
+<!--            title="修改"-->
+<!--          > mdi-pencil-outline</v-icon>-->
+          <v-icon
+            small
+            @click="lookUpLink(item.id)"
+            title="查看链接"
+            style="margin-left: 1%"
+          > mdi-link-variant</v-icon>
+          <v-icon
+            small
+            @click="checkAnalysis(item.id)"
+            title="统计结果"
+            style="margin-left: 1%"
+          > mdi-poll</v-icon>
+          <v-icon
+            small
+            @click="checkItem(item.id)"
+            title="预览"
+            style="margin-left: 1%"
+          > mdi-eye-outline</v-icon>
+        </template>
+      </v-data-table>
+    </v-card>
+    <el-dialog
+      :visible.sync="dialogVisible"
+      width="60%">
+      <d-preview
+        :headerTitle="this.title"
+        :subtitle="this.description"
+        :list="this.preview_list"
+      ></d-preview>
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button
+          type="primary"
+          @click="dialogVisible = false"
+        >确 定</el-button>
+      </span>
+    </el-dialog>
+
+  </div>
 </template>
 
 <script>
 import axios from "axios";
+import DPreview from "../../questionnaire/DialogPreview.vue";
 
 export default {
+  components: {
+    DPreview
+  },
   data() {
     return {
+      preview_list: [],
+      questionnaire_id:'',
+      title: "题目",
+      description: "",
       sortBy: "date",
       sortDesc: true,
       search: "",
+      dialogVisible:false,
+      dialog:false,
       headers: [
         {
           text: "问卷名称",
@@ -129,24 +157,7 @@ export default {
         { text: "更多功能", value: "actions1", sortable: false },
       ],
       desserts: [
-        // {
-        //   name: "问卷1",
-        //   state: 0,
-        //   id: 123456,
-        //   num: 2,
-        //   date: "2020 - 8 - 1",
-        //   // date1:'2020 - 8 - 2',
-        //   date2: "2020 - 8 - 3",
-        // },
-        // {
-        //   name: "问卷2",
-        //   state: 1,
-        //   id: 234567,
-        //   num: 24,
-        //   date: "2021 - 8 - 1",
-        //   // date1:'2020 - 8 - 2',
-        //   date2: "2020 - 8 - 4",
-        // },
+
       ],
       data: [],
     };
@@ -157,6 +168,10 @@ export default {
     },
     checkAnalysis(id) {
       this.$router.push({ name: "crossanalysis", params: { id: id } });
+    },
+    get_id(id){
+      this.dialog = true;
+      this.questionnaire_id = id;
     },
     now_date(date) {
       Date.prototype.Format = function (fmt) {
@@ -188,20 +203,16 @@ export default {
       var time = new Date().Format("yyyy-MM-dd hh:mm:ss");
       return time;
     },
+    modify(){
+      this.$confirm("此操作将会重新复制一个副本进行修改?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+    },
     modifyItem_first(item) {
-      var Data = new FormData();
-      Data.append("id", item);
-      axios({
-        url: "https://www.azur1tee.top/api/questionnaire/edit_qusetionnaire",
-        method: "post",
-        data: Data,
-        headers: {
-          Authorization: window.localStorage.getItem("authorization"),
-          "Content-Type": "application/json",
-        },
-      }).then((res) => {
-        console.log(res);
-        var type = "";
+      this.dialog = false;
+      var type = "";
         for (var i = 0; i < this.desserts.length; i++) {
           if (this.desserts[i].id === item) {
             type = this.desserts[i].type;
@@ -218,13 +229,14 @@ export default {
         this.$router.push({
           path: "/edit1/" + index,
           query: {
-            id: res.data.data,
+            id: this.questionnaire_id,
             types: index,
+            modify_type:1
           }
         });
-      });
     },
     modifyItem_third(item) {
+      this.dialog = false;
       var Data = new FormData();
       Data.append("id", item);
       axios({
@@ -256,25 +268,14 @@ export default {
           path: "/edit1/" + index,
           query: {
             id: res.data.data,
-            type: index
+            type: index,
+            modify_type:3
           },
         });
       });
     },
     modifyItem_second(item) {
-      var Data = new FormData();
-      Data.append("id", item);
-      axios({
-        url:
-          "https://www.azur1tee.top/api/questionnaire/delete_and_get_questionnaire_by_id",
-        method: "post",
-        data: Data,
-        headers: {
-          Authorization: window.localStorage.getItem("authorization"),
-          "Content-Type": "application/json",
-        },
-      }).then((res) => {
-        console.log(res);
+      this.dialog = false;
         var type = "";
         for (var i = 0; i < this.desserts.length; i++) {
           if (this.desserts[i].id === item) {
@@ -292,11 +293,11 @@ export default {
         this.$router.push({
           path: '/edit1/' + index,
           query: {
-            id: res.data.data,
+            id: this.questionnaire_id,
             types: index,
+            modify_type:2
           }
         })
-      })
     },
     startItem(item) {
       var Data = new FormData();
@@ -345,7 +346,7 @@ export default {
       var Data = new FormData();
       Data.append("id", item);
       axios({
-        url: "https://www.azur1tee.top/api/get_questionnaire_by_id",
+        url: "https://www.azur1tee.top/api/questionnaire/get_questionnaire_by_id",
         method: "post",
         data: Data,
         headers: {
@@ -353,7 +354,29 @@ export default {
           "Content-Type": "application/json",
         },
       }).then((res) => {
-        console.log(res);
+        this.preview_list = [];
+        let q = res.data.data
+        this.title = q.questionnaire.title
+        this.description = q.questionnaire.description
+        let x = q.questionList
+        for (var i = 0; i < x.length; i++) {
+          var obj = {};
+          obj.problem_type = this.problem_type_info(x[i].question.type);
+          obj.name = x[i].question.content;
+          obj.instruction = x[i].question.comment;
+          obj.must_write_select = x[i].question.required;
+          var list = [];
+          for (var j = 0; j < x[i].optionList.length; j++) {
+            var listitem = {};
+            listitem.content = x[i].optionList[j].content;
+            listitem.total = x[i].optionList[j].limit;
+            listitem.comment = x[i].optionList[j].comment;
+            list.push(listitem);
+          }
+          obj.selection_list = list;
+          this.preview_list.push(obj);
+        }
+        this.dialogVisible = true;
       });
     },
     toggleOrder() {
@@ -492,7 +515,7 @@ export default {
             questionnaire_type = "报名问卷";
           }
           var data = {
-            name: res.data.data[i].title.length>15?res.data.data[i].title.slice(0,15)+'...':res.data.data[i].title,
+            name: res.data.data[i].title.length > 15 ? res.data.data[i].title.slice(0, 15) + '...' : res.data.data[i].title,
             type: questionnaire_type,
             state: state,
             id: res.data.data[i].id,
@@ -506,6 +529,34 @@ export default {
         }
         // 没写全之后再补
       });
+    },
+    problem_type_info(num) {
+      switch (num) {
+        case 0:
+          return "单选题";
+          break;
+        case 1:
+          return "多选题";
+          break;
+        case 2:
+          return "填空题";
+          break;
+        case 3:
+          return "评分题";
+          break;
+        case 6:
+          return "报名单选题";
+          break;
+        case 7:
+          return "报名多选题";
+          break;
+        case 10:
+          return "投票单选题";
+          break;
+        case 11:
+          return "投票多选题";
+          break;
+      }
     },
   },
   mounted() {
