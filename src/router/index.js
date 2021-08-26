@@ -86,6 +86,12 @@ const routes = [{
         name: 'Edit1',
         component: () =>
             import ('../views/questionnaire/Edit.vue')
+    },
+    {
+        path: '/try',
+        name: 'Try',
+        component: () =>
+            import ('../views/Try.vue')
     }, {
         path: '/success',
         name: 'Success',

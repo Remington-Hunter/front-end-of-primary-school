@@ -61,6 +61,7 @@
             class="mr-2"
             @click="startItem(item.id)"
             title="发布"
+            color="green"
           >
             mdi-arrow-right-drop-circle
           </v-icon>
@@ -69,6 +70,7 @@
             class="mr-2"
             @click="stopItem(item.id)"
             title="停止"
+            color="orange"
           >
             mdi-pause-circle
           </v-icon>
@@ -79,6 +81,7 @@
               get_id(item.id);
             "
             title="修改"
+            color="brown darken-1"
           >
             mdi-pencil-outline</v-icon>
 
@@ -96,6 +99,7 @@
             size="22px"
             @click="lookUpLink(item.id)"
             title="查看链接"
+            color="blue darken-2"
             style="margin-left: 1%"
           >
             mdi-link-variant</v-icon>
@@ -104,6 +108,7 @@
             @click="checkAnalysis(item.id)"
             title="统计结果"
             style="margin-left: 1%"
+            color="purple darken-2"
           >
             mdi-poll</v-icon>
           <v-icon
@@ -111,6 +116,7 @@
             @click="checkItem(item.id)"
             title="预览"
             style="margin-left: 1%"
+            color="teal darken-2"
           >
             mdi-eye-outline</v-icon>
         </template>
