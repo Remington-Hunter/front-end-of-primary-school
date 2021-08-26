@@ -102,7 +102,7 @@ export default {
     }
   },
   methods:{
-    getlocation(){
+    get_location(){
       let _this = this
       var geolocation = new BMap.Geolocation()
       geolocation.getCurrentPosition(function(r) {
@@ -127,7 +127,7 @@ export default {
     }
   },
   mounted() {
-      this.getlocation();
+      this.get_location();
   }}
 </script>
 
