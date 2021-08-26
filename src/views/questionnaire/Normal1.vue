@@ -331,8 +331,10 @@ export default {
       this.created_problem_list = [];
       for (var i = 1; i < this.total_problem; i++) {
         let index = "question" + i;
-        let x = this.$refs[index]["0"]; //组件的所有信息
-        console.log(x);
+        let index1 = (Object.keys(this.$refs[index]).length-1)+""
+        console.log(index1);
+        let x = this.$refs[index][index1]; //组件的所有信息
+      console.log(this.$refs[index])
         let item = {};
         // item.problem_type = x.problem_type;
         item.number = x.problem_number;
@@ -402,7 +404,8 @@ export default {
       var list = [];
       for (var i = 1; i < this.total_problem; i++) {
         let index = "question" + i;
-        let x = this.$refs[index]["0"]; //组件的所有信息
+        let index1 = (Object.keys(this.$refs[index]).length-1)+""
+        let x = this.$refs[index][index1]; //组件的所有信息
         let item = {};
         item.problem_type = x.problem_type; //问题种类
         item.problem_number = x.problem_number; //问题题号
