@@ -11,18 +11,18 @@
               class="img"
             /></div><span style="padding-left:8px">问卷星球</span>
         </router-link>
-        <router-link
-          to="/mine"
+        <a @click="myquestionnaire"
           class="my"
         >
-          <i class="el-icon-document"></i> 我的问卷
-        </router-link>
-        <router-link
+          <i class="el-icon-document" ></i> 我的问卷
+        </a>
+        <a
+            @click="toQuestionnaire_type()"
           to="/Questionnaire_type"
           class="my"
         >
           <i class="el-icon-document-add"></i> 新建问卷
-        </router-link>
+        </a>
       </div>
       <ul>
         <li v-show="!hasLogin">
@@ -74,6 +74,14 @@ export default {
     }
   },
   methods: {
+    toQuestionnaire_type(){
+      if(this.ishow!=null){
+        this.$router.push('/Questionnaire_type')
+      }
+      else{
+        this.$router.push('/login')
+      }
+    },
     logout() {
       window.localStorage.removeItem('user_id')
       window.localStorage.removeItem('authorization')
@@ -88,6 +96,14 @@ export default {
         this.hasLogin = false
       }
       // this.$router.go(0)
+    },
+    myquestionnaire(){
+      if(this.ishow!=null){
+        this.$router.push('/mine')
+      }
+      else{
+        this.$router.push('/login')
+      }
     }
   },
   mounted() {
