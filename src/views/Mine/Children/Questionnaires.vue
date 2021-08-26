@@ -319,6 +319,8 @@ export default {
         index = 1;
       } else if (type === "报名问卷") {
         index = 2;
+      }else if (type === "考试问卷") {
+        index = 3;
       }
       this.$router.push({
         path: "/edit1/" + index,
@@ -357,7 +359,9 @@ export default {
           index = 1;
         } else if (types === "报名问卷") {
           index = 2;
-        }
+        }else if (types === "考试问卷") {
+        index = 3;
+      }
         this.$router.push({
           path: "/edit1/" + index,
           query: {
@@ -383,6 +387,8 @@ export default {
         index = 1;
       } else if (type === "报名问卷") {
         index = 2;
+      }else if (type === "考试问卷") {
+        index = 3;
       }
       this.$router.push({
         path: "/edit1/" + index,
@@ -609,6 +615,8 @@ export default {
             questionnaire_type = "投票问卷";
           } else if (res.data.data[i].type === 2) {
             questionnaire_type = "报名问卷";
+          }else if (res.data.data[i].type === 3) {
+            questionnaire_type = "考试问卷";
           }
           var data = {
             name: res.data.data[i].title,
