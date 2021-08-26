@@ -173,41 +173,7 @@
         </div>
       </div>
     </div>
-    <!-- 下面的内容不用管，我是不会让他显示的，只是为了导出数据 -->
-    <div id="demo2" v-show="true">
-      <!-- <div>
-        <div>
-        <div
-          v-for="(item, index) in answerData"
-          :key="(index)"
-        >
-          <el-divider></el-divider>
-          <div >
-              <div>
-                <el-table
-                  :data="answer[index]"
-                  style="width: 100%"
-                  class="table"
-                  border
-                >
-                  <el-table-column label="">
-                    <template slot-scope="scope2">
-                      <span style="margin-left: 10px">{{
-                      scope2.row.content
-                    }}</span>
-                    </template>
-                  </el-table-column>
-                  <el-table-column label="">
-                    <template slot-scope="scope3">
-                      <span style="margin-left: 10px">{{ scope3.row.num }}</span>
-                    </template>
-                  </el-table-column>
-                </el-table>
-              </div>
-            </div>
-        </div>
-      </div>
-      </div> -->
+    <div id="demo2" v-show="false">
       <el-table :data="table1" border height="550" style="width: 100%">
       <template v-for="(item, index) in headArr">
         <el-table-column
