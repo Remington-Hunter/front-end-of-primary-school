@@ -281,7 +281,7 @@ export default {
       answer: "", //填空题答案
       rating: 0, //评分题答案
       cancel_button: true,
-      must_write_select: false,
+      must_write_select: this.iscopy ? this.copy_info.must_write_select:false,
       items: ["是", "否"],
       iconClasses: ['icon-rate-face-1', 'icon-rate-face-2', 'icon-rate-face-3'],
       has_exchanged: false,

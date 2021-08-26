@@ -133,13 +133,13 @@ export default {
       htmlToPdf.downloadPDF(document.querySelector("#demo"), "我的问卷");
     },
     getProblemInfo() {
-      if (this.is_creating === true || this.total_problem === 1) {
+      if (this.is_creating === true) {
         return
       }
       this.dialogVisible = true;
     },
     sendQues() {
-      if (this.is_creating === true || this.total_problem === 1) {
+      if (this.is_creating === true) {
         return;
       }
       if (this.questionnaire_id !== -1) {
@@ -214,7 +214,7 @@ export default {
     },
     saveQues(index) {
       console.log(this.is_creating);
-      if (this.is_creating === true || this.total_problem === 1) {
+      if (this.is_creating === true) {
         return
       }
       if (this.questionnaire_id !== -1) {

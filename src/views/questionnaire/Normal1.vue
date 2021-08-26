@@ -310,7 +310,8 @@ export default {
         obj.problem_type = this.problem_type_info(x[i].question.type);
         obj.name = x[i].question.content;
         obj.instruction = x[i].question.comment;
-        obj.must_write_select = x[i].question.required;
+        obj.must_write_select = x[i].question.required === 1 ? true :false;
+        console.log(x[i].question.required);
         obj.question_id=x[i].question.id
         var list = [];
         for (var j = 0; j < x[i].optionList.length; j++) {
@@ -346,8 +347,6 @@ export default {
         item.required = x.must_write_select ? 1 : 0;
         item.point = 0;
         item.type = this.problem_type_number(x.problem_type);
-        console.log(this.problem_type_number(x.problem_type));
-        console.log(item.type);
         let y = [];
         for (var j = 0; j < x.selection_list.length; j++) {
           let z = {};
@@ -390,7 +389,7 @@ export default {
       return formData;
     },
     send_question_parent() {
-      if (this.is_creating === true || this.total_problem === 1) {
+      if (this.is_creating === true) {
         return;
       }
       var list = [];
@@ -420,7 +419,6 @@ export default {
         description: this.description,
         questionnaire_state: "preparing",
       };
-      console.log(1);
       this.$emit("currentQuestionnaire", obj1);
     },
     total_problem_change() {
@@ -478,7 +476,6 @@ export default {
       this.total_problem_change();
       this.send_question_parent();
       this.$emit('problem_store')
-      console.log(1);
     },
     upMove(index) {
       if (index === 1) {
