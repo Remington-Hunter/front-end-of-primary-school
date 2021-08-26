@@ -1,10 +1,7 @@
 <template>
   <div>
     <el-container style="height: 600px;">
-      <el-aside
-        width="200px"
-        style="overflow-x:hidden;"
-      >
+      <el-aside width="200px" style="overflow-x:hidden;">
         <!-- <el-button
           @click="copyQuestionnaireInfo();state12=true"
           :disabled="state12"
@@ -31,7 +28,9 @@
 
         <el-menu :default-openeds="['1', '2']">
           <el-submenu index="1">
-            <template slot="title"><i class="el-icon-menu"></i>题目控件</template>
+            <template slot="title"
+              ><i class="el-icon-menu"></i>题目控件</template
+            >
             <el-menu-item
               v-for="(item, index) in problem_list"
               :key="(item, index)"
@@ -71,11 +70,24 @@
                 {{ item.text }}
               </el-menu-item>
             </div>
+            <div v-if="type === 3">
+              <el-menu-item
+                v-for="(item, index) in problem_list3"
+                :key="(item, index)"
+                @click="newProblem(item.text, false, {})"
+              >
+                <v-icon>{{ item.icon }}</v-icon>
+                {{ item.text }}
+              </el-menu-item>
+            </div>
           </el-submenu>
           <el-submenu index="2">
-            <template slot="title"><i class="el-icon-setting"></i>问卷设置</template>
+            <template slot="title"
+              ><i class="el-icon-setting"></i>问卷设置</template
+            >
             <el-menu-item @click="dialogTimeVisible = true">
-              时间控制</el-menu-item>
+              时间控制</el-menu-item
+            >
             <div v-if="type === 1 || type === 3">
               <el-tooltip
                 class="item"
@@ -84,7 +96,11 @@
                 placement="right"
               >
                 <el-menu-item>
-                  查看结果 <el-switch v-model="see_result" @change="seeResultChange"></el-switch>
+                  查看结果
+                  <el-switch
+                    v-model="see_result"
+                    @change="seeResultChange"
+                  ></el-switch>
                 </el-menu-item>
               </el-tooltip>
             </div>
@@ -106,26 +122,13 @@
             <div class="header-subtitle">{{ description }}</div>
             <p class="sub">编辑问卷标题和描述</p>
           </div>
-          <el-dialog
-            title="题目"
-            :visible.sync="dialogFormVisible"
-            center
-          >
+          <el-dialog title="题目" :visible.sync="dialogFormVisible" center>
             <el-form>
-              <el-form-item
-                label="标题"
-                :label-width="formLabelWidth"
-              >
-                <el-input
-                  v-model="title"
-                  autocomplete="off"
-                ></el-input>
+              <el-form-item label="标题" :label-width="formLabelWidth">
+                <el-input v-model="title" autocomplete="off"></el-input>
               </el-form-item>
 
-              <el-form-item
-                label="描述"
-                :label-width="formLabelWidth"
-              >
+              <el-form-item label="描述" :label-width="formLabelWidth">
                 <el-input
                   v-model="description"
                   autocomplete="off"
@@ -135,23 +138,16 @@
                 ></el-input>
               </el-form-item>
             </el-form>
-            <div
-              slot="footer"
-              class="dialog-footer"
-            >
+            <div slot="footer" class="dialog-footer">
               <el-button @click="dialogFormVisible = false">取 消</el-button>
-              <el-button
-                type="primary"
-                @click="dialogFormVisible = false"
-              >确 定</el-button>
+              <el-button type="primary" @click="dialogFormVisible = false"
+                >确 定</el-button
+              >
             </div>
           </el-dialog>
 
           <v-divider></v-divider>
-          <div
-            v-for="(item, index) in created_problem"
-            :key="(item, index)"
-          >
+          <div v-for="(item, index) in created_problem" :key="(item, index)">
             <SingleSelect
               :ref="'question' + item.number"
               :id="'question' + item.number"
@@ -169,7 +165,7 @@
                 is_creating = false;
                 total_problem_change();
                 send_question_parent();
-                $emit('problem_store')
+                $emit('problem_store');
               "
               @deleteProblem="deleteProblem"
               @upMove="upMove"
@@ -200,7 +196,8 @@
             @change="send_question_parent()"
           ></el-switch>
         </el-row>
-        <el-row>选择时间
+        <el-row
+          >选择时间
           <el-date-picker
             v-model="value1"
             type="datetimerange"
@@ -214,20 +211,17 @@
         </el-row>
       </div>
 
-      <span
-        slot="footer"
-        class="dialog-footer"
-      >
+      <span slot="footer" class="dialog-footer">
         <el-button
           type="primary"
           @click="
             dialogTimeVisible = false;
             send_question_parent();
           "
-        >确 定</el-button>
+          >确 定</el-button
+        >
       </span>
     </el-dialog>
-
   </div>
 </template>
 
@@ -263,8 +257,7 @@ export default {
       copyVisible: true,
       value1: [new Date(), new Date()],
       title: "",
-      description:
-        "",
+      description: "",
       formLabelWidth: "100px",
       dialogFormVisible: false,
       dialogTimeVisible: false,
@@ -282,7 +275,6 @@ export default {
         { text: "报名多选题", icon: "mdi-check-bold" },
       ],
       problem_list3: [
-        {text: "填空题", icon: "mdi-checkbox-blank-outline"},
         { text: "考试单选题", icon: "mdi-radiobox-marked" },
         { text: "考试多选题", icon: "mdi-check-bold" },
         { text: "考试填空题", icon: "mdi-checkbox-blank-outline" },
@@ -302,13 +294,13 @@ export default {
     };
   },
   methods: {
-    seeResultChange(){
-      this.send_question_parent()
+    seeResultChange() {
+      this.send_question_parent();
     },
     copyQuestionnaireInfo(index) {
-      this.title = this.copy_questionnaire_info.questionnaire.title
-      this.description = this.copy_questionnaire_info.questionnaire.description
-      var x = this.copy_questionnaire_info.questionList
+      this.title = this.copy_questionnaire_info.questionnaire.title;
+      this.description = this.copy_questionnaire_info.questionnaire.description;
+      var x = this.copy_questionnaire_info.questionList;
       for (var i = 0; i < x.length; i++) {
         let item = {};
         item.type = this.problem_type_info(x[i].question.type);
@@ -316,9 +308,9 @@ export default {
         obj.problem_type = this.problem_type_info(x[i].question.type);
         obj.name = x[i].question.content;
         obj.instruction = x[i].question.comment;
-        obj.must_write_select = x[i].question.required === 1 ? true :false;
+        obj.must_write_select = x[i].question.required === 1 ? true : false;
         console.log(x[i].question.required);
-        obj.question_id=x[i].question.id
+        obj.question_id = x[i].question.id;
         var list = [];
         for (var j = 0; j < x[i].optionList.length; j++) {
           var listitem = {};
@@ -328,26 +320,31 @@ export default {
           list.push(listitem);
         }
         obj.selection_list = list;
-        if(index===1){
-          obj.modify_limit = true
+        if (index === 1) {
+          obj.modify_limit = true;
         }
         this.newProblem1(item.type, true, obj);
       }
-      this.is_creating=false
+      this.is_creating = false;
     },
     current_questionnaire() {
       this.created_problem_list = [];
       for (var i = 1; i < this.total_problem; i++) {
         let index = "question" + i;
-        let x = this.$refs[index]["0"]; //组件的所有信息
+        let index1 = (Object.keys(this.$refs[index]).length-1)+""
+        console.log(index1);
+        let x = this.$refs[index][index1]; //组件的所有信息
+      console.log(this.$refs[index])
         let item = {};
         // item.problem_type = x.problem_type;
         item.number = x.problem_number;
         item.content = x.name;
         item.comment = x.instruction;
-        if(i<=this.copy_questionnaire_info.questionList.length){
-          item.id=this.copy_questionnaire_info.questionList[i-1].question.id
-        }
+        // if (i <= this.copy_questionnaire_info.questionList.length && this.copy_questionnaire_info.modify_type === 1) {
+        //   item.id = this.copy_questionnaire_info.questionList[
+        //     i - 1
+        //   ].question.id;
+        // }
         // item.selection_list = x.selection_list;
         item.answer = "";
         item.required = x.must_write_select ? 1 : 0;
@@ -356,9 +353,15 @@ export default {
         let y = [];
         for (var j = 0; j < x.selection_list.length; j++) {
           let z = {};
-          if(i<=this.copy_questionnaire_info.questionList.length && j<this.copy_questionnaire_info.questionList[i-1].optionList.length){
-            z.id=this.copy_questionnaire_info.questionList[i-1].optionList[j].id
-          }
+          // if (this.copy_questionnaire_info.modify_type === 1 &&
+          //   i <= this.copy_questionnaire_info.questionList.length &&
+          //   j <
+          //     this.copy_questionnaire_info.questionList[i - 1].optionList.length
+          // ) {
+          //   z.id = this.copy_questionnaire_info.questionList[i - 1].optionList[
+          //     j
+          //   ].id;
+          // }
           z.content = x.selection_list[j].content;
           z.limit = x.selection_list[j].total;
           z.comment = x.selection_list[j].comment;
@@ -391,7 +394,7 @@ export default {
       formData.needNum = -1;
       formData.userId = window.localStorage.getItem("user_id");
       formData.questionList = this.created_problem_list;
-      formData.canSee=this.see_result?1:0
+      formData.canSee = this.see_result ? 1 : 0;
       return formData;
     },
     send_question_parent() {
@@ -401,7 +404,8 @@ export default {
       var list = [];
       for (var i = 1; i < this.total_problem; i++) {
         let index = "question" + i;
-        let x = this.$refs[index]["0"]; //组件的所有信息
+        let index1 = (Object.keys(this.$refs[index]).length-1)+""
+        let x = this.$refs[index][index1]; //组件的所有信息
         let item = {};
         item.problem_type = x.problem_type; //问题种类
         item.problem_number = x.problem_number; //问题题号
@@ -474,6 +478,7 @@ export default {
     deleteProblem(index) {
       document.getElementById("question" + index).remove();
       for (var i = 0; i < this.created_problem.length; i++) {
+        this.created_problem[i].iscopy = false;
         if (this.created_problem[i].number > index) {
           this.created_problem[i].number -= 1;
         }
@@ -481,55 +486,53 @@ export default {
       this.total_problem -= 1;
       this.total_problem_change();
       this.send_question_parent();
-      this.$emit('problem_store')
+      this.$emit("problem_store");
+    },
+    changeOrder(index1, index2) {
+      let refnamebefore = "question" + index1;
+      let refname = "question" + index2;
+      let x = this.$refs[refname]["0"];
+      let y = this.$refs[refnamebefore]["0"];
+      problem_exchange(x, y);
     },
     upMove(index) {
       if (index === 1) {
         return;
       }
-      let refnamebefore = "question" + (index - 1);
-      let refname = "question" + index;
-      let x = this.$refs[refname]["0"];
-      let y = this.$refs[refnamebefore]["0"];
-      problem_exchange(x, y);
+      if (index === 1) {
+        return;
+      }
+      this.changeOrder(index - 1, index)
       this.send_question_parent();
-      this.$emit('problem_store')
+      this.$emit("problem_store");
     },
     upMoveFirst(index) {
       if (index === 1) {
         return;
       }
-      let refnamebefore = "question" + 1;
-      let refname = "question" + index;
-      let x = this.$refs[refname]["0"];
-      let y = this.$refs[refnamebefore]["0"];
-      problem_exchange(x, y);
+       for (var i = 1; i <= index; i++) {
+        this.changeOrder(index, i)
+      }
       this.send_question_parent();
-      this.$emit('problem_store')
+      this.$emit("problem_store");
     },
     downMove(index) {
       if (index === this.total_problem - 1) {
         return;
       }
-      let refnameafter = "question" + (index + 1);
-      let refname = "question" + index;
-      let x = this.$refs[refname]["0"];
-      let y = this.$refs[refnameafter]["0"];
-      problem_exchange(x, y);
+      this.changeOrder(index, index + 1)
       this.send_question_parent();
-      this.$emit('problem_store')
+      this.$emit("problem_store");
     },
     downMoveLast(index) {
       if (index === this.total_problem - 1) {
         return;
       }
-      let refnameafter = "question" + (this.total_problem - 1);
-      let refname = "question" + index;
-      let x = this.$refs[refname]["0"];
-      let y = this.$refs[refnameafter]["0"];
-      problem_exchange(x, y);
+     for (var i = this.total_problem - 1; i >= index; i--) {
+        this.changeOrder(index, i)
+      }
       this.send_question_parent();
-      this.$emit('problem_store')
+      this.$emit("problem_store");
     },
     copy(index) {
       let refname = "question" + index;
@@ -575,7 +578,6 @@ export default {
         case "考试填空题":
           return 14;
           break;
-        
       }
     },
     problem_type_info(num) {
@@ -617,13 +619,16 @@ export default {
     },
   },
   mounted() {
-    var xx=true
+    var xx = true;
     var interval = setInterval(() => {
-      if (JSON.stringify(this.copy_questionnaire_info) !== '{}' && xx===true) {
+      if (
+        JSON.stringify(this.copy_questionnaire_info) !== "{}" &&
+        xx === true
+      ) {
         clearInterval(interval);
         console.log(this.copy_questionnaire_info);
-        this.copyQuestionnaireInfo(this.copy_questionnaire_info.modify_type)
-        xx=false
+        this.copyQuestionnaireInfo(this.copy_questionnaire_info.modify_type);
+        xx = false;
       }
     }, 1000);
     var x = this.copy_questionnaire_info.questionList;
