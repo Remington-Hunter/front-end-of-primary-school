@@ -29,6 +29,7 @@ export default {
   },
     methods:{
         getSeries(){
+          
             console.log(this.source1.length);
             for (var i=0;i<this.source1.length-1;i++){
                 var c={type: 'bar'}
