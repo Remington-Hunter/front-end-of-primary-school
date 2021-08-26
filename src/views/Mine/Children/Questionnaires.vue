@@ -81,16 +81,7 @@
             title="修改"
           >
             mdi-pencil-outline</v-icon>
-          <el-dialog
-            :visible.sync="dialog"
-            width="50%"
-            height="100%"
-          >
-            <!--          <span>修改后可能会造成数据丢失，现提供以下三种方式</span>-->
-            <v-btn @click="modifyItem_first(questionnaire_id)">修改一</v-btn>
-            <v-btn @click="modifyItem_second(questionnaire_id)">修改二</v-btn>
-            <v-btn @click="modifyItem_third(questionnaire_id)">修改三</v-btn>
-          </el-dialog>
+
           <!--          第一种方式-->
           <!--        <v-icon small @click="modifyItem_first(item.id)" title="修改第一种办法" > mdi-pencil-outline</v-icon>-->
           <!--   第二种方式-->
@@ -126,6 +117,61 @@
       </v-data-table>
     </v-card>
     <el-dialog
+      :visible.sync="dialog"
+      width="50%"
+      height="max-content"
+      class="modi"
+      center
+    >
+      <div class="m-title">修改后可能会造成数据丢失，现提供以下三种方式</div>
+      <div class="mdi-grp">
+        <el-row>
+          <el-col :span="8">
+            <el-radio
+              v-model="radio"
+              label="1"
+              border
+            >
+              <span class="altermode__pattern--name">保留答卷</span>
+              <p class="explain">修改受限制</p>
+            </el-radio>
+          </el-col>
+          <el-col :span="8">
+            <el-radio
+              v-model="radio"
+              label="2"
+              border
+            >
+              <span class="altermode__pattern--name">删除所有答卷</span>
+              <p class="explain">修改不受限制</p>
+            </el-radio>
+          </el-col>
+          <el-col :span="8">
+            <el-radio
+              v-model="radio"
+              label="3"
+              border
+            >
+              <span class="altermode__pattern--name">复制此问卷并去编辑</span>
+              <p class="explain">原问卷不受任何影响</p>
+            </el-radio>
+          </el-col>
+        </el-row>
+
+        <div class="m-text">{{text[parseInt(this.radio) -1]}}</div>
+      </div>
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button @click="centerDialogVisible = false">取 消</el-button>
+        <el-button
+          type="primary"
+          @click="centerDialogVisible = false;handle_modify(questionnaire_id)"
+        >确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
       :visible.sync="dialogVisible"
       width="60%"
     >
@@ -157,6 +203,9 @@ export default {
   },
   data() {
     return {
+      radio: "1",
+      text: ["只能修改问卷的细节，例如更改错别字、添加选项、增加跳题逻辑或者修改题目的属性等\n不能对问卷做以下操作：删除题目或选项、移动题目或选项",
+        "答卷删除后不可恢复，请谨慎选择", '复制一份题目完全一致的新问卷，对复制的问卷进行编辑，不会影响到原始问卷的题目及回收数据'],
       type: [],
       types: ['普通问卷', '投票问卷', '报名问卷', '考试问卷'],
       preview_list: [],
@@ -237,12 +286,18 @@ export default {
       var time = new Date().Format("yyyy-MM-dd hh:mm:ss");
       return time;
     },
-    modify() {
-      this.$confirm("此操作将会重新复制一个副本进行修改?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      });
+
+    handle_modify(item) {
+      let index = this.radio
+      if (index == "1") {
+        this.modifyItem_first(item);
+      }
+      else if (index == "2") {
+        this.modifyItem_second(item);
+      }
+      else if (index == "3") {
+        this.modifyItem_third(item);
+      }
     },
     modifyItem_first(item) {
       this.dialog = false;
@@ -613,5 +668,46 @@ export default {
   margin-left: 30px;
   margin-right: 75px;
   width: 450px;
+}
+.m-title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+.modi >>> .el-radio__inner {
+  width: 14px;
+  display: none;
+}
+.modi >>> .el-radio {
+  height: max-content;
+}
+.el-col {
+  padding: 10px;
+}
+.mdi-grp {
+  margin: 0 auto;
+  margin: 10px;
+}
+
+.altermode__pattern--name {
+  color: #262626;
+  font-size: 14px;
+  font-weight: 600;
+}
+.explain {
+  font-size: 12px;
+  color: #8c8c8c;
+  padding-left: 10px;
+  padding-top: 5px;
+  margin-bottom: 15px;
+}
+.m-text {
+  white-space: pre;
+  margin: 10px;
+  padding: 15px;
+  font-size: 13px;
+  line-height: 24px;
+  background-color: #f7f7f7;
+  height: 78px;
 }
 </style>
