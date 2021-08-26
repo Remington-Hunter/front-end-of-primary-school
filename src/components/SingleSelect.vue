@@ -352,11 +352,13 @@ export default {
     selectConfirm() {
       this.ismodify = false;
       this.cancel_button = false;
+      this.iscopy=false
       this.$emit("ConfirmProblem");
     },
     writeConfirm() {
       this.ismodify = false;
       this.cancel_button = false;
+      this.iscopy=false
       this.$emit("ConfirmProblem");
     },
     cancel() {

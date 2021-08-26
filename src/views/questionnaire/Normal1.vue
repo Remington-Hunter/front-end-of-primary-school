@@ -332,6 +332,7 @@ export default {
       for (var i = 1; i < this.total_problem; i++) {
         let index = "question" + i;
         let x = this.$refs[index]["0"]; //组件的所有信息
+        console.log(x);
         let item = {};
         // item.problem_type = x.problem_type;
         item.number = x.problem_number;
@@ -474,6 +475,7 @@ export default {
     deleteProblem(index) {
       document.getElementById("question" + index).remove();
       for (var i = 0; i < this.created_problem.length; i++) {
+        this.created_problem[i].iscopy = false;
         if (this.created_problem[i].number > index) {
           this.created_problem[i].number -= 1;
         }
@@ -483,15 +485,21 @@ export default {
       this.send_question_parent();
       this.$emit("problem_store");
     },
+    changeOrder(index1, index2) {
+      let refnamebefore = "question" + index1;
+      let refname = "question" + index2;
+      let x = this.$refs[refname]["0"];
+      let y = this.$refs[refnamebefore]["0"];
+      problem_exchange(x, y);
+    },
     upMove(index) {
       if (index === 1) {
         return;
       }
-      let refnamebefore = "question" + (index - 1);
-      let refname = "question" + index;
-      let x = this.$refs[refname]["0"];
-      let y = this.$refs[refnamebefore]["0"];
-      problem_exchange(x, y);
+      if (index === 1) {
+        return;
+      }
+      this.changeOrder(index - 1, index)
       this.send_question_parent();
       this.$emit("problem_store");
     },
@@ -499,11 +507,9 @@ export default {
       if (index === 1) {
         return;
       }
-      let refnamebefore = "question" + 1;
-      let refname = "question" + index;
-      let x = this.$refs[refname]["0"];
-      let y = this.$refs[refnamebefore]["0"];
-      problem_exchange(x, y);
+       for (var i = 1; i <= index; i++) {
+        this.changeOrder(index, i)
+      }
       this.send_question_parent();
       this.$emit("problem_store");
     },
@@ -511,11 +517,7 @@ export default {
       if (index === this.total_problem - 1) {
         return;
       }
-      let refnameafter = "question" + (index + 1);
-      let refname = "question" + index;
-      let x = this.$refs[refname]["0"];
-      let y = this.$refs[refnameafter]["0"];
-      problem_exchange(x, y);
+      this.changeOrder(index, index + 1)
       this.send_question_parent();
       this.$emit("problem_store");
     },
@@ -523,11 +525,9 @@ export default {
       if (index === this.total_problem - 1) {
         return;
       }
-      let refnameafter = "question" + (this.total_problem - 1);
-      let refname = "question" + index;
-      let x = this.$refs[refname]["0"];
-      let y = this.$refs[refnameafter]["0"];
-      problem_exchange(x, y);
+     for (var i = this.total_problem - 1; i >= index; i--) {
+        this.changeOrder(index, i)
+      }
       this.send_question_parent();
       this.$emit("problem_store");
     },
