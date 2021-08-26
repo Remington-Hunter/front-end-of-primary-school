@@ -37,6 +37,16 @@
         multi-sort
         class="elevation-1"
       >
+        <template v-slot:[`item.name`]="{ item }">
+          <div style="max-width: 160px;overflow: hidden;text-overflow:ellipsis;white-space:nowrap;">
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
+                <span v-on="on">{{ item.name }}</span>
+              </template>
+              <span>{{ item.name }}</span>
+            </v-tooltip>
+          </div>
+        </template>
         <template v-slot:[`item.actions`]="{ item }">
           <v-icon
             size="22px"
@@ -601,10 +611,7 @@ export default {
             questionnaire_type = "报名问卷";
           }
           var data = {
-            name:
-              res.data.data[i].title.length > 10
-                ? res.data.data[i].title.slice(0, 10) + "..."
-                : res.data.data[i].title,
+            name: res.data.data[i].title,
             type: questionnaire_type,
             state: state,
             id: res.data.data[i].id,
