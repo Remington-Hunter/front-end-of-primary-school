@@ -331,21 +331,19 @@ export default {
       this.created_problem_list = [];
       for (var i = 1; i < this.total_problem; i++) {
         let index = "question" + i;
-        let index1 = (Object.keys(this.$refs[index]).length-1)+""
-        console.log(index1);
-        let x = this.$refs[index][index1]; //组件的所有信息
+        let x = this.$refs[index]["0"]; //组件的所有信息
       console.log(this.$refs[index])
         let item = {};
         // item.problem_type = x.problem_type;
         item.number = x.problem_number;
         item.content = x.name;
         item.comment = x.instruction;
-        // if (i <= this.copy_questionnaire_info.questionList.length && this.copy_questionnaire_info.modify_type === 1) {
-        //   item.id = this.copy_questionnaire_info.questionList[
-        //     i - 1
-        //   ].question.id;
-        // }
-        // item.selection_list = x.selection_list;
+        if (i <= this.copy_questionnaire_info.questionList.length && this.copy_questionnaire_info.modify_type === 1) {
+          item.id = this.copy_questionnaire_info.questionList[
+            i - 1
+          ].question.id;
+        }
+        item.selection_list = x.selection_list;
         item.answer = "";
         item.required = x.must_write_select ? 1 : 0;
         item.point = 0;
@@ -353,15 +351,15 @@ export default {
         let y = [];
         for (var j = 0; j < x.selection_list.length; j++) {
           let z = {};
-          // if (this.copy_questionnaire_info.modify_type === 1 &&
-          //   i <= this.copy_questionnaire_info.questionList.length &&
-          //   j <
-          //     this.copy_questionnaire_info.questionList[i - 1].optionList.length
-          // ) {
-          //   z.id = this.copy_questionnaire_info.questionList[i - 1].optionList[
-          //     j
-          //   ].id;
-          // }
+          if (this.copy_questionnaire_info.modify_type === 1 &&
+            i <= this.copy_questionnaire_info.questionList.length &&
+            j <
+              this.copy_questionnaire_info.questionList[i - 1].optionList.length
+          ) {
+            z.id = this.copy_questionnaire_info.questionList[i - 1].optionList[
+              j
+            ].id;
+          }
           z.content = x.selection_list[j].content;
           z.limit = x.selection_list[j].total;
           z.comment = x.selection_list[j].comment;
@@ -404,8 +402,7 @@ export default {
       var list = [];
       for (var i = 1; i < this.total_problem; i++) {
         let index = "question" + i;
-        let index1 = (Object.keys(this.$refs[index]).length-1)+""
-        let x = this.$refs[index][index1]; //组件的所有信息
+        let x = this.$refs[index]["0"]; //组件的所有信息
         let item = {};
         item.problem_type = x.problem_type; //问题种类
         item.problem_number = x.problem_number; //问题题号
@@ -476,14 +473,21 @@ export default {
       this.total_problem_change();
     },
     deleteProblem(index) {
-      document.getElementById("question" + index).remove();
-      for (var i = 0; i < this.created_problem.length; i++) {
-        this.created_problem[i].iscopy = false;
-        if (this.created_problem[i].number > index) {
-          this.created_problem[i].number -= 1;
-        }
+      // var index1='question'+index
+      // delete this.$refs[index1]
+      for(var i=index;i<this.total_problem-1;i++){
+        this.changeOrder(i,i+1)
       }
-      this.total_problem -= 1;
+      // console.log(this.$refs);
+      document.getElementById("question" + (this.total_problem-1)).remove();
+      delete this.$refs["question" + (this.total_problem-1)]
+      // for (var i = 0; i < this.created_problem.length; i++) {
+      //   this.created_problem[i].iscopy = false;
+      //   if (this.created_problem[i].number > index) {
+      //     this.created_problem[i].number -= 1;
+      //   }
+      // }
+      this.total_problem -= 1
       this.total_problem_change();
       this.send_question_parent();
       this.$emit("problem_store");
