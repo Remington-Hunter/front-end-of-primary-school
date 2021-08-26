@@ -27,8 +27,8 @@ export default {
   // created: {},
   mounted() {
     //   alert(111)
-    console.log(111)
-    console.log(this.source1)
+    // console.log(111)
+    // console.log(this.source1)
     this.drawfunc()
   },
   methods: {
@@ -55,11 +55,11 @@ export default {
         },
         grid: { containLabel: true },
         xAxis: {
-          nameLocation:'end',//坐标轴名称显示位置。
-            axisLabel : {//坐标轴刻度标签的相关设置。
-                interval:0,
-                rotate:"45"
-            }
+          // nameLocation:'end',//坐标轴名称显示位置。
+          //   axisLabel : {//坐标轴刻度标签的相关设置。
+          //       interval:0,
+          //       rotate:"45"
+          //   }
         },
         yAxis: { type: "category"},
         series: [
@@ -67,9 +67,9 @@ export default {
             type: "bar",
             encode: {
               // 将 "amount" 列映射到 X 轴。
-              x: this.source1[0][0],
+              x: this.source1[0][1],
               // 将 "product" 列映射到 Y 轴。
-              y: this.source1[0][1],
+              y: this.source1[0][0],
             },
             barWidth : 40,
             color:'#008fff'

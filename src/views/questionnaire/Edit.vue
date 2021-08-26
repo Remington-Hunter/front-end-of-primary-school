@@ -124,7 +124,8 @@ export default {
       questionnaire_id: -1,
       questionnaire_state: "",
       option: false,
-      copy_questionnaire_info:{}
+      copy_questionnaire_info:{},
+      modify_type:0
     };
   },
   methods: {
@@ -132,17 +133,24 @@ export default {
       htmlToPdf.downloadPDF(document.querySelector("#demo"), "我的问卷");
     },
     getProblemInfo() {
-      if (this.is_creating === true || this.total_problem === 1) {
+      if (this.is_creating === true) {
         return
       }
       this.dialogVisible = true;
     },
     sendQues() {
-      if (this.is_creating === true || this.total_problem === 1) {
+      if (this.is_creating === true) {
         return;
       }
       if (this.questionnaire_id !== -1) {
         this.current_questionnaire.id = this.questionnaire_id;
+      }
+      var url=''
+      if(parseInt(this.modify_type)===1){
+        url="https://www.azur1tee.top/api/questionnaire/edit_questionnaire"
+      }
+      else{
+        url="https://www.azur1tee.top/api/questionnaire/save_questionnaire"
       }
       console.log(this.questionnaire_id);
       console.log(this.current_questionnaire.id);
@@ -151,7 +159,7 @@ export default {
       console.log(JSON.stringify(formData));
       axios({
         method: "post",
-        url: "https://www.azur1tee.top/api/questionnaire/save_questionnaire",
+        url: url,
         headers: {
           Authorization: window.localStorage.getItem("authorization"),
           "Content-Type": "application/json",
@@ -206,11 +214,18 @@ export default {
     },
     saveQues(index) {
       console.log(this.is_creating);
-      if (this.is_creating === true || this.total_problem === 1) {
+      if (this.is_creating === true) {
         return
       }
       if (this.questionnaire_id !== -1) {
         this.current_questionnaire.id = this.questionnaire_id
+      }
+      var url = ''
+      if(parseInt(this.modify_type)===1){
+        url="https://www.azur1tee.top/api/questionnaire/edit_questionnaire"
+      }
+      else{
+        url="https://www.azur1tee.top/api/questionnaire/save_questionnaire"
       }
       console.log(this.questionnaire_id);
       console.log(this.current_questionnaire.id);
@@ -219,7 +234,7 @@ export default {
       console.log(JSON.stringify(formData));
       axios({
         method: "post",
-        url: "https://www.azur1tee.top/api/questionnaire/save_questionnaire",
+        url: url,
         headers: {
           Authorization: window.localStorage.getItem("authorization"),
           "Content-Type": "application/json",
@@ -326,11 +341,23 @@ export default {
     let query = this.$route.query;
     this.questionnaire_type = parseInt(this.$route.params.type)
     this.questionnaire_id = query.id;
-    // alert(this.questionnaire_id)
+    this.modify_type=query.modify_type
     console.log(this.questionnaire_id)
-    // console.log(this.questionnaire_type);
+    console.log(this.modify_type);
     var formData=new FormData()
     formData.append("id",this.questionnaire_id)
+    if(this.modify_type == 2){
+      axios({
+        url: "https://www.azur1tee.top/api/questionnaire/delete_and_get_questionnaire_by_id",
+        method: "post",
+        data: formData,
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+        },
+    }).then(res=>{
+        console.log(res);
+    })
+    }
     axios({
         url: "https://www.azur1tee.top/api/questionnaire/get_questionnaire_by_id",
         method: "post",
@@ -340,7 +367,9 @@ export default {
         },
     }).then(res=>{
         var x=res.data.data
+        x.modify_type = parseInt(this.modify_type)
         this.copy_questionnaire_info=x
+        console.log(x);
     })
   }
 };

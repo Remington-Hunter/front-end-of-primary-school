@@ -19,7 +19,7 @@
             </el-option>
           </el-select>
         </div>
-        <v-spacer></v-spacer>
+
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
@@ -39,7 +39,7 @@
       >
         <template v-slot:[`item.actions`]="{ item }">
           <v-icon
-            size="18px"
+            size="22px"
             color="info"
             class="mr-2"
             @click="copyItem(item.id)"
@@ -48,16 +48,16 @@
             mdi-content-copy
           </v-icon>
           <v-icon
-            size="18px"
-            color="error"
+            size="22px"
             @click="deleteItem(item.id)"
             title="删除"
+            color="error"
           >
             mdi-trash-can-outline</v-icon>
         </template>
         <template v-slot:[`item.actions1`]="{ item }">
           <v-icon
-            size="18px"
+            size="22px"
             class="mr-2"
             @click="startItem(item.id)"
             title="发布"
@@ -65,7 +65,7 @@
             mdi-arrow-right-drop-circle
           </v-icon>
           <v-icon
-            size="18px"
+            size="22px"
             class="mr-2"
             @click="stopItem(item.id)"
             title="停止"
@@ -73,10 +73,14 @@
             mdi-pause-circle
           </v-icon>
           <v-icon
-            size="18px"
-            @click="dialog=true;get_id(item.id)"
-            title="修改样"
-          > mdi-pencil-outline</v-icon>
+            size="22px"
+            @click="
+              dialog = true;
+              get_id(item.id);
+            "
+            title="修改"
+          >
+            mdi-pencil-outline</v-icon>
           <el-dialog
             :visible.sync="dialog"
             width="50%"
@@ -98,23 +102,26 @@
           <!--            title="修改"-->
           <!--          > mdi-pencil-outline</v-icon>-->
           <v-icon
-            size="18px"
+            size="22px"
             @click="lookUpLink(item.id)"
             title="查看链接"
             style="margin-left: 1%"
-          > mdi-link-variant</v-icon>
+          >
+            mdi-link-variant</v-icon>
           <v-icon
-            size="18px"
+            size="22px"
             @click="checkAnalysis(item.id)"
             title="统计结果"
             style="margin-left: 1%"
-          > mdi-poll</v-icon>
+          >
+            mdi-poll</v-icon>
           <v-icon
-            size="18px"
+            size="22px"
             @click="checkItem(item.id)"
             title="预览"
             style="margin-left: 1%"
-          > mdi-eye-outline</v-icon>
+          >
+            mdi-eye-outline</v-icon>
         </template>
       </v-data-table>
     </v-card>
@@ -137,7 +144,6 @@
         >确 定</el-button>
       </span>
     </el-dialog>
-
   </div>
 </template>
 
@@ -147,14 +153,14 @@ import DPreview from "../../questionnaire/DialogPreview.vue";
 
 export default {
   components: {
-    DPreview
+    DPreview,
   },
   data() {
     return {
       type: [],
       types: ['普通问卷', '投票问卷', '报名问卷', '考试问卷'],
       preview_list: [],
-      questionnaire_id: '',
+      questionnaire_id: "",
       title: "题目",
       description: "",
       sortBy: ['date'],
@@ -186,9 +192,7 @@ export default {
         { text: "操作", value: "actions", sortable: false },
         { text: "更多功能", value: "actions1", sortable: false },
       ],
-      desserts: [
-
-      ],
+      desserts: [],
       data: [],
     };
   },
@@ -238,7 +242,7 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
-      })
+      });
     },
     modifyItem_first(item) {
       this.dialog = false;
@@ -261,8 +265,8 @@ export default {
         query: {
           id: this.questionnaire_id,
           types: index,
-          modify_type: 1
-        }
+          modify_type: 1,
+        },
       });
     },
     modifyItem_third(item) {
@@ -299,7 +303,7 @@ export default {
           query: {
             id: res.data.data,
             type: index,
-            modify_type: 3
+            modify_type: 3,
           },
         });
       });
@@ -321,13 +325,13 @@ export default {
         index = 2;
       }
       this.$router.push({
-        path: '/edit1/' + index,
+        path: "/edit1/" + index,
         query: {
           id: this.questionnaire_id,
           types: index,
-          modify_type: 2
-        }
-      })
+          modify_type: 2,
+        },
+      });
     },
     startItem(item) {
       var Data = new FormData();
@@ -376,7 +380,8 @@ export default {
       var Data = new FormData();
       Data.append("id", item);
       axios({
-        url: "https://www.azur1tee.top/api/questionnaire/get_questionnaire_by_id",
+        url:
+          "https://www.azur1tee.top/api/questionnaire/get_questionnaire_by_id",
         method: "post",
         data: Data,
         headers: {
@@ -385,10 +390,10 @@ export default {
         },
       }).then((res) => {
         this.preview_list = [];
-        let q = res.data.data
-        this.title = q.questionnaire.title
-        this.description = q.questionnaire.description
-        let x = q.questionList
+        let q = res.data.data;
+        this.title = q.questionnaire.title;
+        this.description = q.questionnaire.description;
+        let x = q.questionList;
         for (var i = 0; i < x.length; i++) {
           var obj = {};
           obj.problem_type = this.problem_type_info(x[i].question.type);
@@ -466,7 +471,8 @@ export default {
     getItem() {
       console.log(13123);
       axios({
-        url: "https://www.azur1tee.top/api/questionnaire/get_questionnaire_list",
+        url:
+          "https://www.azur1tee.top/api/questionnaire/get_questionnaire_list",
         method: "post",
         data: {},
         headers: {
@@ -545,13 +551,16 @@ export default {
             questionnaire_type = "报名问卷";
           }
           var data = {
-            name: res.data.data[i].title.length > 15 ? res.data.data[i].title.slice(0, 15) + '...' : res.data.data[i].title,
+            name:
+              res.data.data[i].title.length > 15
+                ? res.data.data[i].title.slice(0, 15) + "..."
+                : res.data.data[i].title,
             type: questionnaire_type,
             state: state,
             id: res.data.data[i].id,
             num: res.data.data[i].answerNum,
             date: res.data.data[i].createTime.replace("T", " "),
-            date2: data2
+            date2: data2,
           };
           // console.log(data)
           this.desserts.push(data);
@@ -601,5 +610,6 @@ export default {
 }
 #select {
   margin-left: 30px;
+  width: 450px;
 }
 </style>

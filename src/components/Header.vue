@@ -38,7 +38,7 @@
                 {{user.username}}<i class="el-icon-arrow-down el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>
+                <el-dropdown-item v-show="ishow!=null">
                   <router-link to="/personInfo">个人中心</router-link>
                 </el-dropdown-item>
                 <el-dropdown-item><a @click="logout">退出登录</a></el-dropdown-item>
@@ -69,7 +69,8 @@ export default {
         avatar: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
         // avatar: 'http://101.200.164.148/assets/avatars/khKXwpT86OF3hj3K.png'
       },
-      hasLogin: false
+      hasLogin: false,
+      ishow: window.localStorage.getItem('user_id')
     }
   },
   methods: {
@@ -96,6 +97,7 @@ export default {
   updated() {
     this.check_is_login();
     this.user.username = window.localStorage.getItem('userName');
+    this.ishow = window.localStorage.getItem('user_id');
   },
   // create(){
   //   this.check_is_login();

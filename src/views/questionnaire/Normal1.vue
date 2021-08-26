@@ -299,7 +299,7 @@ export default {
     seeResultChange(){
       this.send_question_parent()
     },
-    copyQuestionnaireInfo() {
+    copyQuestionnaireInfo(index) {
       this.title = this.copy_questionnaire_info.questionnaire.title
       this.description = this.copy_questionnaire_info.questionnaire.description
       var x = this.copy_questionnaire_info.questionList
@@ -310,7 +310,9 @@ export default {
         obj.problem_type = this.problem_type_info(x[i].question.type);
         obj.name = x[i].question.content;
         obj.instruction = x[i].question.comment;
-        obj.must_write_select = x[i].question.required;
+        obj.must_write_select = x[i].question.required === 1 ? true :false;
+        console.log(x[i].question.required);
+        obj.question_id=x[i].question.id
         var list = [];
         for (var j = 0; j < x[i].optionList.length; j++) {
           var listitem = {};
@@ -320,6 +322,9 @@ export default {
           list.push(listitem);
         }
         obj.selection_list = list;
+        if(index===1){
+          obj.modify_limit = true
+        }
         this.newProblem1(item.type, true, obj);
       }
       this.is_creating=false
@@ -334,16 +339,20 @@ export default {
         item.number = x.problem_number;
         item.content = x.name;
         item.comment = x.instruction;
+        if(i<=this.copy_questionnaire_info.questionList.length){
+          item.id=this.copy_questionnaire_info.questionList[i-1].question.id
+        }
         // item.selection_list = x.selection_list;
         item.answer = "";
         item.required = x.must_write_select ? 1 : 0;
         item.point = 0;
         item.type = this.problem_type_number(x.problem_type);
-        console.log(this.problem_type_number(x.problem_type));
-        console.log(item.type);
         let y = [];
         for (var j = 0; j < x.selection_list.length; j++) {
           let z = {};
+          if(i<=this.copy_questionnaire_info.questionList.length && j<this.copy_questionnaire_info.questionList[i-1].optionList.length){
+            z.id=this.copy_questionnaire_info.questionList[i-1].optionList[j].id
+          }
           z.content = x.selection_list[j].content;
           z.limit = x.selection_list[j].total;
           z.comment = x.selection_list[j].comment;
@@ -380,7 +389,7 @@ export default {
       return formData;
     },
     send_question_parent() {
-      if (this.is_creating === true || this.total_problem === 1) {
+      if (this.is_creating === true) {
         return;
       }
       var list = [];
@@ -400,7 +409,6 @@ export default {
         item.must_write_select = x.must_write_select; //题目是否必选
         list.push(item);
       }
-      console.log(1);
       var obj1 = {};
       var obj1 = {
         data: this.current_questionnaire(),
@@ -411,7 +419,6 @@ export default {
         description: this.description,
         questionnaire_state: "preparing",
       };
-      console.log(1);
       this.$emit("currentQuestionnaire", obj1);
     },
     total_problem_change() {
@@ -468,6 +475,7 @@ export default {
       this.total_problem -= 1;
       this.total_problem_change();
       this.send_question_parent();
+      this.$emit('problem_store')
     },
     upMove(index) {
       if (index === 1) {
@@ -479,6 +487,7 @@ export default {
       let y = this.$refs[refnamebefore]["0"];
       problem_exchange(x, y);
       this.send_question_parent();
+      this.$emit('problem_store')
     },
     upMoveFirst(index) {
       if (index === 1) {
@@ -490,6 +499,7 @@ export default {
       let y = this.$refs[refnamebefore]["0"];
       problem_exchange(x, y);
       this.send_question_parent();
+      this.$emit('problem_store')
     },
     downMove(index) {
       if (index === this.total_problem - 1) {
@@ -501,6 +511,7 @@ export default {
       let y = this.$refs[refnameafter]["0"];
       problem_exchange(x, y);
       this.send_question_parent();
+      this.$emit('problem_store')
     },
     downMoveLast(index) {
       if (index === this.total_problem - 1) {
@@ -512,6 +523,7 @@ export default {
       let y = this.$refs[refnameafter]["0"];
       problem_exchange(x, y);
       this.send_question_parent();
+      this.$emit('problem_store')
     },
     copy(index) {
       let refname = "question" + index;
@@ -521,11 +533,6 @@ export default {
       problem_change(y, x);
       console.log(y);
       this.newProblem(x.problem_type, true, y);
-      // this.is_creating = false;
-
-      // let refnamelast = "question" + (this.total_problem - 1);
-      // let y = this.$refs[refnamelast]["0"];
-      // problem_change(y, x);
     },
     problem_type_number(str) {
       switch (str) {
@@ -585,13 +592,13 @@ export default {
     },
   },
   mounted() {
+    var xx=true
     var interval = setInterval(() => {
-      console.log(1);
-      if (JSON.stringify(this.copy_questionnaire_info) !== '{}') {
+      if (JSON.stringify(this.copy_questionnaire_info) !== '{}' && xx===true) {
         clearInterval(interval);
         console.log(this.copy_questionnaire_info);
-        this.copyQuestionnaireInfo()
-        this.total_problem_change();
+        this.copyQuestionnaireInfo(this.copy_questionnaire_info.modify_type)
+        xx=false
       }
     }, 1000);
     var x = this.copy_questionnaire_info.questionList;
