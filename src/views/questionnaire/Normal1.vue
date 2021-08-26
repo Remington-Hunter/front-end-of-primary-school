@@ -76,7 +76,7 @@
             <template slot="title"><i class="el-icon-setting"></i>问卷设置</template>
             <el-menu-item @click="dialogTimeVisible = true">
               时间控制</el-menu-item>
-            <div v-if="type === 1">
+            <div v-if="type === 1 || type === 3">
               <el-tooltip
                 class="item"
                 effect="dark"
@@ -280,6 +280,12 @@ export default {
       problem_list2: [
         { text: "报名单选题", icon: "mdi-radiobox-marked" },
         { text: "报名多选题", icon: "mdi-check-bold" },
+      ],
+      problem_list3: [
+        {text: "填空题", icon: "mdi-checkbox-blank-outline"},
+        { text: "考试单选题", icon: "mdi-radiobox-marked" },
+        { text: "考试多选题", icon: "mdi-check-bold" },
+        { text: "考试填空题", icon: "mdi-checkbox-blank-outline" },
       ],
       problem_list: [
         { text: "填空题", icon: "mdi-checkbox-blank-outline" },
@@ -560,6 +566,16 @@ export default {
         case "投票多选题":
           return 11;
           break;
+        case "考试单选题":
+          return 12;
+          break;
+        case "考试多选题":
+          return 13;
+          break;
+        case "考试填空题":
+          return 14;
+          break;
+        
       }
     },
     problem_type_info(num) {
@@ -587,6 +603,15 @@ export default {
           break;
         case 11:
           return "投票多选题";
+          break;
+        case 12:
+          return "考试单选题";
+          break;
+        case 13:
+          return "考试多选题";
+          break;
+        case 14:
+          return "考试填空题";
           break;
       }
     },
