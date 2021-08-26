@@ -615,8 +615,10 @@ export default {
             questionnaire_type = "投票问卷";
           } else if (res.data.data[i].type === 2) {
             questionnaire_type = "报名问卷";
-          }else if (res.data.data[i].type === 3) {
-            questionnaire_type = "考试问卷";
+          }else if(res.data.data[i].type===3){
+            questionnaire_type = "考试问卷"
+          }else if(res.data.data[i].type===4){
+            questionnaire_type = "疫情打卡问卷"
           }
           var data = {
             name: res.data.data[i].title,
@@ -659,6 +661,9 @@ export default {
           break;
         case 11:
           return "投票多选题";
+          break;
+        case 15:
+          return "定位题";
           break;
       }
     },
