@@ -149,7 +149,7 @@ export default {
   },
   created() {
     this.id = this.$route.params.id;
-    this.get_link()
+    // this.get_link()
     // var ss = this.input
     // setTimeout(()=>{
     // this.download_lianjie = 'https://www.azur1tee.top/api/qrcode/downloadQRCode/?content=' + this.input + '&logoUrl=https://www.azur1tee.top/api/getIcon';
