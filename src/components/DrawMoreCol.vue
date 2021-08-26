@@ -18,7 +18,7 @@ export default {
   mounted(){
       this.getSeries();
       this.drawfunc();
-      console.log(1111);
+      console.log('bar');
       console.log(this.series)
   },
   data() {

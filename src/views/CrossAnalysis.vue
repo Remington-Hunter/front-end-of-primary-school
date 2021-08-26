@@ -100,7 +100,7 @@
               >
                 <drawBar
                   :id="BarToString(index)"
-                  :series="bar[index]"
+                  :series="col[index]"
                 ></drawBar>
               </div>
               <div

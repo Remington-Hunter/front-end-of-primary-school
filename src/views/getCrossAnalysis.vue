@@ -204,6 +204,7 @@ export default {
       }
       this.getprops();
       this.getCol();
+      console.log(this.col);
     },
     getCol() {
       this.col = [];
@@ -387,13 +388,6 @@ export default {
         polar : [
           {
             indicator : c
-            // [
-            //   { text: this.headArr[], max: 5.0, color: 'red'},    //这里用于设置各轴的参数以及最大值
-            //   { text: '核心必修课 ', max: 5.0},
-            //   { text: '一般必修课 ', max: 5.0},
-            //   { text: '通识必修课', max: 5.0},
-            //   { text: '通识限选课', max: 5.0},
-            // ]-
           }
         ],
         series: [
