@@ -33,7 +33,7 @@
                 设置分数<el-input-number
                   controls-position="right"
                   @change="handleChange"
-                  :min="1"
+                  :min="0"
                   :max="99999"
                   size="small"
                   v-model="point"
@@ -129,8 +129,27 @@
               '考试填空题',
             ].includes(problem_type)
         "
-      >
-        <div>{{ problem_type }}</div>
+      ><v-row>
+        <v-col>{{ problem_type }}</v-col>
+            <v-col
+              cols="12"
+              sm="4"
+              v-if="
+                problem_type === '考试填空题'
+              "
+            >
+              <div class="set-num">
+                设置分数<el-input-number
+                  controls-position="right"
+                  @change="handleChange"
+                  :min="0"
+                  :max="99999"
+                  size="small"
+                  v-model="point"
+                ></el-input-number>
+              </div>
+            </v-col>
+          </v-row>
         <template>
           <div>
             <v-text-field
@@ -163,11 +182,14 @@
         <div class="question-seq">{{ problem_number }}.</div>
         <div class="text">
           {{ name }}
+          <span v-if="['考试填空题','考试单选题','考试多选题'].includes(problem_type)" class="sel-total"
+                  >(分值:{{ point }})</span
+                >
           <span v-if="must_write_select" class="question-required">*</span>
         </div>
 
         <div class="q-instruction">{{ instruction }}</div>
-        <div v-if="problem_type === '填空题' || problem_type === '考试填空题'" class="question-body">
+        <div v-if="['填空题', '考试填空题'].includes(problem_type)" class="question-body">
           <el-input
             type="textarea"
             autosize
@@ -191,7 +213,7 @@
 
         <div
           v-else-if="
-            ['多选题', '报名多选题', '投票多选题'].includes(problem_type)
+            ['多选题', '报名多选题', '投票多选题','考试多选题'].includes(problem_type)
           "
         >
           <div>
@@ -341,13 +363,13 @@ export default {
   },
   computed: {
     confirmstate() {
-      if (this.name === "" || this.selection_list.length === 0 || this.question_analysis === "") {
+      if (this.name === "" || this.selection_list.length === 0) {
         return true;
       }
       return false;
     },
     writeconfirmstate() {
-      if (this.name === "" || this.question_analysis === "") {
+      if (this.name === "") {
         return true;
       }
       return false;
