@@ -1,20 +1,19 @@
 <template>
   <div>
-    <div style="height:60px">
-      <el-button
-        @click="clearItem()"
-        id="del-all"
-        type="primary"
-      > <i class="el-icon-delete"></i> 清空</el-button>
-    </div>
     <v-card>
       <v-card-title>
         回收站
-        <v-spacer></v-spacer>
+        <v-spacer>
+          <el-button
+            @click="clearItem()"
+            id="del-all"
+            type="primary"
+          > <i class="el-icon-delete"></i> 一键清空</el-button>
+        </v-spacer>
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
-          label="Search"
+          label="搜索"
           single-line
           hide-details
         ></v-text-field>
@@ -250,8 +249,8 @@ export default {
             questionnaire_type = "报名问卷";
           }
           var data = {
-            name: res.data.data[i].title.length>15?res.data.data[i].title.slice(0,15)+'...':res.data.data[i].title,
-            type:questionnaire_type,
+            name: res.data.data[i].title.length > 15 ? res.data.data[i].title.slice(0, 15) + '...' : res.data.data[i].title,
+            type: questionnaire_type,
             state: state,
             id: res.data.data[i].id,
             num: res.data.data[i].answerNum,
@@ -318,7 +317,6 @@ export default {
   margin: 0 5%;
 }
 #del-all {
-  margin-right: 5%;
-  float: right;
+  margin-left: 5%;
 }
 </style>
