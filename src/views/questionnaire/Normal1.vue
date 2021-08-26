@@ -333,7 +333,7 @@ export default {
       for (var i = 1; i < this.total_problem; i++) {
         let index = "question" + i;
         let x = this.$refs[index]["0"]; //组件的所有信息
-      console.log(this.$refs[index])
+      console.log(this.$refs[index]["0"])
         let item = {};
         // item.problem_type = x.problem_type;
         item.number = x.problem_number;
@@ -347,7 +347,7 @@ export default {
         item.selection_list = x.selection_list;
         item.answer = "";
         item.required = x.must_write_select ? 1 : 0;
-        item.point = 0;
+        item.point = x.point;
         item.type = this.problem_type_number(x.problem_type);
         let y = [];
         for (var j = 0; j < x.selection_list.length; j++) {
