@@ -1,7 +1,7 @@
 <template>
   <div>
-    <el-button @click="checkItem(questionnaire_id)">查看界面</el-button>
-    <el-button @click="publish()">发布</el-button>
+<!--    <el-button @click="checkItem(questionnaire_id)">查看界面</el-button>-->
+    <el-button @click="publish(questionnaire_id)">发布</el-button>
     <d-preview
         :headerTitle="this.title"
         :subtitle="this.description"
@@ -33,7 +33,7 @@ export default {
       dialogVisible: false,
       questionnaire_type: "", //问卷类型
       is_saved: false,
-      questionnaire_id: -1,
+      questionnaire_id: '',
       questionnaire_state: "",
       option: false,
     }
@@ -43,7 +43,7 @@ export default {
     // this.questionnaire_type = parseInt(this.$route.params.type)
     this.questionnaire_id = query.id;
     this.questionnaire_type = parseInt(this.$route.params.type);
-    // this.checkItem(this.questionnaire_id);
+    this.checkItem(this.questionnaire_id);
   },
   methods:{
     checkItem(item) {
@@ -114,13 +114,8 @@ export default {
           break;
       }
     },
-    publish() {
-      if (this.is_creating === true || this.total_problem === 1) {
-        return;
-      }
-      if (this.questionnaire_id !== -1) {
-        this.current_questionnaire.id = this.questionnaire_id;
-      }
+    publish(id) {
+      this.current_questionnaire.id = this.questionnaire_id;
       console.log(this.questionnaire_id);
       console.log(this.current_questionnaire.id);
       this.current_questionnaire.type = this.questionnaire_type;
@@ -173,6 +168,7 @@ export default {
               console.log(res);
               if (res.data.code === 200 || res.data.code === 201) {
                 this.$message({ message: "问卷已发布", type: "success" });
+                this.$router.push({ name: "send", params: { id: id } });
               }
             });
           } else {
