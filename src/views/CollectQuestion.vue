@@ -410,8 +410,16 @@ export default {
             z.content = "";
           }
         } else if (y.type === 3) {
-          z.number = "" + y.rating;
-          z.content = "";
+          if(y.required){
+            if(y.rating===0){
+              alert("您有必选项未完成!");
+              return false;
+            }
+            else{
+              z.number = "" + y.rating;
+              z.content = "";
+            }
+          }
         } else if (y.type === 2) {
           if (y.required) {
             if (y.answer === "") {
