@@ -371,8 +371,8 @@ export default {
       var x = {};
       x.questionnaireId = this.current_questionnaire.questionnaire.id;
       var list = [];
-      console.log(this.questionList.length);
-      console.log(this.questionList);
+      // console.log(this.questionList.length);
+      // console.log(this.questionList);
       for (var i = 0; i < this.questionList.length; i++) {
         var z = {};
         var y = this.questionList[i];
@@ -426,7 +426,7 @@ export default {
           }
         } else if (y.type === 2) {
           if (y.required) {
-            if (y.answer === "") {
+            if (y.answer === " ") {
               alert("您有必选项未完成!");
               return false;
             } else {
@@ -439,8 +439,8 @@ export default {
           }
         }
         list.push(z);
-        return true;
       }
+      return true;
     },
     submit() {
       var x = {};

@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-button @click="checkItem(questionnaire_id)">查看界面</el-button>
+    <el-button @click="publish()">发布</el-button>
     <d-preview
         :headerTitle="this.title"
         :subtitle="this.description"
@@ -19,13 +20,29 @@ export default {
   },
   data(){
     return{
-      questionnaire_id:''
+      state: true,
+      current_questionnaire: {},
+      is_creating: false,
+      total_problem: 1,
+      preview_list: [],
+      title: "",
+      description: "",
+      ma: "",
+      input: "",
+      lianjie: "",
+      dialogVisible: false,
+      questionnaire_type: "", //问卷类型
+      is_saved: false,
+      questionnaire_id: -1,
+      questionnaire_state: "",
+      option: false,
     }
   },
   created() {
     let query = this.$route.query;
     // this.questionnaire_type = parseInt(this.$route.params.type)
     this.questionnaire_id = query.id;
+    this.questionnaire_type = parseInt(this.$route.params.type);
     // this.checkItem(this.questionnaire_id);
   },
   methods:{
@@ -64,6 +81,104 @@ export default {
           obj.selection_list = list;
           this.preview_list.push(obj);
         }
+      });
+    },
+    problem_type_info(num) {
+      switch (num) {
+        case 0:
+          return "单选题";
+          break;
+        case 1:
+          return "多选题";
+          break;
+        case 2:
+          return "填空题";
+          break;
+        case 3:
+          return "评分题";
+          break;
+        case 6:
+          return "报名单选题";
+          break;
+        case 7:
+          return "报名多选题";
+          break;
+        case 10:
+          return "投票单选题";
+          break;
+        case 11:
+          return "投票多选题";
+          break;
+        case 15:
+          return "定位题";
+          break;
+      }
+    },
+    publish() {
+      if (this.is_creating === true || this.total_problem === 1) {
+        return;
+      }
+      if (this.questionnaire_id !== -1) {
+        this.current_questionnaire.id = this.questionnaire_id;
+      }
+      console.log(this.questionnaire_id);
+      console.log(this.current_questionnaire.id);
+      this.current_questionnaire.type = this.questionnaire_type;
+      var formData = this.current_questionnaire;
+      console.log(JSON.stringify(formData));
+      axios({
+        method: "post",
+        url: "https://www.azur1tee.top/api/questionnaire/save_questionnaire",
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
+        },
+        data: JSON.stringify(formData),
+      }).then((res) => {
+        console.log(res);
+        this.current_questionnaire.id = this.questionnaire_id;
+        // var formData = this.current_questionnaire
+        var formData = new FormData();
+        // alert(this.current_questionnaire.id);
+        formData.append("questionnaireId", this.current_questionnaire.id);
+        axios({
+          method: "post",
+          url: "https://www.azur1tee.top/api/questionnaire/throw_questionnaire",
+          headers: {
+            Authorization: window.localStorage.getItem("authorization"),
+            "Content-Type": "application/json",
+          },
+          data: formData,
+        }).then((res) => {
+          this.input = "https://www.azur1tee.top/vj/";
+          this.input += res.data.data;
+          this.lianjie =
+              "https://www.azur1tee.top/api/qrcode/getQRCode/?content=" +
+              this.input +
+              "&logoUrl=https://www.azur1tee.top/api/getIcon";
+          this.ma = res.data.data;
+          if (res.data.code === 200 || res.data.code === 201) {
+            var Data1 = new FormData();
+            Data1.append("questionnaireId", this.current_questionnaire.id);
+            axios({
+              url:
+                  "https://www.azur1tee.top/api/questionnaire/publish_questionnaire",
+              method: "post",
+              data: Data1,
+              headers: {
+                Authorization: window.localStorage.getItem("authorization"),
+                "Content-Type": "application/json",
+              },
+            }).then((res) => {
+              console.log(res);
+              if (res.data.code === 200 || res.data.code === 201) {
+                this.$message({ message: "问卷已发布", type: "success" });
+              }
+            });
+          } else {
+            this.$message.error("获取链接失败");
+          }
+        });
       });
     },
   }
