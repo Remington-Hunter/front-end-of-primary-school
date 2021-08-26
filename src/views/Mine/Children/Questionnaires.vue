@@ -84,17 +84,6 @@
             color="brown darken-1"
           >
             mdi-pencil-outline</v-icon>
-
-          <!--          第一种方式-->
-          <!--        <v-icon small @click="modifyItem_first(item.id)" title="修改第一种办法" > mdi-pencil-outline</v-icon>-->
-          <!--   第二种方式-->
-          <!--        <v-icon small @click="modifyItem_second(item.id)" title="修改第二种办法" > mdi-pencil-outline</v-icon>-->
-          <!--   第三种方式-->
-          <!--          <v-icon-->
-          <!--            small-->
-          <!--            @click="modifyItem_third(item.id)"-->
-          <!--            title="修改"-->
-          <!--          > mdi-pencil-outline</v-icon>-->
           <v-icon
             size="22px"
             @click="lookUpLink(item.id)"
