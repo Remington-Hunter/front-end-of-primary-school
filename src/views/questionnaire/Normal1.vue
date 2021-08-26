@@ -275,9 +275,10 @@ export default {
         { text: "报名多选题", icon: "mdi-check-bold" },
       ],
       problem_list3: [
+        { text: "单选题", icon: "mdi-radiobox-marked" },
+        { text: "考试填空题", icon: "mdi-checkbox-blank-outline" },
         { text: "考试单选题", icon: "mdi-radiobox-marked" },
         { text: "考试多选题", icon: "mdi-check-bold" },
-        { text: "考试填空题", icon: "mdi-checkbox-blank-outline" },
       ],
       problem_list: [
         { text: "填空题", icon: "mdi-checkbox-blank-outline" },
@@ -369,7 +370,7 @@ export default {
         item.optionList = y;
         let y1 = [];
         if (item.type === 3) {
-          for (var j = 0; j < 5; j++) {
+          for (var j = 0; j <=5; j++) {
             let z = {};
             z.number = j + "";
             y1.push(z);
