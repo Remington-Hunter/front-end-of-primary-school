@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- <di</div> -->
     <div>
       <el-select v-model="v1" filterable placeholder="请选择">
         <el-option
@@ -40,67 +39,76 @@
         </el-table-column>
       </template>
     </el-table>
+    <!-- <el-button type="primary" @click="chageType('bar')">条形图</el-button> -->
+    <el-button type="primary" @click="chageType('line')" >折线图</el-button>
+    <el-button type="primary" @click="chageType('bar')" >柱状图</el-button>
+    <el-button type="primary" @click="chageType('radar')">雷达图</el-button>
+    <el-button type="primary" @click="chageType('row')">条形图</el-button>
+    <div id="line" style="width: 600px; height: 400px"  v-show="type=='line'"></div>
+    <div id="bar" style="width: 600px; height: 400px" v-show="type=='bar'"></div>
+    <div id="radar" style="width: 600px; height: 400px" v-show="type=='radar'"></div>
+    <div id="row" style="width: 600px; height: 400px" v-show="type=='row'"></div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+// import DrawMoreCol from '@/components/DrawMoreCol'
+import DrawMoreCol from "../components/DrawMoreCol.vue";
 export default {
+  components: {
+    DrawMoreCol,
+  },
   data() {
     return {
       id: 0,
       answer: [],
       answerData: [],
       options: [],
-      //   options2:[],
       v1: "",
       v2: "",
       data: [],
       ishow: false,
       table1: [],
-      headArr:[],
+      headArr: [],
+      col: [],
+      data1: [],
+      type:'bar',
     };
   },
   mounted() {
     this.id = this.$route.params.id;
-    // console.log(this.id);
     this.getAnswerData();
   },
   methods: {
-      getString(str){
-          if(str.length>10){
-              str=str.substring(0,10)+'...';
-          }
-          return str;
-      },
+    chageType(type){
+      this.type=type;
+    },
+    getString(str) {
+      if (str.length > 10) {
+        str = str.substring(0, 10) + "...";
+      }
+      return str;
+    },
     getprops(data) {
-        this.headArr=[];
-        var data=this.data;
+      this.headArr = [];
+      var data = this.data;
       var question2 = data.questionInfo[this.v2];
-    //   console.log(question2)
       var len = question2.optionList.length;
-      var c={label:'X/Y',prop:'0'};
+      var c = { label: "X/Y", prop: "0" };
       this.headArr.push(c);
-    //   var c = { 0: "X\\Y" };
       for (var i = 0; i < len; i++) {
-          var s='';
-          if(question2.optionList[i].content==null){
-              s=''+(i+1)+'星';
-          }
-          else{
-              s=question2.optionList[i].content
-          }
-        c={label:s,prop:(i+1).toString()} 
+        var s = "";
+        if (question2.optionList[i].content == null) {
+          s = "" + (i + 1) + "星";
+        } else {
+          s = question2.optionList[i].content;
+        }
+        c = { label: s, prop: (i + 1).toString() };
         this.headArr.push(c);
       }
-      c={label:'总计',prop:(len+1).toString()}
+      c = { label: "总计", prop: (len + 1).toString() };
       this.headArr.push(c);
-    //   for(var i=0;i<len;i++){
-    //       c={label:'',prop:i+1};
-    //       this.headArr.push(c)
-    //   }
-    //   console.log('我是');
-    //   console.log(this.headArr)
     },
     tableRowClassName: function (obj) {
       if (obj.rowIndex % 2 == 0) {
@@ -123,20 +131,14 @@ export default {
       }).then((res) => {
         var data = res.data.data;
         this.answerData = data.answerInfo;
-        // console.log(data)
-        // console.log(res);
-        // this.getAnswerData(data);
         this.data = data;
         this.getOptions(data);
-        
-        // console.log(1111);
       });
     },
     getOptions() {
-        var data=this.data;
+      var data = this.data;
       //   var answerInfo=data.answerInfo;
       var questionInfo = data.questionInfo;
-      //   console.log(answerInfo.length)
       for (var i = 0; i < questionInfo.length; i++) {
         if (questionInfo[i].info.type == 2) {
           continue;
@@ -151,28 +153,21 @@ export default {
       }
     },
     getAnalysis(v1, v2) {
+      
       this.table1 = [];
-      console.log(1324141)
-    console.log(this.table1)
       var data = this.data;
-    //   console.log(v1);
-    //   console.log(v2);
       var question1 = data.questionInfo[v1];
       var question2 = data.questionInfo[v2];
       var answerData = data.answerInfo;
       var len = question2.optionList.length;
-      var c={}
-      // console.log(c);
-    //   console.log(question1.length);
+      var c = {};
       for (var i = 0; i < question1.optionList.length; i++) {
         c = {};
         if (question1.optionList[i].content == null) {
-          c['0'] = "" + (i + 1) + "星";
+          c["0"] = "" + (i + 1) + "星";
         } else {
-          c['0'] = question1.optionList[i].content;
+          c["0"] = question1.optionList[i].content;
         }
-
-        // console.log(question1.optionList[i].content);
         var num = 0;
         var item = [];
         for (var j = 0; j < question2.optionList.length; j++) {
@@ -180,20 +175,9 @@ export default {
           var s1 = i.toString();
           var s2 = j.toString();
           for (var k = 0; k < answerData.length; k++) {
-            // var answer=;
-            // if()
-            // console.log(k);
-            // console.log("fafafafaf");
-            // console.log(answerData[k].answerList);
-            // console.log(answerData[k]);
-            // console.log(s1);
-            // console.log(answerData[k].answerList[v2]);
-            // console.log(s2);
-            // if(){}
             if (answerData[k].answerList.length == 0) {
               continue;
             }
-            // if(answerData[k].answerList[v1]||answerData[k].answerList[v2])
             if (
               answerData[k].answerList[v1].number.indexOf(s1) != -1 &&
               answerData[k].answerList[v2].number.indexOf(s2) != -1
@@ -209,8 +193,6 @@ export default {
           if (num == 0) {
             t = 0.0;
           } else {
-            // console.log(item[j]);
-            // console.log(num);
             t = (item[j] / num) * 100;
           }
           t = t.toFixed(2);
@@ -218,15 +200,240 @@ export default {
           c[(j + 1).toString()] = "" + item[j] + "(" + c1 + ")" + "%";
         }
         c[(len + 1).toString()] = num;
-        // console.log("c");
-        // console.log(c);
         this.table1.push(c);
       }
-    //   console.log(this.table1);
-    this.getprops();
-    
+      this.getprops();
+      this.getCol();
     },
-    
+    getCol() {
+      this.col = [];
+      var data = this.data;
+      var question2 = data.questionInfo[this.v2];
+      var len = question2.optionList.length;
+      var item = [];
+      item.push("X/Y");
+      for (var i = 0; i < len; i++) {
+        var s = "";
+        if (question2.optionList[i].content == null) {
+          s = "" + (i + 1) + "星";
+        } else {
+          s = question2.optionList[i].content;
+        }
+        item.push(s);
+      }
+      this.col.push(item);
+      // this.table1 = [];
+      var data = this.data;
+      var question1 = data.questionInfo[this.v1];
+      var question2 = data.questionInfo[this.v2];
+      var answerData = data.answerInfo;
+      var len = question2.optionList.length;
+      var c = {};
+      // var item1 = [];
+      for (var i = 0; i < question1.optionList.length; i++) {
+        c = {};
+        var item1 = [];
+        if (question1.optionList[i].content == null) {
+          // c["0"] = "" + (i + 1) + "星";
+          item1.push("" + (i + 1) + "星");
+        } else {
+          // c["0"] = question1.optionList[i].content;
+          item1.push(question1.optionList[i].content);
+        }
+        var num = 0;
+        var item = [];
+        for (var j = 0; j < question2.optionList.length; j++) {
+          var num1 = 0;
+          var s1 = i.toString();
+          var s2 = j.toString();
+          for (var k = 0; k < answerData.length; k++) {
+            if (answerData[k].answerList.length == 0) {
+              continue;
+            }
+            if (
+              answerData[k].answerList[this.v1].number.indexOf(s1) != -1 &&
+              answerData[k].answerList[this.v2].number.indexOf(s2) != -1
+            ) {
+              num1++;
+            }
+          }
+          item.push(num1);
+          num += num1;
+        }
+        for (var j = 0; j < question2.optionList.length; j++) {
+          var t = 0;
+          if (num == 0) {
+            t = 0.0;
+          } else {
+            t = (item[j] / num) * 100;
+          }
+          t = t.toFixed(2);
+          // var c1 = t;
+          // c[(j + 1).toString()] = "" + item[j] + "(" + c1 + ")" + "%";
+          item1.push(t);
+        }
+        // c[(len + 1).toString()] = num;
+        this.col.push(item1);
+        // this.table1.push(c);
+      }
+
+      
+      this.drawfunc();
+      this.drawfunc1();
+      this.drawfunc2();
+      this.drawfunc3();
+    },
+    getSeries(type) {
+      this.data1=[];
+      for (var i = 0; i < this.col[0].length - 1; i++) {
+        var c = { type: type };
+        this.data1.push(c);
+      }
+    },
+    drawfunc() {
+      this.getSeries('bar');
+      let myChart = this.$echarts.init(document.getElementById('bar'));
+      myChart.clear();
+      // 指定图表的配置项和数据
+      var option = {
+        legend: {},
+        tooltip: {},
+        dataset: {
+          // 提供一份数据。
+          source: this.col,
+        },
+        // 声明一个 X 轴，类目轴（category）。默认情况下，类目轴对应到 dataset 第一列。
+        xAxis: { type: "category" },
+        // 声明一个 Y 轴，数值轴。
+        yAxis: {},
+        // 声明多个 bar 系列，默认情况下，每个系列会自动对应到 dataset 的每一列。
+        series: this.data1,
+      };
+
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option);
+    },
+    drawfunc1() {
+      var data1=[];
+      for (var i = 0; i < this.col[0].length - 1; i++) {
+        var c = { type: 'line' };
+        data1.push(c);
+      }
+      let myChart = this.$echarts.init(document.getElementById('line'));
+      myChart.clear();
+      // 指定图表的配置项和数据
+      var option = {
+        legend: {},
+        tooltip: {},
+        dataset: {
+          // 提供一份数据。
+          source: this.col,
+        },
+        // 声明一个 X 轴，类目轴（category）。默认情况下，类目轴对应到 dataset 第一列。
+        xAxis: { type: "category" },
+        // 声明一个 Y 轴，数值轴。
+        yAxis: {},
+        // 声明多个 bar 系列，默认情况下，每个系列会自动对应到 dataset 的每一列。
+        series: data1,
+      };
+
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option);
+    },
+    drawfunc2() {
+      console.log('func2');
+      var c=[];
+      for(var i=1;i<this.headArr.length;i++){
+        var item={text:this.headArr[i].label,max:100}
+        c.push(item);
+      }
+      console.log(c);
+      var data=[];
+      for(var i=1;i<this.col.length;i++){
+        var b=[];
+        for(var j=1;j<this.col[i].length;j++){
+          b.push(this.col[i][j]);
+        }
+        var item={value:b,name:this.col[i][0]}
+        data.push(item);
+      }
+      console.log(data);
+      var name=[];
+      for(var i=0;i<this.col.length;i++){
+        name.push(this.col[i][0])
+      }
+      let myChart = this.$echarts.init(document.getElementById('radar'));
+      myChart.clear();
+      // 指定图表的配置项和数据
+      var option = {
+        tooltip : {
+          trigger: 'item',
+        },
+        legend: {
+          orient : 'vertical',              //这里主要是标识不同颜色代表不同的同学
+          x : 'right',
+          y : 'bottom',
+          // data:['A同学成绩 ', 'B同学成绩 ']
+        },
+        toolbox: {
+          show : true,
+          feature : {
+            mark : {show: true},
+            dataView : {show: true, readOnly: false},
+            restore : {show: true},
+            saveAsImage : {show: true},
+          }
+        },
+        polar : [
+          {
+            indicator : c
+            // [
+            //   { text: this.headArr[], max: 5.0, color: 'red'},    //这里用于设置各轴的参数以及最大值
+            //   { text: '核心必修课 ', max: 5.0},
+            //   { text: '一般必修课 ', max: 5.0},
+            //   { text: '通识必修课', max: 5.0},
+            //   { text: '通识限选课', max: 5.0},
+            // ]-
+          }
+        ],
+        series: [
+          {
+            type:'radar',
+            data:data
+          }
+        ],
+      };
+
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option);
+    },
+    drawfunc3() {
+      var data1=[];
+      for (var i = 0; i < this.col[0].length - 1; i++) {
+        var c = { type: 'bar' };
+        data1.push(c);
+      }
+      let myChart = this.$echarts.init(document.getElementById('row'));
+      myChart.clear();
+      // 指定图表的配置项和数据
+      var option = {
+        legend: {},
+        tooltip: {},
+        dataset: {
+          // 提供一份数据。
+          source: this.col,
+        },
+        // 声明一个 X 轴，类目轴（category）。默认情况下，类目轴对应到 dataset 第一列。
+        xAxis: { type: "value" },
+        // 声明一个 Y 轴，数值轴。
+        yAxis: {type:'category'},
+        // 声明多个 bar 系列，默认情况下，每个系列会自动对应到 dataset 的每一列。
+        series: data1,
+      };
+
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option);
+    },
   },
 };
 </script>
