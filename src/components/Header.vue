@@ -34,7 +34,7 @@
             id="person"
           >
             <el-dropdown>
-              <span>
+              <span style="font-size:1.2em">
                 {{user.username}}<i class="el-icon-arrow-down el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
