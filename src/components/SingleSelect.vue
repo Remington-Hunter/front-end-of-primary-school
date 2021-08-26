@@ -1,6 +1,9 @@
 <template>
   <div class="content">
     <div class="question">
+
+
+      <!-- 编辑状态选择题 -->
       <div
         v-show="
           ismodify &&
@@ -33,6 +36,7 @@
                   :min="1"
                   :max="99999"
                   size="small"
+                  v-model="point"
                 ></el-input-number>
               </div>
             </v-col>
@@ -46,6 +50,15 @@
               v-model="name"
             ></v-text-field>
             <v-text-field label="备注" v-model="instruction"></v-text-field>
+            <v-text-field
+              label="请输入答案解析"
+              :rules="[rules.required]"
+              v-show="[
+              '考试单选题',
+              '考试多选题',
+            ].includes(problem_type)"
+            v-model="question_analysis"
+            ></v-text-field>
           </div>
         </template>
         <div class="required">
@@ -105,9 +118,16 @@
         </div>
       </div>
 
+
+
+<!-- 编辑状态非选择题 -->
       <div
         v-show="
-          ismodify && (problem_type === '填空题' || problem_type === '评分题')
+          ismodify && [
+              '填空题',
+              '评分题',
+              '考试填空题',
+            ].includes(problem_type)
         "
       >
         <div>{{ problem_type }}</div>
@@ -119,6 +139,12 @@
               :rules="[rules.required]"
             ></v-text-field>
             <v-text-field label="备注" v-model="instruction"></v-text-field>
+            <v-text-field
+              label="请输入答案解析"
+              :rules="[rules.required]"
+              v-show="problem_type === '考试填空题'"
+              v-model="question_analysis"
+            ></v-text-field>
           </div>
         </template>
         <div class="required">
@@ -130,6 +156,9 @@
         <el-button @click="cancel" v-show="cancel_button">取消</el-button>
       </div>
 
+
+
+<!-- 非编辑状态 -->
       <div v-show="!ismodify" class="q-content">
         <div class="question-seq">{{ problem_number }}.</div>
         <div class="text">
@@ -138,7 +167,7 @@
         </div>
 
         <div class="q-instruction">{{ instruction }}</div>
-        <div v-if="problem_type === '填空题'" class="question-body">
+        <div v-if="problem_type === '填空题' || problem_type === '考试填空题'" class="question-body">
           <el-input
             type="textarea"
             autosize
@@ -302,6 +331,8 @@ export default {
           ? undefined
           : this.copy_info.question_id
         : undefined,
+        question_analysis:"答案解析",
+        point:0
     };
   },
   created() {
@@ -310,16 +341,13 @@ export default {
   },
   computed: {
     confirmstate() {
-      if (this.name === "" || this.selection_list.length === 0) {
+      if (this.name === "" || this.selection_list.length === 0 || this.question_analysis === "") {
         return true;
-      }
-      if(this.radio === "" || this.checkList === []){
-        return true
       }
       return false;
     },
     writeconfirmstate() {
-      if (this.name === "") {
+      if (this.name === "" || this.question_analysis === "") {
         return true;
       }
       return false;
