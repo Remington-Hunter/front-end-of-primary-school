@@ -123,7 +123,6 @@ export default {
             },
           }).then((res) => {
             console.log(res);
-            this.getItem();
           });
         })
         .catch(() => {
@@ -249,7 +248,7 @@ export default {
             questionnaire_type = "报名问卷";
           }
           var data = {
-            name: res.data.data[i].title.length > 15 ? res.data.data[i].title.slice(0, 15) + '...' : res.data.data[i].title,
+            name: res.data.data[i].title.length > 10 ? res.data.data[i].title.slice(0, 10) + '...' : res.data.data[i].title,
             type: questionnaire_type,
             state: state,
             id: res.data.data[i].id,

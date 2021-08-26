@@ -170,10 +170,10 @@
         slot="footer"
         class="dialog-footer"
       >
-        <el-button @click="centerDialogVisible = false">取 消</el-button>
+        <el-button @click="dialog = false">取 消</el-button>
         <el-button
           type="primary"
-          @click="centerDialogVisible = false;handle_modify(questionnaire_id)"
+          @click="dialog = false;handle_modify(questionnaire_id)"
         >确 定</el-button>
       </span>
     </el-dialog>
@@ -295,13 +295,13 @@ export default {
 
     handle_modify(item) {
       let index = this.radio
-      if (index == "1") {
+      if (index === "1") {
         this.modifyItem_first(item);
       }
-      else if (index == "2") {
+      else if (index === "2") {
         this.modifyItem_second(item);
       }
-      else if (index == "3") {
+      else if (index === "3") {
         this.modifyItem_third(item);
       }
     },
@@ -613,8 +613,8 @@ export default {
           }
           var data = {
             name:
-              res.data.data[i].title.length > 15
-                ? res.data.data[i].title.slice(0, 15) + "..."
+              res.data.data[i].title.length > 10
+                ? res.data.data[i].title.slice(0, 10) + "..."
                 : res.data.data[i].title,
             type: questionnaire_type,
             state: state,
