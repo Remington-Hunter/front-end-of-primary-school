@@ -1,7 +1,8 @@
 module.exports = {
   configureWebpack:{
     externals:{
-      'AMap': 'AMap'
+      'BMap':'BMap',
+      'BMapLib':'BMapLib'
     }
   },
   transpileDependencies: [
