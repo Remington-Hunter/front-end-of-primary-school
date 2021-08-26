@@ -372,8 +372,10 @@ export default {
           var data_i = data[i].optionList;
           var item = [];
           for (let j = 0; j < data_i.length; j++) {
-            var c=''+(j+1)+'分';
+            var c=''+(j+1)+'星';
+            console.log(data[i])
             var s = { content:c, num: data_i[j].answerNum };
+            console.log('data_i[j].answerNum'+data_i[j].answerNum)
             item.push(s);
           }
           this.completion.push(item);
@@ -510,8 +512,14 @@ export default {
             c[(j+1).toString()]=item[j].content;
           }
           else if(data.questionInfo[j].info.type==3){
-            var t=item[j].number[0]-'0';
-            c[(j+1).toString()]=''+(t+1)+'星';
+            var t=item[j].number-'0';
+            if(t==0){
+              c[(j+1).toString()]='无评价';
+            }
+            else{
+              c[(j+1).toString()]=''+(t)+'星';
+            }
+            
           }
           else{
             var t='';
@@ -528,11 +536,9 @@ export default {
           }
         }
         this.table1.push(c);
+        console.log(1111);
         console.log(this.table1);
       }
-      // this.getprops();
-      // this.getCol();
-      // console.log(this.col);
       
     },
     exportData() {
@@ -601,7 +607,7 @@ export default {
           var data_i = data[i].optionList;
           var item = [];
           for (let j = 0; j < data_i.length; j++) {
-            s=''+(j+1)+'分'
+            s=''+(j+1)+'星'
             var s = { 选项: s, 数量: data_i[j].answerNum };
             item.push(s);
           }
@@ -638,7 +644,7 @@ export default {
           var data_i = data[i].optionList;
           var item = [];
           for (let j = 0; j < data_i.length; j++) {
-            var c=''+(j+1)+'分'
+            var c=''+(j+1)+'星'
             var s = { value: data_i[j].answerNum, name: c };
             item.push(s);
           }
@@ -668,7 +674,7 @@ export default {
           var col2 = [];
           for (let j = 0; j < data_i.length; j++) {
             // var s={value:data_i[j].answerNum,name:data_i[j].content}
-            var c=''+(j+1)+'分';
+            var c=''+(j+1)+'星';
             col1.push(c);
             col2.push(data_i[j].answerNum);
           }
