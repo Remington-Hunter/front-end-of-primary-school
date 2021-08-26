@@ -1,6 +1,16 @@
 <template>
   <div>
-    <div>
+    <el-card class="box-card">
+      <div slot="header" class="clearfix">
+        <span>交叉分析</span>
+        <el-button style="float:right;padding:3px 0" type="text">交叉分析</el-button>
+      </div>
+      <div>
+        我的交叉分析
+        <hr>
+      </div>
+    </el-card>
+    <div style="width:50%;float:left">
       <el-select v-model="v1" filterable placeholder="请选择">
         <el-option
           v-for="item in options"
@@ -11,7 +21,7 @@
         </el-option>
       </el-select>
     </div>
-    <div>
+    <div style="width:50%;float:right">
       <el-select v-model="v2" filterable placeholder="请选择">
         <el-option
           v-for="item in options"
@@ -289,7 +299,7 @@ export default {
     getSeries(type) {
       this.data1=[];
       for (var i = 0; i < this.col[0].length - 1; i++) {
-        var c = { type: type };
+        var c = { type: type,barWidth : 40};
         this.data1.push(c);
       }
     },
@@ -305,6 +315,7 @@ export default {
           // 提供一份数据。
           source: this.col,
         },
+        color:['#009dff', '#40c45f', '#FFC851','#5A5476','#1869A0','#FF9393'],
         // 声明一个 X 轴，类目轴（category）。默认情况下，类目轴对应到 dataset 第一列。
         xAxis: { type: "category" },
         // 声明一个 Y 轴，数值轴。
@@ -328,6 +339,7 @@ export default {
       var option = {
         legend: {},
         tooltip: {},
+        color:['#009dff', '#40c45f', '#FFC851','#5A5476','#1869A0','#FF9393'],
         dataset: {
           // 提供一份数据。
           source: this.col,
@@ -372,13 +384,16 @@ export default {
         tooltip : {
           trigger: 'item',
         },
+        color:['#009dff', '#40c45f', '#FFC851','#5A5476','#1869A0','#FF9393'],
         legend: {
           orient : 'vertical',              //这里主要是标识不同颜色代表不同的同学
           x : 'right',
           y : 'bottom',
           // data:['A同学成绩 ', 'B同学成绩 ']
         },
+        color:['#009dff', '#40c45f', '#FFC851','#5A5476','#1869A0','#FF9393'],
         toolbox: {
+          
           show : true,
           feature : {
             mark : {show: true},
@@ -415,14 +430,15 @@ export default {
       var option = {
         legend: {},
         tooltip: {},
+        color:['#009dff', '#40c45f', '#FFC851','#5A5476','#1869A0','#FF9393'],
         dataset: {
           // 提供一份数据。
           source: this.col,
         },
         // 声明一个 X 轴，类目轴（category）。默认情况下，类目轴对应到 dataset 第一列。
-        xAxis: { type: "value" },
+        xAxis: { type: "value" ,},
         // 声明一个 Y 轴，数值轴。
-        yAxis: {type:'category'},
+        yAxis: {type:'category',},
         // 声明多个 bar 系列，默认情况下，每个系列会自动对应到 dataset 的每一列。
         series: data1,
       };
