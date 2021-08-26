@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="locationHeader">
-      <div class="region">{{ locationDescription }}</div>
+      <div class="region">{{ locationInfo.country }}{{locationInfo.province}}{{locationInfo.city}}{{locationInfo.district}}</div>
       <div style="display: flex; align-items: center">
               <span
                   style="font-size: 20px; margin-left: 10px; margin-right: 5px; color: #444444;"
@@ -58,9 +58,8 @@ export default {
     getLocation() {
       // eslint-disable-next-line
       this.locationInfo.ip = window.localStorage.getItem('Ip')
-      console.log(this.locationInfo.ip)
+      // console.log(this.locationInfo.ip)
       var _this = this;
-      var url1 = "https://restapi.amap.com/v5/ip?key=096748afcd44f7a9939d2065057b26ef&type=4&ip=114.247.50.2";
       axios.get("https://restapi.amap.com/v5/ip?key=a593d64ab73229be6b3d1ef802b76849&type=4&ip="+this.locationInfo.ip)
           .then(response => {
             console.log(response)

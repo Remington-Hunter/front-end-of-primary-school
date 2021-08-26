@@ -9,15 +9,6 @@ import './assets/css/icon/iconfont.css'
 import '@/assets/fonts/style.css'
 import htmlToPdf from '@/assets/js/htmlToPdf'
 import VueClipboard from 'vue-clipboard2'
-import VueAMap from "vue-amap";
-Vue.use(VueAMap);
-// 初始化vue-amap
-VueAMap.initAMapApiLoader({
-    key: "096748afcd44f7a9939d2065057b26ef", // 这里写你申请的高德地图的key
-    plugin: ["AMap.Autocomplete", "AMap.Geocoder", "AMap.Geolocation","AMap.CitySearch"],
-    v: "1.4.15",
-    uiVersion: "1.1"
-});
 
 Vue.use(VueClipboard)
     // import Blob from './excel/Blob'
