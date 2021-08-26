@@ -420,6 +420,10 @@ export default {
               z.content = "";
             }
           }
+          else{
+            z.number = "" + y.rating;
+            z.content = "";
+          }
         } else if (y.type === 2) {
           if (y.required) {
             if (y.answer === "") {
