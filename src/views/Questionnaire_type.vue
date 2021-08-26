@@ -3,8 +3,6 @@
     class="1"
     style="margin-top:2%"
   >
-
-    <v-app>
       <div class="3">
         <v-card
           class="common_question"
@@ -114,8 +112,18 @@
           </div>
         </v-card>
       </div>
-    </v-app>
-
+    <v-btn
+        class="ma-2"
+        color="primary"
+        @click="saveQues_daka"
+    >
+      创建
+      <v-icon
+          dark
+          right
+      >mdi-checkbox-marked-circle
+      </v-icon>
+    </v-btn>
   </div>
 
 </template>
@@ -227,6 +235,32 @@ export default {
         console.log(res);
         this.current_questionnaire.id = res.data.data;
         this.$router.push({path:"/edit1/3",query:{id:this.current_questionnaire.id}})
+        if (res.data.code === 200 || res.data.code === 201) {
+          this.is_saved = true
+          this.questionnaire_id = res.data.data
+        }
+        // alert(this.current_questionnaire.id);
+      });
+    },
+    saveQues_daka() {
+      this.current_questionnaire.userId = window.localStorage.getItem("user_id")
+      this.current_questionnaire.type = 4;
+      this.current_questionnaire.questionList = []
+      // this.current_questionnaire.title = "题目";
+      var formData = this.current_questionnaire
+      console.log(JSON.stringify(formData));
+      axios({
+        method: "post",
+        url: "https://www.azur1tee.top/api/questionnaire/save_questionnaire",
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
+        },
+        data: JSON.stringify(formData),
+      }).then((res) => {
+        console.log(res);
+        this.current_questionnaire.id = res.data.data;
+        this.$router.push({path:"/questionnaire_clock/4",query:{id:this.current_questionnaire.id}})
         if (res.data.code === 200 || res.data.code === 201) {
           this.is_saved = true
           this.questionnaire_id = res.data.data

@@ -103,6 +103,12 @@ const routes = [{
         name: 'getanalysis',
         component: () =>
             import ('../views/getCrossAnalysis.vue')
+    },
+    {
+        path:'/questionnaire_clock/:type',
+        name:'Questionnaire_clock',
+        component: ()=>
+            import('../views/Questionnaire_clock')
     }
 ]
 
