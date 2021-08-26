@@ -61,6 +61,7 @@
             class="mr-2"
             @click="startItem(item.id)"
             title="发布"
+            color="green"
           >
             mdi-arrow-right-drop-circle
           </v-icon>
@@ -69,6 +70,7 @@
             class="mr-2"
             @click="stopItem(item.id)"
             title="停止"
+            color="orange"
           >
             mdi-pause-circle
           </v-icon>
@@ -79,6 +81,7 @@
               get_id(item.id);
             "
             title="修改"
+            color="brown darken-1"
           >
             mdi-pencil-outline</v-icon>
 
@@ -96,6 +99,7 @@
             size="22px"
             @click="lookUpLink(item.id)"
             title="查看链接"
+            color="blue darken-2"
             style="margin-left: 1%"
           >
             mdi-link-variant</v-icon>
@@ -104,6 +108,7 @@
             @click="checkAnalysis(item.id)"
             title="统计结果"
             style="margin-left: 1%"
+            color="purple darken-2"
           >
             mdi-poll</v-icon>
           <v-icon
@@ -111,6 +116,7 @@
             @click="checkItem(item.id)"
             title="预览"
             style="margin-left: 1%"
+            color="teal darken-2"
           >
             mdi-eye-outline</v-icon>
         </template>
@@ -164,10 +170,10 @@
         slot="footer"
         class="dialog-footer"
       >
-        <el-button @click="centerDialogVisible = false">取 消</el-button>
+        <el-button @click="dialog = false">取 消</el-button>
         <el-button
           type="primary"
-          @click="centerDialogVisible = false;handle_modify(questionnaire_id)"
+          @click="dialog = false;handle_modify(questionnaire_id)"
         >确 定</el-button>
       </span>
     </el-dialog>
@@ -289,13 +295,13 @@ export default {
 
     handle_modify(item) {
       let index = this.radio
-      if (index == "1") {
+      if (index === "1") {
         this.modifyItem_first(item);
       }
-      else if (index == "2") {
+      else if (index === "2") {
         this.modifyItem_second(item);
       }
-      else if (index == "3") {
+      else if (index === "3") {
         this.modifyItem_third(item);
       }
     },
@@ -607,8 +613,8 @@ export default {
           }
           var data = {
             name:
-              res.data.data[i].title.length > 15
-                ? res.data.data[i].title.slice(0, 15) + "..."
+              res.data.data[i].title.length > 10
+                ? res.data.data[i].title.slice(0, 10) + "..."
                 : res.data.data[i].title,
             type: questionnaire_type,
             state: state,
