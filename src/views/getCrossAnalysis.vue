@@ -77,7 +77,9 @@ export default {
     };
   },
   mounted() {
-    this.id = this.$route.params.id;
+    console.log('ididid')
+    this.id = this.$route.query.id;
+    console.log(this.id);
     this.getAnswerData();
   },
   methods: {

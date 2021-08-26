@@ -247,9 +247,7 @@ export default {
   
   methods: {
     checkCrossAnalysis(){
-      console.log(11111);
-      console.log(this.id);
-      this.$router.push({ name: "getanalysis", params: { id: this.id } });
+      this.$router.push({ path: "/getanalysis", query: { id: this.id } });
     },
     getExcelData(){
       var data=this.data;
