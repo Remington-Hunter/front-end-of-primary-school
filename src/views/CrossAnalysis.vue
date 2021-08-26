@@ -371,8 +371,8 @@ export default {
         else if(data[i].question.type === 3){
           var data_i = data[i].optionList;
           var item = [];
-          for (let j = 0; j < data_i.length; j++) {
-            var c=''+(j+1)+'星';
+          for (let j = 1; j < data_i.length; j++) {
+            var c=''+(j)+'星';
             console.log(data[i])
             var s = { content:c, num: data_i[j].answerNum };
             console.log('data_i[j].answerNum'+data_i[j].answerNum)
@@ -411,8 +411,8 @@ export default {
           var data_i = data[i].optionList;
           var item = [];
           
-          for (let j = 0; j < data_i.length; j++) {
-            var c=''+(j+1)+'分';
+          for (let j = 1; j < data_i.length; j++) {
+            var c=''+(j)+'星';
             var s = [data_i[j].answerNum, c];
             console.log(c);
             item.push(s);
@@ -606,8 +606,8 @@ export default {
         else if(data[i].question.type==3){
           var data_i = data[i].optionList;
           var item = [];
-          for (let j = 0; j < data_i.length; j++) {
-            s=''+(j+1)+'星'
+          for (let j = 1; j < data_i.length; j++) {
+            s=''+(j)+'星'
             var s = { 选项: s, 数量: data_i[j].answerNum };
             item.push(s);
           }
@@ -643,8 +643,8 @@ export default {
         }else if(data[i].question.type == 3){
           var data_i = data[i].optionList;
           var item = [];
-          for (let j = 0; j < data_i.length; j++) {
-            var c=''+(j+1)+'星'
+          for (let j = 1; j < data_i.length; j++) {
+            var c=''+(j)+'星'
             var s = { value: data_i[j].answerNum, name: c };
             item.push(s);
           }
@@ -672,9 +672,9 @@ export default {
           var item = [];
           var col1 = [];
           var col2 = [];
-          for (let j = 0; j < data_i.length; j++) {
+          for (let j = 1; j < data_i.length; j++) {
             // var s={value:data_i[j].answerNum,name:data_i[j].content}
-            var c=''+(j+1)+'星';
+            var c=''+(j)+'星';
             col1.push(c);
             col2.push(data_i[j].answerNum);
           }
