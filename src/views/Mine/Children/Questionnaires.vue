@@ -609,7 +609,9 @@ export default {
   margin: 0 5%;
 }
 #select {
+  margin-top: 12px;
   margin-left: 30px;
+  margin-right: 75px;
   width: 450px;
 }
 </style>
