@@ -135,11 +135,15 @@ export default {
     lianjie: {
       type: String,
       defalut: ''
-    }
+    },
+    download_lianjie:{
+      type:String,
+      defalut:''
+    },
   },
   data() {
     return {
-      download_lianjie: "",
+      // download_lianjie: "",
       id: '',
     }
   },
