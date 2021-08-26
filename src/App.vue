@@ -39,3 +39,9 @@ export default {
   margin-top: 8vh;
 }
 </style>
+
+<style>
+.v-select__selections {
+  min-height: 20px;
+}
+</style>

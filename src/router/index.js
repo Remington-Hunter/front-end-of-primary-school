@@ -31,17 +31,6 @@ const routes = [{
         path: '/mine',
         component: () =>
             import ('../views/Mine/Mine.vue'),
-        children: [{
-                path: '',
-                component: () =>
-                    import ('../views/Mine/Children/Questionnaires.vue')
-            },
-            {
-                path: '/deleted',
-                component: () =>
-                    import ('../views/Mine/Children/DeletedQuest.vue')
-            }
-        ]
     },
     {
         path: '/preview',
