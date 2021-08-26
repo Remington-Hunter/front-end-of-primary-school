@@ -6,13 +6,22 @@
           to="/"
           id="head-title"
         >
-          <v-icon color="blue darken-2">mdi-earth</v-icon> 问卷星球
+          <div class="logo"><img
+              src="../assets/logo.png"
+              class="img"
+            /></div><span style="padding-left:8px">问卷星球</span>
         </router-link>
         <router-link
           to="/mine"
-          id="my"
+          class="my"
         >
-          <v-icon color="blue darken-2">mdi-file-multiple-outline</v-icon> 我的问卷
+          <i class="el-icon-document"></i> 我的问卷
+        </router-link>
+        <router-link
+          to="/Questionnaire_type"
+          class="my"
+        >
+          <i class="el-icon-document-add"></i> 新建问卷
         </router-link>
       </div>
       <ul>
@@ -25,11 +34,11 @@
             id="person"
           >
             <el-dropdown>
-              <span>
+              <span style="font-size:1.2em">
                 {{user.username}}<i class="el-icon-arrow-down el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>
+                <el-dropdown-item v-show="ishow!=null">
                   <router-link to="/personInfo">个人中心</router-link>
                 </el-dropdown-item>
                 <el-dropdown-item><a @click="logout">退出登录</a></el-dropdown-item>
@@ -37,13 +46,9 @@
             </el-dropdown>
           </li>
         </div>
-        <li
-          v-if="$route.path !== '/'"
-          id="h-home"
-        >
+        <li v-if="$route.path !== '/'">
           <router-link to="/">
-            <!-- <v-icon color="blue darken-2"> mdi-home-variant</v-icon>  -->
-            返回首页
+            <span id="h-home">返回首页</span>
           </router-link>
         </li>
       </ul>
@@ -53,6 +58,7 @@
 </template>
 
 <script>
+
 export default {
   name: "Header",
   data() {
@@ -63,7 +69,8 @@ export default {
         avatar: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
         // avatar: 'http://101.200.164.148/assets/avatars/khKXwpT86OF3hj3K.png'
       },
-      hasLogin: false
+      hasLogin: false,
+      ishow: window.localStorage.getItem('user_id')
     }
   },
   methods: {
@@ -85,11 +92,12 @@ export default {
   },
   mounted() {
     this.check_is_login();
-    this.user.username=window.localStorage.getItem('userName');
+    this.user.username = window.localStorage.getItem('userName');
   },
   updated() {
     this.check_is_login();
-    this.user.username=window.localStorage.getItem('userName');
+    this.user.username = window.localStorage.getItem('userName');
+    this.ishow = window.localStorage.getItem('user_id');
   },
   // create(){
   //   this.check_is_login();
@@ -112,6 +120,7 @@ a {
   z-index: 1500;
   width: 100%;
   height: 8vh;
+  padding-right: 45px;
   background: rgb(255, 255, 255);
   display: flex;
   align-items: center;
@@ -121,9 +130,12 @@ a {
 }
 
 #head-title {
-  margin-left: 1vw;
-  font-size: 1.2em;
-  color: #333333;
+  margin-left: 3vw;
+  margin-right: 2vw;
+  font-size: 4vh;
+  font-family: YouYuan;
+  font-weight: bold;
+  color: #094299;
 }
 .header_nav > ul {
   margin: 0;
@@ -133,21 +145,39 @@ a {
 }
 .header_nav > ul > li * {
   display: inline-block;
-  font-size: 1em;
+  font-size: 1.1em;
   color: #333333;
   text-decoration: none;
   cursor: pointer;
   padding-right: 20px;
 }
-.header_nav > ul > li *:hover {
+
+#h-home:hover,
+.my:hover,
+li :hover {
   color: #008fff;
 }
-#my {
-  font-size: 1em;
+.my {
+  font-size: 1.2em;
   color: #333333;
   padding-left: 30px;
 }
 .dropdown {
   padding-right: 30px;
+}
+.img {
+  height: 6vh;
+  vertical-align: middle;
+  padding-bottom: 8px;
+}
+#left {
+  display: inline-flex;
+  justify-items: stretch;
+  align-items: center;
+}
+.logo {
+  display: inline-block;
+  height: 6vh;
+  line-height: 6vh;
 }
 </style>

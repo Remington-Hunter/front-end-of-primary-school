@@ -96,20 +96,20 @@
             class="iconfont"
             style="text-align: center;display:block;"
           >&#xe8bb;</span>
-          <div style="text-align: center;display:block;">更多问卷</div>
+          <div style="text-align: center;display:block;">考试问卷</div>
           <div style="text-align: center;display:block;">
             <v-btn
-              disabled
               class="ma-2"
               color="primary"
+              @click="saveQues_kaoshi"
             >
               <!-- to进行跳转 由于普通问卷页面没有做好，这里先转到home试一下-->
-              敬请期待
-              <!-- <v-icon
+              创建
+              <v-icon
                   dark
                   right
               >mdi-checkbox-marked-circle
-              </v-icon> -->
+              </v-icon>
             </v-btn>
           </div>
         </v-card>
@@ -201,6 +201,32 @@ export default {
         console.log(res);
         this.current_questionnaire.id = res.data.data;
         this.$router.push({path:"/edit1/2",query:{id:this.current_questionnaire.id}})
+        if (res.data.code === 200 || res.data.code === 201) {
+          this.is_saved = true
+          this.questionnaire_id = res.data.data
+        }
+        // alert(this.current_questionnaire.id);
+      });
+    },
+    saveQues_kaoshi() {
+      this.current_questionnaire.userId = window.localStorage.getItem("user_id")
+      this.current_questionnaire.type = 3;
+      this.current_questionnaire.questionList = []
+      // this.current_questionnaire.title = "题目";
+      var formData = this.current_questionnaire
+      console.log(JSON.stringify(formData));
+      axios({
+        method: "post",
+        url: "https://www.azur1tee.top/api/questionnaire/save_questionnaire",
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
+        },
+        data: JSON.stringify(formData),
+      }).then((res) => {
+        console.log(res);
+        this.current_questionnaire.id = res.data.data;
+        this.$router.push({path:"/edit1/3",query:{id:this.current_questionnaire.id}})
         if (res.data.code === 200 || res.data.code === 201) {
           this.is_saved = true
           this.questionnaire_id = res.data.data

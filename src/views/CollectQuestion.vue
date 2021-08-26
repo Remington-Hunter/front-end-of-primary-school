@@ -17,7 +17,9 @@
         <!-- :questionList="questionList_vote" -->
       </div>
       <div id="pre" v-show="!(state && this.type === 1 && this.can_see_result)">
-        <div v-if="state">感谢您提交问卷</div>
+        <div v-if="state">
+          <success></success>
+        </div>
         <div class="s-main " v-else>
           <!-- 问卷标题 -->
           <div class="header-title">{{ headerTitle }}</div>
@@ -48,12 +50,14 @@
 
             <div class="question-body ">
               <!-- 单选题 -->
+              <!-- @click.native.prevent="clickitem(question, index)" -->
               <div v-if="[0, 6, 10].includes(question.type)">
                 <el-radio-group v-model="question.radio">
                   <el-radio
                     v-for="(item, index) in question.selectionList"
                     :key="index"
                     :label="index"
+                    @click.native="clickitem(question)"
                   >
                     {{ item.content }}
                     <span
@@ -110,9 +114,7 @@
         >
       </div> -->
           <div class="page-control">
-            <el-button
-              type="text"
-              @click="dialogVisible = judge()"
+            <el-button type="text" @click="dialogVisible = judge()"
               >提交</el-button
             >
           </div>
@@ -151,6 +153,7 @@ import axios from "axios";
 import PublishQuestion from "./questionnaire/PublishQuestion.vue";
 import VoteAnswer from "./VoteAnswer.vue";
 import Stop from "./Stop.vue";
+import Success from "./Success.vue";
 import { dateFormat } from "../utils/dateFormat";
 export default {
   name: "CollectQuestion",
@@ -158,6 +161,7 @@ export default {
     PublishQuestion,
     VoteAnswer,
     Stop,
+    Success,
   },
   data() {
     return {
@@ -175,10 +179,18 @@ export default {
       end: false,
       type: -1,
       questionList_vote: [],
-      can_see_result:false
+      can_see_result: false,
     };
   },
   methods: {
+    clickitem(question) {
+      console.log(question.radio);
+      console.log(question.preradio);
+      if(question.radio === question.preradio){
+        question.radio =""
+      }
+      question.preradio=question.radio
+    },
     showInfo2() {
       console.log(this.questionList);
       var list = this.current_questionnaire.questionList;
@@ -205,9 +217,7 @@ export default {
         this.type = res.data.data.questionnaire.type;
         this.current_questionnaire = res.data.data;
         console.log(dateFormat(new Date()));
-        if (
-          this.current_questionnaire.questionnaire.startTime === null
-        ) {
+        if (this.current_questionnaire.questionnaire.startTime === null) {
           this.can_write_state = true;
         } else {
           if (
@@ -326,7 +336,8 @@ export default {
         console.log(res.data.data);
         this.type = res.data.data.questionnaire.type;
         this.current_questionnaire = res.data.data;
-        this.can_see_result=res.data.data.questionnaire.canSee===1?true:false
+        this.can_see_result =
+          res.data.data.questionnaire.canSee === 1 ? true : false;
         console.log(dateFormat(new Date()));
         if (
           this.current_questionnaire.questionnaire.startTime === null ||

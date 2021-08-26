@@ -28,7 +28,7 @@ export default {
   mounted() {
     //   alert(111)
     // console.log(this.id)
-    console.log(this.source1)
+    // console.log(this.source1)
     this.drawfunc()
   },
   methods: {

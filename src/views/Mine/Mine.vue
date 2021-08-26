@@ -4,7 +4,6 @@
       app
       v-model="drawer"
       :mini-variant="miniVariant"
-      :permanent="permanent"
       :width="170"
     >
       <v-list
@@ -12,12 +11,9 @@
         nav
         class="py-0"
       >
-        <v-list-item
-          two-line
-          :class="miniVariant && 'px-0'"
-        >
+        <v-list-item>
           <v-btn
-            class="mx-2"
+            class="btn"
             color="primary"
             to="/Questionnaire_type"
           >
@@ -44,20 +40,27 @@
     </v-navigation-drawer>
 
     <v-main style="margin:30px 0">
-      <router-view></router-view>
+      <questionnaire v-if="path===1" />
+      <dele v-else />
     </v-main>
   </div>
 </template>
 
 <script>
+import questionnaire from "./Children/Questionnaires.vue"
+import dele from "./Children/DeletedQuest.vue"
 export default {
-
+  components: {
+    dele,
+    questionnaire
+  },
   data() {
     return {
+      path: 1,
       drawer: true,
       items: [
-        { title: '个人问卷', icon: 'mdi-file-document-outline', link: 'mine' },
-        { title: '回收站', icon: 'mdi-trash-can-outline', link: '/deleted' },
+        { title: '个人问卷', icon: 'mdi-file-document-outline', link: 1 },
+        { title: '回收站', icon: 'mdi-trash-can-outline', link: 2 },
       ],
       permanent: true,
       miniVariant: false,
@@ -67,7 +70,7 @@ export default {
   methods:
   {
     goTo(path) {
-      this.$router.replace(path);
+      this.path = path;
     },
 
   }
@@ -77,5 +80,9 @@ export default {
 <style scoped>
 .v-navigation-drawer {
   margin-top: 8vh;
+}
+.btn {
+  margin-top: 25px;
+  margin-bottom: 10px;
 }
 </style>

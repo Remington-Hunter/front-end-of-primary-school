@@ -31,17 +31,6 @@ const routes = [{
         path: '/mine',
         component: () =>
             import ('../views/Mine/Mine.vue'),
-        children: [{
-                path: '',
-                component: () =>
-                    import ('../views/Mine/Children/Questionnaires.vue')
-            },
-            {
-                path: '/deleted',
-                component: () =>
-                    import ('../views/Mine/Children/DeletedQuest.vue')
-            }
-        ]
     },
     {
         path: '/preview',
@@ -74,20 +63,23 @@ const routes = [{
             import ('../views/CrossAnalysis.vue')
     },
     {
-        path:'/send/:id',
+        path: '/send/:id',
         name: 'send',
-        component: () => import('../views/questionnaire/Send.vue')
+        component: () =>
+            import ('../views/questionnaire/Send.vue')
     },
 
     {
-        path:'/vote',
-        name:'VoteAnswer',
-        component: () => import('../views/VoteAnswer.vue')
+        path: '/vote',
+        name: 'VoteAnswer',
+        component: () =>
+            import ('../views/VoteAnswer.vue')
     },
     {
-        path:'/stop',
-        name:'Stop',
-        component: () => import('../views/Stop.vue')
+        path: '/stop',
+        name: 'Stop',
+        component: () =>
+            import ('../views/Stop.vue')
     },
     {
         path: '/edit1/:type',
@@ -100,6 +92,17 @@ const routes = [{
         name: 'Try',
         component: () =>
             import ('../views/Try.vue')
+    }, {
+        path: '/success',
+        name: 'Success',
+        component: () =>
+            import ('../views/Success.vue')
+    },
+    {
+        path: '/getanalysis',
+        name: 'getanalysis',
+        component: () =>
+            import ('../views/getCrossAnalysis.vue')
     }
 ]
 
