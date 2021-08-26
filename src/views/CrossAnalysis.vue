@@ -174,117 +174,15 @@
       </div>
     </div>
     <!-- 下面的内容不用管，我是不会让他显示的，只是为了导出数据 -->
-    <div id="demo2" v-show="false">
-      <div >
-        <div
-          v-for="(item, index) in data"
-          :key="(index)"
-        >
-          <el-divider></el-divider>
-          <div class="question-head ">
-            <div class="question-title">
-              <span class="question-seq"><b>第{{ index + 1 }}题：</b></span>
-              <span class="text">{{data[index].question.content}}</span>
-              <span
-                v-if="data[index].question.type==0"
-                class="question-type"
-              >单选题</span>
-              <span
-                v-if="data[index].question.type==1"
-                class="question-type"
-              >多选题</span>
-              <span
-                v-if="data[index].question.type==2"
-                class="question-type"
-              >填空题</span>
-              <span
-                v-if="data[index].question.type==3"
-                class="question-type"
-              >评分题</span>
-            </div>
-          </div>
-          <div v-if="data[index].question.type === 2">
-            <el-table
-              :data="excel[index]"
-              style="width: 100%"
-              class="table"
-            >
-              <el-table-column label="">
-                <template slot-scope="scope">
-                  <!-- <i class="el-icon-time"></i> -->
-                  <span style="margin-left: 10px">{{ scope.row.id }}</span>
-                </template>
-              </el-table-column>
-              <el-table-column label="">
-                <template slot-scope="scope1">
-                  <!-- <i class="el-icon-time"></i> -->
-                  <span style="margin-left: 10px">{{
-                    scope1.row.content
-                  }}</span>
-                </template>
-              </el-table-column>
-            </el-table>
-          </div>
-          <div v-else>
-            <div v-if="excel[index].length !== 0">
-              <!-- <Completion :data1="completion[index]"></Completion> -->
-              <div>
-                <el-table
-                  :data="excel[index]"
-                  style="width: 100%"
-                  class="table"
-                  border
-                >
-                  <el-table-column label="">
-                    <template slot-scope="scope2">
-                      <!-- <i class="el-icon-time"></i> -->
-                      <span style="margin-left: 10px">{{
-                      scope2.row.content
-                    }}</span>
-                    </template>
-                  </el-table-column>
-                  <el-table-column label="">
-                    <template slot-scope="scope3">
-                      <!-- <i class="el-icon-time"></i> -->
-                      <span style="margin-left: 10px">{{ scope3.row.num }}</span>
-                    </template>
-                  </el-table-column>
-                </el-table>
-              </div>
-            </div>
-            <div v-else>
-              <el-table
-                :data="excel[index]"
-                style="width: 100%"
-              >
-                <el-table-column label="">
-                  <template slot-scope="scope">
-                    <!-- <i class="el-icon-time"></i> -->
-                    <span style="margin-left: 10px">{{ scope.row.id }}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column label="">
-                  <template slot-scope="scope1">
-                    <!-- <i class="el-icon-time"></i> -->
-                    <span style="margin-left: 10px">{{
-                    scope1.row.content
-                  }}</span>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div v-show="false">
-        <div >
+    <div id="demo2" v-show="true">
+      <!-- <div>
+        <div>
         <div
           v-for="(item, index) in answerData"
           :key="(index)"
         >
           <el-divider></el-divider>
           <div >
-              <!-- <Completion :data1="completion[index]"></Completion> -->
               <div>
                 <el-table
                   :data="answer[index]"
@@ -294,7 +192,6 @@
                 >
                   <el-table-column label="">
                     <template slot-scope="scope2">
-                      <!-- <i class="el-icon-time"></i> -->
                       <span style="margin-left: 10px">{{
                       scope2.row.content
                     }}</span>
@@ -302,36 +199,31 @@
                   </el-table-column>
                   <el-table-column label="">
                     <template slot-scope="scope3">
-                      <!-- <i class="el-icon-time"></i> -->
                       <span style="margin-left: 10px">{{ scope3.row.num }}</span>
                     </template>
                   </el-table-column>
                 </el-table>
               </div>
             </div>
-            <!-- <div v-else>
-              <el-table
-                :data="excel[index]"
-                style="width: 100%"
-              >
-                <el-table-column label="">
-                  <template slot-scope="scope">
-                    <span style="margin-left: 10px">{{ scope.row.id }}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column label="">
-                  <template slot-scope="scope1">
-
-                    <span style="margin-left: 10px">{{
-                    scope1.row.content
-                  }}</span>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </div> -->
         </div>
       </div>
-      </div>
+      </div> -->
+      <el-table :data="table1" border height="550" style="width: 100%">
+      <template v-for="(item, index) in headArr">
+        <el-table-column
+          :key="index"
+          :prop="item.prop"
+          :label="item.label"
+          align="center"
+        >
+          <template slot-scope="scope">
+            <span>
+              {{ scope.row[item.prop] }}
+            </span>
+          </template>
+        </el-table-column>
+      </template>
+    </el-table>
     </div>
   </div>
 </template>
@@ -343,8 +235,6 @@ import drawBar from "../components/DrawBar.vue";
 import drawCol from "../components/DrawCol.vue";
 import htmlToPdf from "@/assets/js/htmlToPdf";
 import Completion from "../components/Completion";
-// import Export2Excel from '@/excel/Export2Excel'
-// import Blob from '@/excel/Blob'
 import FileSaver from "file-saver";
 import XLSX from "xlsx";
 export default {
@@ -372,6 +262,8 @@ export default {
       excel:[],
       answer:[],
       answerData:[],
+      headArr:[],
+      table1:[],
     };
   },
   components: {
@@ -612,79 +504,70 @@ export default {
       }).then((res)=>{
         var data=res.data.data;
         this.answerData=data.answerInfo;
-        // console.log(data)
-        // console.log(res);
+        console.log(data)
+        console.log(res);
         // this.getAnswerData(data);
         this.getAnswerExcel(data);
       })
     },
+    getprops(data){
+      this.headArr=[];
+      // var data=this.data;
+      // var question2 = data.questionInfo[this.v2];
+      var len = data.questionInfo.length
+      var c={label:"序号",prop:"0"}
+      this.headArr.push(c);
+      for (var i = 0; i < len; i++) {
+        var s = "第"+(i+1)+"题："
+        if(data.questionInfo[i].info.content==null){
+          s+="内容为空"
+        }
+        else{
+          s+=data.questionInfo[i].info.content;
+        }
+        c = { label: s, prop: (i + 1).toString() };
+        this.headArr.push(c);
+      }
+    },
     getAnswerExcel(data){
-      console.log(1111);
-      console.log(data);
-      var answerInfo=data.answerInfo;
-      var questionInfo=data.questionInfo;
-      console.log(answerInfo);
-      console.log(questionInfo)
-      var item1=[];
-      var c={content:'',num:''}
-      item1.push(c);
-      c={content:'',num:''}
-      item1.push(c);
-      c={content:'',num:''}
-      item1.push(c);
-      c={content:'',num:''}
-      item1.push(c);
-      console.log(answerInfo.length)
-      for (var i=0;i<answerInfo.length;i++){
-        var item=[];
-        var number1=answerInfo[i].answerList;
-        c={content:'第'+(i+1)+'份问卷',num:''};
-        item.push(c);
-        // console.log(number1.length)
-        console.log(i);
-        for(var j=0;j<number1.length;j++){
-          
-          if(questionInfo[j].info.type===0){
-            c={content:''+(j+1)+'.单选题',num:'题目内容:'+questionInfo[j].info.content};
-            item.push(c);
-            var t=number1[j].number-'0';
-            c={content:'所选内容',num:''+questionInfo[j].optionList[t].content}
-            item.push(c)
+      this.getprops(data);
+      this.table1 = [];
+      var answerData = data.answerInfo;
+      var len = answerData.length;
+      // 
+      for(var i=0;i<len;i++){
+        var c = {};
+        c["0"]=i+1;
+        var item=answerData[i].answerList;
+        for(var j=0;j<item.length;j++){
+          if(data.questionInfo[j].info.type==2){
+            c[(j+1).toString()]=item[j].content;
           }
-          else if(questionInfo[j].info.type===1){
-            c={content:''+(j+1)+'.多选题',num:'题目内容:'+questionInfo[j].info.content};
-            item.push(c);
-            var ss='';
-            // console.log(number1[j].number.length)
-            for(var t=0;t<number1[j].number.length;t++){
-              if(ss.length==0){
-                ss=questionInfo[j].optionList[number1[j].number[t]-'0'].content
-              }
-              else{
-                ss+='、'+questionInfo[j].optionList[number1[j].number[t]-'0'].content;
-              }
-            }
-            // console.log(ss);
-            c={content:'所选内容',num:ss}
-            item.push(c)
-          }
-          else if(questionInfo[j].info.type===2){
-            c={content:''+(j+1)+'.填空题',num:'题目内容:'+questionInfo[j].info.content};
-            item.push(c);
-            c={content:'作答内容',num:number1[j].content}
-            item.push(c)
+          else if(data.questionInfo[j].info.type==3){
+            var t=item[j].number[0]-'0';
+            c[(j+1).toString()]=''+(t+1)+'星';
           }
           else{
-            c={content:''+(j+1)+'.评分题',num:'题目内容:'+questionInfo[j].info.content};
-            item.push(c);
-            var t=number1[j].number-'0'+1;
-            c={content:'所选内容',num:''+t+'星'}
-            item.push(c)
+            var t='';
+            for(var k=0;k<item[j].number.length;k++){
+              var num=item[j].number[k]-'0';
+              if(k==0){
+                t=data.questionInfo[j].optionList[num].content;
+              }
+              else{
+                t+='、'+data.questionInfo[j].optionList[num].content;
+              }
+            }
+            c[(j+1).toString()]=t;
           }
         }
-      this.answer.push(item) 
-      console.log(item)
+        this.table1.push(c);
+        console.log(this.table1);
       }
+      // this.getprops();
+      // this.getCol();
+      // console.log(this.col);
+      
     },
     exportData() {
       this.excelData = this.completion; //将你要导出的数组数据（historyList）赋值给excelDate
