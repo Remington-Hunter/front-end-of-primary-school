@@ -462,7 +462,7 @@ export default {
         var z = {};
         var y = this.questionList[i];
         z.questionId = y.questionId;
-        if (y.type === 0 || y.type === 6 || y.type === 10) {
+        if (y.type === 0 || y.type === 6 || y.type === 10 || y.type===12) {
           if (y.required) {
             if (y.radio === "") {
               alert("您有必选项未完成!");
@@ -475,7 +475,7 @@ export default {
             z.number = y.radio + "";
             z.content = "";
           }
-        } else if (y.type === 1 || y.type === 7 || y.type === 11) {
+        } else if (y.type === 1 || y.type === 7 || y.type === 11||y.type===13) {
           if (y.required) {
             if (y.checkList.length === 0) {
               alert("您有必选项未完成!");
@@ -507,7 +507,7 @@ export default {
             z.number = "" + y.rating;
             z.content = "";
           }
-        } else if (y.type === 2) {
+        } else if (y.type === 2 || y.type===14) {
           if (y.required) {
             if (y.answer === " ") {
               alert("您有必选项未完成!");
