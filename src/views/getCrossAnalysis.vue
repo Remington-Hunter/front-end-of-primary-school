@@ -165,7 +165,6 @@ export default {
       }
     },
     getAnalysis(v1, v2) {
-      
       this.table1 = [];
       var data = this.data;
       var question1 = data.questionInfo[v1];
