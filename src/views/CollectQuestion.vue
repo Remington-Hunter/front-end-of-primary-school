@@ -736,11 +736,11 @@ export default {
               return;
             } else {
               z.number = "";
-              z.answer = this.locationInfo.country+this.locationInfo.province+this.locationInfo.city+this.locationInfo.district;
+              z.content = this.locationInfo.country+this.locationInfo.province+this.locationInfo.city+this.locationInfo.district;
             }
           } else {
             z.number = "";
-            z.answer = this.locationInfo.country+this.locationInfo.province+this.locationInfo.city+this.locationInfo.district;
+            z.content = this.locationInfo.country+this.locationInfo.province+this.locationInfo.city+this.locationInfo.district;
           }
         }
         list.push(z);
