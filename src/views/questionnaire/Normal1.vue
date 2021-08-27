@@ -103,6 +103,22 @@
                   ></el-switch>
                 </el-menu-item>
               </el-tooltip>
+              <div v-if="type === 3">
+                <el-tooltip
+                class="item"
+                effect="dark"
+                content="试卷题目是否乱序"
+                placement="right"
+              >
+                <el-menu-item>
+                  题目乱序
+                  <el-switch
+                    v-model="disorder"
+                    @change="seeResultChange"
+                  ></el-switch>
+                </el-menu-item>
+              </el-tooltip>
+              </div>
             </div>
           </el-submenu>
         </el-menu>
@@ -292,6 +308,7 @@ export default {
       end_time: new Date(),
       has_time: false,
       see_result: false,
+      disorder:false
     };
   },
   methods: {
@@ -391,6 +408,7 @@ export default {
       formData.description = this.description;
       formData.limit = -1;
       formData.title = this.title;
+      formData.disorder=this.disorder?1 : 0
       formData.needNum = -1;
       formData.userId = window.localStorage.getItem("user_id");
       formData.questionList = this.created_problem_list;
@@ -499,6 +517,9 @@ export default {
       let refname = "question" + index2;
       let x = this.$refs[refname]["0"];
       let y = this.$refs[refnamebefore]["0"];
+      console.log(this.$refs);
+      console.log(x);
+      console.log(y);
       problem_exchange(x, y);
     },
     upMove(index) {

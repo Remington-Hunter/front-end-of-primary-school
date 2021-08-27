@@ -158,7 +158,7 @@
               :rules="[rules.required]"
             ></v-text-field>
             <v-text-field label="备注" v-model="instruction"></v-text-field>
-            <v-text-field label="请输入答案" v-model="answer"></v-text-field>
+            <v-text-field label="请输入答案" v-model="answer" v-show="problem_type === '考试填空题'"></v-text-field>
             <v-text-field
               label="请输入答案解析"
               :rules="[rules.required]"
