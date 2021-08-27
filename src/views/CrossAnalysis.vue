@@ -1,23 +1,29 @@
 <template>
-  <div class="main">
-    <el-page-header
-      @back="goBack"
-      content="统计分析"
-    >
-    </el-page-header>
-    <el-button  @click="checkCrossAnalysis()" type="primary" class="d-btn">交叉分析</el-button>
-    <el-button  @click="exportExcel" type="primary" class="d-btn">导出excel</el-button>
-    <el-button
-      type="primary"
-      @click="handleDown"
-      class="d-btn"
-    ><i class="el-icon-download"></i> 下载PDF</el-button>
-    
+  <div>
+    <div id="head">
+      <el-button
+        v-if="num===1"
+        @click="exportExcel"
+        type="primary"
+        class="d-btn"
+      >导出EXCEL</el-button>
+      <el-button
+        v-if="num===2"
+        type="primary"
+        @click="handleDown"
+        class="d-btn"
+      ><i class="el-icon-download"></i> 下载PDF</el-button>
+    </div>
+
     <div
       class="center"
       id="demo1"
+      v-if="num===2"
     >
-      <div class="header-title" style="color:#999;font-size:20px">问卷ID:<span style="font-size:20px;color:#999">{{this.id}}</span></div>
+      <div
+        class="header-title"
+        style="color:#999;font-size:20px"
+      >问卷ID:<span style="font-size:20px;color:#999">{{this.id}}</span></div>
       <div class="content">
         <div
           v-for="(item, index) in data"
@@ -123,7 +129,6 @@
               </div>
               <div
                 style="width: 600px; height: 400px"
-                
                 v-if="states[index] === 4"
               >
                 <drawCol
@@ -173,23 +178,31 @@
         </div>
       </div>
     </div>
-    <div id="demo2" v-show="false">
-      <el-table :data="table1" border height="550" style="width: 100%">
-      <template v-for="(item, index) in headArr">
-        <el-table-column
-          :key="index"
-          :prop="item.prop"
-          :label="item.label"
-          align="center"
-        >
-          <template slot-scope="scope">
-            <span>
-              {{ scope.row[item.prop] }}
-            </span>
-          </template>
-        </el-table-column>
-      </template>
-    </el-table>
+    <div
+      class="center"
+      v-else
+    >
+      <el-table
+        :data="table1"
+        border
+        height="550"
+        style="width: 100%"
+      >
+        <template v-for="(item, index) in headArr">
+          <el-table-column
+            :key="index"
+            :prop="item.prop"
+            :label="item.label"
+            align="center"
+          >
+            <template slot-scope="scope">
+              <span>
+                {{ scope.row[item.prop] }}
+              </span>
+            </template>
+          </el-table-column>
+        </template>
+      </el-table>
     </div>
   </div>
 </template>
@@ -205,9 +218,9 @@ import FileSaver from "file-saver";
 import XLSX from "xlsx";
 export default {
   props: {
-    id1: {
+    num: {
       type: Number,
-      default: 0,
+      default: 1,
     },
   },
   data() {
@@ -223,12 +236,12 @@ export default {
       completion: [],
       historyList: [],
       type: 0,
-      states:[],
-      s:{},
-      answer:[],
-      answerData:[],
-      headArr:[],
-      table1:[],
+      states: [],
+      s: {},
+      answer: [],
+      answerData: [],
+      headArr: [],
+      table1: [],
     };
   },
   components: {
@@ -243,11 +256,8 @@ export default {
     this.getseries();
     this.getAnswerData();
   },
-  
+
   methods: {
-    checkCrossAnalysis(){
-      this.$router.push({ path: "/getanalysis", query: { id: this.id } });
-    },
     exportExcel() {
       // 设置当前日期
       let time = new Date();
@@ -277,18 +287,18 @@ export default {
       }
       return wbout;
     },
-    initStates(){
-      for(var i=0;i<this.data.length;i++){
-        this.states[i]=0;
+    initStates() {
+      for (var i = 0; i < this.data.length; i++) {
+        this.states[i] = 0;
       }
-      this.s.states=this.states;
+      this.s.states = this.states;
     },
-    setStates(index,num){
+    setStates(index, num) {
       this.$set(this.states, index, num);
     },
     getCompletionData(data) {
       for (var i = 0; i < this.data.length; i++) {
-        if (data[i].question.type === 2||data[i].question.type === 5||data[i].question.type === 14) {
+        if (data[i].question.type === 2 || data[i].question.type === 5 || data[i].question.type === 14) {
           // console.log(11)
           var data_i = data[i].answerList;
           var item = [];
@@ -298,18 +308,18 @@ export default {
           }
           this.completion.push(item);
         }
-        else if(data[i].question.type === 3){
+        else if (data[i].question.type === 3) {
           var data_i = data[i].optionList;
           var item = [];
           for (let j = 1; j < data_i.length; j++) {
-            var c=''+(j)+'星';
+            var c = '' + (j) + '星';
             console.log(data[i])
-            var s = { content:c, num: data_i[j].answerNum };
-            console.log('data_i[j].answerNum'+data_i[j].answerNum)
+            var s = { content: c, num: data_i[j].answerNum };
+            console.log('data_i[j].answerNum' + data_i[j].answerNum)
             item.push(s);
           }
           this.completion.push(item);
-        } 
+        }
         else {
           var data_i = data[i].optionList;
           var item = [];
@@ -326,7 +336,7 @@ export default {
       for (var i = 0; i < data.length; i++) {
         // console.log(111)
         // console.log(data[i].question.type)
-        if (data[i].question.type === 2||data[i].question.type==5||data[i].question.type==14) {
+        if (data[i].question.type === 2 || data[i].question.type == 5 || data[i].question.type == 14) {
           // console.log(11)
           var data_i = data[i].answerList;
           var item = [];
@@ -336,13 +346,13 @@ export default {
           }
           // console.log(item)
           this.bar.push(item);
-        } 
-        else if(data[i].question.type === 3){
+        }
+        else if (data[i].question.type === 3) {
           var data_i = data[i].optionList;
           var item = [];
-          
+
           for (let j = 1; j < data_i.length; j++) {
-            var c=''+(j)+'星';
+            var c = '' + (j) + '星';
             var s = [data_i[j].answerNum, c];
             console.log(c);
             item.push(s);
@@ -389,87 +399,87 @@ export default {
         this.getExcelData();
       });
     },
-    getAnswerData(){
-      var Data=new FormData();
-      Data.append("id",this.id);
+    getAnswerData() {
+      var Data = new FormData();
+      Data.append("id", this.id);
       axios({
-        url:'https://www.azur1tee.top/api/answer/get_result_by_questionnaire',
-        method:'post',
-        data:Data,
+        url: 'https://www.azur1tee.top/api/answer/get_result_by_questionnaire',
+        method: 'post',
+        data: Data,
         headers: {
           Authorization: window.localStorage.getItem("authorization"),
         },
-      }).then((res)=>{
-        var data=res.data.data;
-        this.answerData=data.answerInfo;
+      }).then((res) => {
+        var data = res.data.data;
+        this.answerData = data.answerInfo;
         console.log(data)
         console.log(res);
         // this.getAnswerData(data);
         this.getAnswerExcel(data);
       })
     },
-    getprops(data){
-      this.headArr=[];
+    getprops(data) {
+      this.headArr = [];
       // var data=this.data;
       // var question2 = data.questionInfo[this.v2];
       var len = data.questionInfo.length
-      var c={label:"序号",prop:"0"}
+      var c = { label: "序号", prop: "0" }
       this.headArr.push(c);
       for (var i = 0; i < len; i++) {
-        var s = "第"+(i+1)+"题："
-        if(data.questionInfo[i].info.content==null){
-          s+="内容为空"
+        var s = "第" + (i + 1) + "题："
+        if (data.questionInfo[i].info.content == null) {
+          s += "内容为空"
         }
-        else{
-          s+=data.questionInfo[i].info.content;
+        else {
+          s += data.questionInfo[i].info.content;
         }
         c = { label: s, prop: (i + 1).toString() };
         this.headArr.push(c);
       }
     },
-    getAnswerExcel(data){
+    getAnswerExcel(data) {
       this.getprops(data);
       this.table1 = [];
       var answerData = data.answerInfo;
       var len = answerData.length;
       // 
-      for(var i=0;i<len;i++){
+      for (var i = 0; i < len; i++) {
         var c = {};
-        c["0"]=i+1;
-        var item=answerData[i].answerList;
-        for(var j=0;j<item.length;j++){
-          if(data.questionInfo[j].info.type==2||data.questionInfo[j].info.type==5||data.questionInfo[j].info.type==14){
-            c[(j+1).toString()]=item[j].content;
+        c["0"] = i + 1;
+        var item = answerData[i].answerList;
+        for (var j = 0; j < item.length; j++) {
+          if (data.questionInfo[j].info.type == 2 || data.questionInfo[j].info.type == 5 || data.questionInfo[j].info.type == 14) {
+            c[(j + 1).toString()] = item[j].content;
           }
-          else if(data.questionInfo[j].info.type==3){
-            var t=item[j].number-'0';
-            if(t==0){
-              c[(j+1).toString()]='无评价';
+          else if (data.questionInfo[j].info.type == 3) {
+            var t = item[j].number - '0';
+            if (t == 0) {
+              c[(j + 1).toString()] = '无评价';
             }
-            else{
-              c[(j+1).toString()]=''+(t)+'星';
+            else {
+              c[(j + 1).toString()] = '' + (t) + '星';
             }
-            
+
           }
-          else{
-            var t='';
-            for(var k=0;k<item[j].number.length;k++){
-              var num=item[j].number[k]-'0';
-              if(k==0){
-                t=data.questionInfo[j].optionList[num].content;
+          else {
+            var t = '';
+            for (var k = 0; k < item[j].number.length; k++) {
+              var num = item[j].number[k] - '0';
+              if (k == 0) {
+                t = data.questionInfo[j].optionList[num].content;
               }
-              else{
-                t+='、'+data.questionInfo[j].optionList[num].content;
+              else {
+                t += '、' + data.questionInfo[j].optionList[num].content;
               }
             }
-            c[(j+1).toString()]=t;
+            c[(j + 1).toString()] = t;
           }
         }
         this.table1.push(c);
         console.log(1111);
         console.log(this.table1);
       }
-      
+
     },
     exportData() {
       this.excelData = this.completion; //将你要导出的数组数据（historyList）赋值给excelDate
@@ -491,7 +501,7 @@ export default {
         export_json_to_excel(tHeader, data, "学生报名信息汇总"); // 导出的表格名称，根据需要自己命名
       });
     },
-   
+
     //格式转换，直接复制即可,不需要修改什么
     formatJson(filterVal, jsonData) {
       return jsonData.map((v) => filterVal.map((j) => v[j]));
@@ -524,7 +534,7 @@ export default {
     },
     getColData(data) {
       for (var i = 0; i < data.length; i++) {
-        if (data[i].question.type == 2||data[i].question.type == 5||data[i].question.type == 14) {
+        if (data[i].question.type == 2 || data[i].question.type == 5 || data[i].question.type == 14) {
           var data_i = data[i].answerList;
           var item = [];
           for (let j = 0; j < data_i.length; j++) {
@@ -532,12 +542,12 @@ export default {
             item.push(data_i[j]);
           }
           this.col.push(item);
-        } 
-        else if(data[i].question.type==3){
+        }
+        else if (data[i].question.type == 3) {
           var data_i = data[i].optionList;
           var item = [];
           for (let j = 1; j < data_i.length; j++) {
-            s=''+(j)+'星'
+            s = '' + (j) + '星'
             var s = { 选项: s, 数量: data_i[j].answerNum };
             item.push(s);
           }
@@ -547,9 +557,9 @@ export default {
           var data_i = data[i].optionList;
           var item = [];
           for (let j = 0; j < data_i.length; j++) {
-            var ss=data_i[j].content;
-            if(ss.length>5){
-              ss=ss.slice(0,5)+'...'
+            var ss = data_i[j].content;
+            if (ss.length > 5) {
+              ss = ss.slice(0, 5) + '...'
             }
             var s = { 选项: ss, 数量: data_i[j].answerNum };
             item.push(s);
@@ -562,7 +572,7 @@ export default {
     },
     getPieData(data) {
       for (var i = 0; i < data.length; i++) {
-        if (data[i].question.type == 2||data[i].question.type == 5||data[i].question.type == 14) {
+        if (data[i].question.type == 2 || data[i].question.type == 5 || data[i].question.type == 14) {
           var data_i = data[i].answerList;
           var item = [];
           for (let j = 0; j < data_i.length; j++) {
@@ -570,16 +580,16 @@ export default {
             item.push(data_i[j]);
           }
           this.pie.push(item);
-        }else if(data[i].question.type == 3){
+        } else if (data[i].question.type == 3) {
           var data_i = data[i].optionList;
           var item = [];
           for (let j = 1; j < data_i.length; j++) {
-            var c=''+(j)+'星'
+            var c = '' + (j) + '星'
             var s = { value: data_i[j].answerNum, name: c };
             item.push(s);
           }
           this.pie.push(item);
-        } 
+        }
         else {
           var data_i = data[i].optionList;
           var item = [];
@@ -593,25 +603,25 @@ export default {
     },
     getLineData(data) {
       for (var i = 0; i < data.length; i++) {
-        if (data[i].question.type == 2||data[i].question.type == 5||data[i].question.type == 14) {
+        if (data[i].question.type == 2 || data[i].question.type == 5 || data[i].question.type == 14) {
           var data_i = data[i].answerList;
           var item = [];
           this.line.push(item);
-        }else if(data[i].question.type == 3){
+        } else if (data[i].question.type == 3) {
           var data_i = data[i].optionList;
           var item = [];
           var col1 = [];
           var col2 = [];
           for (let j = 1; j < data_i.length; j++) {
             // var s={value:data_i[j].answerNum,name:data_i[j].content}
-            var c=''+(j)+'星';
+            var c = '' + (j) + '星';
             col1.push(c);
             col2.push(data_i[j].answerNum);
           }
           item.push(col1);
           item.push(col2);
           this.line.push(item);
-        } 
+        }
         else {
           var data_i = data[i].optionList;
           var item = [];
@@ -619,9 +629,9 @@ export default {
           var col2 = [];
           for (let j = 0; j < data_i.length; j++) {
             // var s={value:data_i[j].answerNum,name:data_i[j].content}
-            var ss=data_i[j].content;
-            if(ss.length>5){
-              ss=ss.slice(0,5)+'...'
+            var ss = data_i[j].content;
+            if (ss.length > 5) {
+              ss = ss.slice(0, 5) + '...'
             }
             col1.push(ss);
             col2.push(data_i[j].answerNum);
