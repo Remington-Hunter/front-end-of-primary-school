@@ -1,6 +1,5 @@
 <template>
   <div id="c-top">
-
     <!-- 可以编辑 -->
     <div v-show="can_write_state">
       <div class="skin-header">
@@ -11,8 +10,8 @@
         />
       </div>
 
-      <!-- 已经提交且可以查看投票问卷的答案 -->
-      <div v-show="state && this.type === 1 && this.can_see_result">
+      <!-- 已经提交且可以查看投票问卷的结果 -->
+      <div v-if="state && this.type === 1 && this.can_see_result">
         <VoteAnswer
           :headerTitle="headerTitle"
           :subtitle="subtitle"
@@ -21,20 +20,33 @@
         <!-- :questionList="questionList_vote" -->
       </div>
 
+      <!-- 已经提交且可以查看考试问卷的结果 -->
+      <div v-else-if="state && this.type === 3 && this.can_see_result">
+
+      </div>
+
       <!-- 除了 已经提交且可以查看投票问卷的答案 的其他情况 -->
-      <div id="pre" v-show="!(state && this.type === 1 && this.can_see_result)">
-
-
+      <div id="pre" v-else>
         <!-- 非投票问卷提交成功 -->
         <div v-if="state">
           <success></success>
         </div>
 
-
         <!--未提交的所有问卷-->
         <div class="s-main " v-else>
           <!-- 问卷标题 -->
-          <div class="header-title">{{ headerTitle }}</div>
+          <div class="header-title">
+            {{ headerTitle }}
+            <div v-if="have_count_down && this.type === 3">
+              <span
+                >距离截止时间:<CountDown
+                  :remainTime="count_down_time"
+                  @countDownEnd="countDownEnd"
+              /></span>
+            </div>
+            <!-- <span><CountDown
+    :remainTime="count_down_time"/></span> -->
+          </div>
           <!-- 问卷副标题 -->
           <div class="header-subtitle">{{ subtitle }}</div>
           <!-- 题目列表 -->
@@ -54,11 +66,11 @@
                   >*</span
                 >
                 <span
-                      class="sel-total"
-                      v-show="[12,13,14].includes(question.type)"
-                      >(分值{{question.point}})</span
-                    >
-                <el-tag v-if="[1, 4, 7, 11,13].includes(question.type)"
+                  class="sel-total"
+                  v-show="[12, 13, 14].includes(question.type)"
+                  >(分值{{ question.point }})</span
+                >
+                <el-tag v-if="[1, 4, 7, 11, 13].includes(question.type)"
                   >多选</el-tag
                 >
               </div>
@@ -68,7 +80,7 @@
             <div class="question-body ">
               <!-- 单选题 -->
               <!-- @click.native.prevent="clickitem(question, index)" -->
-              <div v-if="[0, 6, 10,12].includes(question.type)">
+              <div v-if="[0, 6, 10, 12].includes(question.type)">
                 <el-radio-group v-model="question.radio">
                   <el-radio
                     v-for="(item, index) in question.selectionList"
@@ -87,7 +99,7 @@
                 </el-radio-group>
               </div>
               <!-- 多选题 -->
-              <div v-else-if="[1, 4, 7, 11,13].includes(question.type)">
+              <div v-else-if="[1, 4, 7, 11, 13].includes(question.type)">
                 <el-checkbox-group v-model="question.checkList">
                   <el-checkbox
                     v-for="(item, index) in question.selectionList"
@@ -135,7 +147,7 @@
               >提交</el-button
             >
           </div>
-
+          <!-- 确定问卷的提交弹窗 -->
           <el-dialog
             title="提示"
             :visible.sync="dialogVisible"
@@ -155,11 +167,33 @@
               <el-button @click="dialogVisible = false">取 消</el-button>
             </span>
           </el-dialog>
+
+          <el-dialog
+            title="提示"
+            :visible.sync="kaoshi_dialogVisible"
+            @close="
+              kaoshi_dialogVisible = false;
+              submit_force();
+            "
+            width="30%"
+            :before-close="handleClose"
+          >
+            <span>考试已截止,问卷已自动提交！</span>
+            <span slot="footer" class="dialog-footer">
+              <el-button
+                type="primary"
+                @click="
+                  kaoshi_dialogVisible = false;
+                  submit_force();
+                "
+                >确 定</el-button
+              >
+            </span>
+          </el-dialog>
         </div>
       </div>
       <div class="c-foot"><span>系统由问卷星球提供</span></div>
     </div>
-
 
     <!-- 不能编辑 -->
     <div v-show="!can_write_state">
@@ -175,6 +209,7 @@ import VoteAnswer from "./VoteAnswer.vue";
 import Stop from "./Stop.vue";
 import Success from "./Success.vue";
 import { dateFormat } from "../utils/dateFormat";
+import CountDown from "../components/CountDown";
 export default {
   name: "CollectQuestion",
   components: {
@@ -182,11 +217,14 @@ export default {
     VoteAnswer,
     Stop,
     Success,
+    CountDown,
   },
   data() {
     return {
+      count_down_time: "100",
       iconClasses: ["icon-rate-face-1", "icon-rate-face-2", "icon-rate-face-3"],
       state: false,
+      kaoshi_dialogVisible: false,
       dialogVisible: false,
       // judge_required:false,
       ma: this.$route.params.ma,
@@ -200,16 +238,20 @@ export default {
       type: -1,
       questionList_vote: [],
       can_see_result: false,
+      have_count_down: false,
     };
   },
   methods: {
+    countDownEnd() {
+      this.kaoshi_dialogVisible = true;
+    },
     clickitem(question) {
       console.log(question.radio);
       console.log(question.preradio);
-      if(question.radio === question.preradio){
-        question.radio =""
+      if (question.radio === question.preradio) {
+        question.radio = "";
       }
-      question.preradio=question.radio
+      question.preradio = question.radio;
     },
     showInfo2() {
       console.log(this.questionList);
@@ -234,9 +276,21 @@ export default {
       }).then((res) => {
         console.log(res);
         console.log(res.data.data);
+        var x=res.data.data.questionnaire.endTime
+        if (
+          parseInt(res.data.data.questionnaire.type) === 3 &&
+          res.data.data.questionnaire.endTime !== null
+        ) {
+          var x1 = x.split("T");
+          var x2 = x1[0] + " " + x1[1];
+          this.count_down_time = JSON.stringify(
+            parseInt((new Date(x2).getTime() - new Date().getTime()) / 1000)
+          );
+          this.have_count_down = true;
+          console.log(this.count_down_time);
+        }
         this.type = res.data.data.questionnaire.type;
         this.current_questionnaire = res.data.data;
-        console.log(dateFormat(new Date()));
         if (this.current_questionnaire.questionnaire.startTime === null) {
           this.can_write_state = true;
         } else {
@@ -314,7 +368,7 @@ export default {
       for (var i = 0; i < list.length; i++) {
         let x = {};
         var y = list[i];
-        x.point=y.question.point;
+        x.point = y.question.point;
         x.type = y.question.type;
         x.text = y.question.content;
         x.selectionList = [];
@@ -337,6 +391,7 @@ export default {
         x.questionId = y.question.id;
         this.questionList.push(x);
       }
+      console.log(this.questionList);
     },
     getInfo() {
       var formData = new FormData();
@@ -347,6 +402,20 @@ export default {
         data: formData,
       }).then((res) => {
         console.log(res);
+        var x = res.data.data.questionnaire.endTime;
+        if (
+          parseInt(res.data.data.questionnaire.type) === 3 &&
+          res.data.data.questionnaire.endTime !== null
+        ) {
+          console.log(x);
+          var x1 = x.split("T");
+          var x2 = x1[0] + " " + x1[1];
+          this.count_down_time = JSON.stringify(
+            parseInt((new Date(x2).getTime() - new Date().getTime()) / 1000)
+          );
+          this.have_count_down = true;
+          console.log(this.count_down_time);
+        }
         if (res.data.data.questionnaire.using !== 1) {
           this.can_write_state = false;
           this.$message.error("不在填写时间内");
@@ -379,6 +448,7 @@ export default {
           }
         }
         this.showInfo();
+        console.log(1);
       });
     },
 
@@ -432,17 +502,15 @@ export default {
             z.content = "";
           }
         } else if (y.type === 3) {
-          if(y.required){
-            if(y.rating===0){
+          if (y.required) {
+            if (y.rating === 0) {
               alert("您有必选项未完成!");
               return false;
-            }
-            else{
+            } else {
               z.number = "" + y.rating;
               z.content = "";
             }
-          }
-          else{
+          } else {
             z.number = "" + y.rating;
             z.content = "";
           }
@@ -464,7 +532,7 @@ export default {
       }
       return true;
     },
-    submit() {
+    submit_force() {
       var x = {};
       x.questionnaireId = this.current_questionnaire.questionnaire.id;
       var list = [];
@@ -474,7 +542,7 @@ export default {
         var z = {};
         var y = this.questionList[i];
         z.questionId = y.questionId;
-        if (y.type === 0 || y.type === 6 || y.type === 10) {
+        if (y.type === 0 || y.type === 6 || y.type === 10 || y.type === 12) {
           if (y.required) {
             if (y.radio === "") {
               // alert("您有必选项未完成!");
@@ -487,7 +555,12 @@ export default {
             z.number = y.radio + "";
             z.content = "";
           }
-        } else if (y.type === 1 || y.type === 7 || y.type === 11) {
+        } else if (
+          y.type === 1 ||
+          y.type === 7 ||
+          y.type === 11 ||
+          y.type === 13
+        ) {
           if (y.required) {
             if (y.checkList.length === 0) {
               // alert("您有必选项未完成!");
@@ -506,7 +579,7 @@ export default {
             }
             z.content = "";
           }
-        } else if (y.type === 2) {
+        } else if (y.type === 2 || y.type === 14) {
           if (y.required) {
             if (y.answer === "") {
               // alert("您有必选项未完成!");
@@ -519,18 +592,121 @@ export default {
             z.number = "";
             z.content = y.answer;
           }
-        }  else if (y.type === 3) {
-          if(y.required){
-            if(y.rating===0){
+        } else if (y.type === 3) {
+          if (y.required) {
+            if (y.rating === 0) {
               // alert("您有必选项未完成!");
               return;
-            }
-            else{
+            } else {
               z.number = "" + y.rating;
               z.content = "";
             }
+          } else {
+            z.number = "" + y.rating;
+            z.content = "";
           }
-          else{
+        }
+        list.push(z);
+      }
+      x.answerDtoList = list;
+      console.log(JSON.stringify(x));
+      axios({
+        method: "post",
+        url: "https://www.azur1tee.top/api/answer/submit_answer",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: JSON.stringify(x),
+      }).then((res) => {
+        this.end = true;
+        console.log(res.data.message);
+        alert(res.data.message);
+        console.log(res);
+        if (res.data.code === 200 || res.data.code === 201) {
+          this.state = true;
+          if (this.type === 1) {
+            this.getInfo1();
+          }
+        }
+      });
+
+
+      if (this.can_see_result) {
+        console.log(1);
+      } else {
+        this.can_write_state = false;
+      }
+    },
+    submit() {
+      var x = {};
+      x.questionnaireId = this.current_questionnaire.questionnaire.id;
+      var list = [];
+      console.log(this.questionList.length);
+      console.log(this.questionList);
+      for (var i = 0; i < this.questionList.length; i++) {
+        var z = {};
+        var y = this.questionList[i];
+        z.questionId = y.questionId;
+        if (y.type === 0 || y.type === 6 || y.type === 10 || y.type === 12) {
+          if (y.required) {
+            if (y.radio === "") {
+              // alert("您有必选项未完成!");
+              return;
+            } else {
+              z.number = y.radio + "";
+              z.content = "";
+            }
+          } else {
+            z.number = y.radio + "";
+            z.content = "";
+          }
+        } else if (
+          y.type === 1 ||
+          y.type === 7 ||
+          y.type === 11 ||
+          y.type === 13
+        ) {
+          if (y.required) {
+            if (y.checkList.length === 0) {
+              // alert("您有必选项未完成!");
+              return;
+            } else {
+              z.number = "";
+              for (var j = 0; j < y.checkList.length; j++) {
+                z.number += y.checkList[j];
+              }
+              z.content = "";
+            }
+          } else {
+            z.number = "";
+            for (var k = 0; k < y.checkList.length; k++) {
+              z.number += y.checkList[k];
+            }
+            z.content = "";
+          }
+        } else if (y.type === 2 || y.type === 14) {
+          if (y.required) {
+            if (y.answer === "") {
+              // alert("您有必选项未完成!");
+              return;
+            } else {
+              z.number = "";
+              z.content = y.answer;
+            }
+          } else {
+            z.number = "";
+            z.content = y.answer;
+          }
+        } else if (y.type === 3) {
+          if (y.required) {
+            if (y.rating === 0) {
+              // alert("您有必选项未完成!");
+              return;
+            } else {
+              z.number = "" + y.rating;
+              z.content = "";
+            }
+          } else {
             z.number = "" + y.rating;
             z.content = "";
           }

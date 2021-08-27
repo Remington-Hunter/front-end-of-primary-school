@@ -299,7 +299,7 @@ export default {
         this.$router.push({name:'clickoutanalysis',params: { id: id }})
       }
       else{
-        this.$router.push({ name: "crossanalysis", query: { id: id },params: { id: id }});
+        this.$router.push({ name: "crossanalysis", params: { id: id } });
       }
     },
     lookUpLink(id) {
