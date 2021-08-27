@@ -1,41 +1,55 @@
 <template>
-  <div class="main">
-    <el-page-header @back="goBack" content="统计分析"> </el-page-header>
-    <el-button @click="checkCrossAnalysis()" type="primary" class="d-btn"
-      >交叉分析</el-button
-    >
-    <el-button @click="exportExcel" type="primary" class="d-btn"
-      >导出excel</el-button
-    >
-    <el-button type="primary" @click="handleDown" class="d-btn"
-      ><i class="el-icon-download"></i> 下载PDF</el-button
-    >
+  <div>
+    <div id="head">
+      <el-button
+        v-if="num===1"
+        @click="exportExcel"
+        type="primary"
+        class="d-btn"
+      >导出EXCEL</el-button>
+      <el-button
+        v-if="num===2"
+        type="primary"
+        @click="handleDown"
+        class="d-btn"
+      ><i class="el-icon-download"></i> 下载PDF</el-button>
+    </div>
 
-    <div class="center" id="demo1">
-      <div class="header-title" style="color: #999; font-size: 20px">
-        问卷ID:<span style="font-size: 20px; color: #999">{{ this.id }}</span>
-      </div>
+    <div
+      class="center"
+      id="demo1"
+      v-if="num===2"
+    >
+      <div
+        class="header-title"
+        style="color:#999;font-size:20px"
+      >问卷ID:<span style="font-size:20px;color:#999">{{this.id}}</span></div>
       <div class="content">
-        <div v-for="(item, index) in data" :key="index">
+        <div
+          v-for="(item, index) in data"
+          :key="index"
+        >
           <el-divider></el-divider>
           <div class="question-head">
             <div class="question-title">
-              <span class="question-seq"
-                ><b>第{{ index + 1 }}题：</b></span
-              >
+              <span class="question-seq"><b>第{{ index + 1 }}题：</b></span>
               <span class="text">{{ data[index].question.content }}</span>
-              <span v-if="data[index].question.type == 0" class="question-type"
-                >单选题</span
-              >
-              <span v-if="data[index].question.type == 1" class="question-type"
-                >多选题</span
-              >
-              <span v-if="data[index].question.type == 2" class="question-type"
-                >填空题</span
-              >
-              <span v-if="data[index].question.type == 3" class="question-type"
-                >评分题</span
-              >
+              <span
+                v-if="data[index].question.type == 0"
+                class="question-type"
+              >单选题</span>
+              <span
+                v-if="data[index].question.type == 1"
+                class="question-type"
+              >多选题</span>
+              <span
+                v-if="data[index].question.type == 2"
+                class="question-type"
+              >填空题</span>
+              <span
+                v-if="data[index].question.type == 3"
+                class="question-type"
+              >评分题</span>
             </div>
           </div>
           <div v-if="data[index].question.type === 2">
@@ -141,7 +155,10 @@
               </el-button>
             </div>
             <div v-else>
-              <el-table :data="completion[index]" style="width: 100%">
+              <el-table
+                :data="completion[index]"
+                style="width: 100%"
+              >
                 <el-table-column label="序号">
                   <template slot-scope="scope">
                     <!-- <i class="el-icon-time"></i> -->
@@ -162,8 +179,16 @@
         </div>
       </div>
     </div>
-    <div id="demo2" v-show="false">
-      <el-table :data="table1" border height="550" style="width: 100%">
+    <div
+      class="center"
+      v-else
+    >
+      <el-table
+        :data="table1"
+        border
+        height="550"
+        style="width: 100%"
+      >
         <template v-for="(item, index) in headArr">
           <el-table-column
             :key="index"
@@ -194,9 +219,9 @@ import FileSaver from "file-saver";
 import XLSX from "xlsx";
 export default {
   props: {
-    id1: {
+    num: {
       type: Number,
-      default: 0,
+      default: 1,
     },
   },
   data() {
@@ -234,9 +259,6 @@ export default {
   },
 
   methods: {
-    checkCrossAnalysis() {
-      this.$router.push({ path: "/getanalysis", query: { id: this.id } });
-    },
     exportExcel() {
       // 设置当前日期
       let time = new Date();
