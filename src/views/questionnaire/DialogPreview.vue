@@ -80,9 +80,9 @@
                 type="textarea"
                 autosize
                 placeholder="请输入内容"
-                v-model="answer"
+                v-model="locationInfo.country+locationInfo.province+locationInfo.city+locationInfo.district"
             >
-            </el-input>
+            </el-input><el-button @click="getLocation()">定位</el-button>
           </div>
         </div>
       </div>
@@ -91,6 +91,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -99,9 +101,35 @@ export default {
       answer: "",
       rating: 0,
       iconClasses: ['icon-rate-face-1', 'icon-rate-face-2', 'icon-rate-face-3'],
+      locationInfo: {
+        ip: '',
+        country: '',
+        province: '',
+        city: '',
+        district: '',
+        location: '',
+      },
     };
   },
-  props: ['headerTitle', 'subtitle', 'list'],
+  props: ['headerTitle', 'subtitle', 'list','location'],
+  methods:{
+    getLocation() {
+      // eslint-disable-next-line
+      this.locationInfo.ip = window.localStorage.getItem('Ip')
+      // console.log(this.locationInfo.ip)
+      var _this = this;
+      axios.get("https://restapi.amap.com/v5/ip?key=a593d64ab73229be6b3d1ef802b76849&type=4&ip="+this.locationInfo.ip)
+          .then(response => {
+            console.log(response)
+            _this.locationInfo.country = response.data.country
+            _this.locationInfo.province = response.data.province
+            _this.locationInfo.city = response.data.city
+            _this.locationInfo.district = response.data.district
+            _this.locationInfo.location = response.data.location
+            console.log(_this.locationInfo)
+          })
+    },
+  }
 };
 </script>
 
