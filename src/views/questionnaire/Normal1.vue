@@ -1,36 +1,13 @@
 <template>
   <div>
     <el-container style="height: 600px;">
-      <el-aside width="200px" style="overflow-x:hidden;">
-        <!-- <el-button
-          @click="copyQuestionnaireInfo();state12=true"
-          :disabled="state12"
-        >拷贝原内容</el-button> -->
-
-        <!-- <el-dialog
-          title="提示"
-          :visible.sync="copyVisible"
-          width="30%"
-          :before-close="handleClose"
-          :show-close="false"
-        >
-          <span>该编辑操作将新建副本</span>
-          <span
-            slot="footer"
-            class="dialog-footer"
-          >
-            <el-button
-              type="primary"
-              @click="copyVisible = false;copyQuestionnaireInfo();"
-            >确 定</el-button>
-          </span>
-        </el-dialog> -->
-
+      <el-aside
+        width="200px"
+        style="overflow-x:hidden;"
+      >
         <el-menu :default-openeds="['1', '2']">
           <el-submenu index="1">
-            <template slot="title"
-              ><i class="el-icon-menu"></i>题目控件</template
-            >
+            <template slot="title"><i class="el-icon-menu"></i>题目控件</template>
             <el-menu-item
               v-for="(item, index) in problem_list"
               :key="(item, index)"
@@ -82,12 +59,9 @@
             </div>
           </el-submenu>
           <el-submenu index="2">
-            <template slot="title"
-              ><i class="el-icon-setting"></i>问卷设置</template
-            >
+            <template slot="title"><i class="el-icon-setting"></i>问卷设置</template>
             <el-menu-item @click="dialogTimeVisible = true">
-              时间控制</el-menu-item
-            >
+              时间控制</el-menu-item>
             <div v-if="type === 1 || type === 3">
               <el-tooltip
                 class="item"
@@ -122,13 +96,26 @@
             <div class="header-subtitle">{{ description }}</div>
             <p class="sub">编辑问卷标题和描述</p>
           </div>
-          <el-dialog title="题目" :visible.sync="dialogFormVisible" center>
+          <el-dialog
+            title="题目"
+            :visible.sync="dialogFormVisible"
+            center
+          >
             <el-form>
-              <el-form-item label="标题" :label-width="formLabelWidth">
-                <el-input v-model="title" autocomplete="off"></el-input>
+              <el-form-item
+                label="标题"
+                :label-width="formLabelWidth"
+              >
+                <el-input
+                  v-model="title"
+                  autocomplete="off"
+                ></el-input>
               </el-form-item>
 
-              <el-form-item label="描述" :label-width="formLabelWidth">
+              <el-form-item
+                label="描述"
+                :label-width="formLabelWidth"
+              >
                 <el-input
                   v-model="description"
                   autocomplete="off"
@@ -138,47 +125,56 @@
                 ></el-input>
               </el-form-item>
             </el-form>
-            <div slot="footer" class="dialog-footer">
+            <div
+              slot="footer"
+              class="dialog-footer"
+            >
               <el-button @click="dialogFormVisible = false">取 消</el-button>
-              <el-button type="primary" @click="dialogFormVisible = false"
-                >确 定</el-button
-              >
+              <el-button
+                type="primary"
+                @click="dialogFormVisible = false"
+              >确 定</el-button>
             </div>
           </el-dialog>
 
           <v-divider></v-divider>
-          <div v-for="(item, index) in created_problem" :key="(item, index)">
-            <SingleSelect
-              :ref="'question' + item.number"
-              :id="'question' + item.number"
-              :iscopy="item.iscopy"
-              :problem_type_copy="item.type"
-              :problem_number="item.number"
-              :copy_info="item.copy_info"
-              @CancelNewProblem="
+          <draggable @update="datadragEnd">
+            <div
+              v-for="(item, index) in created_problem"
+              :key="(item, index)"
+            >
+              <SingleSelect
+                :ref="'question' + item.number"
+                :id="'question' + item.number"
+                :iscopy="item.iscopy"
+                :problem_type_copy="item.type"
+                :problem_number="item.number"
+                :copy_info="item.copy_info"
+                @CancelNewProblem="
                 created_problem.pop();
                 is_creating = false;
                 total_problem -= 1;
                 total_problem_change();
               "
-              @ConfirmProblem="
+                @ConfirmProblem="
                 is_creating = false;
                 total_problem_change();
                 send_question_parent();
                 $emit('problem_store');
               "
-              @deleteProblem="deleteProblem"
-              @upMove="upMove"
-              @upMoveFirst="upMoveFirst"
-              @downMove="downMove"
-              @downMoveLast="downMoveLast"
-              @copy="copy"
-              @ismodifying="
+                @deleteProblem="deleteProblem"
+                @upMove="upMove"
+                @upMoveFirst="upMoveFirst"
+                @downMove="downMove"
+                @downMoveLast="downMoveLast"
+                @copy="copy"
+                @ismodifying="
                 is_creating = true;
                 total_problem_change();
               "
-            ></SingleSelect>
-          </div>
+              ></SingleSelect>
+            </div>
+          </draggable>
         </div>
       </el-container>
     </el-container>
@@ -196,8 +192,7 @@
             @change="send_question_parent()"
           ></el-switch>
         </el-row>
-        <el-row
-          >选择时间
+        <el-row>选择时间
           <el-date-picker
             v-model="value1"
             type="datetimerange"
@@ -211,15 +206,17 @@
         </el-row>
       </div>
 
-      <span slot="footer" class="dialog-footer">
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
         <el-button
           type="primary"
           @click="
             dialogTimeVisible = false;
             send_question_parent();
           "
-          >确 定</el-button
-        >
+        >确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -230,11 +227,13 @@ import "../../assets/css/icon/preview.css";
 import SingleSelect from "../../components/SingleSelect";
 import { problem_exchange, problem_change } from "../../utils/deepCopy";
 import { dateFormat } from "../../utils/dateFormat";
+import draggable from 'vuedraggable'
 
 export default {
   name: "Normal1",
   components: {
     SingleSelect,
+    draggable
   },
   props: {
     type: {
@@ -295,6 +294,26 @@ export default {
     };
   },
   methods: {
+    datadragEnd(evt) {
+      evt.preventDefault();
+      console.log('拖动前的索引 : ' + evt.oldIndex);
+      console.log('拖动后的索引 : ' + evt.newIndex);
+      let old = evt.oldIndex + 1;
+      let n = evt.newIndex + 1;
+      if (old > n) {
+        for (var i = old; i > n; i--) {
+          this.changeOrder(i, i - 1)
+        }
+      }
+      else if (old < n) {
+        for (var i = old; i < n; i++) {
+          this.changeOrder(i, i + 1)
+        }
+      }
+      this.total_problem_change();
+      this.send_question_parent();
+      this.$emit("problem_store");
+    },
     seeResultChange() {
       this.send_question_parent();
     },
@@ -333,7 +352,7 @@ export default {
       for (var i = 1; i < this.total_problem; i++) {
         let index = "question" + i;
         let x = this.$refs[index]["0"]; //组件的所有信息
-      console.log(this.$refs[index]["0"])
+        console.log(this.$refs[index]["0"])
         let item = {};
         // item.problem_type = x.problem_type;
         item.number = x.problem_number;
@@ -355,7 +374,7 @@ export default {
           if (this.copy_questionnaire_info.modify_type === 1 &&
             i <= this.copy_questionnaire_info.questionList.length &&
             j <
-              this.copy_questionnaire_info.questionList[i - 1].optionList.length
+            this.copy_questionnaire_info.questionList[i - 1].optionList.length
           ) {
             z.id = this.copy_questionnaire_info.questionList[i - 1].optionList[
               j
@@ -370,7 +389,7 @@ export default {
         item.optionList = y;
         let y1 = [];
         if (item.type === 3) {
-          for (var j = 0; j <=5; j++) {
+          for (var j = 0; j <= 5; j++) {
             let z = {};
             z.number = j + "";
             y1.push(z);
@@ -476,12 +495,12 @@ export default {
     deleteProblem(index) {
       // var index1='question'+index
       // delete this.$refs[index1]
-      for(var i=index;i<this.total_problem-1;i++){
-        this.changeOrder(i,i+1)
+      for (var i = index; i < this.total_problem - 1; i++) {
+        this.changeOrder(i, i + 1)
       }
       // console.log(this.$refs);
-      document.getElementById("question" + (this.total_problem-1)).remove();
-      delete this.$refs["question" + (this.total_problem-1)]
+      document.getElementById("question" + (this.total_problem - 1)).remove();
+      delete this.$refs["question" + (this.total_problem - 1)]
       // for (var i = 0; i < this.created_problem.length; i++) {
       //   this.created_problem[i].iscopy = false;
       //   if (this.created_problem[i].number > index) {
@@ -496,14 +515,12 @@ export default {
     changeOrder(index1, index2) {
       let refnamebefore = "question" + index1;
       let refname = "question" + index2;
+      console.log("refname", refname);
       let x = this.$refs[refname]["0"];
       let y = this.$refs[refnamebefore]["0"];
       problem_exchange(x, y);
     },
     upMove(index) {
-      if (index === 1) {
-        return;
-      }
       if (index === 1) {
         return;
       }
@@ -515,7 +532,7 @@ export default {
       if (index === 1) {
         return;
       }
-       for (var i = 1; i <= index; i++) {
+      for (var i = 1; i <= index; i++) {
         this.changeOrder(index, i)
       }
       this.send_question_parent();
@@ -533,7 +550,7 @@ export default {
       if (index === this.total_problem - 1) {
         return;
       }
-     for (var i = this.total_problem - 1; i >= index; i--) {
+      for (var i = this.total_problem - 1; i >= index; i--) {
         this.changeOrder(index, i)
       }
       this.send_question_parent();
