@@ -193,6 +193,9 @@
                 is_creating = true;
                 total_problem_change();
               "
+              @answer_confirm="
+              send_question_parent();
+              $emit('problem_store');"
             ></SingleSelect>
           </div>
         </div>
@@ -329,6 +332,8 @@ export default {
         obj.must_write_select = x[i].question.required === 1 ? true : false;
         console.log(x[i].question.required);
         obj.question_id = x[i].question.id;
+        obj.point=x[i].question.point
+        obj.question_analysis=x[i].question.analysis
         var list = [];
         for (var j = 0; j < x[i].optionList.length; j++) {
           var listitem = {};
@@ -350,7 +355,7 @@ export default {
       for (var i = 1; i < this.total_problem; i++) {
         let index = "question" + i;
         let x = this.$refs[index]["0"]; //组件的所有信息
-      console.log(this.$refs[index]["0"])
+        console.log(this.$refs[index]["0"])
         let item = {};
         // item.problem_type = x.problem_type;
         item.number = x.problem_number;
@@ -361,12 +366,16 @@ export default {
             i - 1
           ].question.id;
         }
+        item.type = this.problem_type_number(x.problem_type);
         item.selection_list = x.selection_list;
+        console.log(item.type);
+        if(parseInt(item.type) === 12){
+          item.answer=x.radio+""
+        }
         item.answer = x.answer;
         item.required = x.must_write_select ? 1 : 0;
         item.point = x.point;
         item.analysis= x.question_analysis
-        item.type = this.problem_type_number(x.problem_type);
         let y = [];
         for (var j = 0; j < x.selection_list.length; j++) {
           let z = {};
@@ -388,7 +397,7 @@ export default {
         item.optionList = y;
         let y1 = [];
         if (item.type === 3) {
-          for (var j = 0; j <=5; j++) {
+          for (var j = 1; j <=5; j++) {
             let z = {};
             z.number = j + "";
             y1.push(z);

@@ -29,10 +29,10 @@
                 problem_type === '考试单选题' || problem_type === '考试多选题'
               "
             >
+                              <!-- @change="handleChange" -->
               <div class="set-num">
                 设置分数<el-input-number
                   controls-position="right"
-                  @change="handleChange"
                   :min="0"
                   :max="99999"
                   size="small"
@@ -83,7 +83,6 @@
                 设置名额<el-input-number
                   v-model="selection_list[index].total"
                   controls-position="right"
-                  @change="handleChange"
                   :min="1"
                   :max="99999"
                   size="small"
@@ -141,7 +140,6 @@
               <div class="set-num">
                 设置分数<el-input-number
                   controls-position="right"
-                  @change="handleChange"
                   :min="0"
                   :max="99999"
                   size="small"
@@ -192,6 +190,7 @@
         <div class="q-instruction">{{ instruction }}</div>
         <div v-if="['填空题', '考试填空题'].includes(problem_type)" class="question-body">
           <el-input
+            @change="$emit('answer_confirm')"
             type="textarea"
             autosize
             placeholder="请输入答案"
@@ -203,6 +202,7 @@
         <div v-else-if="problem_type === '评分题'">
           <div class="rate">
             <el-rate
+            @change="$emit('answer_confirm')"
               v-model="rating"
               :icon-classes="iconClasses"
               void-icon-class="icon-rate-face-off"
@@ -218,7 +218,7 @@
           "
         >
           <div>
-            <el-checkbox-group v-model="checkList">
+            <el-checkbox-group @change="$emit('answer_confirm')" v-model="checkList">
               <el-checkbox
                 v-for="(item, index) in selection_list"
                 :key="(item, index)"
@@ -238,7 +238,7 @@
           "
         >
           <div v-for="(item, index) in selection_list" :key="(item, index)">
-            <el-radio v-model="radio" :label="index"
+            <el-radio @change="$emit('answer_confirm')" v-model="radio" :label="index"
             @click.native="clickitem()"
               >{{ item.content
               }}<span class="sel-total" v-show="item.total"
@@ -354,8 +354,8 @@ export default {
           ? undefined
           : this.copy_info.question_id
         : undefined,
-        question_analysis:"答案解析",
-        point:0
+        question_analysis:this.iscopy?this.copy_info.question_analysis:"答案解析",
+        point:this.iscopy?this.copy_info.point:0
     };
   },
   created() {
