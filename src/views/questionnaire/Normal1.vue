@@ -57,6 +57,17 @@
                 {{ item.text }}
               </el-menu-item>
             </div>
+<!--            打卡问卷-->
+            <div v-if="type === 4">
+              <el-menu-item
+                  v-for="(item, index) in problem_list4"
+                  :key="(item, index)"
+                  @click="newProblem(item.text, false, {})"
+              >
+                <v-icon>{{ item.icon }}</v-icon>
+                {{ item.text }}
+              </el-menu-item>
+            </div>
           </el-submenu>
           <el-submenu index="2">
             <template slot="title"><i class="el-icon-setting"></i>问卷设置</template>
@@ -297,6 +308,9 @@ export default {
         { text: "考试填空题", icon: "mdi-checkbox-blank-outline" },
         { text: "考试单选题", icon: "mdi-radiobox-marked" },
         { text: "考试多选题", icon: "mdi-check-bold" },
+      ],
+      problem_list4: [
+        { text: "定位题", icon: "mdi-map-marker-radius" },
       ],
       problem_list: [
         { text: "填空题", icon: "mdi-checkbox-blank-outline" },
@@ -637,6 +651,9 @@ export default {
         case "考试填空题":
           return 14;
           break;
+        case "定位题":
+          return 15;
+          break;
       }
     },
     problem_type_info(num) {
@@ -673,6 +690,9 @@ export default {
           break;
         case 14:
           return "考试填空题";
+          break;
+        case 15:
+          return "定位题";
           break;
       }
     },

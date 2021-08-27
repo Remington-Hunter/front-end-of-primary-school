@@ -260,7 +260,7 @@ export default {
       }).then((res) => {
         console.log(res);
         this.current_questionnaire.id = res.data.data;
-        this.$router.push({path:"/questionnaire_clock/4",query:{id:this.current_questionnaire.id}})
+        this.$router.push({path:"/edit1/4",query:{id:this.current_questionnaire.id}})
         if (res.data.code === 200 || res.data.code === 201) {
           this.is_saved = true
           this.questionnaire_id = res.data.data
