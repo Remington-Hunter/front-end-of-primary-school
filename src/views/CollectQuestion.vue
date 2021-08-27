@@ -140,7 +140,7 @@
                 <el-input
                     type="textarea"
                     autosize
-                    v-model="locationInfo.country+locationInfo.province+locationInfo.city+locationInfo.district"
+                    v-model="locationInfo.country + locationInfo.province + locationInfo.city + locationInfo.district"
                 >
                 </el-input>
                 <el-button @click="getLocation()">定位</el-button>
@@ -664,6 +664,7 @@ export default {
       for (var i = 0; i < this.questionList.length; i++) {
         var z = {};
         var y = this.questionList[i];
+        console.log(y)
         z.questionId = y.questionId;
         if (y.type === 0 || y.type === 6 || y.type === 10 || y.type === 12) {
           if (y.required) {
@@ -731,16 +732,8 @@ export default {
         }
         else if (y.type === 15) {
           if (y.required) {
-            if (y.answer === "") {
-              // alert("您有必选项未完成!");
-              return;
-            } else {
-              z.number = "";
-              z.content = this.locationInfo.country+this.locationInfo.province+this.locationInfo.city+this.locationInfo.district;
-            }
-          } else {
             z.number = "";
-            z.content = this.locationInfo.country+this.locationInfo.province+this.locationInfo.city+this.locationInfo.district;
+            z.content = this.locationInfo.country + this.locationInfo.province + this.locationInfo.city + this.locationInfo.district;
           }
         }
         list.push(z);
