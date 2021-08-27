@@ -2,31 +2,31 @@
   <div>
     <div class="tabs">
       <el-tabs
-          v-model="activeName"
-          @tab-click="handleClick"
+        v-model="activeName"
+        @tab-click="handleClick"
       >
         <el-tab-pane
-            label="编辑"
-            name="first"
+          label="编辑"
+          name="first"
         >
           <normal1
-              @problem_change="changeState"
-              @currentQuestionnaire="getCurrentQuestionnaire"
-              :type="this.questionnaire_type"
-              :copy_questionnaire_info="copy_questionnaire_info"
-              @problem_store="saveQues(1)"
+            @problem_change="changeState"
+            @currentQuestionnaire="getCurrentQuestionnaire"
+            :type="this.questionnaire_type"
+            :copy_questionnaire_info="copy_questionnaire_info"
+            @problem_store="saveQues(1)"
           />
         </el-tab-pane>
 
         <el-tab-pane
-            label="发布"
-            name="second"
-            :disabled="state"
+          label="发布"
+          name="second"
+          :disabled="state"
         >
           <send
-              :ma="ma"
-              :input="input"
-              :lianjie="lianjie"
+            :ma="ma"
+            :input="input"
+            :lianjie="lianjie"
           />
         </el-tab-pane>
 
@@ -40,50 +40,50 @@
       </el-tabs>
       <el-row style='position: absolute;right:100px;top:12vh;'>
         <el-button
-            type="primary"
-            plain
-            @click="saveQues(0)"
-            :disabled="state"
+          type="primary"
+          plain
+          @click="saveQues(0)"
+          :disabled="state"
         >保存
         </el-button>
         <el-button
-            type="primary"
-            plain
-            :disabled="state"
-            @click="getProblemInfo"
+          type="primary"
+          plain
+          :disabled="state"
+          @click="getProblemInfo"
         >预览
         </el-button>
         <el-button
-            v-if="activeName==='first'"
-            type="primary"
-            @click="handleDown"
-            :disabled="state"
-            plain
+          v-if="activeName==='first'"
+          type="primary"
+          @click="handleDown"
+          :disabled="state"
+          plain
         >导出PDF<i class="el-icon-download el-icon--right"></i></el-button>
         <el-button
-            type="primary"
-            @click="$router.go(-1)"
-            plain
+          type="primary"
+          @click="$router.go(-1)"
+          plain
         >返回
         </el-button>
       </el-row>
     </div>
     <el-dialog
-        :visible.sync="dialogVisible"
-        width="60%"
+      :visible.sync="dialogVisible"
+      width="60%"
     >
       <d-preview
-          :headerTitle="this.title"
-          :subtitle="this.description"
-          :list="this.preview_list"
+        :headerTitle="this.title"
+        :subtitle="this.description"
+        :list="this.preview_list"
       ></d-preview>
       <span
-          slot="footer"
-          class="dialog-footer"
+        slot="footer"
+        class="dialog-footer"
       >
         <el-button
-            type="primary"
-            @click="dialogVisible = false"
+          type="primary"
+          @click="dialogVisible = false"
         >确 定</el-button>
       </span>
     </el-dialog>
@@ -94,6 +94,7 @@ import Normal1 from "./Normal1.vue"
 // import Normal from "./NormalQuestion"
 import Send from "./Send.vue"
 import DPreview from "./DialogPreview.vue"
+import draggable from 'vuedraggable'
 import axios from 'axios';
 import htmlToPdf from "@/assets/js/htmlToPdf";
 import CrossAnalysis from '@/views/CrossAnalysis'
@@ -104,6 +105,7 @@ export default {
     Send,
     CrossAnalysis,
     DPreview,
+    draggable
   },
   data() {
     return {
@@ -124,11 +126,12 @@ export default {
       questionnaire_id: -1,
       questionnaire_state: "",
       option: false,
-      copy_questionnaire_info:{},
-      modify_type:0
+      copy_questionnaire_info: {},
+      modify_type: 0
     };
   },
   methods: {
+
     handleDown() {
       htmlToPdf.downloadPDF(document.querySelector("#demo"), "我的问卷");
     },
@@ -145,12 +148,12 @@ export default {
       if (this.questionnaire_id !== -1) {
         this.current_questionnaire.id = this.questionnaire_id;
       }
-      var url=''
-      if(parseInt(this.modify_type)===1){
-        url="https://www.azur1tee.top/api/questionnaire/edit_questionnaire"
+      var url = ''
+      if (parseInt(this.modify_type) === 1) {
+        url = "https://www.azur1tee.top/api/questionnaire/edit_questionnaire"
       }
-      else{
-        url="https://www.azur1tee.top/api/questionnaire/save_questionnaire"
+      else {
+        url = "https://www.azur1tee.top/api/questionnaire/save_questionnaire"
       }
       console.log(this.questionnaire_id);
       console.log(this.current_questionnaire.id);
@@ -221,11 +224,11 @@ export default {
         this.current_questionnaire.id = this.questionnaire_id
       }
       var url = ''
-      if(parseInt(this.modify_type)===1){
-        url="https://www.azur1tee.top/api/questionnaire/edit_questionnaire"
+      if (parseInt(this.modify_type) === 1) {
+        url = "https://www.azur1tee.top/api/questionnaire/edit_questionnaire"
       }
-      else{
-        url="https://www.azur1tee.top/api/questionnaire/save_questionnaire"
+      else {
+        url = "https://www.azur1tee.top/api/questionnaire/save_questionnaire"
       }
       console.log(this.questionnaire_id);
       console.log(this.current_questionnaire.id);
@@ -242,8 +245,8 @@ export default {
         data: JSON.stringify(formData),
       }).then((res) => {
         console.log(res);
-        if((res.data.code===200||res.data.code===201) && index===0){
-          this.$message({message:'保存成功',type:'success'})
+        if ((res.data.code === 200 || res.data.code === 201) && index === 0) {
+          this.$message({ message: '保存成功', type: 'success' })
         }
         // this.current_questionnaire.id = res.data.data;
         // if (res.data.code === 200 || res.data.code === 201) {
@@ -260,7 +263,7 @@ export default {
       this.title = obj.title
       this.description = obj.description
       this.questionnaire_state = obj.questionnaire_state
-      console.log(this.total_problem);
+      console.log(this.current_questionnaire);
     },
     changeState(index) {
       if (index === false) {
@@ -283,8 +286,8 @@ export default {
       }).then((res) => {
         console.log(res);
         this.change_option();
-        if(res.data.code===200||res.data.code===201){
-          this.$message({message:'问卷已停止回收',type:'success'})
+        if (res.data.code === 200 || res.data.code === 201) {
+          this.$message({ message: '问卷已停止回收', type: 'success' })
         }
       });
     },
@@ -302,8 +305,8 @@ export default {
       }).then((res) => {
         console.log(res);
         this.change_option();
-        if(res.data.code===200||res.data.code===201){
-          this.$message({message:'问卷已开始回收',type:'success'})
+        if (res.data.code === 200 || res.data.code === 201) {
+          this.$message({ message: '问卷已开始回收', type: 'success' })
         }
       })
     },
@@ -341,12 +344,12 @@ export default {
     let query = this.$route.query;
     this.questionnaire_type = parseInt(this.$route.params.type)
     this.questionnaire_id = query.id;
-    this.modify_type=query.modify_type
+    this.modify_type = query.modify_type
     console.log(this.questionnaire_id)
     console.log(this.modify_type);
-    var formData=new FormData()
-    formData.append("id",this.questionnaire_id)
-    if(this.modify_type === 2){
+    var formData = new FormData()
+    formData.append("id", this.questionnaire_id)
+    if (this.modify_type === 2) {
       axios({
         url: "https://www.azur1tee.top/api/questionnaire/delete_and_get_questionnaire_by_id",
         method: "post",
@@ -354,22 +357,22 @@ export default {
         headers: {
           Authorization: window.localStorage.getItem("authorization"),
         },
-    }).then(res=>{
+      }).then(res => {
         console.log(res);
-    })
+      })
     }
     axios({
-        url: "https://www.azur1tee.top/api/questionnaire/get_questionnaire_by_id",
-        method: "post",
-        data: formData,
-        headers: {
-          Authorization: window.localStorage.getItem("authorization"),
-        },
-    }).then(res=>{
-        var x=res.data.data
-        x.modify_type = parseInt(this.modify_type)
-        this.copy_questionnaire_info=x
-        console.log(x);
+      url: "https://www.azur1tee.top/api/questionnaire/get_questionnaire_by_id",
+      method: "post",
+      data: formData,
+      headers: {
+        Authorization: window.localStorage.getItem("authorization"),
+      },
+    }).then(res => {
+      var x = res.data.data
+      x.modify_type = parseInt(this.modify_type)
+      this.copy_questionnaire_info = x
+      console.log(x);
     })
   }
 };
@@ -391,6 +394,6 @@ export default {
   margin: 40px 100px;
   background-color: white;
   box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
-  0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+    0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
 }
 </style>

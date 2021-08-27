@@ -10,8 +10,8 @@
         />
       </div>
 
-      <!-- 已经提交且可以查看投票问卷的答案 -->
-      <div v-show="state && this.type === 1 && this.can_see_result">
+      <!-- 已经提交且可以查看投票问卷的结果 -->
+      <div v-if="state && this.type === 1 && this.can_see_result">
         <VoteAnswer
           :headerTitle="headerTitle"
           :subtitle="subtitle"
@@ -20,8 +20,13 @@
         <!-- :questionList="questionList_vote" -->
       </div>
 
+      <!-- 已经提交且可以查看考试问卷的结果 -->
+      <div v-else-if="state && this.type === 3 && this.can_see_result">
+
+      </div>
+
       <!-- 除了 已经提交且可以查看投票问卷的答案 的其他情况 -->
-      <div id="pre" v-show="!(state && this.type === 1 && this.can_see_result)">
+      <div id="pre" v-else>
         <!-- 非投票问卷提交成功 -->
         <div v-if="state">
           <success></success>
@@ -32,7 +37,7 @@
           <!-- 问卷标题 -->
           <div class="header-title">
             {{ headerTitle }}
-            <div v-if="have_count_down">
+            <div v-if="have_count_down && this.type === 3">
               <span
                 >距离截止时间:<CountDown
                   :remainTime="count_down_time"
@@ -271,9 +276,10 @@ export default {
       }).then((res) => {
         console.log(res);
         console.log(res.data.data);
+        var x=res.data.data.questionnaire.endTime
         if (
           parseInt(res.data.data.questionnaire.type) === 3 &&
-          res.data.data.questionnaire.endTime !== undefined
+          res.data.data.questionnaire.endTime !== null
         ) {
           var x1 = x.split("T");
           var x2 = x1[0] + " " + x1[1];
@@ -399,8 +405,9 @@ export default {
         var x = res.data.data.questionnaire.endTime;
         if (
           parseInt(res.data.data.questionnaire.type) === 3 &&
-          res.data.data.questionnaire.endTime !== undefined
+          res.data.data.questionnaire.endTime !== null
         ) {
+          console.log(x);
           var x1 = x.split("T");
           var x2 = x1[0] + " " + x1[1];
           this.count_down_time = JSON.stringify(
@@ -526,6 +533,104 @@ export default {
       return true;
     },
     submit_force() {
+      var x = {};
+      x.questionnaireId = this.current_questionnaire.questionnaire.id;
+      var list = [];
+      console.log(this.questionList.length);
+      console.log(this.questionList);
+      for (var i = 0; i < this.questionList.length; i++) {
+        var z = {};
+        var y = this.questionList[i];
+        z.questionId = y.questionId;
+        if (y.type === 0 || y.type === 6 || y.type === 10 || y.type === 12) {
+          if (y.required) {
+            if (y.radio === "") {
+              // alert("您有必选项未完成!");
+              return;
+            } else {
+              z.number = y.radio + "";
+              z.content = "";
+            }
+          } else {
+            z.number = y.radio + "";
+            z.content = "";
+          }
+        } else if (
+          y.type === 1 ||
+          y.type === 7 ||
+          y.type === 11 ||
+          y.type === 13
+        ) {
+          if (y.required) {
+            if (y.checkList.length === 0) {
+              // alert("您有必选项未完成!");
+              return;
+            } else {
+              z.number = "";
+              for (var j = 0; j < y.checkList.length; j++) {
+                z.number += y.checkList[j];
+              }
+              z.content = "";
+            }
+          } else {
+            z.number = "";
+            for (var k = 0; k < y.checkList.length; k++) {
+              z.number += y.checkList[k];
+            }
+            z.content = "";
+          }
+        } else if (y.type === 2 || y.type === 14) {
+          if (y.required) {
+            if (y.answer === "") {
+              // alert("您有必选项未完成!");
+              return;
+            } else {
+              z.number = "";
+              z.content = y.answer;
+            }
+          } else {
+            z.number = "";
+            z.content = y.answer;
+          }
+        } else if (y.type === 3) {
+          if (y.required) {
+            if (y.rating === 0) {
+              // alert("您有必选项未完成!");
+              return;
+            } else {
+              z.number = "" + y.rating;
+              z.content = "";
+            }
+          } else {
+            z.number = "" + y.rating;
+            z.content = "";
+          }
+        }
+        list.push(z);
+      }
+      x.answerDtoList = list;
+      console.log(JSON.stringify(x));
+      axios({
+        method: "post",
+        url: "https://www.azur1tee.top/api/answer/submit_answer",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: JSON.stringify(x),
+      }).then((res) => {
+        this.end = true;
+        console.log(res.data.message);
+        alert(res.data.message);
+        console.log(res);
+        if (res.data.code === 200 || res.data.code === 201) {
+          this.state = true;
+          if (this.type === 1) {
+            this.getInfo1();
+          }
+        }
+      });
+
+
       if (this.can_see_result) {
         console.log(1);
       } else {
