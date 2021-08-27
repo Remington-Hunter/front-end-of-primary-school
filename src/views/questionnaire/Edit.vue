@@ -21,7 +21,6 @@
         <el-tab-pane
           label="发布"
           name="second"
-          :disabled="state"
         >
           <send
             :ma="ma"
@@ -43,13 +42,11 @@
           type="primary"
           plain
           @click="saveQues(0)"
-          :disabled="state"
         >保存
         </el-button>
         <el-button
           type="primary"
           plain
-          :disabled="state"
           @click="getProblemInfo"
         >预览
         </el-button>
@@ -57,7 +54,6 @@
           v-if="activeName==='first'"
           type="primary"
           @click="handleDown"
-          :disabled="state"
           plain
         >导出PDF<i class="el-icon-download el-icon--right"></i></el-button>
         <el-button
