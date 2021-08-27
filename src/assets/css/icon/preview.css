@@ -30,13 +30,13 @@
     font-size: 18px;
     float: left;
   }
-  .question-title .text {
-    margin-right: 4px;
+  .question-required {
+    margin-left: 4px;
   }
   .q-instruction{
-    color: #888;
+    color: #999;
     font-size: 13px;
-    padding-left: 20px;
+    margin-top: 3px;
   }
   .question-body {
     padding-top: 10px;
@@ -52,7 +52,7 @@
   .el-checkbox,
   .el-rate {
     display: block;
-    margin-top: 8px;
+    margin-top: 5px;
     padding: 7px;
   }
   .page-control {
@@ -66,7 +66,7 @@
     font-size: 80%;
   }
   .sel-total {
-    padding-left: 10px;
+    padding: 0 10px;
     color: #feae3a;
   }
 .el-progress{
@@ -74,11 +74,17 @@
 }
 .el-checkbox__label {
   word-break: normal;
-  white-space:pre-line;
-  word-wrap: break-word;
-  overflow: hidden;
-  line-height: 18px;
-  vertical-align: middle;
+  white-space:normal;
+  line-height: 24px;
+  text-overflow: ellipsis;
+}
+
+.el-checkbox, .el-checkbox__input {
+  white-space: normal;
+  word-break: break-all;
+}
+.el-checkbox__label {
+  display: inline;
 }
 
 .el-checkbox.is-disabled.is-checked .el-checkbox__inner {
@@ -96,7 +102,7 @@
 .el-radio__label {
   text-overflow: ellipsis;
   white-space: normal;
-  line-height: 18px;
+  line-height: 24px;
 }
 
 

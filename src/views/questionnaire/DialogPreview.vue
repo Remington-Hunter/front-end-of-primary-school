@@ -17,17 +17,21 @@
             <span class="question-seq"><b>{{ index + 1 }}</b></span>
             <span class="text">{{ question.name }}</span>
             <span
+              class="sel-total"
+              v-show="['考试多选题','考试单选题','考试填空题'].includes(question.problem_type)"
+            >(分值{{ question.point}})</span>
+            <span
               v-if="question.must_write_select"
               class="question-required"
             >*</span>
-            <el-tag v-if=" ['多选题','投票多选题','报名多选题'].includes(question.problem_type)">多选</el-tag>
+            <el-tag v-if=" ['多选题','投票多选题','报名多选题','考试多选题'].includes(question.problem_type)">多选</el-tag>
           </div>
           <div class="q-instruction">{{ question.instruction }}</div>
         </div>
 
         <div class="question-body ">
           <!-- 单选题 -->
-          <div v-if="['单选题','投票单选题','报名单选题'].includes(question.problem_type)">
+          <div v-if="['单选题','投票单选题','报名单选题','考试单选题'].includes(question.problem_type)">
             <el-radio-group v-model="radio">
               <el-radio
                 v-for="(item, index) in question.selection_list"
@@ -44,16 +48,19 @@
             </el-radio-group>
           </div>
           <!-- 多选题 -->
-          <div v-else-if="['多选题','投票多选题','报名多选题'].includes(question.problem_type)">
+          <div v-else-if="['多选题','投票多选题','报名多选题','考试多选题'].includes(question.problem_type)">
             <el-checkbox-group v-model="checkList">
               <el-checkbox
                 v-for="(item, index) in question.selection_list"
                 :key="index"
                 :label="index"
-              >{{ item.content }} <span
+              >{{ item.content }}
+                <span
                   class="sel-total"
                   v-show="item.total"
-                >(剩余{{item.total}})</span><span class="q-instruction">{{ item.comment }}</span></el-checkbox>
+                >(剩余{{item.total}})</span>
+                <div class="q-instruction"> {{ item.comment }}</div>
+              </el-checkbox>
             </el-checkbox-group>
           </div>
           <!-- 评分题 -->
@@ -66,7 +73,7 @@
             ></el-rate>
           </div>
           <!-- 填空题 -->
-          <div v-else-if="question.problem_type === '填空题'">
+          <div v-else-if="['填空题','考试填空题'].includes(question.problem_type)">
             <el-input
               type="textarea"
               autosize
@@ -77,12 +84,13 @@
           </div>
           <div v-else-if="question.problem_type==='定位题'">
             <el-input
-                type="textarea"
-                autosize
-                placeholder="请输入内容"
-                v-model="locationInfo.country+locationInfo.province+locationInfo.city+locationInfo.district"
+              type="textarea"
+              autosize
+              placeholder="请输入内容"
+              v-model="locationInfo.country+locationInfo.province+locationInfo.city+locationInfo.district"
             >
-            </el-input><el-button @click="getLocation()">定位</el-button>
+            </el-input>
+            <el-button @click="getLocation()">定位</el-button>
           </div>
         </div>
       </div>
@@ -112,13 +120,13 @@ export default {
     };
   },
   props: ['headerTitle', 'subtitle', 'list'],
-  methods:{
+  methods: {
     getLocation() {
-      this.$confirm("此操作将获取您的地理位置，是否继续？","提示",{
+      this.$confirm("此操作将获取您的地理位置，是否继续？", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
-      }).then(()=> {
+      }).then(() => {
         this.$message({
           type: 'success',
           message: "定位成功!",
@@ -128,24 +136,24 @@ export default {
         // console.log(this.locationInfo.ip)
         var _this = this;
         axios.get("https://restapi.amap.com/v5/ip?key=a593d64ab73229be6b3d1ef802b76849&type=4&ip=" + this.locationInfo.ip)
-            .then(response => {
-              console.log(response)
-              _this.locationInfo.country = response.data.country
-              _this.locationInfo.province = response.data.province
-              _this.locationInfo.city = response.data.city
-              _this.locationInfo.district = response.data.district
-              _this.locationInfo.location = response.data.location
-              console.log(_this.locationInfo)
-            });
+          .then(response => {
+            console.log(response)
+            _this.locationInfo.country = response.data.country
+            _this.locationInfo.province = response.data.province
+            _this.locationInfo.city = response.data.city
+            _this.locationInfo.district = response.data.district
+            _this.locationInfo.location = response.data.location
+            console.log(_this.locationInfo)
+          });
       })
-        .catch(()=>{
+        .catch(() => {
           this.$message({
             type: "info",
             message: "定位失败",
           });
         })
-      }
-    },
+    }
+  },
 };
 </script>
 

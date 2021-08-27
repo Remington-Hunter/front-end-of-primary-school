@@ -2,10 +2,8 @@
   <div class="content">
     <div class="question">
 
-
       <!-- 编辑状态选择题 -->
-      <div
-        v-show="
+      <div v-show="
           ismodify &&
             [
               '单选题',
@@ -17,8 +15,7 @@
               '考试单选题',
               '考试多选题',
             ].includes(problem_type)
-        "
-      >
+        ">
         <div>
           <v-row>
             <v-col>{{ problem_type }}</v-col>
@@ -29,7 +26,7 @@
                 problem_type === '考试单选题' || problem_type === '考试多选题'
               "
             >
-                              <!-- @change="handleChange" -->
+              <!-- @change="handleChange" -->
               <div class="set-num">
                 设置分数<el-input-number
                   controls-position="right"
@@ -49,7 +46,10 @@
               :rules="[rules.required]"
               v-model="name"
             ></v-text-field>
-            <v-text-field label="备注" v-model="instruction"></v-text-field>
+            <v-text-field
+              label="备注"
+              v-model="instruction"
+            ></v-text-field>
             <v-text-field
               label="请输入答案解析"
               :rules="[rules.required]"
@@ -57,16 +57,22 @@
               '考试单选题',
               '考试多选题',
             ].includes(problem_type)"
-            v-model="question_analysis"
+              v-model="question_analysis"
             ></v-text-field>
           </div>
         </template>
-        <div  class="required">
+        <div class="required">
           是否必填：<el-switch v-model="must_write_select"> </el-switch>
         </div>
-        <div v-for="(item, index) in selection_list" :key="(item, index)">
+        <div
+          v-for="(item, index) in selection_list"
+          :key="(item, index)"
+        >
           <v-row>
-            <v-col cols="12" sm="8">
+            <v-col
+              cols="12"
+              sm="8"
+            >
               <v-text-field
                 :label="'选项' + (index + 1)"
                 v-model="selection_list[index].content"
@@ -107,48 +113,47 @@
           </div>
         </div>
         <div>
-          <el-button @click="add_selection"
-            ><i class="el-icon-plus"></i> 新建选项</el-button
-          >
-          <el-button @click="selectConfirm" :disabled="confirmstate"
-            >确认</el-button
-          >
-          <el-button @click="cancel" v-show="cancel_button">取消</el-button>
+          <el-button @click="add_selection"><i class="el-icon-plus"></i> 新建选项</el-button>
+          <el-button
+            @click="selectConfirm"
+            :disabled="confirmstate"
+          >确认</el-button>
+          <el-button
+            @click="cancel"
+            v-show="cancel_button"
+          >取消</el-button>
         </div>
       </div>
 
-
-
-<!-- 编辑状态非选择题 -->
-      <div
-        v-show="
+      <!-- 编辑状态非选择题 -->
+      <div v-show="
           ismodify && [
               '填空题',
               '评分题',
               '考试填空题',
               '定位题'
             ].includes(problem_type)
-        "
-      ><v-row>
-        <v-col>{{ problem_type }}</v-col>
-            <v-col
-              cols="12"
-              sm="4"
-              v-if="
+        ">
+        <v-row>
+          <v-col>{{ problem_type }}</v-col>
+          <v-col
+            cols="12"
+            sm="4"
+            v-if="
                 problem_type === '考试填空题'
               "
-            >
-              <div class="set-num">
-                设置分数<el-input-number
-                  controls-position="right"
-                  :min="0"
-                  :max="99999"
-                  size="small"
-                  v-model="point"
-                ></el-input-number>
-              </div>
-            </v-col>
-          </v-row>
+          >
+            <div class="set-num">
+              设置分数<el-input-number
+                controls-position="right"
+                :min="0"
+                :max="99999"
+                size="small"
+                v-model="point"
+              ></el-input-number>
+            </div>
+          </v-col>
+        </v-row>
         <template>
           <div>
             <v-text-field
@@ -156,8 +161,15 @@
               v-model="name"
               :rules="[rules.required]"
             ></v-text-field>
-            <v-text-field label="备注" v-model="instruction"></v-text-field>
-            <v-text-field label="请输入答案" v-model="answer" v-show="problem_type === '考试填空题'"></v-text-field>
+            <v-text-field
+              label="备注"
+              v-model="instruction"
+            ></v-text-field>
+            <v-text-field
+              label="请输入答案"
+              v-model="answer"
+              v-show="problem_type === '考试填空题'"
+            ></v-text-field>
             <v-text-field
               label="请输入答案解析"
               :rules="[rules.required]"
@@ -169,27 +181,39 @@
         <div class="required">
           是否必填：<el-switch v-model="must_write_select"> </el-switch>
         </div>
-        <el-button @click="writeConfirm" :disabled="writeconfirmstate"
-          >确认</el-button
-        >
-        <el-button @click="cancel" v-show="cancel_button">取消</el-button>
+        <el-button
+          @click="writeConfirm"
+          :disabled="writeconfirmstate"
+        >确认</el-button>
+        <el-button
+          @click="cancel"
+          v-show="cancel_button"
+        >取消</el-button>
       </div>
 
-
-
-<!-- 非编辑状态 -->
-      <div v-show="!ismodify" class="q-content">
+      <!-- 非编辑状态 -->
+      <div
+        v-show="!ismodify"
+        class="q-content"
+      >
         <div class="question-seq">{{ problem_number }}.</div>
         <div class="text">
           {{ name }}
-          <span v-if="['考试填空题','考试单选题','考试多选题'].includes(problem_type)" class="sel-total"
-                  >(分值:{{ point }})</span
-                >
-          <span v-if="must_write_select" class="question-required">*</span>
+          <span
+            v-if="['考试填空题','考试单选题','考试多选题'].includes(problem_type)"
+            class="sel-total"
+          >(分值:{{ point }})</span>
+          <span
+            v-if="must_write_select"
+            class="question-required"
+          >*</span>
         </div>
 
         <div class="q-instruction">{{ instruction }}</div>
-        <div v-if="['填空题', '考试填空题'].includes(problem_type)" class="question-body">
+        <div
+          v-if="['填空题', '考试填空题'].includes(problem_type)"
+          class="question-body"
+        >
           <el-input
             @change="$emit('answer_confirm')"
             type="textarea"
@@ -203,7 +227,7 @@
         <div v-else-if="problem_type === '评分题'">
           <div class="rate">
             <el-rate
-            @change="$emit('answer_confirm')"
+              @change="$emit('answer_confirm')"
               v-model="rating"
               :icon-classes="iconClasses"
               void-icon-class="icon-rate-face-off"
@@ -212,58 +236,70 @@
             </el-rate>
           </div>
         </div>
-<!--        添加定位题-->
+        <!--        添加定位题-->
         <div v-else-if="problem_type === '定位题'">
           <div class="rate">
-            <el-input  @change="$emit('answer_confirm')"
-                       type="textarea"
-                       autosize
-                       placeholder="请输入答案"
-                       v-model="answer">
+            <el-input
+              @change="$emit('answer_confirm')"
+              type="textarea"
+              autosize
+              placeholder="请输入答案"
+              v-model="answer"
+            >
             </el-input>
             <el-button>定位</el-button>
           </div>
         </div>
 
-        <div
-          v-else-if="
+        <div v-else-if="
             ['多选题', '报名多选题', '投票多选题','考试多选题'].includes(problem_type)
-          "
-        >
+          ">
           <div>
-            <el-checkbox-group @change="$emit('answer_confirm')" v-model="checkList">
+            <el-checkbox-group
+              @change="$emit('answer_confirm')"
+              v-model="checkList"
+            >
               <el-checkbox
                 v-for="(item, index) in selection_list"
                 :key="(item, index)"
                 :label="item.content"
-                >{{ item.content }}
-                <span class="sel-total" v-show="item.total"
-                  >(剩余{{ item.total }})</span
-                ><span class="q-instruction">{{ item.comment }}</span>
+              >{{ item.content }}
+                <span
+                  class="sel-total"
+                  v-show="item.total"
+                >(剩余{{ item.total }})</span><span class="q-instruction">{{ item.comment }}</span>
               </el-checkbox>
             </el-checkbox-group>
           </div>
         </div>
 
-        <div
-          v-else-if="
+        <div v-else-if="
             ['单选题', '投票单选题', '报名单选题','考试单选题'].includes(problem_type)
-          "
-        >
-          <div v-for="(item, index) in selection_list" :key="(item, index)">
-            <el-radio @change="$emit('answer_confirm')" v-model="radio" :label="index"
-            @click.native="clickitem()"
-              >{{ item.content
-              }}<span class="sel-total" v-show="item.total"
-                >(剩余{{ item.total }})</span
-              >
+          ">
+          <div
+            v-for="(item, index) in selection_list"
+            :key="(item, index)"
+          >
+            <el-radio
+              @change="$emit('answer_confirm')"
+              v-model="radio"
+              :label="index"
+              @click.native="clickitem()"
+            >{{ item.content
+              }}<span
+                class="sel-total"
+                v-show="item.total"
+              >(剩余{{ item.total }})</span>
             </el-radio>
             <div class="q-instruction">{{ item.comment }}</div>
           </div>
         </div>
       </div>
     </div>
-    <el-button-group class="btn-group" v-show="!ismodify">
+    <el-button-group
+      class="btn-group"
+      v-show="!ismodify"
+    >
       <el-button
         @click="
           ismodify = true;
@@ -273,10 +309,17 @@
       >
         <v-icon small>mdi-pencil</v-icon>修改
       </el-button>
-      <el-button v-show="!modify_limit" @click="deleteProblem" size="small">
+      <el-button
+        v-show="!modify_limit"
+        @click="deleteProblem"
+        size="small"
+      >
         <v-icon small>mdi-trash-can-outline</v-icon>删除
       </el-button>
-      <el-button @click="$emit('copy', problem_number)" size="small">
+      <el-button
+        @click="$emit('copy', problem_number)"
+        size="small"
+      >
         <v-icon small>mdi-content-copy</v-icon>复制
       </el-button>
       <el-button
@@ -337,13 +380,13 @@ export default {
   },
   data() {
     return {
-      ismodify: this.iscopy?(this.copy_info.ismodify === undefined?true:this.copy_info.ismodify):true,
+      ismodify: this.iscopy ? (this.copy_info.ismodify === undefined ? true : this.copy_info.ismodify) : true,
       name: this.iscopy ? this.copy_info.name : "",
       instruction: this.iscopy ? this.copy_info.instruction : "",
       selection_list: this.iscopy
         ? this.copy_array(this.copy_info.selection_list)
         : [],
-        preradio:"",
+      preradio: "",
       radio: "1", //单选题答案
       checkList: [], //多选题答案
       answer: "", //填空题答案
@@ -367,8 +410,8 @@ export default {
           ? undefined
           : this.copy_info.question_id
         : undefined,
-        question_analysis:this.iscopy?this.copy_info.question_analysis:"答案解析",
-        point:this.iscopy?this.copy_info.point:0
+      question_analysis: this.iscopy ? this.copy_info.question_analysis : "",
+      point: this.iscopy ? this.copy_info.point : 0
     };
   },
   created() {
@@ -391,10 +434,10 @@ export default {
   },
   methods: {
     clickitem() {
-      if(this.radio === this.preradio){
-        this.radio=""
+      if (this.radio === this.preradio) {
+        this.radio = ""
       }
-      this.preradio=this.radio
+      this.preradio = this.radio
     },
     delete_item(index) {
       console.log(index);
@@ -416,13 +459,13 @@ export default {
     selectConfirm() {
       this.ismodify = false;
       this.cancel_button = false;
-      this.iscopy=false
+      this.iscopy = false
       this.$emit("ConfirmProblem");
     },
     writeConfirm() {
       this.ismodify = false;
       this.cancel_button = false;
-      this.iscopy=false
+      this.iscopy = false
       this.$emit("ConfirmProblem");
     },
     cancel() {
@@ -431,7 +474,7 @@ export default {
     deleteProblem() {
       this.$emit("deleteProblem", this.problem_number);
     },
-    created() {},
+    created() { },
   },
 };
 </script>
