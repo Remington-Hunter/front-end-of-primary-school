@@ -8,7 +8,10 @@
             <v-img v-bind:src="lianjie"></v-img>
           </div>
         </el-col>
-        <el-col :span="20">
+        <el-col
+          :span="17"
+          :offset="1"
+        >
           <el-row>
             <el-col :span="16">
               <div class="ui-copy-text">
@@ -136,9 +139,9 @@ export default {
       type: String,
       defalut: ''
     },
-    download_lianjie:{
-      type:String,
-      defalut:''
+    download_lianjie: {
+      type: String,
+      defalut: ''
     },
   },
   data() {
@@ -237,7 +240,6 @@ export default {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   min-height: 100%;
-  max-width: 1240px;
   background-color: #fff;
 }
 

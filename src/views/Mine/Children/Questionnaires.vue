@@ -125,7 +125,7 @@
         </template>
       </v-data-table>
     </v-card>
-      <el-dialog
+    <el-dialog
       :visible.sync="dialog"
       width="50%"
       height="max-content"
@@ -200,6 +200,7 @@
       </span>
     </el-dialog>
     <el-dialog
+      class="dd"
       :visible.sync="dialog_link_visible"
       width="60%"
     >
@@ -244,7 +245,7 @@ export default {
       lianjie: '',
       download_lianjie: '',
       ma: '',
-      count:'',
+      count: '',
       headers: [
         {
           text: "问卷名称",
@@ -312,7 +313,7 @@ export default {
     get_id(id) {
       this.questionnaire_id = id;
     },
-    modify(id){
+    modify(id) {
       this.questionnaire_id = id;
       this.stopItem(id);
       for (var i = 0; i < this.desserts.length; i++) {
@@ -320,10 +321,10 @@ export default {
           this.count = this.desserts[i].num;
         }
       };
-      if(this.count===0){
+      if (this.count === 0) {
         this.dialog = false;
         this.modifyItem_second(id);
-      }else{
+      } else {
         this.dialog = true;
       }
     },
@@ -798,5 +799,11 @@ export default {
   line-height: 24px;
   background-color: #f7f7f7;
   height: 78px;
+}
+.dd >>> .el-dialog__header {
+  padding: 20px;
+}
+.dd >>> .el-dialog__body {
+  padding: 0;
 }
 </style>
