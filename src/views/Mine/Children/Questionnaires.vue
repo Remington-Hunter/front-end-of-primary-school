@@ -115,19 +115,11 @@
             mdi-poll
           </v-icon>
           <v-icon
-<<<<<<< HEAD
-            size="22px"
-            @click="checkItem(item.id,item.type)"
-            title="预览"
-            style="margin-left: 1%"
-            color="teal darken-2"
-=======
               size="22px"
               @click="checkItem(item.id)"
               title="预览"
               style="margin-left: 1%"
               color="teal darken-2"
->>>>>>> dev
           >
             mdi-eye-outline
           </v-icon>
@@ -301,17 +293,17 @@ export default {
     },
     checkAnalysis(id,type) {
       if(type==3){
-        this.$router.push({ name: "grade", params: { id: id } });
+        this.$router.push({ name: "grade", query: { id: id } });
+      }
+      else if(type==2){
+        this.$router.push({name:'clickoutanalysis',})
       }
       else{
-        this.$router.push({ name: "crossanalysis", params: { id: id } });
+        this.$router.push({ name: "crossanalysis", query: { id: id } });
       }
     },
     lookUpLink(id) {
-      this.$router.push({name: "send", params: {id: id}});
-    },
-    checkAnalysis(id) {
-      this.$router.push({name: "crossanalysis", params: {id: id}});
+      this.$router.push({name: "send", query: {id: id}});
     },
     get_id(id) {
       this.questionnaire_id = id;

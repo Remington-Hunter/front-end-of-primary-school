@@ -225,7 +225,6 @@ export default {
       type: 0,
       states:[],
       s:{},
-      excel:[],
       answer:[],
       answerData:[],
       headArr:[],
@@ -248,73 +247,6 @@ export default {
   methods: {
     checkCrossAnalysis(){
       this.$router.push({ path: "/getanalysis", query: { id: this.id } });
-    },
-    getExcelData(){
-      var data=this.data;
-      for (var i = 0; i < data.length; i++) {
-        if (data[i].question.type === 2||data[i].question.type === 5||data[i].question.type === 14) {
-          // console.log(11)
-          var data_i = data[i].answerList;
-          var item = [];
-          // var c={id:'',content:''}
-          // item.push(c);
-          var c={id:'第'+(i+1)+'题 填空题',content:'题目内容:'+data[i].question.content};
-          item.push(c);
-          c={id:'序号',content:'答题内容'}
-          item.push(c)
-          for (let j = 0; j < data_i.length; j++) {
-            var s = { id: j + 1, content: data_i[j].content };
-            item.push(s);
-          }
-          this.excel.push(item);
-        }
-        else if(data[i].question.type === 3){
-          var data_i = data[i].optionList;
-          var item = [];
-          // var c={content:'',num:''}
-          // item.push(c);
-          var c1={content:'第'+(i+1)+'题 评分题',num:'题目内容:'+data[i].question.content};
-          item.push(c1);
-          c={content:'选项内容',num:'选择人数'}
-          item.push(c)
-          for (let j = 0; j < data_i.length; j++) {
-            var c=''+(j+1)+'分';
-            var s = { content:c, num: data_i[j].answerNum };
-            item.push(s);
-          }
-          this.excel.push(item);
-        } 
-        else if(data[i].question.type===1){
-          var data_i = data[i].optionList;
-          var item = [];
-          // var c={content:'',num:''}
-          // item.push(c);
-          var c={content:'第'+(i+1)+'题 多选题',num:'题目内容:'+data[i].question.content};
-          item.push(c);
-          c={content:'选项内容',num:'选择人数'}
-          item.push(c)
-          for (let j = 0; j < data_i.length; j++) {
-            var s = { content: data_i[j].content, num: data_i[j].answerNum };
-            item.push(s);
-          }
-          this.excel.push(item);
-        }
-        else {
-          var data_i = data[i].optionList;
-          var item = [];
-          // var c={content:'',num:''}
-          // item.push(c);
-          var c={content:'第'+(i+1)+'题 单选题',num:'题目内容:'+data[i].question.content};
-          item.push(c);
-          c={content:'选项内容',num:'选择人数'}
-          item.push(c)
-          for (let j = 0; j < data_i.length; j++) {
-            var s = { content: data_i[j].content, num: data_i[j].answerNum };
-            item.push(s);
-          }
-          this.excel.push(item);
-        }
-      }
     },
     exportExcel() {
       // 设置当前日期

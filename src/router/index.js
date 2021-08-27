@@ -119,6 +119,15 @@ const routes = [{
         name:'Questionnaire_clock',
         component: ()=>
             import('../views/Questionnaire_clock')
+    },{
+        path:'/clickout',
+        name:'clickout',
+        component:()=>import('../views/Clickout.vue')
+    },
+    {
+        path:'/clickoutanalysis',
+        name:'clickoutanalysis',
+        component:()=>import('../views/ClickoutAnalysis.vue')
     }
 ]
 
