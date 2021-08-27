@@ -51,11 +51,11 @@ export default {
           // ],
         },
         xAxis: { type: "category",
-        // nameLocation:'end',//坐标轴名称显示位置。
-        //     axisLabel : {//坐标轴刻度标签的相关设置。
-        //         interval:0,
-        //         rotate:"45"
-        //     }
+        nameLocation:'end',//坐标轴名称显示位置。
+            axisLabel : {//坐标轴刻度标签的相关设置。
+                interval:0,
+                rotate:"45"
+            }
         },
         yAxis: {},
         series: [
