@@ -126,6 +126,7 @@
               '填空题',
               '评分题',
               '考试填空题',
+              '定位题'
             ].includes(problem_type)
         "
       ><v-row>
@@ -209,6 +210,18 @@
               :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
             >
             </el-rate>
+          </div>
+        </div>
+<!--        添加定位题-->
+        <div v-else-if="problem_type === '定位题'">
+          <div class="rate">
+            <el-input  @change="$emit('answer_confirm')"
+                       type="textarea"
+                       autosize
+                       placeholder="请输入答案"
+                       v-model="answer">
+            </el-input>
+            <el-button>定位</el-button>
           </div>
         </div>
 

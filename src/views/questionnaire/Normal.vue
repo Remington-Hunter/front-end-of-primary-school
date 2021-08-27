@@ -47,6 +47,20 @@
                 {{ item.text }}
               </el-menu-item>
             </div>
+
+<!--            打卡问卷-->
+            <div v-if="type === 4">
+              <el-menu-item
+                  v-for="(item, index) in problem_list2"
+                  :key="(item, index)"
+                  @click="newProblem(item.text, false, {})"
+              >
+                <v-icon>{{ item.icon }}</v-icon>
+                {{ item.text }}
+              </el-menu-item>
+            </div>
+
+
           </el-submenu>
           <el-submenu index="2">
             <template slot="title"><i class="el-icon-setting"></i>问卷设置</template>
