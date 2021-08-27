@@ -225,7 +225,6 @@ export default {
       type: 0,
       states:[],
       s:{},
-      excel:[],
       answer:[],
       answerData:[],
       headArr:[],
@@ -247,76 +246,7 @@ export default {
   
   methods: {
     checkCrossAnalysis(){
-      console.log(11111);
-      console.log(this.id);
-      this.$router.push({ name: "getanalysis", params: { id: this.id } });
-    },
-    getExcelData(){
-      var data=this.data;
-      for (var i = 0; i < data.length; i++) {
-        if (data[i].question.type === 2) {
-          // console.log(11)
-          var data_i = data[i].answerList;
-          var item = [];
-          // var c={id:'',content:''}
-          // item.push(c);
-          var c={id:'第'+(i+1)+'题 填空题',content:'题目内容:'+data[i].question.content};
-          item.push(c);
-          c={id:'序号',content:'答题内容'}
-          item.push(c)
-          for (let j = 0; j < data_i.length; j++) {
-            var s = { id: j + 1, content: data_i[j].content };
-            item.push(s);
-          }
-          this.excel.push(item);
-        }
-        else if(data[i].question.type === 3){
-          var data_i = data[i].optionList;
-          var item = [];
-          // var c={content:'',num:''}
-          // item.push(c);
-          var c1={content:'第'+(i+1)+'题 评分题',num:'题目内容:'+data[i].question.content};
-          item.push(c1);
-          c={content:'选项内容',num:'选择人数'}
-          item.push(c)
-          for (let j = 0; j < data_i.length; j++) {
-            var c=''+(j+1)+'分';
-            var s = { content:c, num: data_i[j].answerNum };
-            item.push(s);
-          }
-          this.excel.push(item);
-        } 
-        else if(data[i].question.type===1){
-          var data_i = data[i].optionList;
-          var item = [];
-          // var c={content:'',num:''}
-          // item.push(c);
-          var c={content:'第'+(i+1)+'题 多选题',num:'题目内容:'+data[i].question.content};
-          item.push(c);
-          c={content:'选项内容',num:'选择人数'}
-          item.push(c)
-          for (let j = 0; j < data_i.length; j++) {
-            var s = { content: data_i[j].content, num: data_i[j].answerNum };
-            item.push(s);
-          }
-          this.excel.push(item);
-        }
-        else {
-          var data_i = data[i].optionList;
-          var item = [];
-          // var c={content:'',num:''}
-          // item.push(c);
-          var c={content:'第'+(i+1)+'题 单选题',num:'题目内容:'+data[i].question.content};
-          item.push(c);
-          c={content:'选项内容',num:'选择人数'}
-          item.push(c)
-          for (let j = 0; j < data_i.length; j++) {
-            var s = { content: data_i[j].content, num: data_i[j].answerNum };
-            item.push(s);
-          }
-          this.excel.push(item);
-        }
-      }
+      this.$router.push({ path: "/getanalysis", query: { id: this.id } });
     },
     exportExcel() {
       // 设置当前日期
@@ -358,7 +288,7 @@ export default {
     },
     getCompletionData(data) {
       for (var i = 0; i < this.data.length; i++) {
-        if (data[i].question.type === 2) {
+        if (data[i].question.type === 2||data[i].question.type === 5||data[i].question.type === 14) {
           // console.log(11)
           var data_i = data[i].answerList;
           var item = [];
@@ -396,7 +326,7 @@ export default {
       for (var i = 0; i < data.length; i++) {
         // console.log(111)
         // console.log(data[i].question.type)
-        if (data[i].question.type === 2) {
+        if (data[i].question.type === 2||data[i].question.type==5||data[i].question.type==14) {
           // console.log(11)
           var data_i = data[i].answerList;
           var item = [];
@@ -508,7 +438,7 @@ export default {
         c["0"]=i+1;
         var item=answerData[i].answerList;
         for(var j=0;j<item.length;j++){
-          if(data.questionInfo[j].info.type==2){
+          if(data.questionInfo[j].info.type==2||data.questionInfo[j].info.type==5||data.questionInfo[j].info.type==14){
             c[(j+1).toString()]=item[j].content;
           }
           else if(data.questionInfo[j].info.type==3){
@@ -594,7 +524,7 @@ export default {
     },
     getColData(data) {
       for (var i = 0; i < data.length; i++) {
-        if (data[i].question.type == 2) {
+        if (data[i].question.type == 2||data[i].question.type == 5||data[i].question.type == 14) {
           var data_i = data[i].answerList;
           var item = [];
           for (let j = 0; j < data_i.length; j++) {
@@ -632,7 +562,7 @@ export default {
     },
     getPieData(data) {
       for (var i = 0; i < data.length; i++) {
-        if (data[i].question.type == 2) {
+        if (data[i].question.type == 2||data[i].question.type == 5||data[i].question.type == 14) {
           var data_i = data[i].answerList;
           var item = [];
           for (let j = 0; j < data_i.length; j++) {
@@ -663,7 +593,7 @@ export default {
     },
     getLineData(data) {
       for (var i = 0; i < data.length; i++) {
-        if (data[i].question.type == 2) {
+        if (data[i].question.type == 2||data[i].question.type == 5||data[i].question.type == 14) {
           var data_i = data[i].answerList;
           var item = [];
           this.line.push(item);

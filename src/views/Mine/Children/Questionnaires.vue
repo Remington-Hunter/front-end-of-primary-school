@@ -5,37 +5,37 @@
         问卷列表
         <div id="select">
           <el-select
-            v-model="type"
-            multiple
-            placeholder="筛选问卷类型"
-            style="width:100%"
+              v-model="type"
+              multiple
+              placeholder="筛选问卷类型"
+              style="width:100%"
           >
             <el-option
-              v-for="item in types"
-              :key="item"
-              :label="item"
-              :value="item"
+                v-for="item in types"
+                :key="item"
+                :label="item"
+                :value="item"
             >
             </el-option>
           </el-select>
         </div>
 
         <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
-          label="搜索"
-          single-line
-          hide-details
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="搜索"
+            single-line
+            hide-details
         ></v-text-field>
       </v-card-title>
       <v-data-table
-        :headers="headers"
-        :items="desserts"
-        :search="search"
-        :sort-by="sortBy"
-        :sort-desc="sortDesc"
-        multi-sort
-        class="elevation-1"
+          :headers="headers"
+          :items="desserts"
+          :search="search"
+          :sort-by="sortBy"
+          :sort-desc="sortDesc"
+          multi-sort
+          class="elevation-1"
       >
         <template v-slot:[`item.name`]="{ item }">
           <div style="max-width: 160px;overflow: hidden;text-overflow:ellipsis;white-space:nowrap;">
@@ -49,93 +49,98 @@
         </template>
         <template v-slot:[`item.actions`]="{ item }">
           <v-icon
-            size="22px"
-            color="info"
-            class="mr-2"
-            @click="copyItem(item.id)"
-            title="复制"
+              size="22px"
+              color="info"
+              class="mr-2"
+              @click="copyItem(item.id)"
+              title="复制"
           >
             mdi-content-copy
           </v-icon>
           <v-icon
-            size="22px"
-            @click="deleteItem(item.id)"
-            title="删除"
-            color="error"
+              size="22px"
+              @click="deleteItem(item.id)"
+              title="删除"
+              color="error"
           >
-            mdi-trash-can-outline</v-icon>
+            mdi-trash-can-outline
+          </v-icon>
         </template>
         <template v-slot:[`item.actions1`]="{ item }">
           <v-icon
-            size="22px"
-            class="mr-2"
-            @click="startItem(item.id)"
-            title="发布"
-            color="green"
+              size="22px"
+              class="mr-2"
+              @click="startItem(item.id)"
+              title="发布"
+              color="green"
           >
             mdi-arrow-right-drop-circle
           </v-icon>
           <v-icon
-            size="22px"
-            class="mr-2"
-            @click="stopItem(item.id)"
-            title="停止"
-            color="orange"
+              size="22px"
+              class="mr-2"
+              @click="stopItem(item.id)"
+              title="停止"
+              color="orange"
           >
             mdi-pause-circle
           </v-icon>
           <v-icon
-            size="22px"
-            @click="
+              size="22px"
+              @click="
               dialog = true;
               get_id(item.id);
             "
-            title="修改"
-            color="brown darken-1"
+              title="修改"
+              color="brown darken-1"
           >
-            mdi-pencil-outline</v-icon>
+            mdi-pencil-outline
+          </v-icon>
           <v-icon
-            size="22px"
-            @click="lookUpLink(item.id)"
-            title="查看链接"
-            color="blue darken-2"
-            style="margin-left: 1%"
+              size="22px"
+              @click="dialog_link_visible=true;get_link(item.id)"
+              title="查看链接"
+              color="blue darken-2"
+              style="margin-left: 1%"
           >
-            mdi-link-variant</v-icon>
+            mdi-link-variant
+          </v-icon>
           <v-icon
-            size="22px"
-            @click="checkAnalysis(item.id)"
-            title="统计结果"
-            style="margin-left: 1%"
-            color="purple darken-2"
+              size="22px"
+              @click="checkAnalysis(item.id)"
+              title="统计结果"
+              style="margin-left: 1%"
+              color="purple darken-2"
           >
-            mdi-poll</v-icon>
+            mdi-poll
+          </v-icon>
           <v-icon
-            size="22px"
-            @click="checkItem(item.id)"
-            title="预览"
-            style="margin-left: 1%"
-            color="teal darken-2"
+              size="22px"
+              @click="checkItem(item.id)"
+              title="预览"
+              style="margin-left: 1%"
+              color="teal darken-2"
           >
-            mdi-eye-outline</v-icon>
+            mdi-eye-outline
+          </v-icon>
         </template>
       </v-data-table>
     </v-card>
     <el-dialog
-      :visible.sync="dialog"
-      width="50%"
-      height="max-content"
-      class="modi"
-      center
+        :visible.sync="dialog"
+        width="50%"
+        height="max-content"
+        class="modi"
+        center
     >
       <div class="m-title">修改后可能会造成数据丢失，现提供以下三种方式</div>
       <div class="mdi-grp">
         <el-row>
           <el-col :span="8">
             <el-radio
-              v-model="radio"
-              label="1"
-              border
+                v-model="radio"
+                label="1"
+                border
             >
               <span class="altermode__pattern--name">保留答卷</span>
               <p class="explain">修改受限制</p>
@@ -143,9 +148,9 @@
           </el-col>
           <el-col :span="8">
             <el-radio
-              v-model="radio"
-              label="2"
-              border
+                v-model="radio"
+                label="2"
+                border
             >
               <span class="altermode__pattern--name">删除所有答卷</span>
               <p class="explain">修改不受限制</p>
@@ -153,9 +158,9 @@
           </el-col>
           <el-col :span="8">
             <el-radio
-              v-model="radio"
-              label="3"
-              border
+                v-model="radio"
+                label="3"
+                border
             >
               <span class="altermode__pattern--name">复制此问卷并去编辑</span>
               <p class="explain">原问卷不受任何影响</p>
@@ -163,37 +168,44 @@
           </el-col>
         </el-row>
 
-        <div class="m-text">{{text[parseInt(this.radio) -1]}}</div>
+        <div class="m-text">{{ text[parseInt(this.radio) - 1] }}</div>
       </div>
       <span
-        slot="footer"
-        class="dialog-footer"
+          slot="footer"
+          class="dialog-footer"
       >
         <el-button @click="dialog = false">取 消</el-button>
         <el-button
-          type="primary"
-          @click="dialog = false;handle_modify(questionnaire_id)"
+            type="primary"
+            @click="dialog = false;handle_modify(questionnaire_id)"
         >确 定</el-button>
       </span>
     </el-dialog>
     <el-dialog
-      :visible.sync="dialogVisible"
-      width="60%"
+        :visible.sync="dialogVisible"
+        width="60%"
     >
       <d-preview
-        :headerTitle="this.title"
-        :subtitle="this.description"
-        :list="this.preview_list"
+          :headerTitle="this.title"
+          :subtitle="this.description"
+          :list="this.preview_list"
       ></d-preview>
       <span
-        slot="footer"
-        class="dialog-footer"
+          slot="footer"
+          class="dialog-footer"
       >
         <el-button
-          type="primary"
-          @click="dialogVisible = false"
+            type="primary"
+            @click="dialogVisible = false"
         >确 定</el-button>
       </span>
+    </el-dialog>
+    <el-dialog :visible.sync="dialog_link_visible"
+               width="60%">
+      <send_view :input="this.input"
+                 :lianjie="this.lianjie"
+                 :download_lianjie="this.download_lianjie"
+                 :ma="this.ma"></send_view>
     </el-dialog>
   </div>
 </template>
@@ -201,10 +213,12 @@
 <script>
 import axios from "axios";
 import DPreview from "../../questionnaire/DialogPreview.vue";
+import Send_view from "../../questionnaire/Send.vue";
 
 export default {
   components: {
     DPreview,
+    Send_view
   },
   data() {
     return {
@@ -222,6 +236,11 @@ export default {
       search: "",
       dialogVisible: false,
       dialog: false,
+      dialog_link_visible: false,
+      input: '',
+      lianjie: '',
+      download_lianjie: '',
+      ma: '',
       headers: [
         {
           text: "问卷名称",
@@ -233,32 +252,60 @@ export default {
           value: "type",
           sortable: false,
           filter: value => {
-            if (this.type.length == 0) return true
+            if (this.type.length === 0) return true
             return this.type.includes(value)
           },
         },
-        { text: "状态", value: "state", sortable: false },
-        { text: "ID", value: "id" },
-        { text: "回收量", value: "num" },
-        { text: "创建/发布时间", value: "date" },
+        {text: "状态", value: "state", sortable: false},
+        {text: "ID", value: "id"},
+        {text: "回收量", value: "num"},
+        {text: "创建/发布时间", value: "date"},
         // {text:'发布时间',value:'date1'},
-        { text: "截止时间", value: "date2" },
-        { text: "操作", value: "actions", sortable: false },
-        { text: "更多功能", value: "actions1", sortable: false },
+        {text: "截止时间", value: "date2"},
+        {text: "操作", value: "actions", sortable: false},
+        {text: "更多功能", value: "actions1", sortable: false},
       ],
       desserts: [],
       data: [],
     };
   },
   methods: {
-    lookUpLink(id) {
-      this.$router.push({ name: "send", params: { id: id } });
+    get_link(item) {
+      var data = new FormData();
+      this.get_id(item);
+      data.append("id", item);
+      axios({
+        url: "https://www.azur1tee.top/api/questionnaire/get_link",
+        method: "post",
+        data: data,
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+        },
+      }).then((res) => {
+        console.log(res);
+        this.input = 'https://www.azur1tee.top/vj/';
+        this.input += res.data.data;
+        console.log(this.input);
+        this.ma = res.data.data;
+        this.lianjie = 'https://www.azur1tee.top/api/qrcode/getQRCode?content=' + this.input + '&logoUrl=https://www.azur1tee.top/api/getIcon';
+        this.download_lianjie = this.lianjie.replace("getQRCode", "downloadQRCode")
+      });
     },
-    checkAnalysis(id) {
-      this.$router.push({ name: "crossanalysis", params: { id: id } });
+    checkAnalysis(id,type) {
+      if(type==3){
+        this.$router.push({ name: "grade", params: { id: id } });
+      }
+      else if(type==2){
+        this.$router.push({name:'clickoutanalysis',params: { id: id }})
+      }
+      else{
+        this.$router.push({ name: "crossanalysis", params: { id: id } });
+      }
+    },
+    lookUpLink(id) {
+      this.$router.push({name: "send", query: {id: id}});
     },
     get_id(id) {
-      this.dialog = true;
       this.questionnaire_id = id;
     },
     now_date(date) {
@@ -275,16 +322,16 @@ export default {
         };
         if (/(y+)/.test(fmt))
           fmt = fmt.replace(
-            RegExp.$1,
-            (this.getFullYear() + "").substr(4 - RegExp.$1.length)
+              RegExp.$1,
+              (this.getFullYear() + "").substr(4 - RegExp.$1.length)
           );
         for (var k in o)
           if (new RegExp("(" + k + ")").test(fmt))
             fmt = fmt.replace(
-              RegExp.$1,
-              RegExp.$1.length == 1
-                ? o[k]
-                : ("00" + o[k]).substr(("" + o[k]).length)
+                RegExp.$1,
+                RegExp.$1.length == 1
+                    ? o[k]
+                    : ("00" + o[k]).substr(("" + o[k]).length)
             );
         return fmt;
       };
@@ -296,11 +343,9 @@ export default {
       let index = this.radio
       if (index === "1") {
         this.modifyItem_first(item);
-      }
-      else if (index === "2") {
+      } else if (index === "2") {
         this.modifyItem_second(item);
-      }
-      else if (index === "3") {
+      } else if (index === "3") {
         this.modifyItem_third(item);
       }
     },
@@ -319,6 +364,8 @@ export default {
         index = 1;
       } else if (type === "报名问卷") {
         index = 2;
+      }else if (type === "考试问卷") {
+        index = 3;
       }
       this.$router.push({
         path: "/edit1/" + index,
@@ -335,7 +382,7 @@ export default {
       Data.append("id", item);
       axios({
         url:
-          "https://www.azur1tee.top/api/questionnaire/throw_and_get_new_questionnaire",
+            "https://www.azur1tee.top/api/questionnaire/throw_and_get_new_questionnaire",
         method: "post",
         data: Data,
         headers: {
@@ -357,7 +404,9 @@ export default {
           index = 1;
         } else if (types === "报名问卷") {
           index = 2;
-        }
+        }else if (types === "考试问卷") {
+        index = 3;
+      }
         this.$router.push({
           path: "/edit1/" + index,
           query: {
@@ -383,6 +432,8 @@ export default {
         index = 1;
       } else if (type === "报名问卷") {
         index = 2;
+      }else if (type === "考试问卷") {
+        index = 3;
       }
       this.$router.push({
         path: "/edit1/" + index,
@@ -441,7 +492,7 @@ export default {
       Data.append("id", item);
       axios({
         url:
-          "https://www.azur1tee.top/api/questionnaire/get_questionnaire_by_id",
+            "https://www.azur1tee.top/api/questionnaire/get_questionnaire_by_id",
         method: "post",
         data: Data,
         headers: {
@@ -502,7 +553,7 @@ export default {
         this.getItem();
         // this.$message({message:'问卷已移至回收站',type:'success'})
         if (res.data.code === 200 || res.data.code === 201) {
-          this.$message({ message: "问卷已移至回收站", type: "success" });
+          this.$message({message: "问卷已移至回收站", type: "success"});
         }
       });
     },
@@ -523,7 +574,7 @@ export default {
         //  这里的思路应该是发送一个有关这个item的数据，数据库再加上一条,还要生成新的内容
         this.getItem();
         if (res.data.code === 200 || res.data.code === 201) {
-          this.$message({ message: "复制成功", type: "success" });
+          this.$message({message: "复制成功", type: "success"});
         }
       });
       //   复制问卷
@@ -532,7 +583,7 @@ export default {
       console.log(13123);
       axios({
         url:
-          "https://www.azur1tee.top/api/questionnaire/get_questionnaire_list",
+            "https://www.azur1tee.top/api/questionnaire/get_questionnaire_list",
         method: "post",
         data: {},
         headers: {
@@ -566,16 +617,16 @@ export default {
             };
             if (/(y+)/.test(fmt))
               fmt = fmt.replace(
-                RegExp.$1,
-                (this.getFullYear() + "").substr(4 - RegExp.$1.length)
+                  RegExp.$1,
+                  (this.getFullYear() + "").substr(4 - RegExp.$1.length)
               );
             for (var k in o)
               if (new RegExp("(" + k + ")").test(fmt))
                 fmt = fmt.replace(
-                  RegExp.$1,
-                  RegExp.$1.length == 1
-                    ? o[k]
-                    : ("00" + o[k]).substr(("" + o[k]).length)
+                    RegExp.$1,
+                    RegExp.$1.length == 1
+                        ? o[k]
+                        : ("00" + o[k]).substr(("" + o[k]).length)
                 );
             return fmt;
           };
@@ -584,14 +635,14 @@ export default {
 
           var time = times[0] + "T" + times[1] + "Z";
           if (
-            res.data.data[i].endTime != null &&
-            res.data.data[i].endTime < time
+              res.data.data[i].endTime != null &&
+              res.data.data[i].endTime < time
           ) {
             state = "已过期";
           }
           if (
-            res.data.data[i].endTime != null &&
-            res.data.data[i].startTime > time
+              res.data.data[i].endTime != null &&
+              res.data.data[i].startTime > time
           ) {
             state = "未开始";
           }
@@ -609,6 +660,10 @@ export default {
             questionnaire_type = "投票问卷";
           } else if (res.data.data[i].type === 2) {
             questionnaire_type = "报名问卷";
+          } else if (res.data.data[i].type === 3) {
+            questionnaire_type = "考试问卷"
+          } else if (res.data.data[i].type === 4) {
+            questionnaire_type = "疫情打卡问卷"
           }
           var data = {
             name: res.data.data[i].title,
@@ -652,6 +707,9 @@ export default {
         case 11:
           return "投票多选题";
           break;
+        case 15:
+          return "定位题";
+          break;
       }
     },
   },
@@ -665,27 +723,33 @@ export default {
 .v-card {
   margin: 0 5%;
 }
+
 #select {
   margin-top: 12px;
   margin-left: 30px;
   margin-right: 75px;
   width: 450px;
 }
+
 .m-title {
   text-align: center;
   font-size: 20px;
   font-weight: bold;
 }
+
 .modi >>> .el-radio__inner {
   width: 14px;
   display: none;
 }
+
 .modi >>> .el-radio {
   height: max-content;
 }
+
 .el-col {
   padding: 10px;
 }
+
 .mdi-grp {
   margin: 0 auto;
   margin: 10px;
@@ -696,6 +760,7 @@ export default {
   font-size: 14px;
   font-weight: 600;
 }
+
 .explain {
   font-size: 12px;
   color: #8c8c8c;
@@ -703,6 +768,7 @@ export default {
   padding-top: 5px;
   margin-bottom: 15px;
 }
+
 .m-text {
   white-space: pre;
   margin: 10px;

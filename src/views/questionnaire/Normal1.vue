@@ -77,6 +77,22 @@
                   ></el-switch>
                 </el-menu-item>
               </el-tooltip>
+              <div v-if="type === 3">
+                <el-tooltip
+                  class="item"
+                  effect="dark"
+                  content="试卷题目是否乱序"
+                  placement="right"
+                >
+                  <el-menu-item>
+                    题目乱序
+                    <el-switch
+                      v-model="disorder"
+                      @change="seeResultChange"
+                    ></el-switch>
+                  </el-menu-item>
+                </el-tooltip>
+              </div>
             </div>
           </el-submenu>
         </el-menu>
@@ -172,6 +188,9 @@
                 is_creating = true;
                 total_problem_change();
               "
+                @answer_confirm="
+              send_question_parent();
+              $emit('problem_store');"
               ></SingleSelect>
             </div>
           </draggable>
@@ -291,6 +310,7 @@ export default {
       end_time: new Date(),
       has_time: false,
       see_result: false,
+      disorder: false
     };
   },
   methods: {
@@ -331,6 +351,8 @@ export default {
         obj.must_write_select = x[i].question.required === 1 ? true : false;
         console.log(x[i].question.required);
         obj.question_id = x[i].question.id;
+        obj.point = x[i].question.point
+        obj.question_analysis = x[i].question.analysis
         var list = [];
         for (var j = 0; j < x[i].optionList.length; j++) {
           var listitem = {};
@@ -363,11 +385,16 @@ export default {
             i - 1
           ].question.id;
         }
+        item.type = this.problem_type_number(x.problem_type);
         item.selection_list = x.selection_list;
-        item.answer = "";
+        console.log(item.type);
+        if (parseInt(item.type) === 12) {
+          item.answer = x.radio + ""
+        }
+        item.answer = x.answer;
         item.required = x.must_write_select ? 1 : 0;
         item.point = x.point;
-        item.type = this.problem_type_number(x.problem_type);
+        item.analysis = x.question_analysis
         let y = [];
         for (var j = 0; j < x.selection_list.length; j++) {
           let z = {};
@@ -389,7 +416,7 @@ export default {
         item.optionList = y;
         let y1 = [];
         if (item.type === 3) {
-          for (var j = 0; j <= 5; j++) {
+          for (var j = 1; j <= 5; j++) {
             let z = {};
             z.number = j + "";
             y1.push(z);
@@ -409,6 +436,7 @@ export default {
       formData.description = this.description;
       formData.limit = -1;
       formData.title = this.title;
+      formData.disorder = this.disorder ? 1 : 0
       formData.needNum = -1;
       formData.userId = window.localStorage.getItem("user_id");
       formData.questionList = this.created_problem_list;
@@ -518,6 +546,9 @@ export default {
       console.log("refname", refname);
       let x = this.$refs[refname]["0"];
       let y = this.$refs[refnamebefore]["0"];
+      console.log(this.$refs);
+      console.log(x);
+      console.log(y);
       problem_exchange(x, y);
     },
     upMove(index) {

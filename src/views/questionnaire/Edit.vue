@@ -349,7 +349,7 @@ export default {
     console.log(this.modify_type);
     var formData = new FormData()
     formData.append("id", this.questionnaire_id)
-    if (this.modify_type == 2) {
+    if (this.modify_type === 2) {
       axios({
         url: "https://www.azur1tee.top/api/questionnaire/delete_and_get_questionnaire_by_id",
         method: "post",
