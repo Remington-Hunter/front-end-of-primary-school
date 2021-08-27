@@ -61,8 +61,8 @@ export default {
   },
   mounted() {
     this.id = this.$route.params.id;
-    this.getseries();
-    this.getAnswerData();
+    // this.getseries();
+    // this.getAnswerData();
   },
 }
 </script>
