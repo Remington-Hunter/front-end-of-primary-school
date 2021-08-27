@@ -291,11 +291,19 @@ export default {
         this.download_lianjie = this.lianjie.replace("getQRCode", "downloadQRCode")
       });
     },
-    // lookUpLink(id) {
-    //   this.$router.push({name: "send", params: {id: id}});
-    // },
-    checkAnalysis(id) {
-      this.$router.push({name: "crossanalysis", params: {id: id}});
+    checkAnalysis(id,type) {
+      if(type==3){
+        this.$router.push({ name: "grade", query: { id: id } });
+      }
+      else if(type==2){
+        this.$router.push({name:'clickoutanalysis',})
+      }
+      else{
+        this.$router.push({ name: "crossanalysis", query: { id: id } });
+      }
+    },
+    lookUpLink(id) {
+      this.$router.push({name: "send", query: {id: id}});
     },
     get_id(id) {
       this.questionnaire_id = id;

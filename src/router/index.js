@@ -103,12 +103,31 @@ const routes = [{
         name: 'getanalysis',
         component: () =>
             import ('../views/getCrossAnalysis.vue')
+    },{
+        path:'/grade',
+        name:'grade',
+        component:()=>
+        import('../views/Grade.vue')
+    },{
+        path:'gradeanalysis',
+        name:'gradeananlysis',
+        component:()=>
+        import('../views/GradeAnalysis.vue')
     },
     {
         path:'/questionnaire_clock/:type',
         name:'Questionnaire_clock',
         component: ()=>
             import('../views/Questionnaire_clock')
+    },{
+        path:'/clickout',
+        name:'clickout',
+        component:()=>import('../views/Clickout.vue')
+    },
+    {
+        path:'/clickoutanalysis',
+        name:'clickoutanalysis',
+        component:()=>import('../views/ClickoutAnalysis.vue')
     }
 ]
 
