@@ -88,8 +88,7 @@
           <v-icon
             size="22px"
             @click="
-              dialog = true;
-              get_id(item.id);
+              modify(item.id);
             "
             title="修改"
             color="brown darken-1"
@@ -126,7 +125,7 @@
         </template>
       </v-data-table>
     </v-card>
-    <el-dialog
+      <el-dialog
       :visible.sync="dialog"
       width="50%"
       height="max-content"
@@ -245,6 +244,7 @@ export default {
       lianjie: '',
       download_lianjie: '',
       ma: '',
+      count:'',
       headers: [
         {
           text: "问卷名称",
@@ -312,6 +312,23 @@ export default {
     get_id(id) {
       this.questionnaire_id = id;
     },
+    modify(id){
+      this.questionnaire_id = id;
+      this.stopItem(id);
+      for (var i = 0; i < this.desserts.length; i++) {
+        if (this.desserts[i].id === id) {
+          this.count = this.desserts[i].num;
+        }
+      };
+      if(this.count===0){
+        this.dialog = false;
+        this.modifyItem_second(id);
+      }else{
+        this.dialog = true;
+      }
+    },
+
+
     now_date(date) {
       Date.prototype.Format = function (fmt) {
         // author: meizz

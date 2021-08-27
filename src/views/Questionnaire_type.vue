@@ -112,18 +112,74 @@
           </div>
         </v-card>
       </div>
-    <v-btn
-        class="ma-2"
-        color="primary"
-        @click="saveQues_daka"
+    <div
+        class="3"
+        style="margin-top:3%"
     >
-      创建
-      <v-icon
-          dark
-          right
-      >mdi-checkbox-marked-circle
-      </v-icon>
-    </v-btn>
+      <v-card
+          class="common_question"
+          style="margin-left:15%; margin-right: 7%; display: inline-block"
+      >
+          <span
+              class="iconfont"
+              style="text-align: center;display:block;"
+          >&#xe6e2;</span>
+        <div style="text-align: center;display:block;">疫情打卡问卷</div>
+        <div style="text-align: center;display:block;">
+          <v-btn
+              class="ma-2"
+              color="primary"
+              @click="saveQues_daka"
+          >
+            <!-- to进行跳转 由于普通问卷页面没有做好，这里先转到home试一下-->
+            创建
+            <v-icon
+                dark
+                right
+            >mdi-checkbox-marked-circle
+            </v-icon>
+          </v-btn>
+        </div>
+      </v-card>
+      <v-card
+          class="common_question"
+          style="margin-right:15%; margin-left: 7%; display: inline-block"
+      >
+          <span
+              class="iconfont"
+              style="text-align: center;display:block;"
+          >&#xe652;</span>
+        <div style="text-align: center;display:block;">考试问卷</div>
+        <div style="text-align: center;display:block;">
+          <v-btn
+              class="ma-2"
+              color="primary"
+              @click="saveQues_kaoshi"
+          >
+            <!-- to进行跳转 由于普通问卷页面没有做好，这里先转到home试一下-->
+            创建
+            <v-icon
+                dark
+                right
+            >mdi-checkbox-marked-circle
+            </v-icon>
+          </v-btn>
+        </div>
+      </v-card>
+    </div>
+
+<!--    <v-btn-->
+<!--        class="ma-2"-->
+<!--        color="primary"-->
+<!--        @click="saveQues_daka"-->
+<!--    >-->
+<!--      创建-->
+<!--      <v-icon-->
+<!--          dark-->
+<!--          right-->
+<!--      >mdi-checkbox-marked-circle-->
+<!--      </v-icon>-->
+<!--    </v-btn>-->
   </div>
 
 </template>
