@@ -112,7 +112,9 @@ export default {
       for (var i = 0; i < len; i++) {
         var s = "";
         if (question2.optionList[i].content == null) {
-          s = "" + (i + 1) + "星";
+          if(i!=0){
+            s = "" + (i) + "星";
+          }
         } else {
           s = question2.optionList[i].content;
         }
@@ -121,6 +123,8 @@ export default {
       }
       c = { label: "总计", prop: (len + 1).toString() };
       this.headArr.push(c);
+      console.log('headarr');
+      console.log(this.headArr)
     },
     tableRowClassName: function (obj) {
       if (obj.rowIndex % 2 == 0) {
@@ -173,6 +177,10 @@ export default {
       var answerData = data.answerInfo;
       var len = question2.optionList.length;
       var c = {};
+      var type1=question1.info.type
+      var type2=question1.info.type
+      console.log('type1');
+      console.log(type1);
       for (var i = 0; i < question1.optionList.length; i++) {
         c = {};
         if (question1.optionList[i].content == null) {
