@@ -35,24 +35,30 @@
               <span class="question-seq"><b>第{{ index + 1 }}题：</b></span>
               <span class="text">{{ data[index].question.content }}</span>
               <span
-                v-if="data[index].question.type == 0"
+                v-if="data[index].question.type == 0||data[index].question.type == 6||data[index].question.type == 10||data[index].question.type == 12"
                 class="question-type"
               >单选题</span>
               <span
-                v-if="data[index].question.type == 1"
+                v-if="data[index].question.type == 1||data[index].question.type == 7||data[index].question.type == 11||data[index].question.type == 13"
                 class="question-type"
-              >多选题</span>
+              >多选题 
+              
+              </span>
               <span
-                v-if="data[index].question.type == 2"
+                v-if="data[index].question.type == 2||data[index].question.type == 5||data[index].question.type == 14"
                 class="question-type"
               >填空题</span>
               <span
-                v-if="data[index].question.type == 3"
+                v-if="data[index].question.type == 3||data[index].question.type == 4||data[index].question.type == 9"
                 class="question-type"
               >评分题</span>
+              <div v-if="questionType==3">
+                <span>正确率：{{rate[index]}}</span>
+                <span>正确答案：{{rightAnswer[index]}}</span>
+              </div>
             </div>
           </div>
-          <div v-if="data[index].question.type === 2">
+          <div v-if="data[index].question.type === 2||data[index].question.type === 5||data[index].question.type === 14">
             <el-table
               :data="completion[index]"
               style="width: 100%"
@@ -243,6 +249,9 @@ export default {
       answerData: [],
       headArr: [],
       table1: [],
+      questionType:3,
+      rate:[],
+      rightAnswer:[],
     };
   },
   components: {
@@ -259,6 +268,18 @@ export default {
   },
 
   methods: {
+    getRate(data){
+      for(var i=0;i<data.length;i++){
+        var t=data[i].question.rate;
+        t=t*100;
+        t=t.toFixed(2)
+        t=''+t+'%';
+        this.rate.push(t);
+        this.rightAnswer.push(data[i].question.answer)
+      }
+      console.log('rate');
+      console.log(this.rate);
+    },
     exportExcel() {
       // 设置当前日期
       let time = new Date();
@@ -312,7 +333,7 @@ export default {
             item.push(s);
           }
           this.completion.push(item);
-        } else if (data[i].question.type === 3) {
+        } else if (data[i].question.type === 3||data[i].question.type ===4||data[i].question.type ===9) {
           var data_i = data[i].optionList;
           var item = [];
           for (let j = 0; j < data_i.length; j++) {
@@ -401,12 +422,14 @@ export default {
         this.getLineData(data);
         this.getCompletionData(data);
         this.initStates();
-        this.getExcelData();
+        this.getRate(data);
+        // this.getExcelData();
       });
     },
     getAnswerData() {
       var Data = new FormData();
       Data.append("id", this.id);
+      Data.append("byGrade",1);
       axios({
         url: "https://www.azur1tee.top/api/answer/get_result_by_questionnaire",
         method: "post",
@@ -440,9 +463,16 @@ export default {
         c = { label: s, prop: (i + 1).toString() };
         this.headArr.push(c);
       }
+      if(this.questionType===3){
+        c={ label: '总成绩', prop: (i + 1).toString() };
+        console.log('11111');
+        this.headArr.push(c);
+      }
     },
     getAnswerExcel(data) {
       this.getprops(data);
+      console.log('this.headArr')
+      console.log(this.headArr);
       this.table1 = [];
       var answerData = data.answerInfo;
       var len = answerData.length;
@@ -481,6 +511,10 @@ export default {
             }
             c[(j + 1).toString()] = t;
           }
+        }
+        if(this.questionType===3){
+          console.log(data.answerInfo[i].point)
+          c[(item.length+1).toString()]=data.answerInfo[i].info.point;
         }
         this.table1.push(c);
         console.log(1111);
