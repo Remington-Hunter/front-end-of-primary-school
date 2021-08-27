@@ -9,33 +9,32 @@
   
   .header-title {
     text-align: center;
-    font-size: 30px;
+    font-size: 32px;
     word-break: break-word;
   }
   .header-subtitle {
     margin-top: 40px;
     font-size: 16px;
     word-break: break-word;
+    margin-left: 10px;
   }
   .question-head {
     margin-top: 45px;
   }
   .question-title {
-    font-size: 18px;
+    font-size: 44px;
     word-break: break-word;
   }
+
   .question-seq {
-    display: block;
-    margin-right: 8px;
-    font-size: 18px;
-    float: left;
+    font-size: 22px;
   }
   .question-required {
     margin-left: 4px;
   }
   .q-instruction{
     color: #999;
-    font-size: 13px;
+    font-size: 14px;
     margin-top: 3px;
   }
   .question-body {
@@ -53,7 +52,6 @@
   .el-rate {
     display: block;
     margin-top: 5px;
-    padding: 7px;
   }
   .page-control {
     text-align: center;
@@ -65,10 +63,10 @@
     line-height: 25px;
     font-size: 80%;
   }
-  .sel-total {
+.sel-total {
     padding: 0 10px;
     color: #feae3a;
-  }
+}
 .el-progress{
   width: 600px;
 }
@@ -103,6 +101,13 @@
   text-overflow: ellipsis;
   white-space: normal;
   line-height: 24px;
+}
+
+.el-col-1 {
+  width: 3%;
+}
+.el-col {
+  min-height: 1px
 }
 
 

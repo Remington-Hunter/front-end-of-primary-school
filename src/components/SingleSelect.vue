@@ -267,7 +267,8 @@
                 <span
                   class="sel-total"
                   v-show="item.total"
-                >(剩余{{ item.total }})</span><span class="q-instruction">{{ item.comment }}</span>
+                >(剩余{{ item.total }})</span>
+                <div class="q-instruction">{{ item.comment }}</div>
               </el-checkbox>
             </el-checkbox-group>
           </div>

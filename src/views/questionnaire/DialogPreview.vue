@@ -14,85 +14,97 @@
         <!-- 题目标题 -->
         <div class="question-head ">
           <div class="question-title">
-            <span class="question-seq"><b>{{ index + 1 }}</b></span>
-            <span class="text">{{ question.name }}</span>
-            <span
-              class="sel-total"
-              v-show="['考试多选题','考试单选题','考试填空题'].includes(question.problem_type)"
-            >(分值{{ question.point}})</span>
-            <span
-              v-if="question.must_write_select"
-              class="question-required"
-            >*</span>
-            <el-tag v-if=" ['多选题','投票多选题','报名多选题','考试多选题'].includes(question.problem_type)">多选</el-tag>
-          </div>
-          <div class="q-instruction">{{ question.instruction }}</div>
-        </div>
+            <el-row>
+              <el-col :span="1"><span class="question-seq"><b>{{ index + 1 }}</b></span></el-col>
 
-        <div class="question-body ">
-          <!-- 单选题 -->
-          <div v-if="['单选题','投票单选题','报名单选题','考试单选题'].includes(question.problem_type)">
-            <el-radio-group v-model="radio">
-              <el-radio
-                v-for="(item, index) in question.selection_list"
-                :key="index"
-                :label="index"
-              >
-                {{ item.content }}<span
-                  class="sel-total"
-                  v-show="item.total"
-                >(剩余{{item.total}})</span>
-                <div class="q-instruction">{{ item.comment }}</div>
-              </el-radio>
+              <el-col :span="23">
+                <span class="text">{{ question.name }}
+                  <span
+                    class="sel-total"
+                    v-show="['考试多选题','考试单选题','考试填空题'].includes(question.problem_type)"
+                  >(分值{{ question.point}})</span>
+                  <span
+                    v-if="question.must_write_select"
+                    class="question-required"
+                  >*</span>
+                  <el-tag v-if=" ['多选题','投票多选题','报名多选题','考试多选题'].includes(question.problem_type)">多选</el-tag>
+                  <div class="q-instruction">{{ question.instruction }}</div>
+                </span>
+              </el-col>
+            </el-row>
+          </div>
 
-            </el-radio-group>
-          </div>
-          <!-- 多选题 -->
-          <div v-else-if="['多选题','投票多选题','报名多选题','考试多选题'].includes(question.problem_type)">
-            <el-checkbox-group v-model="checkList">
-              <el-checkbox
-                v-for="(item, index) in question.selection_list"
-                :key="index"
-                :label="index"
-              >{{ item.content }}
-                <span
-                  class="sel-total"
-                  v-show="item.total"
-                >(剩余{{item.total}})</span>
-                <div class="q-instruction"> {{ item.comment }}</div>
-              </el-checkbox>
-            </el-checkbox-group>
-          </div>
-          <!-- 评分题 -->
-          <div v-else-if="question.problem_type === '评分题'">
-            <el-rate
-              v-model="rating"
-              :icon-classes="iconClasses"
-              void-icon-class="icon-rate-face-off"
-              :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
-            ></el-rate>
-          </div>
-          <!-- 填空题 -->
-          <div v-else-if="['填空题','考试填空题'].includes(question.problem_type)">
-            <el-input
-              type="textarea"
-              autosize
-              placeholder="请输入内容"
-              v-model="answer"
-            >
-            </el-input>
-          </div>
-          <div v-else-if="question.problem_type==='定位题'">
-            <el-input
-              type="textarea"
-              autosize
-              placeholder="请输入内容"
-              v-model="locationInfo.country+locationInfo.province+locationInfo.city+locationInfo.district"
-            >
-            </el-input>
-            <el-button @click="getLocation()">定位</el-button>
-          </div>
         </div>
+        <el-row>
+          <el-col :span="1"> </el-col>
+          <el-col :span="23">
+            <div class="question-body ">
+              <!-- 单选题 -->
+              <div v-if="['单选题','投票单选题','报名单选题','考试单选题'].includes(question.problem_type)">
+                <el-radio-group v-model="radio">
+                  <el-radio
+                    v-for="(item, index) in question.selection_list"
+                    :key="index"
+                    :label="index"
+                  >
+                    {{ item.content }}<span
+                      class="sel-total"
+                      v-show="item.total"
+                    >(剩余{{item.total}})</span>
+                    <div class="q-instruction">{{ item.comment }}</div>
+                  </el-radio>
+
+                </el-radio-group>
+              </div>
+              <!-- 多选题 -->
+              <div v-else-if="['多选题','投票多选题','报名多选题','考试多选题'].includes(question.problem_type)">
+                <el-checkbox-group v-model="checkList">
+                  <el-checkbox
+                    v-for="(item, index) in question.selection_list"
+                    :key="index"
+                    :label="index"
+                  >{{ item.content }}
+                    <span
+                      class="sel-total"
+                      v-show="item.total"
+                    >(剩余{{item.total}})</span>
+                    <div class="q-instruction"> {{ item.comment }}</div>
+                  </el-checkbox>
+                </el-checkbox-group>
+              </div>
+              <!-- 评分题 -->
+              <div v-else-if="question.problem_type === '评分题'">
+                <el-rate
+                  v-model="rating"
+                  :icon-classes="iconClasses"
+                  void-icon-class="icon-rate-face-off"
+                  :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
+                ></el-rate>
+              </div>
+              <!-- 填空题 -->
+              <div v-else-if="['填空题','考试填空题'].includes(question.problem_type)">
+                <el-input
+                  type="textarea"
+                  autosize
+                  placeholder="请输入内容"
+                  v-model="answer"
+                >
+                </el-input>
+              </div>
+              <div v-else-if="question.problem_type==='定位题'">
+                <el-input
+                  type="textarea"
+                  autosize
+                  placeholder="请输入内容"
+                  v-model="locationInfo.country+locationInfo.province+locationInfo.city+locationInfo.district"
+                >
+                </el-input>
+                <el-button @click="getLocation()">定位</el-button>
+              </div>
+            </div>
+          </el-col>
+        </el-row>
+
       </div>
     </div>
   </div>
