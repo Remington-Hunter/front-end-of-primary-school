@@ -90,20 +90,3 @@ export function orderlisttostr(xx) {
   }
   return y
 }
-
-export function strequal(str1,str2){
-  if(str1.length !== str2.length){
-    console.log(123);
-      return false
-  }
-  else{
-      for(var i=0 ;i<str1.length;i++){
-          if(str1[i] != str2[i]){
-            console.log(str1[i]);
-            console.log(str2[i]);
-              return false
-          }
-      }
-      return true
-  }
-}

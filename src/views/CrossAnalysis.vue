@@ -275,7 +275,24 @@ export default {
         t=t.toFixed(2)
         t=''+t+'%';
         this.rate.push(t);
-        this.rightAnswer.push(data[i].question.answer)
+        if(data[i].question.type==2||data[i].question.type==25||data[i].question.type==14){
+          this.rightAnswer.push(data[i].question.answer)
+        }
+        else{
+          var s='';
+          for(var j=0;j<data[i].question.answer.length;j++){
+            if(j==0){
+              console.log('data[i].question.answer[i]');
+              console.log(data[i].question.answer[j]);
+              s=data[i].optionList[data[i].question.answer[j]-'0'].content;
+            }
+            else{
+              s+='、'+data[i].optionList[data[i].question.answer[j]-'0'].content;
+            }
+          }
+          this.rightAnswer.push(s);
+        }
+        
       }
       console.log('rate');
       console.log(this.rate);

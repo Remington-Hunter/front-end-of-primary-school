@@ -690,7 +690,6 @@ export default {
         xx = false;
       }
     }, 1000);
-    var x = this.copy_questionnaire_info.questionList;
   },
 };
 </script>
