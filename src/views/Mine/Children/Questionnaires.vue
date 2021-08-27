@@ -112,7 +112,7 @@
             mdi-poll</v-icon>
           <v-icon
             size="22px"
-            @click="checkItem(item.id)"
+            @click="checkItem(item.id,item.type)"
             title="预览"
             style="margin-left: 1%"
             color="teal darken-2"
@@ -254,8 +254,13 @@ export default {
     lookUpLink(id) {
       this.$router.push({ name: "send", params: { id: id } });
     },
-    checkAnalysis(id) {
-      this.$router.push({ name: "crossanalysis", params: { id: id } });
+    checkAnalysis(id,type) {
+      if(type==3){
+        this.$router.push({ name: "grade", params: { id: id } });
+      }
+      else{
+        this.$router.push({ name: "crossanalysis", params: { id: id } });
+      }
     },
     get_id(id) {
       this.dialog = true;

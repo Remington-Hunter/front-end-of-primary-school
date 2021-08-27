@@ -103,6 +103,16 @@ const routes = [{
         name: 'getanalysis',
         component: () =>
             import ('../views/getCrossAnalysis.vue')
+    },{
+        path:'/grade',
+        name:'grade',
+        component:()=>
+        import('../views/Grade.vue')
+    },{
+        path:'gradeanalysis',
+        name:'gradeananlysis',
+        component:()=>
+        import('../views/GradeAnalysis.vue')
     }
 ]
 
