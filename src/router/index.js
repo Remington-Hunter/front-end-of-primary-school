@@ -113,6 +113,12 @@ const routes = [{
         name:'gradeananlysis',
         component:()=>
         import('../views/GradeAnalysis.vue')
+    },
+    {
+        path:'/questionnaire_clock/:type',
+        name:'Questionnaire_clock',
+        component: ()=>
+            import('../views/Questionnaire_clock')
     }
 ]
 

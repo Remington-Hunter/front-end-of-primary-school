@@ -1,5 +1,7 @@
 <template>
   <div id="c-top">
+
+    <!-- 可以编辑 -->
     <div v-show="can_write_state">
       <div class="skin-header">
         <img
@@ -8,6 +10,8 @@
           alt="皮肤背景图"
         />
       </div>
+
+      <!-- 已经提交且可以查看投票问卷的答案 -->
       <div v-show="state && this.type === 1 && this.can_see_result">
         <VoteAnswer
           :headerTitle="headerTitle"
@@ -16,10 +20,18 @@
         />
         <!-- :questionList="questionList_vote" -->
       </div>
+
+      <!-- 除了 已经提交且可以查看投票问卷的答案 的其他情况 -->
       <div id="pre" v-show="!(state && this.type === 1 && this.can_see_result)">
+
+
+        <!-- 非投票问卷提交成功 -->
         <div v-if="state">
           <success></success>
         </div>
+
+
+        <!--未提交的所有问卷-->
         <div class="s-main " v-else>
           <!-- 问卷标题 -->
           <div class="header-title">{{ headerTitle }}</div>
@@ -41,7 +53,12 @@
                 <span v-if="question.required" class="question-required"
                   >*</span
                 >
-                <el-tag v-if="[1, 4, 7, 11].includes(question.type)"
+                <span
+                      class="sel-total"
+                      v-show="[12,13,14].includes(question.type)"
+                      >(分值{{question.point}})</span
+                    >
+                <el-tag v-if="[1, 4, 7, 11,13].includes(question.type)"
                   >多选</el-tag
                 >
               </div>
@@ -51,7 +68,7 @@
             <div class="question-body ">
               <!-- 单选题 -->
               <!-- @click.native.prevent="clickitem(question, index)" -->
-              <div v-if="[0, 6, 10].includes(question.type)">
+              <div v-if="[0, 6, 10,12].includes(question.type)">
                 <el-radio-group v-model="question.radio">
                   <el-radio
                     v-for="(item, index) in question.selectionList"
@@ -70,7 +87,7 @@
                 </el-radio-group>
               </div>
               <!-- 多选题 -->
-              <div v-else-if="[1, 4, 7, 11].includes(question.type)">
+              <div v-else-if="[1, 4, 7, 11,13].includes(question.type)">
                 <el-checkbox-group v-model="question.checkList">
                   <el-checkbox
                     v-for="(item, index) in question.selectionList"
@@ -97,7 +114,7 @@
                 </el-rate>
               </div>
               <!-- 填空题 -->
-              <div v-else-if="question.type === 2">
+              <div v-else-if="question.type === 2 || question.type === 14">
                 <el-input
                   type="textarea"
                   autosize
@@ -142,6 +159,9 @@
       </div>
       <div class="c-foot"><span>系统由问卷星球提供</span></div>
     </div>
+
+
+    <!-- 不能编辑 -->
     <div v-show="!can_write_state">
       <Stop />
     </div>
@@ -244,6 +264,7 @@ export default {
         var y = list[i];
         x.type = y.question.type;
         x.text = y.question.content;
+        x.point = y.question.point;
         x.selectionList = [];
         var total_answerNum = 0;
         for (var j = 0; j < y.optionList.length; j++) {
@@ -293,6 +314,7 @@ export default {
       for (var i = 0; i < list.length; i++) {
         let x = {};
         var y = list[i];
+        x.point=y.question.point;
         x.type = y.question.type;
         x.text = y.question.content;
         x.selectionList = [];
@@ -371,8 +393,8 @@ export default {
       var x = {};
       x.questionnaireId = this.current_questionnaire.questionnaire.id;
       var list = [];
-      console.log(this.questionList.length);
-      console.log(this.questionList);
+      // console.log(this.questionList.length);
+      // console.log(this.questionList);
       for (var i = 0; i < this.questionList.length; i++) {
         var z = {};
         var y = this.questionList[i];
@@ -426,7 +448,7 @@ export default {
           }
         } else if (y.type === 2) {
           if (y.required) {
-            if (y.answer === "") {
+            if (y.answer === " ") {
               alert("您有必选项未完成!");
               return false;
             } else {
@@ -439,8 +461,8 @@ export default {
           }
         }
         list.push(z);
-        return true;
       }
+      return true;
     },
     submit() {
       var x = {};
@@ -542,7 +564,7 @@ export default {
     this.getInfo();
     var interval = setInterval(() => {
       this.getInfo2();
-      if (this.type === 1) {
+      if (parseInt(this.type) !== 1) {
         clearInterval(interval);
       }
       if (this.end) {

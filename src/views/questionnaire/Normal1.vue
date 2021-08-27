@@ -345,9 +345,10 @@ export default {
           ].question.id;
         }
         item.selection_list = x.selection_list;
-        item.answer = "";
+        item.answer = x.answer;
         item.required = x.must_write_select ? 1 : 0;
         item.point = x.point;
+        item.analysis= x.question_analysis
         item.type = this.problem_type_number(x.problem_type);
         let y = [];
         for (var j = 0; j < x.selection_list.length; j++) {

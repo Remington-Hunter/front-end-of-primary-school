@@ -75,6 +75,15 @@
             >
             </el-input>
           </div>
+          <div v-else-if="question.problem_type==='定位题'">
+            <el-input
+                type="textarea"
+                autosize
+                placeholder="请输入内容"
+                v-model="answer"
+            >
+            </el-input>
+          </div>
         </div>
       </div>
     </div>
