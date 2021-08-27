@@ -304,7 +304,11 @@ export default {
       }
     },
     drawfunc() {
-      this.getSeries('bar');
+      var data1=[];
+      for (var i = 0; i < this.col[0].length - 1; i++) {
+        var c = { type: 'bar' };
+        data1.push(c);
+      }
       let myChart = this.$echarts.init(document.getElementById('bar'));
       myChart.clear();
       // 指定图表的配置项和数据
@@ -319,9 +323,9 @@ export default {
         // 声明一个 X 轴，类目轴（category）。默认情况下，类目轴对应到 dataset 第一列。
         xAxis: { type: "category" },
         // 声明一个 Y 轴，数值轴。
-        yAxis: {},
+        yAxis: {type: "value" ,},
         // 声明多个 bar 系列，默认情况下，每个系列会自动对应到 dataset 的每一列。
-        series: this.data1,
+        series: data1,
       };
 
       // 使用刚指定的配置项和数据显示图表。

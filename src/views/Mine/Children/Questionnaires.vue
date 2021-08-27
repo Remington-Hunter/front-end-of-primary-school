@@ -293,13 +293,13 @@ export default {
     },
     checkAnalysis(id,type) {
       if(type==3){
-        this.$router.push({ name: "grade", query: { id: id } });
+        this.$router.push({ name: "grade", params: { id: id } });
       }
       else if(type==2){
-        this.$router.push({name:'clickoutanalysis',})
+        this.$router.push({name:'clickoutanalysis',params: { id: id }})
       }
       else{
-        this.$router.push({ name: "crossanalysis", query: { id: id } });
+        this.$router.push({ name: "crossanalysis", params: { id: id } });
       }
     },
     lookUpLink(id) {
