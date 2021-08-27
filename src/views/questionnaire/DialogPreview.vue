@@ -111,25 +111,41 @@ export default {
       },
     };
   },
-  props: ['headerTitle', 'subtitle', 'list','location'],
+  props: ['headerTitle', 'subtitle', 'list'],
   methods:{
     getLocation() {
-      // eslint-disable-next-line
-      this.locationInfo.ip = window.localStorage.getItem('Ip')
-      // console.log(this.locationInfo.ip)
-      var _this = this;
-      axios.get("https://restapi.amap.com/v5/ip?key=a593d64ab73229be6b3d1ef802b76849&type=4&ip="+this.locationInfo.ip)
-          .then(response => {
-            console.log(response)
-            _this.locationInfo.country = response.data.country
-            _this.locationInfo.province = response.data.province
-            _this.locationInfo.city = response.data.city
-            _this.locationInfo.district = response.data.district
-            _this.locationInfo.location = response.data.location
-            console.log(_this.locationInfo)
-          })
+      this.$confirm("此操作将获取您的地理位置，是否继续？","提示",{
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      }).then(()=> {
+        this.$message({
+          type: 'success',
+          message: "定位成功!",
+        });
+        // eslint-disable-next-line
+        this.locationInfo.ip = window.localStorage.getItem('Ip')
+        // console.log(this.locationInfo.ip)
+        var _this = this;
+        axios.get("https://restapi.amap.com/v5/ip?key=a593d64ab73229be6b3d1ef802b76849&type=4&ip=" + this.locationInfo.ip)
+            .then(response => {
+              console.log(response)
+              _this.locationInfo.country = response.data.country
+              _this.locationInfo.province = response.data.province
+              _this.locationInfo.city = response.data.city
+              _this.locationInfo.district = response.data.district
+              _this.locationInfo.location = response.data.location
+              console.log(_this.locationInfo)
+            });
+      })
+        .catch(()=>{
+          this.$message({
+            type: "info",
+            message: "定位失败",
+          });
+        })
+      }
     },
-  }
 };
 </script>
 
