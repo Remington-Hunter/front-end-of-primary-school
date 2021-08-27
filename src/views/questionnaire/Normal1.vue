@@ -203,7 +203,7 @@
               $emit('problem_store');"
             ></SingleSelect>
           </div>
-          <div style="height:45px"></div>
+          <div style="height:36px"></div>
         </div>
       </el-container>
     </el-container>
