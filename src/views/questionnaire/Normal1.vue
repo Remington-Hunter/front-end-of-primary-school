@@ -367,6 +367,7 @@ export default {
         obj.question_id = x[i].question.id;
         obj.point = x[i].question.point
         obj.question_analysis = x[i].question.analysis
+        obj.ismodify=false
         var list = [];
         for (var j = 0; j < x[i].optionList.length; j++) {
           var listitem = {};

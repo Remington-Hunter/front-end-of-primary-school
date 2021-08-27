@@ -61,10 +61,7 @@
             ></v-text-field>
           </div>
         </template>
-        <div v-if="![
-              '考试单选题',
-              '考试多选题',
-            ].includes(problem_type)" class="required">
+        <div  class="required">
           是否必填：<el-switch v-model="must_write_select"> </el-switch>
         </div>
         <div v-for="(item, index) in selection_list" :key="(item, index)">
@@ -169,9 +166,7 @@
             ></v-text-field>
           </div>
         </template>
-        <div v-if="![
-              '考试填空题',
-            ].includes(problem_type)" class="required">
+        <div class="required">
           是否必填：<el-switch v-model="must_write_select"> </el-switch>
         </div>
         <el-button @click="writeConfirm" :disabled="writeconfirmstate"
@@ -342,7 +337,7 @@ export default {
   },
   data() {
     return {
-      ismodify: true,
+      ismodify: this.iscopy?(this.copy_info.ismodify === undefined?true:this.copy_info.ismodify):true,
       name: this.iscopy ? this.copy_info.name : "",
       instruction: this.iscopy ? this.copy_info.instruction : "",
       selection_list: this.iscopy
