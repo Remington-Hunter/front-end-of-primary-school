@@ -173,7 +173,7 @@
         </div>
       </div>
     </div>
-    <div id="demo2" v-show="false">
+    <div id="demo2" v-show="true">
       <el-table :data="table1" border height="550" style="width: 100%">
       <template v-for="(item, index) in headArr">
         <el-table-column
@@ -301,8 +301,8 @@ export default {
         else if(data[i].question.type === 3){
           var data_i = data[i].optionList;
           var item = [];
-          for (let j = 1; j < data_i.length; j++) {
-            var c=''+(j)+'星';
+          for (let j = 0; j < data_i.length; j++) {
+            var c=''+(j+1)+'星';
             console.log(data[i])
             var s = { content:c, num: data_i[j].answerNum };
             console.log('data_i[j].answerNum'+data_i[j].answerNum)
@@ -439,14 +439,20 @@ export default {
         var item=answerData[i].answerList;
         for(var j=0;j<item.length;j++){
           if(data.questionInfo[j].info.type==2||data.questionInfo[j].info.type==5||data.questionInfo[j].info.type==14){
-            c[(j+1).toString()]=item[j].content;
+            if(item[j].content==''){
+              c[(j+1).toString()]='用户未填写';
+            }
+            else{
+              c[(j+1).toString()]=item[j].content;
+            }
           }
           else if(data.questionInfo[j].info.type==3){
-            var t=item[j].number-'0';
-            if(t==0){
+            
+            if(item[j].number==''||item[j].number=='0'){
               c[(j+1).toString()]='无评价';
             }
             else{
+              var t=item[j].number-'0';
               c[(j+1).toString()]=''+(t)+'星';
             }
             
@@ -536,8 +542,8 @@ export default {
         else if(data[i].question.type==3){
           var data_i = data[i].optionList;
           var item = [];
-          for (let j = 1; j < data_i.length; j++) {
-            s=''+(j)+'星'
+          for (let j = 0; j < data_i.length; j++) {
+            s=''+(j+1)+'星'
             var s = { 选项: s, 数量: data_i[j].answerNum };
             item.push(s);
           }
@@ -573,8 +579,8 @@ export default {
         }else if(data[i].question.type == 3){
           var data_i = data[i].optionList;
           var item = [];
-          for (let j = 1; j < data_i.length; j++) {
-            var c=''+(j)+'星'
+          for (let j = 0; j < data_i.length; j++) {
+            var c=''+(j+1)+'星'
             var s = { value: data_i[j].answerNum, name: c };
             item.push(s);
           }
@@ -602,9 +608,9 @@ export default {
           var item = [];
           var col1 = [];
           var col2 = [];
-          for (let j = 1; j < data_i.length; j++) {
+          for (let j = 0; j < data_i.length; j++) {
             // var s={value:data_i[j].answerNum,name:data_i[j].content}
-            var c=''+(j)+'星';
+            var c=''+(j+1)+'星';
             col1.push(c);
             col2.push(data_i[j].answerNum);
           }
