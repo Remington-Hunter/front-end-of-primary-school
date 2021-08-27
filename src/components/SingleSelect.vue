@@ -483,13 +483,17 @@ export default {
 <style scoped>
 @import "../assets/css/icon/preview.css";
 .content {
+  display: flex;
+  flex-direction: column;
+  padding-top: 15px;
   border-bottom: solid 2px #e6e6e6;
 }
 .content:hover {
   background-color: rgb(245, 245, 245);
 }
 .btn-group {
-  float: right;
+  margin-bottom: -36px;
+  align-self: flex-end;
 }
 .question {
   padding: 20px 120px;
