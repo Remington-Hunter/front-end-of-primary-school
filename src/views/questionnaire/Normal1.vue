@@ -248,7 +248,7 @@
 import "../../assets/css/icon/preview.css";
 import SingleSelect from "../../components/SingleSelect";
 import { problem_exchange, problem_change } from "../../utils/deepCopy";
-import { dateFormat } from "../../utils/dateFormat";
+import { dateFormat,order } from "../../utils/dateFormat";
 
 export default {
   name: "Normal1",
@@ -369,10 +369,16 @@ export default {
         item.type = this.problem_type_number(x.problem_type);
         item.selection_list = x.selection_list;
         console.log(item.type);
-        if(parseInt(item.type) === 12){
+        item.answer=""
+        if([0,6,10,12].includes(item.type)){
           item.answer=x.radio+""
         }
-        item.answer = x.answer;
+        if([1,7,11,13].includes(item.type)){
+          item.answer=order(x.checkList,x.selection_list)
+        }
+        if([2,14].includes(item.type)){
+          item.answer=x.answer
+        }
         item.required = x.must_write_select ? 1 : 0;
         item.point = x.point;
         item.analysis= x.question_analysis

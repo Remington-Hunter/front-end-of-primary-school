@@ -61,7 +61,10 @@
             ></v-text-field>
           </div>
         </template>
-        <div class="required">
+        <div v-if="![
+              '考试单选题',
+              '考试多选题',
+            ].includes(problem_type)" class="required">
           是否必填：<el-switch v-model="must_write_select"> </el-switch>
         </div>
         <div v-for="(item, index) in selection_list" :key="(item, index)">
@@ -165,7 +168,9 @@
             ></v-text-field>
           </div>
         </template>
-        <div class="required">
+        <div v-if="![
+              '考试填空题',
+            ].includes(problem_type)" class="required">
           是否必填：<el-switch v-model="must_write_select"> </el-switch>
         </div>
         <el-button @click="writeConfirm" :disabled="writeconfirmstate"
