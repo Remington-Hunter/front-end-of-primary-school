@@ -57,12 +57,12 @@
                 {{ item.text }}
               </el-menu-item>
             </div>
-<!--            打卡问卷-->
+            <!--            打卡问卷-->
             <div v-if="type === 4">
               <el-menu-item
-                  v-for="(item, index) in problem_list4"
-                  :key="(item, index)"
-                  @click="newProblem(item.text, false, {})"
+                v-for="(item, index) in problem_list4"
+                :key="(item, index)"
+                @click="newProblem(item.text, false, {})"
               >
                 <v-icon>{{ item.icon }}</v-icon>
                 {{ item.text }}
@@ -165,46 +165,44 @@
           </el-dialog>
 
           <v-divider></v-divider>
-          <draggable @update="datadragEnd">
-            <div
-              v-for="(item, index) in created_problem"
-              :key="(item, index)"
-            >
-              <SingleSelect
-                :ref="'question' + item.number"
-                :id="'question' + item.number"
-                :iscopy="item.iscopy"
-                :problem_type_copy="item.type"
-                :problem_number="item.number"
-                :copy_info="item.copy_info"
-                @CancelNewProblem="
+          <div
+            v-for="(item, index) in created_problem"
+            :key="(item, index)"
+          >
+            <SingleSelect
+              :ref="'question' + item.number"
+              :id="'question' + item.number"
+              :iscopy="item.iscopy"
+              :problem_type_copy="item.type"
+              :problem_number="item.number"
+              :copy_info="item.copy_info"
+              @CancelNewProblem="
                 created_problem.pop();
                 is_creating = false;
                 total_problem -= 1;
                 total_problem_change();
               "
-                @ConfirmProblem="
+              @ConfirmProblem="
                 is_creating = false;
                 total_problem_change();
                 send_question_parent();
                 $emit('problem_store');
               "
-                @deleteProblem="deleteProblem"
-                @upMove="upMove"
-                @upMoveFirst="upMoveFirst"
-                @downMove="downMove"
-                @downMoveLast="downMoveLast"
-                @copy="copy"
-                @ismodifying="
+              @deleteProblem="deleteProblem"
+              @upMove="upMove"
+              @upMoveFirst="upMoveFirst"
+              @downMove="downMove"
+              @downMoveLast="downMoveLast"
+              @copy="copy"
+              @ismodifying="
                 is_creating = true;
                 total_problem_change();
               "
-                @answer_confirm="
+              @answer_confirm="
               send_question_parent();
               $emit('problem_store');"
-              ></SingleSelect>
-            </div>
-          </draggable>
+            ></SingleSelect>
+          </div>
         </div>
       </el-container>
     </el-container>
@@ -256,7 +254,7 @@
 import "../../assets/css/icon/preview.css";
 import SingleSelect from "../../components/SingleSelect";
 import { problem_exchange, problem_change } from "../../utils/deepCopy";
-import { dateFormat,order } from "../../utils/dateFormat";
+import { dateFormat, order } from "../../utils/dateFormat";
 import draggable from 'vuedraggable'
 
 export default {
@@ -283,6 +281,7 @@ export default {
   //   ],
   data() {
     return {
+      key1: true,
       copyVisible: true,
       value1: [new Date(), new Date()],
       title: "",
@@ -328,26 +327,6 @@ export default {
     };
   },
   methods: {
-    datadragEnd(evt) {
-      evt.preventDefault();
-      console.log('拖动前的索引 : ' + evt.oldIndex);
-      console.log('拖动后的索引 : ' + evt.newIndex);
-      let old = evt.oldIndex + 1;
-      let n = evt.newIndex + 1;
-      if (old > n) {
-        for (var i = old; i > n; i--) {
-          this.changeOrder(i, i - 1)
-        }
-      }
-      else if (old < n) {
-        for (var i = old; i < n; i++) {
-          this.changeOrder(i, i + 1)
-        }
-      }
-      this.total_problem_change();
-      this.send_question_parent();
-      this.$emit("problem_store");
-    },
     seeResultChange() {
       this.send_question_parent();
     },
@@ -367,7 +346,7 @@ export default {
         obj.question_id = x[i].question.id;
         obj.point = x[i].question.point
         obj.question_analysis = x[i].question.analysis
-        obj.ismodify=false
+        obj.ismodify = false
         var list = [];
         for (var j = 0; j < x[i].optionList.length; j++) {
           var listitem = {};
@@ -403,15 +382,15 @@ export default {
         item.type = this.problem_type_number(x.problem_type);
         item.selection_list = x.selection_list;
         console.log(item.type);
-        item.answer=""
-        if([0,6,10,12].includes(item.type)){
-          item.answer=x.radio+""
+        item.answer = ""
+        if ([0, 6, 10, 12].includes(item.type)) {
+          item.answer = x.radio + ""
         }
-        if([1,7,11,13].includes(item.type)){
-          item.answer=order(x.checkList,x.selection_list)
+        if ([1, 7, 11, 13].includes(item.type)) {
+          item.answer = order(x.checkList, x.selection_list)
         }
-        if([2,14].includes(item.type)){
-          item.answer=x.answer
+        if ([2, 14].includes(item.type)) {
+          item.answer = x.answer
         }
         item.required = x.must_write_select ? 1 : 0;
         item.point = x.point;
