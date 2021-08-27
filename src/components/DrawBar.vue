@@ -52,13 +52,14 @@ export default {
           // ],
         },
         xAxis: { type: "value",
-        // nameLocation:'end',//坐标轴名称显示位置。
-        //     axisLabel : {//坐标轴刻度标签的相关设置。
-        //         interval:0,
-        //         rotate:"45"
-        //     }
+        
         },
-        yAxis: {type: "category"},
+        yAxis: {type: "category",
+        nameLocation:'end',//坐标轴名称显示位置。
+            axisLabel : {//坐标轴刻度标签的相关设置。
+                interval:0,
+                rotate:"45"
+            }},
         series: [
           { type: "bar" ,barWidth : 40,color:'#008fff'},
           // {type: 'bar'},

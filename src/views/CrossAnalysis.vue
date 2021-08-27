@@ -45,7 +45,7 @@
               
               </span>
               <span
-                v-if="data[index].question.type == 2||data[index].question.type == 5||data[index].question.type == 14"
+                v-if="data[index].question.type == 2||data[index].question.type == 5||data[index].question.type == 14||data[index].question.type == 15"
                 class="question-type"
               >填空题</span>
               <span
@@ -58,7 +58,7 @@
               </div>
             </div>
           </div>
-          <div v-if="data[index].question.type === 2||data[index].question.type === 5||data[index].question.type === 14">
+          <div v-if="data[index].question.type === 2||data[index].question.type === 5||data[index].question.type === 14||data[index].question.type === 15">
             <el-table
               :data="completion[index]"
               style="width: 100%"
@@ -269,7 +269,11 @@ export default {
 
   methods: {
     getRate(data){
-      for(var i=0;i<data.length;i++){
+      if(this.questionType!==3){
+        return;
+      }
+      else{
+        for(var i=0;i<data.length;i++){
         var t=data[i].question.rate;
         t=t*100;
         t=t.toFixed(2)
@@ -280,10 +284,9 @@ export default {
         }
         else{
           var s='';
+          
           for(var j=0;j<data[i].question.answer.length;j++){
             if(j==0){
-              console.log('data[i].question.answer[i]');
-              console.log(data[i].question.answer[j]);
               s=data[i].optionList[data[i].question.answer[j]-'0'].content;
             }
             else{
@@ -294,8 +297,8 @@ export default {
         }
         
       }
-      console.log('rate');
-      console.log(this.rate);
+      }
+      
     },
     exportExcel() {
       // 设置当前日期
@@ -336,11 +339,13 @@ export default {
       this.$set(this.states, index, num);
     },
     getCompletionData(data) {
+      console.log('this is ')
       for (var i = 0; i < this.data.length; i++) {
+        console.log(data[i].question.type )
         if (
           data[i].question.type === 2 ||
           data[i].question.type === 5 ||
-          data[i].question.type === 14
+          data[i].question.type === 14||data[i].question.type === 15
         ) {
           // console.log(11)
           var data_i = data[i].answerList;
@@ -371,16 +376,17 @@ export default {
           this.completion.push(item);
         }
       }
+      console.log(11111111);
+      console.log(this.completion)
     },
     getBarData(data) {
-      // console.log(data);
+      // console.log(data.length);
       for (var i = 0; i < data.length; i++) {
-        // console.log(111)
-        // console.log(data[i].question.type)
+        console.log(i)
         if (
           data[i].question.type === 2 ||
           data[i].question.type == 5 ||
-          data[i].question.type == 14
+          data[i].question.type == 14||data[i].question.type==15
         ) {
           // console.log(11)
           var data_i = data[i].answerList;
@@ -400,8 +406,10 @@ export default {
             var s = [data_i[j].answerNum, c];
             console.log(c);
             item.push(s);
+            console.log(item)
           }
           this.bar.push(item);
+          console.log(item)
         } else {
           var data_i = data[i].optionList;
           var item = [];
@@ -410,9 +418,10 @@ export default {
             item.push(s);
           }
           this.bar.push(item);
-          // console.log(item)
+          console.log(item)
           // console.log(22)
         }
+        // console.log(data[i])
       }
       // console.log(31231)
       // console.log(this.bar)
@@ -432,12 +441,15 @@ export default {
       }).then((res) => {
         var data = res.data.data;
         console.log(res);
+        console.log('res');
         this.data = data;
         this.getBarData(data);
+        // console.log('bar');
         this.getColData(data);
         this.getPieData(data);
         this.getLineData(data);
         this.getCompletionData(data);
+
         this.initStates();
         this.getRate(data);
         // this.getExcelData();
@@ -477,6 +489,7 @@ export default {
         } else {
           s += data.questionInfo[i].info.content;
         }
+        // if(s=='')
         c = { label: s, prop: (i + 1).toString() };
         this.headArr.push(c);
       }
@@ -502,7 +515,7 @@ export default {
           if (
             data.questionInfo[j].info.type == 2 ||
             data.questionInfo[j].info.type == 5 ||
-            data.questionInfo[j].info.type == 14
+            data.questionInfo[j].info.type == 14||data.questionInfo[j].info.type == 15
           ) {
             if (item[j].content == "") {
               c[(j + 1).toString()] = "用户未填写";
@@ -525,7 +538,9 @@ export default {
               } else {
                 t += "、" + data.questionInfo[j].optionList[num].content;
               }
+              
             }
+            if(t==''){t='用户未填写'}
             c[(j + 1).toString()] = t;
           }
         }
@@ -534,8 +549,8 @@ export default {
           c[(item.length+1).toString()]=data.answerInfo[i].info.point;
         }
         this.table1.push(c);
-        console.log(1111);
-        console.log(this.table1);
+        // console.log(1111);
+        // console.log(this.table1);
       }
     },
     exportData() {
@@ -594,7 +609,7 @@ export default {
         if (
           data[i].question.type == 2 ||
           data[i].question.type == 5 ||
-          data[i].question.type == 14
+          data[i].question.type == 14||data[i].question.type == 15
         ) {
           var data_i = data[i].answerList;
           var item = [];
@@ -617,7 +632,7 @@ export default {
           var item = [];
           for (let j = 0; j < data_i.length; j++) {
             var ss = data_i[j].content;
-            if (ss.length > 5) {
+            if (ss.length > 4) {
               ss = ss.slice(0, 5) + "...";
             }
             var s = { 选项: ss, 数量: data_i[j].answerNum };
@@ -634,7 +649,7 @@ export default {
         if (
           data[i].question.type == 2 ||
           data[i].question.type == 5 ||
-          data[i].question.type == 14
+          data[i].question.type ==14 ||data[i].question.type == 15
         ) {
           var data_i = data[i].answerList;
           var item = [];
@@ -668,7 +683,7 @@ export default {
         if (
           data[i].question.type == 2 ||
           data[i].question.type == 5 ||
-          data[i].question.type == 14
+          data[i].question.type ==14  || data[i].question.type == 15
         ) {
           var data_i = data[i].answerList;
           var item = [];

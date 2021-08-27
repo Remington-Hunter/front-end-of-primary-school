@@ -37,6 +37,11 @@ export default {
         xAxis: {
           type: "category",
           data: this.source1[0],
+          nameLocation:'end',//坐标轴名称显示位置。
+            axisLabel : {//坐标轴刻度标签的相关设置。
+                interval:0,
+                rotate:"45"
+            }
         },
         yAxis: {
           type: "value",
