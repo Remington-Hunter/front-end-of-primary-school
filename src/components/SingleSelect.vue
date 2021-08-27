@@ -61,7 +61,7 @@
             ></v-text-field>
           </div>
         </template>
-        <div class="required">
+        <div  class="required">
           是否必填：<el-switch v-model="must_write_select"> </el-switch>
         </div>
         <div v-for="(item, index) in selection_list" :key="(item, index)">
@@ -126,6 +126,7 @@
               '填空题',
               '评分题',
               '考试填空题',
+              '定位题'
             ].includes(problem_type)
         "
       ><v-row>
@@ -209,6 +210,18 @@
               :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
             >
             </el-rate>
+          </div>
+        </div>
+<!--        添加定位题-->
+        <div v-else-if="problem_type === '定位题'">
+          <div class="rate">
+            <el-input  @change="$emit('answer_confirm')"
+                       type="textarea"
+                       autosize
+                       placeholder="请输入答案"
+                       v-model="answer">
+            </el-input>
+            <el-button>定位</el-button>
           </div>
         </div>
 
@@ -324,7 +337,7 @@ export default {
   },
   data() {
     return {
-      ismodify: true,
+      ismodify: this.iscopy?(this.copy_info.ismodify === undefined?true:this.copy_info.ismodify):true,
       name: this.iscopy ? this.copy_info.name : "",
       instruction: this.iscopy ? this.copy_info.instruction : "",
       selection_list: this.iscopy

@@ -22,7 +22,12 @@
 
       <!-- 已经提交且可以查看考试问卷的结果 -->
       <div v-else-if="state && this.type === 3 && this.can_see_result">
-
+        <TestAnswer
+          :headerTitle="headerTitle"
+          :subtitle="subtitle"
+          :questionList="questionList"
+          :total_grade="total_grade"
+        />
       </div>
 
       <!-- 除了 已经提交且可以查看投票问卷的答案 的其他情况 -->
@@ -70,7 +75,7 @@
                   v-show="[12, 13, 14].includes(question.type)"
                   >(分值{{ question.point }})</span
                 >
-                <el-tag v-if="[1, 4, 7, 11, 13].includes(question.type)"
+                <el-tag v-if="[1, 7, 11, 13].includes(question.type)"
                   >多选</el-tag
                 >
               </div>
@@ -134,6 +139,16 @@
                   v-model="question.answer"
                 >
                 </el-input>
+              </div>
+<!--              定位题-->
+              <div v-else-if="question.type === 15">
+                <el-input
+                    type="textarea"
+                    autosize
+                    v-model="locationInfo.country + locationInfo.province + locationInfo.city + locationInfo.district"
+                >
+                </el-input>
+                <el-button @click="getLocation()">定位</el-button>
               </div>
             </div>
           </div>
@@ -203,12 +218,14 @@
 </template>
 
 <script>
+import { orderlisttostr} from "../utils/dateFormat.js";
 import axios from "axios";
 import PublishQuestion from "./questionnaire/PublishQuestion.vue";
 import VoteAnswer from "./VoteAnswer.vue";
+import TestAnswer from "./TestAnswer.vue";
 import Stop from "./Stop.vue";
 import Success from "./Success.vue";
-import { dateFormat } from "../utils/dateFormat";
+import { dateFormat,strequal } from "../utils/dateFormat";
 import CountDown from "../components/CountDown";
 export default {
   name: "CollectQuestion",
@@ -218,6 +235,7 @@ export default {
     Stop,
     Success,
     CountDown,
+    TestAnswer,
   },
   data() {
     return {
@@ -239,6 +257,15 @@ export default {
       questionList_vote: [],
       can_see_result: false,
       have_count_down: false,
+      total_grade:0,
+      locationInfo: {//定位信息
+        ip: '',
+        country: '',
+        province: '',
+        city: '',
+        district: '',
+        location: '',
+      },
     };
   },
   methods: {
@@ -276,7 +303,7 @@ export default {
       }).then((res) => {
         console.log(res);
         console.log(res.data.data);
-        var x=res.data.data.questionnaire.endTime
+        var x = res.data.data.questionnaire.endTime;
         if (
           parseInt(res.data.data.questionnaire.type) === 3 &&
           res.data.data.questionnaire.endTime !== null
@@ -383,7 +410,9 @@ export default {
         }
         console.log(x.selectionList);
         x.required = y.question.required;
+        x.correct_answer = y.question.answer;
         x.radio = "";
+        x.analysis = y.question.analysis;
         (x.checkList = []),
           (x.answer = ""),
           (x.rating = 0),
@@ -469,7 +498,7 @@ export default {
         var z = {};
         var y = this.questionList[i];
         z.questionId = y.questionId;
-        if (y.type === 0 || y.type === 6 || y.type === 10) {
+        if (y.type === 0 || y.type === 6 || y.type === 10 || y.type===12) {
           if (y.required) {
             if (y.radio === "") {
               alert("您有必选项未完成!");
@@ -482,7 +511,7 @@ export default {
             z.number = y.radio + "";
             z.content = "";
           }
-        } else if (y.type === 1 || y.type === 7 || y.type === 11) {
+        } else if (y.type === 1 || y.type === 7 || y.type === 11||y.type===13) {
           if (y.required) {
             if (y.checkList.length === 0) {
               alert("您有必选项未完成!");
@@ -514,7 +543,7 @@ export default {
             z.number = "" + y.rating;
             z.content = "";
           }
-        } else if (y.type === 2) {
+        } else if (y.type === 2 || y.type===14) {
           if (y.required) {
             if (y.answer === " ") {
               alert("您有必选项未完成!");
@@ -536,78 +565,57 @@ export default {
       var x = {};
       x.questionnaireId = this.current_questionnaire.questionnaire.id;
       var list = [];
-      console.log(this.questionList.length);
-      console.log(this.questionList);
+      var total_grade = 0;
       for (var i = 0; i < this.questionList.length; i++) {
         var z = {};
         var y = this.questionList[i];
         z.questionId = y.questionId;
-        if (y.type === 0 || y.type === 6 || y.type === 10 || y.type === 12) {
-          if (y.required) {
-            if (y.radio === "") {
-              // alert("您有必选项未完成!");
-              return;
-            } else {
-              z.number = y.radio + "";
-              z.content = "";
-            }
+        if ([0,6,10,12].includes(y.type)) {
+          if (y.radio + "" === y.correct_answer) {
+            y.grade = y.point;
+            total_grade += y.grade;
           } else {
-            z.number = y.radio + "";
-            z.content = "";
+            y.grade = 0;
           }
-        } else if (
-          y.type === 1 ||
-          y.type === 7 ||
-          y.type === 11 ||
-          y.type === 13
-        ) {
-          if (y.required) {
-            if (y.checkList.length === 0) {
-              // alert("您有必选项未完成!");
-              return;
-            } else {
-              z.number = "";
-              for (var j = 0; j < y.checkList.length; j++) {
-                z.number += y.checkList[j];
-              }
-              z.content = "";
-            }
-          } else {
+          z.number = y.radio + "";
+          z.content = "";
+        } 
+        else if ([1,7,11,13].includes(y.type)) {
+          if(strequal(y.correct_answer,orderlisttostr(y.checkList))){
+            console.log(123);
+            y.grade=y.point
+            console.log(y.grade);
+            total_grade += y.grade;
+          }
+          else{
+            y.grade=0
+          }
             z.number = "";
             for (var k = 0; k < y.checkList.length; k++) {
               z.number += y.checkList[k];
             }
             z.content = "";
+        } 
+        else if (y.type === 2 || y.type === 14) {
+          var xxx=y.answer
+          xxx=xxx.replace(/\s*/g,"")
+          if(y.correct_answer === xxx){
+            y.grade=y.point
+            total_grade += y.grade;
           }
-        } else if (y.type === 2 || y.type === 14) {
-          if (y.required) {
-            if (y.answer === "") {
-              // alert("您有必选项未完成!");
-              return;
-            } else {
-              z.number = "";
-              z.content = y.answer;
-            }
-          } else {
+          else{
+            y.grade=0
+          }
             z.number = "";
-            z.content = y.answer;
-          }
-        } else if (y.type === 3) {
-          if (y.required) {
-            if (y.rating === 0) {
-              // alert("您有必选项未完成!");
-              return;
-            } else {
-              z.number = "" + y.rating;
-              z.content = "";
-            }
-          } else {
+        } 
+        else if (y.type === 3) {
             z.number = "" + y.rating;
             z.content = "";
-          }
         }
         list.push(z);
       }
+      this.total_grade=total_grade
+      x.point=total_grade
       x.answerDtoList = list;
       console.log(JSON.stringify(x));
       axios({
@@ -629,25 +637,25 @@ export default {
           }
         }
       });
-
-
-      if (this.can_see_result) {
-        console.log(1);
-      } else {
-        this.can_write_state = false;
-      }
+      console.log(this.questionList);
     },
     submit() {
       var x = {};
       x.questionnaireId = this.current_questionnaire.questionnaire.id;
       var list = [];
-      console.log(this.questionList.length);
-      console.log(this.questionList);
+      var total_grade = 0;
       for (var i = 0; i < this.questionList.length; i++) {
         var z = {};
         var y = this.questionList[i];
+        console.log(y)
         z.questionId = y.questionId;
-        if (y.type === 0 || y.type === 6 || y.type === 10 || y.type === 12) {
+        if ([0,6,10,12].includes(y.type)) {
+          if (y.radio + "" === y.correct_answer) {
+            y.grade = y.point;
+            total_grade += y.grade;
+          } else {
+            y.grade = 0;
+          }
           if (y.required) {
             if (y.radio === "") {
               // alert("您有必选项未完成!");
@@ -660,12 +668,17 @@ export default {
             z.number = y.radio + "";
             z.content = "";
           }
-        } else if (
-          y.type === 1 ||
-          y.type === 7 ||
-          y.type === 11 ||
-          y.type === 13
-        ) {
+        } 
+        else if ([1,7,11,13].includes(y.type)) {
+          if(strequal(y.correct_answer,orderlisttostr(y.checkList))){
+            console.log(123);
+            y.grade=y.point
+            console.log(y.grade);
+            total_grade += y.grade;
+          }
+          else{
+            y.grade=0
+          }
           if (y.required) {
             if (y.checkList.length === 0) {
               // alert("您有必选项未完成!");
@@ -684,7 +697,17 @@ export default {
             }
             z.content = "";
           }
-        } else if (y.type === 2 || y.type === 14) {
+        } 
+        else if (y.type === 2 || y.type === 14) {
+          var xxx=y.answer
+          xxx=xxx.replace(/\s*/g,"")
+          if(y.correct_answer === xxx){
+            y.grade=y.point
+            total_grade += y.grade;
+          }
+          else{
+            y.grade=0
+          }
           if (y.required) {
             if (y.answer === "") {
               // alert("您有必选项未完成!");
@@ -697,7 +720,8 @@ export default {
             z.number = "";
             z.content = y.answer;
           }
-        } else if (y.type === 3) {
+        } 
+        else if (y.type === 3) {
           if (y.required) {
             if (y.rating === 0) {
               // alert("您有必选项未完成!");
@@ -711,8 +735,16 @@ export default {
             z.content = "";
           }
         }
+        else if (y.type === 15) {
+          if (y.required) {
+            z.number = "";
+            z.content = this.locationInfo.country + this.locationInfo.province + this.locationInfo.city + this.locationInfo.district;
+          }
+        }
         list.push(z);
       }
+      this.total_grade=total_grade
+      x.point=total_grade
       x.answerDtoList = list;
       console.log(JSON.stringify(x));
       axios({
@@ -734,7 +766,40 @@ export default {
           }
         }
       });
+      console.log(this.questionList);
     },
+    getLocation() {
+      this.$confirm("此操作将获取您的地理位置，是否继续？","提示",{
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      }).then(()=> {
+        this.$message({
+          type: 'success',
+          message: "定位成功!",
+        });
+        // eslint-disable-next-line
+        this.locationInfo.ip = window.localStorage.getItem('Ip')
+        // console.log(this.locationInfo.ip)
+        var _this = this;
+        axios.get("https://restapi.amap.com/v5/ip?key=a593d64ab73229be6b3d1ef802b76849&type=4&ip=" + this.locationInfo.ip)
+            .then(response => {
+              console.log(response)
+              _this.locationInfo.country = response.data.country
+              _this.locationInfo.province = response.data.province
+              _this.locationInfo.city = response.data.city
+              _this.locationInfo.district = response.data.district
+              _this.locationInfo.location = response.data.location
+              console.log(_this.locationInfo)
+            });
+      })
+          .catch(()=>{
+            this.$message({
+              type: "info",
+              message: "定位失败",
+            });
+          })
+    }
   },
   created() {
     this.getInfo();

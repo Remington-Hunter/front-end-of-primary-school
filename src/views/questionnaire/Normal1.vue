@@ -57,6 +57,17 @@
                 {{ item.text }}
               </el-menu-item>
             </div>
+<!--            打卡问卷-->
+            <div v-if="type === 4">
+              <el-menu-item
+                  v-for="(item, index) in problem_list4"
+                  :key="(item, index)"
+                  @click="newProblem(item.text, false, {})"
+              >
+                <v-icon>{{ item.icon }}</v-icon>
+                {{ item.text }}
+              </el-menu-item>
+            </div>
           </el-submenu>
           <el-submenu index="2">
             <template slot="title"><i class="el-icon-setting"></i>问卷设置</template>
@@ -245,7 +256,7 @@
 import "../../assets/css/icon/preview.css";
 import SingleSelect from "../../components/SingleSelect";
 import { problem_exchange, problem_change } from "../../utils/deepCopy";
-import { dateFormat } from "../../utils/dateFormat";
+import { dateFormat,order } from "../../utils/dateFormat";
 import draggable from 'vuedraggable'
 
 export default {
@@ -297,6 +308,9 @@ export default {
         { text: "考试填空题", icon: "mdi-checkbox-blank-outline" },
         { text: "考试单选题", icon: "mdi-radiobox-marked" },
         { text: "考试多选题", icon: "mdi-check-bold" },
+      ],
+      problem_list4: [
+        { text: "定位题", icon: "mdi-map-marker-radius" },
       ],
       problem_list: [
         { text: "填空题", icon: "mdi-checkbox-blank-outline" },
@@ -353,6 +367,7 @@ export default {
         obj.question_id = x[i].question.id;
         obj.point = x[i].question.point
         obj.question_analysis = x[i].question.analysis
+        obj.ismodify=false
         var list = [];
         for (var j = 0; j < x[i].optionList.length; j++) {
           var listitem = {};
@@ -388,10 +403,16 @@ export default {
         item.type = this.problem_type_number(x.problem_type);
         item.selection_list = x.selection_list;
         console.log(item.type);
-        if (parseInt(item.type) === 12) {
-          item.answer = x.radio + ""
+        item.answer=""
+        if([0,6,10,12].includes(item.type)){
+          item.answer=x.radio+""
         }
-        item.answer = x.answer;
+        if([1,7,11,13].includes(item.type)){
+          item.answer=order(x.checkList,x.selection_list)
+        }
+        if([2,14].includes(item.type)){
+          item.answer=x.answer
+        }
         item.required = x.must_write_select ? 1 : 0;
         item.point = x.point;
         item.analysis = x.question_analysis
@@ -631,6 +652,9 @@ export default {
         case "考试填空题":
           return 14;
           break;
+        case "定位题":
+          return 15;
+          break;
       }
     },
     problem_type_info(num) {
@@ -667,6 +691,9 @@ export default {
           break;
         case 14:
           return "考试填空题";
+          break;
+        case 15:
+          return "定位题";
           break;
       }
     },
