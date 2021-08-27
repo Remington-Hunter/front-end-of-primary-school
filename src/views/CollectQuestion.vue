@@ -104,7 +104,7 @@
                 </el-radio-group>
               </div>
               <!-- 多选题 -->
-              <div v-else-if="[1, 4, 7, 11, 13].includes(question.type)">
+              <div v-else-if="[1, 7, 11, 13].includes(question.type)">
                 <el-checkbox-group v-model="question.checkList">
                   <el-checkbox
                     v-for="(item, index) in question.selectionList"
