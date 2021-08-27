@@ -173,7 +173,7 @@
         </div>
       </div>
     </div>
-    <div id="demo2" v-show="true">
+    <div id="demo2" v-show="false">
       <el-table :data="table1" border height="550" style="width: 100%">
       <template v-for="(item, index) in headArr">
         <el-table-column

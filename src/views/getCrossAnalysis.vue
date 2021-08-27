@@ -112,9 +112,7 @@ export default {
       for (var i = 0; i < len; i++) {
         var s = "";
         if (question2.optionList[i].content == null) {
-          if(i!=0){
-            s = "" + (i) + "星";
-          }
+          s = "" + (i+1) + "星";
         } else {
           s = question2.optionList[i].content;
         }
@@ -146,9 +144,10 @@ export default {
         },
       }).then((res) => {
         var data = res.data.data;
+        // for(var i=0;i<data.ans)
         this.answerData = data.answerInfo;
         this.data = data;
-        this.getOptions(data);
+        this.getOptions();
       });
     },
     getOptions() {
@@ -193,7 +192,13 @@ export default {
         for (var j = 0; j < question2.optionList.length; j++) {
           var num1 = 0;
           var s1 = i.toString();
+          if(question1.info.type==3){
+            s1=(i+1).toString();
+          }
           var s2 = j.toString();
+          if(question2.info.type==3){
+            s2=(j+1).toString();
+          }
           for (var k = 0; k < answerData.length; k++) {
             if (answerData[k].answerList.length == 0) {
               continue;
@@ -265,8 +270,14 @@ export default {
         var item = [];
         for (var j = 0; j < question2.optionList.length; j++) {
           var num1 = 0;
-          var s1 = i.toString();
+          var s1=i.toString();
+          if(question1.info.type==3){
+            s1=(i+1).toString();
+          }
           var s2 = j.toString();
+          if(question2.info.type==3){
+            s2=(j+1).toString();
+          }
           for (var k = 0; k < answerData.length; k++) {
             if (answerData[k].answerList.length == 0) {
               continue;
@@ -289,15 +300,12 @@ export default {
             t = (item[j] / num) * 100;
           }
           t = t.toFixed(2);
-          // var c1 = t;
-          // c[(j + 1).toString()] = "" + item[j] + "(" + c1 + ")" + "%";
           item1.push(t);
         }
-        // c[(len + 1).toString()] = num;
         this.col.push(item1);
-        // this.table1.push(c);
       }
-
+      console.log('col');
+      console.log(this.col);
       
       this.drawfunc();
       this.drawfunc1();
