@@ -128,6 +128,11 @@ const routes = [{
         path:'/clickoutanalysis',
         name:'clickoutanalysis',
         component:()=>import('../views/ClickoutAnalysis.vue')
+    },
+    {
+        path:'/statistics/:id',
+        name:'statistics',
+        component:()=>import('../views/Statistics.vue')
     }
 ]
 

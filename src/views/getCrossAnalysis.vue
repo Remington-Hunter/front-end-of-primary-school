@@ -1,138 +1,386 @@
 <template>
-  <div>
-    <el-card class="box-card">
-      <div slot="header" class="clearfix">
-        <span>交叉分析</span>
-        <el-button style="float:right;padding:3px 0" type="text">交叉分析</el-button>
+  <div class="main">
+    <el-page-header @back="goBack" content="统计分析"> </el-page-header>
+    <el-button @click="checkCrossAnalysis()" type="primary" class="d-btn"
+      >交叉分析</el-button
+    >
+    <el-button @click="exportExcel" type="primary" class="d-btn"
+      >导出excel</el-button
+    >
+    <el-button type="primary" @click="handleDown" class="d-btn"
+      ><i class="el-icon-download"></i> 下载PDF</el-button
+    >
+
+    <div class="center" id="demo1">
+      <div class="header-title" style="color: #999; font-size: 20px">
+        问卷ID:<span style="font-size: 20px; color: #999">{{ this.id }}</span>
       </div>
-      <div>
-        我的交叉分析
-        <hr>
+      <div class="content">
+        <div v-for="(item, index) in data" :key="index">
+          <el-divider></el-divider>
+          <div class="question-head">
+            <div class="question-title">
+              <span class="question-seq"
+                ><b>第{{ index + 1 }}题：</b></span
+              >
+              <span class="text">{{ data[index].question.content }}</span>
+              <span v-if="data[index].question.type == 0" class="question-type"
+                >单选题</span
+              >
+              <span v-if="data[index].question.type == 1" class="question-type"
+                >多选题</span
+              >
+              <span v-if="data[index].question.type == 2" class="question-type"
+                >填空题</span
+              >
+              <span v-if="data[index].question.type == 3" class="question-type"
+                >评分题</span
+              >
+            </div>
+          </div>
+          <div v-if="data[index].question.type === 2">
+            <el-table
+              :data="completion[index]"
+              style="width: 100%"
+              class="table"
+            >
+              <el-table-column label="序号">
+                <template slot-scope="scope">
+                  <!-- <i class="el-icon-time"></i> -->
+                  <span style="margin-left: 10px">{{ scope.row.id }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="内容">
+                <template slot-scope="scope1">
+                  <!-- <i class="el-icon-time"></i> -->
+                  <span style="margin-left: 10px">{{
+                    scope1.row.content
+                  }}</span>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+          <div v-else>
+            <div v-if="bar[index].length !== 0">
+              <!-- <Completion :data1="completion[index]"></Completion> -->
+              <div>
+                <el-table
+                  :data="completion[index]"
+                  style="width: 100%"
+                  class="table"
+                  border
+                >
+                  <el-table-column label="选项">
+                    <template slot-scope="scope2">
+                      <!-- <i class="el-icon-time"></i> -->
+                      <span style="margin-left: 10px">{{
+                        scope2.row.content
+                      }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="选择人数">
+                    <template slot-scope="scope3">
+                      <!-- <i class="el-icon-time"></i> -->
+                      <span style="margin-left: 10px">{{
+                        scope3.row.num
+                      }}</span>
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </div>
+              <div
+                style="width: 600px; height: 400px"
+                v-if="states[index] === 1"
+              >
+                <drawBar
+                  :id="BarToString(index)"
+                  :series="col[index]"
+                ></drawBar>
+              </div>
+              <div
+                style="width: 600px; height: 400px"
+                v-if="states[index] === 2"
+              >
+                <drawLine
+                  :id="LineToString(index)"
+                  :series="line[index]"
+                ></drawLine>
+              </div>
+              <div
+                style="width: 600px; height: 400px"
+                v-if="states[index] === 3"
+              >
+                <drawPie
+                  :id="PieToString(index)"
+                  :series="pie[index]"
+                ></drawPie>
+              </div>
+              <div
+                style="width: 600px; height: 400px"
+                v-if="states[index] === 4"
+              >
+                <drawCol
+                  :id="ColToString(index)"
+                  :series="col[index]"
+                ></drawCol>
+              </div>
+              <el-button @click="setStates(index, 0)">
+                <span>表格</span>
+              </el-button>
+              <el-button @click="setStates(index, 1)">
+                <span>条形图</span>
+              </el-button>
+              <el-button @click="setStates(index, 2)">
+                <span>折线图</span>
+              </el-button>
+              <el-button @click="setStates(index, 3)">
+                <span>饼图</span>
+              </el-button>
+              <el-button @click="setStates(index, 4)">
+                <span>柱状图</span>
+              </el-button>
+            </div>
+            <div v-else>
+              <el-table :data="completion[index]" style="width: 100%">
+                <el-table-column label="序号">
+                  <template slot-scope="scope">
+                    <!-- <i class="el-icon-time"></i> -->
+                    <span style="margin-left: 10px">{{ scope.row.id }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="内容">
+                  <template slot-scope="scope1">
+                    <!-- <i class="el-icon-time"></i> -->
+                    <span style="margin-left: 10px">{{
+                      scope1.row.content
+                    }}</span>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </div>
+          </div>
+        </div>
       </div>
-    </el-card>
-    <div style="width:50%;float:left">
-      <el-select v-model="v1" filterable placeholder="请选择">
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        >
-        </el-option>
-      </el-select>
     </div>
-    <div style="width:50%;float:right">
-      <el-select v-model="v2" filterable placeholder="请选择">
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        >
-        </el-option>
-      </el-select>
+    <div id="demo2" v-show="false">
+      <el-table :data="table1" border height="550" style="width: 100%">
+        <template v-for="(item, index) in headArr">
+          <el-table-column
+            :key="index"
+            :prop="item.prop"
+            :label="item.label"
+            align="center"
+          >
+            <template slot-scope="scope">
+              <span>
+                {{ scope.row[item.prop] }}
+              </span>
+            </template>
+          </el-table-column>
+        </template>
+      </el-table>
     </div>
-    <el-button type="primary" @click="getAnalysis(v1, v2)">提交</el-button>
-    <el-table :data="table1" border height="550" style="width: 100%">
-      <template v-for="(item, index) in headArr">
-        <el-table-column
-          :key="index"
-          :prop="item.prop"
-          :label="item.label"
-          align="center"
-        >
-          <template slot-scope="scope">
-            <span>
-              {{ scope.row[item.prop] }}
-            </span>
-          </template>
-        </el-table-column>
-      </template>
-    </el-table>
-    <!-- <el-button type="primary" @click="chageType('bar')">条形图</el-button> -->
-    <el-button type="primary" @click="chageType('line')" >折线图</el-button>
-    <el-button type="primary" @click="chageType('bar')" >柱状图</el-button>
-    <el-button type="primary" @click="chageType('radar')">雷达图</el-button>
-    <el-button type="primary" @click="chageType('row')">条形图</el-button>
-    <div id="line" style="width: 600px; height: 400px"  v-show="type=='line'"></div>
-    <div id="bar" style="width: 600px; height: 400px" v-show="type=='bar'"></div>
-    <div id="radar" style="width: 600px; height: 400px" v-show="type=='radar'"></div>
-    <div id="row" style="width: 600px; height: 400px" v-show="type=='row'"></div>
   </div>
 </template>
-
 <script>
 import axios from "axios";
-// import DrawMoreCol from '@/components/DrawMoreCol'
-import DrawMoreCol from "../components/DrawMoreCol.vue";
+import drawLine from "../components/DrawLine.vue";
+import drawPie from "../components/DrawPie.vue";
+import drawBar from "../components/DrawBar.vue";
+import drawCol from "../components/DrawCol.vue";
+import htmlToPdf from "@/assets/js/htmlToPdf";
+import Completion from "../components/Completion";
+import FileSaver from "file-saver";
+import XLSX from "xlsx";
 export default {
-  components: {
-    DrawMoreCol,
+  props: {
+    id1: {
+      type: Number,
+      default: 0,
+    },
   },
   data() {
     return {
-      id: 0,
+      series: ["1", "2", "3"],
+      msg1: "饼状图",
+      id: this.id1,
+      bar: [],
+      data: [],
+      pie: [],
+      col: [],
+      line: [],
+      completion: [],
+      historyList: [],
+      type: 0,
+      states: [],
+      s: {},
       answer: [],
       answerData: [],
-      options: [],
-      v1: "",
-      v2: "",
-      data: [],
-      ishow: false,
-      table1: [],
       headArr: [],
-      col: [],
-      data1: [],
-      type:'bar',
+      table1: [],
     };
   },
+  components: {
+    drawLine,
+    drawPie,
+    drawBar,
+    drawCol,
+    Completion,
+  },
   mounted() {
-    console.log('ididid')
-    this.id = this.$route.query.id;
-    console.log(this.id);
+    this.id = this.$route.params.id;
+    this.getseries();
     this.getAnswerData();
   },
+
   methods: {
-    chageType(type){
-      this.type=type;
+    checkCrossAnalysis() {
+      this.$router.push({ path: "/getanalysis", query: { id: this.id } });
     },
-    getString(str) {
-      if (str.length > 10) {
-        str = str.substring(0, 10) + "...";
+    exportExcel() {
+      // 设置当前日期
+      let time = new Date();
+      let year = time.getFullYear();
+      let month = time.getMonth() + 1;
+      let day = time.getDate();
+      let name = year + "" + month + "" + day;
+      // console.log(name)
+      /* generate workbook object from table */
+      //  .table要导出的是哪一个表格
+      var wb = XLSX.utils.table_to_book(document.querySelector("#demo2"));
+      console.log(wb.Sheets.Sheet1);
+      /* get binary string as output */
+      var wbout = XLSX.write(wb, {
+        bookType: "xlsx",
+        bookSST: true,
+        type: "array",
+      });
+      try {
+        //  name+'.xlsx'表示导出的excel表格名字
+        FileSaver.saveAs(
+          new Blob([wbout], { type: "application/octet-stream" }),
+          name + ".xlsx"
+        );
+      } catch (e) {
+        if (typeof console !== "undefined") console.log(e, wbout);
       }
-      return str;
+      return wbout;
     },
-    getprops(data) {
-      this.headArr = [];
-      var data = this.data;
-      var question2 = data.questionInfo[this.v2];
-      var len = question2.optionList.length;
-      var c = { label: "X/Y", prop: "0" };
-      this.headArr.push(c);
-      for (var i = 0; i < len; i++) {
-        var s = "";
-        if (question2.optionList[i].content == null) {
-          if(i!=0){
-            s = "" + (i) + "星";
+    initStates() {
+      for (var i = 0; i < this.data.length; i++) {
+        this.states[i] = 0;
+      }
+      this.s.states = this.states;
+    },
+    setStates(index, num) {
+      this.$set(this.states, index, num);
+    },
+    getCompletionData(data) {
+      for (var i = 0; i < this.data.length; i++) {
+        if (
+          data[i].question.type === 2 ||
+          data[i].question.type === 5 ||
+          data[i].question.type === 14
+        ) {
+          // console.log(11)
+          var data_i = data[i].answerList;
+          var item = [];
+          for (let j = 0; j < data_i.length; j++) {
+            var s = { id: j + 1, content: data_i[j].content };
+            item.push(s);
           }
+          this.completion.push(item);
+        } else if (data[i].question.type === 3) {
+          var data_i = data[i].optionList;
+          var item = [];
+          for (let j = 0; j < data_i.length; j++) {
+            var c = "" + (j + 1) + "星";
+            console.log(data[i]);
+            var s = { content: c, num: data_i[j].answerNum };
+            console.log("data_i[j].answerNum" + data_i[j].answerNum);
+            item.push(s);
+          }
+          this.completion.push(item);
         } else {
-          s = question2.optionList[i].content;
+          var data_i = data[i].optionList;
+          var item = [];
+          for (let j = 0; j < data_i.length; j++) {
+            var s = { content: data_i[j].content, num: data_i[j].answerNum };
+            item.push(s);
+          }
+          this.completion.push(item);
         }
-        c = { label: s, prop: (i + 1).toString() };
-        this.headArr.push(c);
       }
-      c = { label: "总计", prop: (len + 1).toString() };
-      this.headArr.push(c);
-      console.log('headarr');
-      console.log(this.headArr)
     },
-    tableRowClassName: function (obj) {
-      if (obj.rowIndex % 2 == 0) {
-        return "warning-row";
-      } else {
-        return "success-row";
+    getBarData(data) {
+      // console.log(data);
+      for (var i = 0; i < data.length; i++) {
+        // console.log(111)
+        // console.log(data[i].question.type)
+        if (
+          data[i].question.type === 2 ||
+          data[i].question.type == 5 ||
+          data[i].question.type == 14
+        ) {
+          // console.log(11)
+          var data_i = data[i].answerList;
+          var item = [];
+          for (let j = 0; j < data_i.length; j++) {
+            // var s=[data_i[j].answerNum,data_i[j].content]
+            item.push(data_i[j]);
+          }
+          // console.log(item)
+          this.bar.push(item);
+        } else if (data[i].question.type === 3) {
+          var data_i = data[i].optionList;
+          var item = [];
+
+          for (let j = 1; j < data_i.length; j++) {
+            var c = "" + j + "星";
+            var s = [data_i[j].answerNum, c];
+            console.log(c);
+            item.push(s);
+          }
+          this.bar.push(item);
+        } else {
+          var data_i = data[i].optionList;
+          var item = [];
+          for (let j = 0; j < data_i.length; j++) {
+            var s = [data_i[j].answerNum, data_i[j].content];
+            item.push(s);
+          }
+          this.bar.push(item);
+          // console.log(item)
+          // console.log(22)
+        }
       }
-      return "";
+      // console.log(31231)
+      // console.log(this.bar)
+    },
+    getseries() {
+      // alert(1);
+      var Data = new FormData();
+      Data.append("id", this.id);
+      axios({
+        url: "https://www.azur1tee.top/api/answer/get_result",
+        method: "post",
+        data: Data,
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+          // "Content-Type": "application/json",
+        },
+      }).then((res) => {
+        var data = res.data.data;
+        console.log(res);
+        this.data = data;
+        this.getBarData(data);
+        this.getColData(data);
+        this.getPieData(data);
+        this.getLineData(data);
+        this.getCompletionData(data);
+        this.initStates();
+        this.getExcelData();
+      });
     },
     getAnswerData() {
       var Data = new FormData();
@@ -147,320 +395,251 @@ export default {
       }).then((res) => {
         var data = res.data.data;
         this.answerData = data.answerInfo;
-        this.data = data;
-        this.getOptions(data);
+        console.log(data);
+        console.log(res);
+        // this.getAnswerData(data);
+        this.getAnswerExcel(data);
       });
     },
-    getOptions() {
-      var data = this.data;
-      //   var answerInfo=data.answerInfo;
-      var questionInfo = data.questionInfo;
-      for (var i = 0; i < questionInfo.length; i++) {
-        if (questionInfo[i].info.type == 2) {
-          continue;
-        } else {
-          var content = "" + (i + 1) + "." + questionInfo[i].info.content;
-          if (content.length > 10) {
-            content = content.substring(0, 10) + "...";
-          }
-          var c = { value: i, label: content };
-        }
-        this.options.push(c);
-      }
-    },
-    getAnalysis(v1, v2) {
-      
-      this.table1 = [];
-      var data = this.data;
-      var question1 = data.questionInfo[v1];
-      var question2 = data.questionInfo[v2];
-      var answerData = data.answerInfo;
-      var len = question2.optionList.length;
-      var c = {};
-      var type1=question1.info.type
-      var type2=question1.info.type
-      console.log('type1');
-      console.log(type1);
-      for (var i = 0; i < question1.optionList.length; i++) {
-        c = {};
-        if (question1.optionList[i].content == null) {
-          c["0"] = "" + (i + 1) + "星";
-        } else {
-          c["0"] = question1.optionList[i].content;
-        }
-        var num = 0;
-        var item = [];
-        for (var j = 0; j < question2.optionList.length; j++) {
-          var num1 = 0;
-          var s1 = i.toString();
-          var s2 = j.toString();
-          for (var k = 0; k < answerData.length; k++) {
-            if (answerData[k].answerList.length == 0) {
-              continue;
-            }
-            if (
-              answerData[k].answerList[v1].number.indexOf(s1) != -1 &&
-              answerData[k].answerList[v2].number.indexOf(s2) != -1
-            ) {
-              num1++;
-            }
-          }
-          item.push(num1);
-          num += num1;
-        }
-        for (var j = 0; j < question2.optionList.length; j++) {
-          var t = 0;
-          if (num == 0) {
-            t = 0.0;
-          } else {
-            t = (item[j] / num) * 100;
-          }
-          t = t.toFixed(2);
-          var c1 = t;
-          c[(j + 1).toString()] = "" + item[j] + "(" + c1 + ")" + "%";
-        }
-        c[(len + 1).toString()] = num;
-        this.table1.push(c);
-      }
-      this.getprops();
-      this.getCol();
-      console.log(this.col);
-    },
-    getCol() {
-      this.col = [];
-      var data = this.data;
-      var question2 = data.questionInfo[this.v2];
-      var len = question2.optionList.length;
-      var item = [];
-      item.push("X/Y");
+    getprops(data) {
+      this.headArr = [];
+      // var data=this.data;
+      // var question2 = data.questionInfo[this.v2];
+      var len = data.questionInfo.length;
+      var c = { label: "序号", prop: "0" };
+      this.headArr.push(c);
       for (var i = 0; i < len; i++) {
-        var s = "";
-        if (question2.optionList[i].content == null) {
-          s = "" + (i + 1) + "星";
+        var s = "第" + (i + 1) + "题：";
+        if (data.questionInfo[i].info.content == null) {
+          s += "内容为空";
         } else {
-          s = question2.optionList[i].content;
+          s += data.questionInfo[i].info.content;
         }
-        item.push(s);
+        c = { label: s, prop: (i + 1).toString() };
+        this.headArr.push(c);
       }
-      this.col.push(item);
-      // this.table1 = [];
-      var data = this.data;
-      var question1 = data.questionInfo[this.v1];
-      var question2 = data.questionInfo[this.v2];
+    },
+    getAnswerExcel(data) {
+      this.getprops(data);
+      this.table1 = [];
       var answerData = data.answerInfo;
-      var len = question2.optionList.length;
-      var c = {};
-      // var item1 = [];
-      for (var i = 0; i < question1.optionList.length; i++) {
-        c = {};
-        var item1 = [];
-        if (question1.optionList[i].content == null) {
-          // c["0"] = "" + (i + 1) + "星";
-          item1.push("" + (i + 1) + "星");
-        } else {
-          // c["0"] = question1.optionList[i].content;
-          item1.push(question1.optionList[i].content);
-        }
-        var num = 0;
-        var item = [];
-        for (var j = 0; j < question2.optionList.length; j++) {
-          var num1 = 0;
-          var s1 = i.toString();
-          var s2 = j.toString();
-          for (var k = 0; k < answerData.length; k++) {
-            if (answerData[k].answerList.length == 0) {
-              continue;
+      var len = answerData.length;
+      //
+      for (var i = 0; i < len; i++) {
+        var c = {};
+        c["0"] = i + 1;
+        var item = answerData[i].answerList;
+        for (var j = 0; j < item.length; j++) {
+          if (
+            data.questionInfo[j].info.type == 2 ||
+            data.questionInfo[j].info.type == 5 ||
+            data.questionInfo[j].info.type == 14
+          ) {
+            if (item[j].content == "") {
+              c[(j + 1).toString()] = "用户未填写";
+            } else {
+              c[(j + 1).toString()] = item[j].content;
             }
-            if (
-              answerData[k].answerList[this.v1].number.indexOf(s1) != -1 &&
-              answerData[k].answerList[this.v2].number.indexOf(s2) != -1
-            ) {
-              num1++;
+          } else if (data.questionInfo[j].info.type == 3) {
+            if (item[j].number == "" || item[j].number == "0") {
+              c[(j + 1).toString()] = "无评价";
+            } else {
+              var t = item[j].number - "0";
+              c[(j + 1).toString()] = "" + t + "星";
             }
-          }
-          item.push(num1);
-          num += num1;
-        }
-        for (var j = 0; j < question2.optionList.length; j++) {
-          var t = 0;
-          if (num == 0) {
-            t = 0.0;
           } else {
-            t = (item[j] / num) * 100;
+            var t = "";
+            for (var k = 0; k < item[j].number.length; k++) {
+              var num = item[j].number[k] - "0";
+              if (k == 0) {
+                t = data.questionInfo[j].optionList[num].content;
+              } else {
+                t += "、" + data.questionInfo[j].optionList[num].content;
+              }
+            }
+            c[(j + 1).toString()] = t;
           }
-          t = t.toFixed(2);
-          // var c1 = t;
-          // c[(j + 1).toString()] = "" + item[j] + "(" + c1 + ")" + "%";
-          item1.push(t);
         }
-        // c[(len + 1).toString()] = num;
-        this.col.push(item1);
-        // this.table1.push(c);
+        this.table1.push(c);
+        console.log(1111);
+        console.log(this.table1);
       }
+    },
+    exportData() {
+      this.excelData = this.completion; //将你要导出的数组数据（historyList）赋值给excelDate
+      this.export2Excel(); //调用export2Excel函数，填写表头（clomns里的type）和对应字段(historyList里的属性名)
+    },
+    //表格数据写入excel
+    export2Excel() {
+      var that = this;
+      require.ensure([], () => {
+        const {
+          export_json_to_excel,
+        } = require("../assets/excel/Export2Excel");
+        //这里使用绝对路径( @表示src文件夹 )，使用@/+存放export2Excel的路径【也可以写成相对于你当前"xxx.vue"文件的相对路径，例如我的页面放在assets文件夹同级下的views文件夹下的“home.vue”里，那这里路径也可以写成"../assets/excel/Export2Excel"】
+        const tHeader = [content, num]; // 导出的excel表头名信息
+        const filterVal = ["content", "num"]; // 导出的excel表头字段名，需要导出表格字段名
+        const list = that.excelData;
+        const data = that.formatJson(filterVal, list);
 
-      
-      this.drawfunc();
-      this.drawfunc1();
-      this.drawfunc2();
-      this.drawfunc3();
+        export_json_to_excel(tHeader, data, "学生报名信息汇总"); // 导出的表格名称，根据需要自己命名
+      });
     },
-    getSeries(type) {
-      this.data1=[];
-      for (var i = 0; i < this.col[0].length - 1; i++) {
-        var c = { type: type,barWidth : 40};
-        this.data1.push(c);
-      }
-    },
-    drawfunc() {
-      var data1=[];
-      for (var i = 0; i < this.col[0].length - 1; i++) {
-        var c = { type: 'bar' };
-        data1.push(c);
-      }
-      let myChart = this.$echarts.init(document.getElementById('bar'));
-      myChart.clear();
-      // 指定图表的配置项和数据
-      var option = {
-        legend: {},
-        tooltip: {},
-        dataset: {
-          // 提供一份数据。
-          source: this.col,
-        },
-        color:['#009dff', '#40c45f', '#FFC851','#5A5476','#1869A0','#FF9393'],
-        // 声明一个 X 轴，类目轴（category）。默认情况下，类目轴对应到 dataset 第一列。
-        xAxis: { type: "category" },
-        // 声明一个 Y 轴，数值轴。
-        yAxis: {type: "value" ,},
-        // 声明多个 bar 系列，默认情况下，每个系列会自动对应到 dataset 的每一列。
-        series: data1,
-      };
 
-      // 使用刚指定的配置项和数据显示图表。
-      myChart.setOption(option);
+    //格式转换，直接复制即可,不需要修改什么
+    formatJson(filterVal, jsonData) {
+      return jsonData.map((v) => filterVal.map((j) => v[j]));
     },
-    drawfunc1() {
-      var data1=[];
-      for (var i = 0; i < this.col[0].length - 1; i++) {
-        var c = { type: 'line' };
-        data1.push(c);
-      }
-      let myChart = this.$echarts.init(document.getElementById('line'));
-      myChart.clear();
-      // 指定图表的配置项和数据
-      var option = {
-        legend: {},
-        tooltip: {},
-        color:['#009dff', '#40c45f', '#FFC851','#5A5476','#1869A0','#FF9393'],
-        dataset: {
-          // 提供一份数据。
-          source: this.col,
-        },
-        // 声明一个 X 轴，类目轴（category）。默认情况下，类目轴对应到 dataset 第一列。
-        xAxis: { type: "category" },
-        // 声明一个 Y 轴，数值轴。
-        yAxis: {},
-        // 声明多个 bar 系列，默认情况下，每个系列会自动对应到 dataset 的每一列。
-        series: data1,
-      };
-
-      // 使用刚指定的配置项和数据显示图表。
-      myChart.setOption(option);
+    goto(type) {
+      // this.getseries()
+      this.type = type;
+      // console.log(121);
     },
-    drawfunc2() {
-      console.log('func2');
-      var c=[];
-      for(var i=1;i<this.headArr.length;i++){
-        var item={text:this.headArr[i].label,max:100}
-        c.push(item);
-      }
-      console.log(c);
-      var data=[];
-      for(var i=1;i<this.col.length;i++){
-        var b=[];
-        for(var j=1;j<this.col[i].length;j++){
-          b.push(this.col[i][j]);
+    ComToString(val) {
+      return "com" + val;
+    },
+    PieToString(val) {
+      return "pie" + val;
+    },
+    BarToString(val) {
+      return "bar" + val;
+    },
+    ColToString(val) {
+      return "col" + val;
+    },
+    LineToString(val) {
+      return "line" + val;
+    },
+    handleDown() {
+      htmlToPdf.downloadPDF(document.querySelector("#demo1"), "数据分析");
+    },
+    goBack() {
+      this.$router.go(-1);
+    },
+    getColData(data) {
+      for (var i = 0; i < data.length; i++) {
+        if (
+          data[i].question.type == 2 ||
+          data[i].question.type == 5 ||
+          data[i].question.type == 14
+        ) {
+          var data_i = data[i].answerList;
+          var item = [];
+          for (let j = 0; j < data_i.length; j++) {
+            // var s=[data_i[j].answerNum,data_i[j].content]
+            item.push(data_i[j]);
+          }
+          this.col.push(item);
+        } else if (data[i].question.type == 3) {
+          var data_i = data[i].optionList;
+          var item = [];
+          for (let j = 0; j < data_i.length; j++) {
+            s = "" + (j + 1) + "星";
+            var s = { 选项: s, 数量: data_i[j].answerNum };
+            item.push(s);
+          }
+          this.col.push(item);
+        } else {
+          var data_i = data[i].optionList;
+          var item = [];
+          for (let j = 0; j < data_i.length; j++) {
+            var ss = data_i[j].content;
+            if (ss.length > 5) {
+              ss = ss.slice(0, 5) + "...";
+            }
+            var s = { 选项: ss, 数量: data_i[j].answerNum };
+            item.push(s);
+          }
+          this.col.push(item);
         }
-        var item={value:b,name:this.col[i][0]}
-        data.push(item);
       }
-      console.log(data);
-      var name=[];
-      for(var i=0;i<this.col.length;i++){
-        name.push(this.col[i][0])
-      }
-      let myChart = this.$echarts.init(document.getElementById('radar'));
-      myChart.clear();
-      // 指定图表的配置项和数据
-      var option = {
-        tooltip : {
-          trigger: 'item',
-        },
-        color:['#009dff', '#40c45f', '#FFC851','#5A5476','#1869A0','#FF9393'],
-        legend: {
-          orient : 'vertical',              //这里主要是标识不同颜色代表不同的同学
-          x : 'right',
-          y : 'bottom',
-          // data:['A同学成绩 ', 'B同学成绩 ']
-        },
-        color:['#009dff', '#40c45f', '#FFC851','#5A5476','#1869A0','#FF9393'],
-        toolbox: {
-          
-          show : true,
-          feature : {
-            mark : {show: true},
-            dataView : {show: true, readOnly: false},
-            restore : {show: true},
-            saveAsImage : {show: true},
-          }
-        },
-        polar : [
-          {
-            indicator : c
-          }
-        ],
-        series: [
-          {
-            type:'radar',
-            data:data
-          }
-        ],
-      };
-
-      // 使用刚指定的配置项和数据显示图表。
-      myChart.setOption(option);
+      // console.log("col")
+      // console.log(this.col);
     },
-    drawfunc3() {
-      var data1=[];
-      for (var i = 0; i < this.col[0].length - 1; i++) {
-        var c = { type: 'bar' };
-        data1.push(c);
+    getPieData(data) {
+      for (var i = 0; i < data.length; i++) {
+        if (
+          data[i].question.type == 2 ||
+          data[i].question.type == 5 ||
+          data[i].question.type == 14
+        ) {
+          var data_i = data[i].answerList;
+          var item = [];
+          for (let j = 0; j < data_i.length; j++) {
+            // var s=[data_i[j].answerNum,data_i[j].content]
+            item.push(data_i[j]);
+          }
+          this.pie.push(item);
+        } else if (data[i].question.type == 3) {
+          var data_i = data[i].optionList;
+          var item = [];
+          for (let j = 0; j < data_i.length; j++) {
+            var c = "" + (j + 1) + "星";
+            var s = { value: data_i[j].answerNum, name: c };
+            item.push(s);
+          }
+          this.pie.push(item);
+        } else {
+          var data_i = data[i].optionList;
+          var item = [];
+          for (let j = 0; j < data_i.length; j++) {
+            var s = { value: data_i[j].answerNum, name: data_i[j].content };
+            item.push(s);
+          }
+          this.pie.push(item);
+        }
       }
-      let myChart = this.$echarts.init(document.getElementById('row'));
-      myChart.clear();
-      // 指定图表的配置项和数据
-      var option = {
-        legend: {},
-        tooltip: {},
-        color:['#009dff', '#40c45f', '#FFC851','#5A5476','#1869A0','#FF9393'],
-        dataset: {
-          // 提供一份数据。
-          source: this.col,
-        },
-        // 声明一个 X 轴，类目轴（category）。默认情况下，类目轴对应到 dataset 第一列。
-        xAxis: { type: "value" ,},
-        // 声明一个 Y 轴，数值轴。
-        yAxis: {type:'category',},
-        // 声明多个 bar 系列，默认情况下，每个系列会自动对应到 dataset 的每一列。
-        series: data1,
-      };
-
-      // 使用刚指定的配置项和数据显示图表。
-      myChart.setOption(option);
+    },
+    getLineData(data) {
+      for (var i = 0; i < data.length; i++) {
+        if (
+          data[i].question.type == 2 ||
+          data[i].question.type == 5 ||
+          data[i].question.type == 14
+        ) {
+          var data_i = data[i].answerList;
+          var item = [];
+          this.line.push(item);
+        } else if (data[i].question.type == 3) {
+          var data_i = data[i].optionList;
+          var item = [];
+          var col1 = [];
+          var col2 = [];
+          for (let j = 0; j < data_i.length; j++) {
+            // var s={value:data_i[j].answerNum,name:data_i[j].content}
+            var c = "" + (j + 1) + "星";
+            col1.push(c);
+            col2.push(data_i[j].answerNum);
+          }
+          item.push(col1);
+          item.push(col2);
+          this.line.push(item);
+        } else {
+          var data_i = data[i].optionList;
+          var item = [];
+          var col1 = [];
+          var col2 = [];
+          for (let j = 0; j < data_i.length; j++) {
+            // var s={value:data_i[j].answerNum,name:data_i[j].content}
+            var ss = data_i[j].content;
+            if (ss.length > 5) {
+              ss = ss.slice(0, 5) + "...";
+            }
+            col1.push(ss);
+            col2.push(data_i[j].answerNum);
+          }
+          item.push(col1);
+          item.push(col2);
+          this.line.push(item);
+        }
+      }
+      // console.log("line")
+      // console.log(this.line);
     },
   },
 };
 </script>
-<style scoped>
-</style>>
-    
+
+<style  scoped>
+@import "../assets/css/icon/analysis.css";
+</style>
