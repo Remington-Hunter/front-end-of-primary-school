@@ -315,10 +315,12 @@ export default {
     },
     handleClick(tab, event) {
       console.log(tab, event);
-      if (tab.name == 'second') {
+      if (tab.name === 'second') {
         // 触发事件
         // this.send_ID();
         this.sendQues();
+      }else if(tab.name==='first'){
+        this.change_stop_state();
       }
     },
     send_ID() {
