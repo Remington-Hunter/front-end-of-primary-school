@@ -15,6 +15,7 @@
             :type="this.questionnaire_type"
             :copy_questionnaire_info="copy_questionnaire_info"
             @problem_store="saveQues(1)"
+            ref="child"
           />
         </el-tab-pane>
 
@@ -227,11 +228,18 @@ export default {
       else {
         url = "https://www.azur1tee.top/api/questionnaire/save_questionnaire"
       }
-      console.log(this.questionnaire_id);
-      console.log(this.current_questionnaire.id);
       this.current_questionnaire.type = this.questionnaire_type
+      // if(this.current_questionnaire.useId === undefined){
+      //   var x={}
+      //   x=this.copy_questionnaire_info.questionnaire
+      //   x.questionList=this.copy_questionnaire_info.questionList
+      //   var formData=x
+      // }
+      // else{
+        console.log(this.copy_questionnaire_info);
       var formData = this.current_questionnaire
       console.log(JSON.stringify(formData));
+      // }
       axios({
         method: "post",
         url: url,
@@ -382,11 +390,9 @@ export default {
     this.questionnaire_type = parseInt(this.$route.params.type)
     this.questionnaire_id = query.id;
     this.modify_type = query.modify_type
-    console.log(this.questionnaire_id)
-    console.log(this.modify_type);
     var formData = new FormData()
     formData.append("id", this.questionnaire_id)
-    if (this.modify_type === 2) {
+    if (parseInt(this.modify_type) === 2) {
       axios({
         url: "https://www.azur1tee.top/api/questionnaire/delete_and_get_questionnaire_by_id",
         method: "post",
