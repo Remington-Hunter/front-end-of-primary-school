@@ -27,6 +27,7 @@
             :ma="ma"
             :input="input"
             :lianjie="lianjie"
+            :download_lianjie="download_lianjie"
           />
         </el-tab-pane>
 
@@ -118,6 +119,7 @@ export default {
       ma: '',
       input: '',
       lianjie: '',
+      download_lianjie:'',
       dialogVisible: false,
       questionnaire_type: "",//问卷类型
       is_saved: false,
@@ -188,6 +190,7 @@ export default {
             "https://www.azur1tee.top/api/qrcode/getQRCode/?content=" +
             this.input +
             "&logoUrl=https://www.azur1tee.top/api/getIcon";
+          this.download_lianjie = 'https://www.azur1tee.top/api/qrcode/downloadQRCode/?content=' + this.input + '&logoUrl=https://www.azur1tee.top/api/getIcon';
           this.ma = res.data.data;
           if (res.data.code === 200 || res.data.code === 201) {
             var Data1 = new FormData();
@@ -320,10 +323,12 @@ export default {
     },
     handleClick(tab, event) {
       console.log(tab, event);
-      if (tab.name == 'second') {
+      if (tab.name === 'second') {
         // 触发事件
         // this.send_ID();
         this.sendQues();
+      }else if(tab.name==='first'){
+        this.change_stop_state();
       }
     },
     send_ID() {
