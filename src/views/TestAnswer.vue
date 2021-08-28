@@ -1,8 +1,7 @@
 <template>
-  <div id="c-top">
-    <!-- 可以编辑 -->
-    <!--未提交的所有问卷-->
-    <div id="pre">
+  <!-- 可以编辑 -->
+  <!--未提交的所有问卷-->
+  <div id="pre">
     <div class="s-main ">
       <!-- 问卷标题 -->
       <div class="header-title">
@@ -22,17 +21,17 @@
         <!-- 题目标题 -->
         <div class="question-head ">
           <div class="question-title">
-            <span class="question-seq"
-              ><b>{{ index + 1 }}</b></span
-            >
+            <span class="question-seq"><b>{{ index + 1 }}</b></span>
             <span class="text">{{ question.text }}</span>
-            <span v-if="question.required" class="question-required">*</span>
+            <span
+              v-if="question.required"
+              class="question-required"
+            >*</span>
 
             <span
               class="sel-total"
               v-show="[12, 13, 14].includes(question.type)"
-              >(分值{{ question.point }})</span
-            >
+            >(分值{{ question.point }})</span>
             <el-tag v-if="[1, 7, 11, 13].includes(question.type)">多选</el-tag>
           </div>
           <div class="q-instruction">{{ question.comment }}</div>
@@ -42,7 +41,10 @@
           <!-- 单选题 -->
           <!-- @click.native.prevent="clickitem(question, index)" -->
           <div v-if="[0, 6, 10, 12].includes(question.type)">
-            <el-radio-group v-model="question.radio" disabled>
+            <el-radio-group
+              v-model="question.radio"
+              disabled
+            >
               <el-radio
                 v-for="(item, index) in question.selectionList"
                 :key="index"
@@ -53,44 +55,44 @@
               </el-radio>
             </el-radio-group>
             <div v-if="question.type === 12">
-              <div>
-                正确答案:选项{{ parseInt(question.correct_answer) + 1 }}
+              <div class="question-answer">
+                <b>正确答案: </b>选项{{ parseInt(question.correct_answer) + 1 }}
               </div>
               <div>
                 你的得分:{{question.grade}}
               </div>
-              <div>答案解析:{{ question.analysis }}</div>
+              <div v-show="question.analysis">答案解析:{{ question.analysis }}</div>
             </div>
           </div>
           <!-- 多选题 -->
           <div v-else-if="[1, 7, 11, 13].includes(question.type)">
-            <el-checkbox-group v-model="question.checkList" disabled>
+            <el-checkbox-group
+              v-model="question.checkList"
+              disabled
+            >
               <el-checkbox
                 v-for="(item, index) in question.selectionList"
                 :key="index"
                 :label="index"
-                >{{ item.content }}
+              >{{ item.content }}
                 <span class="q-instruction">{{ item.comment }}</span>
               </el-checkbox>
             </el-checkbox-group>
             <div v-if="question.type === 13">
-              <div>
-                正确答案:
+              <div class="question-answer">
+                <b>正确答案: </b>
                 <span
                   v-for="(item, index) in strtolist(question.correct_answer)"
                   :key="(item, index)"
                 >
                   选项{{ parseInt(item) + 1 }}
-                  <span
-                    v-if="index < strtolist(question.correct_answer).length - 1"
-                    >,</span
-                  >
+                  <span v-if="index < strtolist(question.correct_answer).length - 1">,</span>
                 </span>
               </div>
               <div>
                 你的得分:{{question.grade}}
               </div>
-              <div>答案解析:{{ question.analysis }}</div>
+              <div v-show="question.analysis">答案解析:{{ question.analysis }}</div>
             </div>
           </div>
           <!-- 评分题 -->
@@ -114,11 +116,11 @@
             >
             </el-input>
             <div v-if="question.type === 14">
-              <div>正确答案:{{ question.correct_answer }}</div>
+              <div class="question-answer"> <b>正确答案: </b>{{ question.correct_answer }}</div>
               <div>
                 你的得分:{{question.grade}}
               </div>
-              <div>答案解析:{{ question.analysis }}</div>
+              <div v-show="question.analysis">答案解析:{{ question.analysis }}</div>
             </div>
           </div>
 
@@ -129,7 +131,6 @@
                 </div> -->
         </div>
       </div>
-    </div>
     </div>
   </div>
 </template>
@@ -153,9 +154,9 @@ export default {
         return [];
       },
     },
-    total_grade:{
-        type: Number,
-        default: 0
+    total_grade: {
+      type: Number,
+      default: 0
     }
 
   },
@@ -201,19 +202,11 @@ export default {
 
 <style scoped>
 @import "../assets/css/icon/preview.css";
-#pre {
-  width: 1000px;
-  min-height: 100%;
-  margin: 0 auto;
-  overflow: hidden;
-  position: relative;
+
+.s-main {
+  padding-bottom: 100px;
 }
-#c-top {
-  margin-top: -8vh;
-  padding-top: 100px;
-  background: rgba(235, 246, 254, 1);
-  min-height: 100vh;
-}
+
 .skin-header {
   position: absolute;
   top: 0;
