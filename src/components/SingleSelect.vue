@@ -316,6 +316,7 @@
       v-show="!ismodify"
     >
       <el-button
+      v-show="!is_daka_two"
         @click="
           ismodify = true;
           $emit('ismodifying');
@@ -325,7 +326,7 @@
         <v-icon small>mdi-pencil</v-icon>修改
       </el-button>
       <el-button
-        v-show="!modify_limit"
+        v-show="!modify_limit && !is_daka_two"
         @click="deleteProblem"
         size="small"
       >
@@ -335,10 +336,10 @@
         @click="$emit('copy', problem_number)"
         size="small"
       >
-        <v-icon small>mdi-content-copy</v-icon>复制
+        <v-icon small>mdi-content-copy</v-icon>复制{{id_daka_two}}
       </el-button>
       <el-button
-        v-show="!modify_limit && !upmove_limit"
+        v-show="!modify_limit && !upmove_limit && !is_daka_two"
         @click="$emit('upMove', problem_number)"
         size="small"
       >
@@ -346,21 +347,21 @@
       </el-button>
 
       <el-button
-        v-show="!modify_limit && !upmove_limit"
+        v-show="!modify_limit && !upmove_limit && !is_daka_two"
         @click="$emit('upMoveFirst', problem_number)"
         size="small"
       >
         <v-icon small>mdi-arrow-collapse-up</v-icon>上移到最前
       </el-button>
       <el-button
-        v-show="!modify_limit"
+        v-show="!modify_limit && !is_daka_two"
         @click="$emit('downMove', problem_number)"
         size="small"
       >
         <v-icon small>mdi-arrow-down</v-icon>下移
       </el-button>
       <el-button
-        v-show="!modify_limit"
+        v-show="!modify_limit && !is_daka_two"
         @click="$emit('downMoveLast', problem_number)"
         size="small"
       >
@@ -428,7 +429,8 @@ export default {
       question_analysis: this.iscopy ? this.copy_info.question_analysis : "",
       point: this.iscopy ? this.copy_info.point : 0,
       isnot_kaoshi:false,
-      upmove_limit: this.copy_info.upmove_limit === undefined?false:true
+      upmove_limit: this.copy_info.upmove_limit === undefined?false:true,
+      is_daka_two:this.copy_info.is_daka_two === undefined?false:true
     };
   },
   created() {
