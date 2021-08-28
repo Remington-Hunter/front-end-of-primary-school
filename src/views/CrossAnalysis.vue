@@ -285,6 +285,7 @@
             :prop="item.prop"
             :label="item.label | ellipsis"
             align="center"
+            :render-header="renderHeader"
           >
             <template slot-scope="scope">
               <span>
@@ -374,33 +375,44 @@ export default {
     },
   },
   methods: {
-    // renderHeader(h, { column }) {
-    //   // h即为cerateElement的简写，具体可看vue官方文档
-    //   return h("div", [
-    //     h("span", column.label),
-    //     h(
-    //       "el-tooltip",
-    //       {
-    //         props: {
-    //           effect: "dark",
-    //           content:
-    //             "小时统计该时段整体数据，如当小时为09:00时，那统计的就是09:00-09:59时段的整体曝光量和设备屏数",
-    //           placement: "top",
-    //         },
-    //       },
-    //       [
-    //         h("i", {
-    //           class: "el-icon-question",
-    //           style: "color:#409eff;margin-left:5px;cursor:pointer;",
-    //         }),
-    //       ],
-    //       {
-    //         content:
-    //           "小时统计该时段整体数据，如当小时为9:00时，那统计的就是09:00-09:59时段的整体曝光量和设备屏数",
-    //       }
-    //     ),
-    //   ]);
-    // },
+    renderHeader(h, { column }) {
+      // h即为cerateElement的简写，具体可看vue官方文档
+      console.log('这是一个很有意思的内容')
+      var t=column.label;
+      
+      t=t.substring(0,t.length-3);
+      console.log(t);
+      for(var i=0;i<this.headArr.length;i++){
+        if(this.headArr[i].label.indexOf(t)!=-1){
+          t=this.headArr[i].label
+        }
+      }
+      console.log(t)
+      return h("div", [
+        h("span", column.label),
+        h(
+          "el-tooltip",
+          {
+            props: {
+              effect: "dark",
+              content:
+                t,
+              placement: "top",
+            },
+          },
+          [
+            h("i", {
+              class: "el-icon-question",
+              style: "color:#409eff;margin-left:5px;cursor:pointer;",
+            }),
+          ],
+          {
+            content:
+              "小时统计该时段整体数据，如当小时为9:00时，那统计的就是09:00-09:59时段的整体曝光量和设备屏数",
+          }
+        ),
+      ]);
+    },
     getAttendFalseList() {
       var Data = new FormData();
       Data.append("questionnaireId", this.id);
@@ -467,14 +479,7 @@ export default {
         data: {
           questionnaireId: this.id,
           personList: this.studentlist,
-          // studentlist=[
-          //   {
-          //   id:'',name:''
-          //   },
-          //   {
-          //     id:'',name:''
-          //   }
-          // ]
+
         },
         headers: {
           Authorization: window.localStorage.getItem("authorization"),
