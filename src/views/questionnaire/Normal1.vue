@@ -315,6 +315,16 @@ export default {
     copyQuestionnaireInfo(index) {
       this.title = this.copy_questionnaire_info.questionnaire.title;
       this.description = this.copy_questionnaire_info.questionnaire.description;
+      this.see_result=this.copy_questionnaire_info.questionnaire.canSee == 1? true: false
+      this.disorder=this.copy_questionnaire_info.questionnaire.disorder == 1?true :false
+      if(this.copy_questionnaire_info.questionnaire.startTime != null && this.copy_questionnaire_info.questionnaire.endTime != null){
+        this.value1=[]
+        this.has_time=true
+        this.start_time=this.copy_questionnaire_info.questionnaire.startTime;
+        this.value1.push(new Date(this.start_time.replace("T"," ")))
+        this.end_time=this.copy_questionnaire_info.questionnaire.endTime;
+        this.value1.push(new Date(this.end_time.replace("T"," ")))
+      }
       var x = this.copy_questionnaire_info.questionList;
       for (var i = 0; i < x.length; i++) {
         let item = {};
