@@ -85,6 +85,7 @@
             >提交数据</el-button>
           </div>
         </el-card>
+<<<<<<< HEAD
         <el-card v-show="ListOrProgress==true">
           <el-button
             type="primary"
@@ -105,6 +106,18 @@
                 label="姓名"
                 width="120"
               >
+=======
+        <el-card v-show="ListOrProgress == true">
+          <el-button type="primary" @click="click1(false)"
+            >待参与</el-button
+          >
+          <el-button type="primary" @click="click1(true)"
+            >已参与</el-button
+          >
+          <div v-show="attendtype ===false">
+            <el-table :data="attendFlase" border style="width: 100%">
+              <el-table-column prop="name" label="姓名" width="120">
+>>>>>>> wc
               </el-table-column>
               <el-table-column
                 prop="stuId"
@@ -115,6 +128,7 @@
 
             </el-table>
           </div>
+<<<<<<< HEAD
           <div v-show="attendtype==true">
             <div v-show="attendtype==false">
               <el-table
@@ -127,6 +141,11 @@
                   label="姓名"
                   width="120"
                 >
+=======
+          <div v-show="attendtype ===true">
+            <el-table :data="attendTrue" border style="width: 100%">
+                <el-table-column prop="name" label="姓名" width="120">
+>>>>>>> wc
                 </el-table-column>
                 <el-table-column
                   prop="stuId"
@@ -136,7 +155,6 @@
                 </el-table-column>
 
               </el-table>
-            </div>
           </div>
           <!-- <el-button type="primary">不在导入名单之内</el-button> -->
         </el-card>
@@ -234,13 +252,13 @@
               style="width: 100%"
               class="table"
             >
-              <el-table-column label="序号">
+              <el-table-column label="序号" :show-overflow-tooltip="true">
                 <template slot-scope="scope">
                   <!-- <i class="el-icon-time"></i> -->
                   <span style="margin-left: 10px">{{ scope.row.id }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="内容">
+              <el-table-column label="内容" :show-overflow-tooltip="true">
                 <template slot-scope="scope1">
                   <!-- <i class="el-icon-time"></i> -->
                   <span style="margin-left: 10px">{{
@@ -260,7 +278,7 @@
                   class="table"
                   border
                 >
-                  <el-table-column label="选项">
+                  <el-table-column label="选项" :show-overflow-tooltip="true">
                     <template slot-scope="scope2">
                       <!-- <i class="el-icon-time"></i> -->
                       <span style="margin-left: 10px">{{
@@ -274,6 +292,12 @@
                       <span style="margin-left: 10px">{{
                         scope3.row.num
                       }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="小计">
+                    <template slot-scope="scope3">
+                      
+                      <el-progress :percentage="scope3.row.progress"></el-progress>
                     </template>
                   </el-table-column>
                 </el-table>
@@ -372,6 +396,7 @@
             :prop="item.prop"
             :label="item.label | ellipsis"
             align="center"
+            :show-overflow-tooltip="true"
             :render-header="renderHeader"
           >
             <template slot-scope="scope">
@@ -456,6 +481,7 @@ export default {
       attendtype: false,
       attendFlase: [],
       attendTrue: [],
+      sum:[],
     };
   },
   components: {
@@ -482,6 +508,48 @@ export default {
     },
   },
   methods: {
+    click1(item){
+      this.attendtype=item;
+      // alert(this.attendtype);
+    },
+    renderHeader(h, { column }) {
+      // h即为cerateElement的简写，具体可看vue官方文档
+      console.log('这是一个很有意思的内容')
+      var t=column.label;
+      
+      t=t.substring(0,t.length-3);
+      console.log(t);
+      for(var i=0;i<this.headArr.length;i++){
+        if(this.headArr[i].label.indexOf(t)!=-1){
+          t=this.headArr[i].label
+        }
+      }
+      console.log(t)
+      return h("div", [
+        h("span", column.label),
+        h(
+          "el-tooltip",
+          {
+            props: {
+              effect: "dark",
+              content:
+                t,
+              placement: "top",
+            },
+          },
+          [
+            h("i", {
+              class: "el-icon-question",
+              style: "color:#409eff;margin-left:5px;cursor:pointer;",
+            }),
+          ],
+          {
+            content:
+              "小时统计该时段整体数据，如当小时为9:00时，那统计的就是09:00-09:59时段的整体曝光量和设备屏数",
+          }
+        ),
+      ]);
+    },
     getAttendFalseList() {
       var Data = new FormData();
       Data.append('questionnaireId', this.id);
@@ -497,11 +565,10 @@ export default {
         console.log('getList');
         console.log(res);
         this.attendFlase = res.data.data;
-      })
-      for (var i = 0; i < this.studentlist.length; i++) {
+        for (var i = 0; i < this.studentlist.length; i++) {
         var flag = 0;
-        for (var j = 0; j < this.attendTrue.length; j++) {
-          if (this.studentlis[i].stuId == this.attendFlase[j].stuId) {
+        for (var j = 0; j < this.attendFlase.length; j++) {
+          if (this.studentlist[i].stuId == this.attendFlase[j].stuId) {
             flag = 1;
             break;
           }
@@ -510,6 +577,10 @@ export default {
           this.attendTrue.push(this.studentlist[i]);
         }
       }
+      console.log('attendTrue')
+      console.log(this.attendTrue)
+      });
+      
     },
     getList() {
       var Data = new FormData();
@@ -523,8 +594,6 @@ export default {
           "Content-Type": "application/json",
         },
       }).then((res) => {
-        console.log('getList');
-        console.log(res);
         this.studentlist = res.data.data;
         this.getAttendFalseList();
       });
@@ -671,8 +740,10 @@ export default {
     },
     getCompletionData(data) {
       console.log("this is ");
+
       for (var i = 0; i < this.data.length; i++) {
-        console.log(data[i].question.type);
+        // console.log(data[i].question.type);
+        
         if (
           data[i].question.type === 2 ||
           data[i].question.type === 5 ||
@@ -694,20 +765,51 @@ export default {
         ) {
           var data_i = data[i].optionList;
           var item = [];
+          var num=0;
+          // var item1=[];
+          for (let j = 0; j < data_i.length; j++) {
+            num+=data_i[j].answerNum
+          }
+          console.log('num');
+          console.log(num);
           for (let j = 0; j < data_i.length; j++) {
             var c = "" + (j + 1) + "星";
             console.log(data[i]);
-            var s = { content: c, num: data_i[j].answerNum };
-            console.log("data_i[j].answerNum" + data_i[j].answerNum);
+            // item1.push(data_i[j].answerNum );
+            // // num+=
+            var progress=0;
+            if(num==0){
+              progress=0;
+            }
+            else{
+              progress=100*data_i[j].answerNum/num
+            }
+            progress=progress.toFixed(0)
+            var s = { content: c, num: data_i[j].answerNum,progress:progress};
+            
             item.push(s);
           }
           this.completion.push(item);
         } else {
           var data_i = data[i].optionList;
           var item = [];
+          var num=0;
+           for (let j = 0; j < data_i.length; j++) {
+            num+=data_i[j].answerNum
+          }
           for (let j = 0; j < data_i.length; j++) {
-            var s = { content: data_i[j].content, num: data_i[j].answerNum };
+            console.log(j);
+            var progress=0;
+            if(num==0){
+              progress=0;
+            }
+            else{
+              progress=100*data_i[j].answerNum/num
+            }
+            progress=progress.toFixed(0)
+            var s = { content: data_i[j].content, num: data_i[j].answerNum,progress:progress};
             item.push(s);
+            console.log("progress:"+progress);
           }
           this.completion.push(item);
         }
