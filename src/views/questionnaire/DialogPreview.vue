@@ -93,13 +93,26 @@
               </div>
               <div v-else-if="question.problem_type==='定位题'">
                 <el-input
-                  type="textarea"
-                  autosize
-                  placeholder="请输入内容"
+                  class="loc"
+                  v-show="locationInfo.country"
+                  readonly
                   v-model="locationInfo.country+locationInfo.province+locationInfo.city+locationInfo.district"
                 >
                 </el-input>
-                <el-button @click="getLocation()">定位</el-button>
+                <div>
+                  <v-btn
+                    @click="getLocation()"
+                    block
+                    outlined
+                    color="#C0C4CC"
+                  >
+                    <span style="color:#606266">
+                      <i
+                        class="el-icon-location-information"
+                        style="font-size:20px"
+                      ></i> 点击获取地理位置</span>
+                  </v-btn>
+                </div>
               </div>
             </div>
           </el-col>
@@ -118,8 +131,6 @@ export default {
     return {
       radio: "",
       checkList: [],
-      answer: "",
-      rating: 0,
       iconClasses: ['icon-rate-face-1', 'icon-rate-face-2', 'icon-rate-face-3'],
       locationInfo: {
         ip: '',

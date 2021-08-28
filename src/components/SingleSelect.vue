@@ -238,16 +238,18 @@
         </div>
         <!--        添加定位题-->
         <div v-else-if="problem_type === '定位题'">
-          <div class="rate">
-            <el-input
-              @change="$emit('answer_confirm')"
-              type="textarea"
-              autosize
-              placeholder="请输入答案"
-              v-model="answer"
+          <div style="margin:10px 0">
+            <v-btn
+              block
+              outlined
+              disabled
+              color="#C0C4CC"
             >
-            </el-input>
-            <el-button>定位</el-button>
+              <i
+                class="el-icon-location-information"
+                style="font-size:20px"
+              ></i>点击获取地理位置
+            </v-btn>
           </div>
         </div>
 
@@ -441,7 +443,6 @@ export default {
       this.preradio = this.radio
     },
     delete_item(index) {
-      console.log(index);
       this.selection_list.splice(index, 1);
       console.log(this.selection_list);
     },
