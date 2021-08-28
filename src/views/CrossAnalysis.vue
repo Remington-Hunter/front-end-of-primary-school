@@ -1,152 +1,147 @@
 <template>
   <div>
     <div class="c-head">
-      <span class="total">回收总量：</span>
+      <!-- <span class="total">回收总量：</span> -->
       <el-button
         v-if="num === 1"
-        @click="exportExcel"
+        @click="exportExcel('#demo2')"
         type="primary"
         class="d-btn"
-      >导出EXCEL</el-button>
+        >导出EXCEL</el-button
+      >
       <el-button
         v-if="num === 2"
         type="primary"
         @click="handleDown"
         class="d-btn"
-      ><i class="el-icon-download"></i> 下载PDF</el-button>
+        ><i class="el-icon-download"></i> 下载PDF</el-button
+      >
     </div>
     <div v-show="questionType == 4">
-      <el-button
-        type="primary"
-        @click="showDialog"
-      >查看每日进度</el-button>
-      <el-dialog
-        :visible.sync="ishow"
-        width="50%"
-        :before-close="handleClose"
-      >
-        <el-button
-          type="primary"
-          @click="ListOrProgress=false"
-        >
-          导入名单
+      <el-button type="primary" @click="showDialog">查看每日进度</el-button>
+      <el-dialog :visible.sync="ishow" width="50%" :before-close="handleClose">
+        <el-button type="primary" @click="ListOrProgress = false">
+          名单预览
         </el-button>
-        <el-button
-          type="primary"
-          @click="ListOrProgress=true"
-        >
+        <el-button type="primary" @click="ListOrProgress = true">
           参与进度
         </el-button>
-        <el-card v-show="ListOrProgress==false">
-          <el-table
-            :data="studentlist"
-            border
-            style="width: 100%"
-          >
-            <el-table-column
-              prop="name"
-              label="姓名"
-              width="120"
-            >
+        <el-card v-show="ListOrProgress == false">
+          <el-table :data="studentlist" border style="width: 100%">
+            <el-table-column prop="name" label="姓名" width="120">
             </el-table-column>
-            <el-table-column
-              prop="stuId"
-              label="学号"
-              width="120"
-            >
+            <el-table-column prop="stuId" label="学号" width="120">
             </el-table-column>
-            <el-table-column
-              label="操作"
-              width="100"
-            >
+            <el-table-column label="操作" width="100">
               <template slot-scope="scope">
                 <el-button
                   @click="deleteList(scope.row)"
                   type="text"
                   size="small"
-                >删除</el-button>
+                  >删除</el-button
+                >
               </template>
             </el-table-column>
           </el-table>
-          <div slot="header">请输入姓名和学号</div>
           <div>
-            <el-input
-              v-model="name"
-              placeholder="请输入姓名"
-            ></el-input>
-            <el-input
-              v-model="studentId"
-              placeholder="请输入学号"
-            ></el-input>
-            <el-button
-              type="primary"
-              @click="addlist"
-            >提交数据</el-button>
+            <el-button type="primary" @click="addbyhand = true"
+              >手动添加数据</el-button
+            >
+            <div v-show="addbyhand == true">
+              <el-input v-model="name" placeholder="请输入姓名"></el-input>
+              <el-input v-model="studentId" placeholder="请输入学号"></el-input>
+              <el-button type="primary" @click="addlist">确定添加</el-button>
+            </div>
+            <el-dialog
+              title=""
+              :visible.sync="showerro"
+              width="width"
+              :before-close="dialogBeforeClose"
+            >
+              <el-card>
+                <div >
+                  <el-table :data="error" border style="width: 100%">
+                    <el-table-column prop="stuId" label="学号" width="120">
+                    </el-table-column>
+                  </el-table>
+                </div>
+              </el-card>
+              <div slot="footer">
+                <el-button @click="showerro = false">取 消</el-button>
+                <el-button type="primary" @click="showerro = false"
+                  >确 定</el-button
+                >
+              </div>
+            </el-dialog>
+            <el-button type="primary" @click="exportExcel('#demo3')"
+              >下载模板</el-button
+            >
+            <el-upload
+              :limit="1"
+              class="upload-demo"
+              ref="upload"
+              action
+              :on-preview="handlePreview"
+              :on-remove="handleRemove"
+              :file-list="fileList"
+              :auto-upload="false"
+              :http-request="UploadSubmit"
+            >
+              <el-button slot="trigger" size="small" type="primary"
+                >选取文件</el-button
+              >
+              <div slot="tip" class="el-upload__tip">
+                请上传符合模板格式的文件
+              </div>
+              <el-button
+                type="success"
+                style="
+                  float: right;
+                  margin-right: 100px;
+                  background-color: #409eff;
+                "
+                @click="submitUpload"
+                >提交文章</el-button
+              >
+            </el-upload>
           </div>
         </el-card>
         <el-card v-show="ListOrProgress == true">
-          <el-button type="primary" @click="click1(false)"
-            >待参与</el-button
-          >
-          <el-button type="primary" @click="click1(true)"
-            >已参与</el-button
-          >
-          <div v-show="attendtype ===false">
+          <el-button type="primary" @click="click1(false)">待参与</el-button>
+          <el-button type="primary" @click="click1(true)">已参与</el-button>
+          <div v-show="attendtype === false">
             <el-table :data="attendFlase" border style="width: 100%">
               <el-table-column prop="name" label="姓名" width="120">
               </el-table-column>
-              <el-table-column
-                prop="stuId"
-                label="学号"
-                width="120"
-              >
+              <el-table-column prop="stuId" label="学号" width="120">
               </el-table-column>
-
             </el-table>
           </div>
-          <div v-show="attendtype ===true">
+          <div v-show="attendtype === true">
             <el-table :data="attendTrue" border style="width: 100%">
-                <el-table-column prop="name" label="姓名" width="120">
-                </el-table-column>
-                <el-table-column
-                  prop="stuId"
-                  label="学号"
-                  width="120"
-                >
-                </el-table-column>
-
-              </el-table>
+              <el-table-column prop="name" label="姓名" width="120">
+              </el-table-column>
+              <el-table-column prop="stuId" label="学号" width="120">
+              </el-table-column>
+            </el-table>
           </div>
         </el-card>
         <span
           slot="footer"
           class="dialog-footer"
-          v-show="ListOrProgress==false"
+          v-show="ListOrProgress == false"
         >
           <el-button @click="ishow = false">取 消</el-button>
-          <el-button
-            type="primary"
-            @click="submitList()"
-          >确 定</el-button>
+          <el-button type="primary" @click="submitList()">确 定</el-button>
         </span>
       </el-dialog>
     </div>
-    <div
-      class="c-center"
-      id="demo1"
-      v-if="num === 2"
-    >
-      <div
-        class="header-title"
-        style="color: #999; font-size: 20px"
-      >
+    <div class="c-center" id="demo1" v-if="num === 2">
+      <div class="header-title" style="color: #999; font-size: 20px">
         问卷ID:<span style="font-size: 20px; color: #999">{{ this.id }}</span>
       </div>
       <div class="content">
-        <div
-          v-for="(item, index) in data"
-          :key="index"
-        >
+        <div v-for="(item, index) in data" :key="index">
           <el-divider></el-divider>
           <div class="q-title">
             <div class="q-seq">
@@ -162,7 +157,8 @@
                 data[index].question.type == 12
               "
               class="question-type"
-            >单选题</span>
+              >单选题</span
+            >
             <span
               v-if="
                 data[index].question.type == 1 ||
@@ -171,7 +167,7 @@
                 data[index].question.type == 13
               "
               class="question-type"
-            >多选题
+              >多选题
             </span>
             <span
               v-if="
@@ -181,7 +177,8 @@
                 data[index].question.type == 15
               "
               class="question-type"
-            >填空题</span>
+              >填空题</span
+            >
             <span
               v-if="
                 data[index].question.type == 3 ||
@@ -189,19 +186,21 @@
                 data[index].question.type == 9
               "
               class="question-type"
-            >评分题</span>
+              >评分题</span
+            >
             <div v-if="questionType == 3">
               <div class="corret">正确率：{{ rate[index] }}</div>
               <div class="c-answer">正确答案：{{ rightAnswer[index] }}</div>
             </div>
           </div>
-
-          <div v-if="
+          <div
+            v-if="
               data[index].question.type === 2 ||
               data[index].question.type === 5 ||
               data[index].question.type === 14 ||
               data[index].question.type === 15
-            ">
+            "
+          >
             <el-table
               :data="completion[index]"
               style="width: 100%"
@@ -233,7 +232,7 @@
                   class="table"
                   border
                 >
-                  <el-table-column label="选项" :show-overflow-tooltip="true" >
+                  <el-table-column label="选项" :show-overflow-tooltip="true">
                     <template slot-scope="scope2">
                       <!-- <i class="el-icon-time"></i> -->
                       <span style="margin-left: 10px">{{
@@ -250,9 +249,11 @@
                     </template>
                   </el-table-column>
                   <el-table-column label="小计">
-                    <template slot-scope="scope3" >
-                      
-                      <el-progress :percentage="scope3.row.progress" style="width:250px"></el-progress>
+                    <template slot-scope="scope3">
+                      <el-progress
+                        :percentage="scope3.row.progress"
+                        style="width: 250px"
+                      ></el-progress>
                     </template>
                   </el-table-column>
                 </el-table>
@@ -310,10 +311,7 @@
               </el-button>
             </div>
             <div v-else>
-              <el-table
-                :data="completion[index]"
-                style="width: 100%"
-              >
+              <el-table :data="completion[index]" style="width: 100%">
                 <el-table-column label="序号">
                   <template slot-scope="scope">
                     <!-- <i class="el-icon-time"></i> -->
@@ -321,7 +319,7 @@
                   </template>
                 </el-table-column>
                 <el-table-column label="内容">
-                  <template slot-scope="scope1" >
+                  <template slot-scope="scope1">
                     <!-- <i class="el-icon-time"></i> -->
                     <span style="margin-left: 10px">{{
                       scope1.row.content
@@ -334,17 +332,9 @@
         </div>
       </div>
     </div>
-    <div
-      class="c-center"
-      v-else
-    >
+    <div class="c-center" v-else>
       <span v-if="questionType == 3"> 答卷平均分：{{ avg }} </span>
-      <el-table
-        :data="table1"
-        border
-        height="550"
-        style="width: 100%"
-      >
+      <el-table :data="table1" border height="550" style="width: 100%">
         <template v-for="(item, index) in headArr">
           <el-table-column
             :key="index"
@@ -370,9 +360,8 @@
           <el-table-column
             :key="index"
             :prop="item.prop"
-            :label="item.label "
+            :label="item.label"
             align="center"
-            
           >
             <template slot-scope="scope">
               <span>
@@ -381,6 +370,14 @@
             </template>
           </el-table-column>
         </template>
+      </el-table>
+    </div>
+    <div class="center" v-show="false" id="demo3">
+      <el-table :data="[]" style="width: 100%">
+        <el-table-column prop="date" label="姓名" width="180">
+        </el-table-column>
+        <el-table-column prop="name" label="学号" width="180">
+        </el-table-column>
       </el-table>
     </div>
   </div>
@@ -436,7 +433,11 @@ export default {
       attendtype: false,
       attendFlase: [],
       attendTrue: [],
-      sum:[],
+      sum: [],
+      fileList: [],
+      addbyhand: false,
+      showerro: false,
+      error:[],
     };
   },
   components: {
@@ -463,23 +464,76 @@ export default {
     },
   },
   methods: {
-    click1(item){
-      this.attendtype=item;
+    UploadSubmit(param) {
+      var file = param.file;
+      var file_form = new FormData(); //获取上传表单（文件）
+      file_form.append("file", file);
+      file_form.append("questionnaireId", this.id);
+      axios({
+        url: "https://www.azur1tee.top/api/person/lead_in_list_by_excel",
+        method: "POST",
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
+        },
+        data: file_form,
+      })
+        .then((res) => {
+          if(res.data.code==400){
+          this.showerro=true;
+          for(var i=0;i<res.data.data.length;i++){
+            var c={stuId:res.data.data[i]}
+            this.error.push(c);
+          }
+          // this.studentlist = res.data.data;
+          // this.getAttendFalseList();
+        }
+        else{
+          this.studentlist = res.data.data;
+          this.getAttendFalseList();
+        }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    submitUpload() {
+      this.$refs.upload.submit();
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
+    handleExceed(files, fileList) {
+      this.$message.warning(
+        `当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
+          files.length + fileList.length
+        } 个文件`
+      );
+    },
+    beforeRemove(file, fileList) {
+      return this.$confirm(`确定移除 ${file.name}？`);
+    },
+    click1(item) {
+      this.attendtype = item;
       // alert(this.attendtype);
     },
     renderHeader(h, { column }) {
       // h即为cerateElement的简写，具体可看vue官方文档
-      console.log('这是一个很有意思的内容')
-      var t=column.label;
-      
-      t=t.substring(0,t.length-3);
+      console.log("这是一个很有意思的内容");
+      var t = column.label;
+
+      t = t.substring(0, t.length - 3);
       console.log(t);
-      for(var i=0;i<this.headArr.length;i++){
-        if(this.headArr[i].label.indexOf(t)!=-1){
-          t=this.headArr[i].label
+      for (var i = 0; i < this.headArr.length; i++) {
+        if (this.headArr[i].label.indexOf(t) != -1) {
+          t = this.headArr[i].label;
         }
       }
-      console.log(t)
+      console.log(t);
       return h("div", [
         h("span", column.label),
         h(
@@ -487,8 +541,7 @@ export default {
           {
             props: {
               effect: "dark",
-              content:
-                t,
+              content: t,
               placement: "top",
             },
           },
@@ -507,7 +560,7 @@ export default {
     },
     getAttendFalseList() {
       var Data = new FormData();
-      Data.append('questionnaireId', this.id);
+      Data.append("questionnaireId", this.id);
       axios({
         url: "https://www.azur1tee.top/api/person/checkout_not_punch",
         method: "post",
@@ -517,29 +570,31 @@ export default {
           "Content-Type": "application/json",
         },
       }).then((res) => {
-        console.log('getList');
+        console.log("getList");
         console.log(res);
         this.attendFlase = res.data.data;
-        for (var i = 0; i < this.studentlist.length; i++) {
-        var flag = 0;
-        for (var j = 0; j < this.attendFlase.length; j++) {
-          if (this.studentlist[i].stuId == this.attendFlase[j].stuId) {
-            flag = 1;
-            break;
+        if (this.studentlist !== null) {
+          for (var i = 0; i < this.studentlist.length; i++) {
+            var flag = 0;
+            for (var j = 0; j < this.attendFlase.length; j++) {
+              if (this.studentlist[i].stuId == this.attendFlase[j].stuId) {
+                flag = 1;
+                break;
+              }
+            }
+            if (flag == 0) {
+              this.attendTrue.push(this.studentlist[i]);
+            }
           }
         }
-        if (flag == 0) {
-          this.attendTrue.push(this.studentlist[i]);
-        }
-      }
-      console.log('attendTrue')
-      console.log(this.attendTrue)
+
+        console.log("attendTrue");
+        console.log(this.attendTrue);
       });
-      
     },
     getList() {
       var Data = new FormData();
-      Data.append('questionnaireId', this.id);
+      Data.append("questionnaireId", this.id);
       axios({
         url: "https://www.azur1tee.top/api/person/get_all_list",
         method: "post",
@@ -549,8 +604,19 @@ export default {
           "Content-Type": "application/json",
         },
       }).then((res) => {
-        this.studentlist = res.data.data;
-        this.getAttendFalseList();
+        if(res.data.code==400){
+          this.showerro=true;
+          for(var i=0;i<res.data.data.length;i++){
+            var c={stuId:res.data.data[i]}
+            this.error.push(c);
+          }
+          // this.studentlist = res.data.data;
+          // this.getAttendFalseList();
+        }
+        else{
+          this.studentlist = res.data.data;
+          this.getAttendFalseList();
+        }
       });
     },
     deleteList(item) {
@@ -572,14 +638,6 @@ export default {
         data: {
           questionnaireId: this.id,
           personList: this.studentlist,
-          // studentlist=[
-          //   {
-          //   id:'',name:''
-          //   },
-          //   {
-          //     id:'',name:''
-          //   }
-          // ]
         },
         headers: {
           Authorization: window.localStorage.getItem("authorization"),
@@ -589,17 +647,22 @@ export default {
         console.log(res);
         this.getList();
         this.ishow = false;
-      })
+      });
     },
     addlist() {
       var c = { name: this.name, stuId: this.studentId };
+      if (this.studentlist == null) {
+        this.studentlist = [];
+        this.studentlist.push(c);
+        return;
+      }
       for (var i = 0; i < this.studentlist.length; i++) {
-        if (this.studentlist[i].id == this.studentId) {
+        if (this.studentlist[i].stuId == this.studentId) {
           this.$confirm("学号重复，无法添加")
             .then((_) => {
               done();
             })
-            .catch((_) => { });
+            .catch((_) => {});
           return;
         }
       }
@@ -613,7 +676,7 @@ export default {
         .then((_) => {
           done();
         })
-        .catch((_) => { });
+        .catch((_) => {});
     },
     showDialog() {
       this.ishow = true;
@@ -655,7 +718,7 @@ export default {
         }
       }
     },
-    exportExcel() {
+    exportExcel(id) {
       // 设置当前日期
       let time = new Date();
       let year = time.getFullYear();
@@ -665,7 +728,7 @@ export default {
       // console.log(name)
       /* generate workbook object from table */
       //  .table要导出的是哪一个表格
-      var wb = XLSX.utils.table_to_book(document.querySelector("#demo2"));
+      var wb = XLSX.utils.table_to_book(document.querySelector(id));
       console.log(wb.Sheets.Sheet1);
       /* get binary string as output */
       var wbout = XLSX.write(wb, {
@@ -698,7 +761,7 @@ export default {
 
       for (var i = 0; i < this.data.length; i++) {
         // console.log(data[i].question.type);
-        
+
         if (
           data[i].question.type === 2 ||
           data[i].question.type === 5 ||
@@ -720,51 +783,57 @@ export default {
         ) {
           var data_i = data[i].optionList;
           var item = [];
-          var num=0;
+          var num = 0;
           // var item1=[];
           for (let j = 0; j < data_i.length; j++) {
-            num+=data_i[j].answerNum
+            num += data_i[j].answerNum;
           }
-          console.log('num');
+          console.log("num");
           console.log(num);
           for (let j = 0; j < data_i.length; j++) {
             var c = "" + (j + 1) + "星";
             console.log(data[i]);
             // item1.push(data_i[j].answerNum );
             // // num+=
-            var progress=0;
-            if(num==0){
-              progress=0;
+            var progress = 0;
+            if (num == 0) {
+              progress = 0;
+            } else {
+              progress = (100 * data_i[j].answerNum) / num;
             }
-            else{
-              progress=100*data_i[j].answerNum/num
-            }
-            progress=progress.toFixed(0)
-            var s = { content: c, num: data_i[j].answerNum,progress:progress};
-            
+            progress = progress.toFixed(0);
+            var s = {
+              content: c,
+              num: data_i[j].answerNum,
+              progress: progress,
+            };
+
             item.push(s);
           }
           this.completion.push(item);
         } else {
           var data_i = data[i].optionList;
           var item = [];
-          var num=0;
-           for (let j = 0; j < data_i.length; j++) {
-            num+=data_i[j].answerNum
+          var num = 0;
+          for (let j = 0; j < data_i.length; j++) {
+            num += data_i[j].answerNum;
           }
           for (let j = 0; j < data_i.length; j++) {
             console.log(j);
-            var progress=0;
-            if(num==0){
-              progress=0;
+            var progress = 0;
+            if (num == 0) {
+              progress = 0;
+            } else {
+              progress = (100 * data_i[j].answerNum) / num;
             }
-            else{
-              progress=100*data_i[j].answerNum/num
-            }
-            progress=progress.toFixed(0)
-            var s = { content: data_i[j].content, num: data_i[j].answerNum,progress:progress};
+            progress = progress.toFixed(0);
+            var s = {
+              content: data_i[j].content,
+              num: data_i[j].answerNum,
+              progress: progress,
+            };
             item.push(s);
-            console.log("progress:"+progress);
+            console.log("progress:" + progress);
           }
           this.completion.push(item);
         }
