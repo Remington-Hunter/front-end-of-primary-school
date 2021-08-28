@@ -119,6 +119,7 @@
             :disabled="confirmstate"
           >确认</el-button>
           <el-button
+          :disabled="modify_limit"
             @click="cancel"
             v-show="cancel_button"
           >取消</el-button>
@@ -186,6 +187,7 @@
           :disabled="writeconfirmstate"
         >确认</el-button>
         <el-button
+          :disabled="modify_limit"
           @click="cancel"
           v-show="cancel_button"
         >取消</el-button>

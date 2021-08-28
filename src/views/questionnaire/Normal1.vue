@@ -463,6 +463,8 @@ export default {
         item.answer = x.answer; //填空答案
         item.rating = x.rating; //评分分数
         item.must_write_select = x.must_write_select; //题目是否必选
+        item.point = x.point
+        item.question_analysis=x.question_analysis
         list.push(item);
       }
       var obj1 = {};
@@ -475,6 +477,7 @@ export default {
         description: this.description,
         questionnaire_state: "preparing",
       };
+      console.log(obj1.preview_list);
       this.$emit("currentQuestionnaire", obj1);
     },
     total_problem_change() {

@@ -335,6 +335,46 @@ export default {
         //alert(this.input);
       });
     },
+    problem_type_info(num) {
+      switch (num) {
+        case 0:
+          return "单选题";
+          break;
+        case 1:
+          return "多选题";
+          break;
+        case 2:
+          return "填空题";
+          break;
+        case 3:
+          return "评分题";
+          break;
+        case 6:
+          return "报名单选题";
+          break;
+        case 7:
+          return "报名多选题";
+          break;
+        case 10:
+          return "投票单选题";
+          break;
+        case 11:
+          return "投票多选题";
+          break;
+        case 12:
+          return "考试单选题";
+          break;
+        case 13:
+          return "考试多选题";
+          break;
+        case 14:
+          return "考试填空题";
+          break;
+        case 15:
+          return "定位题";
+          break;
+      }
+    },
   },
   created() {
     let query = this.$route.query;
@@ -369,6 +409,34 @@ export default {
       x.modify_type = parseInt(this.modify_type)
       this.copy_questionnaire_info = x
       console.log(x);
+
+      //刷新时的预览
+      this.title=x.questionnaire.title
+      this.description=x.questionnaire.description
+      var list = [];
+      var y=x.questionList
+      for (var i = 0; i < y.length; i++) {
+        let item = {};
+        item.problem_type = this.problem_type_info(y[i].question.type); //问题种类
+        item.problem_number = y[i].question.number; //问题题号
+        item.name = y[i].question.content; //题目名字
+        item.instruction = y[i].question.comment; //题目备注
+        // item.selection_list = x.selection_list; //选择选项列表
+        item.selection_list=[]
+        for(var j =0;j<y[i].optionList.length;j++){
+          var zz={}
+          zz.content=y[i].optionList[j].content
+          zz.total=y[i].optionList[j].limit
+          zz.comment=y[i].optionList[j].comment
+          item.selection_list.push(zz)
+        }
+        item.must_write_select = y[i].question.required == 1?true:false; //题目是否必选
+        item.point = y[i].question.point
+        item.question_analysis=y[i].question.analysis
+        list.push(item);
+      }
+      this.preview_list=list
+      console.log(list);
     })
   }
 };
