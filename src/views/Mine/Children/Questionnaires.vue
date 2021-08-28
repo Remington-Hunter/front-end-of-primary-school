@@ -39,6 +39,7 @@
         no-results-text="未搜索到相关问卷"
         :loading="loading_visible"
         loading-text="等待加载中"
+        :footer-props="{'items-per-page-text':'每页显示行数'}"
       >
         <template v-slot:[`item.name`]="{ item }">
           <div style="max-width: 160px;overflow: hidden;text-overflow:ellipsis;white-space:nowrap;">
@@ -302,13 +303,13 @@ export default {
     },
     checkAnalysis(id, type) {
       if (type == '考试问卷') {
-        this.$router.push({ name: "statistics", params: { id: id ,type:3} });
+        this.$router.push({ name: "statistics", params: { id: id, type: 3 } });
       }
-      else if(type=='疫情打卡问卷'){
-        this.$router.push({ name: "statistics", params: { id: id ,type:4} });
+      else if (type == '疫情打卡问卷') {
+        this.$router.push({ name: "statistics", params: { id: id, type: 4 } });
       }
       else {
-        this.$router.push({ name: "statistics", params: { id: id ,type:0} });
+        this.$router.push({ name: "statistics", params: { id: id, type: 0 } });
       }
     },
     lookUpLink(id) {
