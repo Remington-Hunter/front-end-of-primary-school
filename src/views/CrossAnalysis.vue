@@ -2,63 +2,160 @@
   <div>
     <div id="head">
       <el-button
-        v-if="num===1"
+        v-if="num === 1"
         @click="exportExcel"
         type="primary"
         class="d-btn"
-      >导出EXCEL</el-button>
+        >导出EXCEL</el-button
+      >
       <el-button
-        v-if="num===2"
+        v-if="num === 2"
         type="primary"
         @click="handleDown"
         class="d-btn"
-      ><i class="el-icon-download"></i> 下载PDF</el-button>
+        ><i class="el-icon-download"></i> 下载PDF</el-button
+      >
     </div>
-    <div
-      class="center"
-      id="demo1"
-      v-if="num===2"
-    >
-      <div
-        class="header-title"
-        style="color:#999;font-size:20px"
-      >问卷ID:<span style="font-size:20px;color:#999">{{this.id}}</span></div>
+    <div v-show="questionType == 4">
+      <el-button type="primary" @click="showDialog">查看每日进度</el-button>
+      <el-dialog
+        :visible.sync="ishow"
+        width="50%"
+        :before-close="handleClose"
+      >
+      <el-button type="primary" @click="ListOrProgress=false">
+        导入名单
+      </el-button>
+      <el-button type="primary" @click="ListOrProgress=true">
+        参与进度
+      </el-button>
+        <el-card v-show="ListOrProgress==false">
+          <el-table :data="studentlist" border style="width: 100%">
+            <el-table-column prop="name" label="姓名" width="120">
+            </el-table-column>
+            <el-table-column prop="stuId" label="学号" width="120">
+            </el-table-column>
+            <el-table-column label="操作" width="100">
+              <template slot-scope="scope">
+                <el-button
+                  @click="deleteList(scope.row)"
+                  type="text"
+                  size="small"
+                  >删除</el-button
+                >
+                <!-- <el-button type="text" size="small">编辑</el-button> -->
+              </template>
+            </el-table-column>
+          </el-table>
+          <div slot="header">请输入姓名和学号</div>
+          <div>
+            <el-input v-model="name" placeholder="请输入姓名"></el-input>
+            <el-input v-model="studentId" placeholder="请输入学号"></el-input>
+            <el-button type="primary" @click="addlist">提交数据</el-button>
+          </div>
+        </el-card>
+        <el-card v-show="ListOrProgress==true">
+          <el-button type="primary" @click="attendtype=false">待参与</el-button>
+          <el-button type="primary" @click="attendtype=true">已参与</el-button>
+          <div v-show="attendtype==false">
+            <el-table :data="attendFlase" border style="width: 100%">
+            <el-table-column prop="name" label="姓名" width="120">
+            </el-table-column>
+            <el-table-column prop="stuId" label="学号" width="120">
+            </el-table-column>
+            
+          </el-table>
+          </div>
+          <div v-show="attendtype==true">
+            <div v-show="attendtype==false">
+            <el-table :data="attendFlase" border style="width: 100%">
+            <el-table-column prop="name" label="姓名" width="120">
+            </el-table-column>
+            <el-table-column prop="stuId" label="学号" width="120">
+            </el-table-column>
+            
+          </el-table>
+          </div>
+          </div>
+          <!-- <el-button type="primary">不在导入名单之内</el-button> -->
+        </el-card>
+        <span slot="footer" class="dialog-footer" v-show="ListOrProgress==false">
+          <el-button @click="ishow = false">取 消</el-button>
+          <el-button type="primary" @click="submitList()">确 定</el-button>
+        </span>
+      </el-dialog>
+    </div>
+    <div class="center" id="demo1" v-if="num === 2">
+      <div class="header-title" style="color: #999; font-size: 20px">
+        问卷ID:<span style="font-size: 20px; color: #999">{{ this.id }}</span>
+      </div>
       <div class="content">
-        <div
-          v-for="(item, index) in data"
-          :key="index"
-        >
+        <div v-for="(item, index) in data" :key="index">
           <el-divider></el-divider>
           <div class="question-head">
             <div class="question-title">
-              <span class="question-seq"><b>第{{ index + 1 }}题：</b></span>
+              <span class="question-seq"
+                ><b>第{{ index + 1 }}题：</b></span
+              >
               <span class="text">{{ data[index].question.content }}</span>
               <span
-                v-if="data[index].question.type == 0||data[index].question.type == 6||data[index].question.type == 10||data[index].question.type == 12"
+                v-if="
+                  data[index].question.type == 0 ||
+                  data[index].question.type == 6 ||
+                  data[index].question.type == 10 ||
+                  data[index].question.type == 12
+                "
                 class="question-type"
-              >单选题</span>
+                >单选题</span
+              >
               <span
-                v-if="data[index].question.type == 1||data[index].question.type == 7||data[index].question.type == 11||data[index].question.type == 13"
+                v-if="
+                  data[index].question.type == 1 ||
+                  data[index].question.type == 7 ||
+                  data[index].question.type == 11 ||
+                  data[index].question.type == 13
+                "
                 class="question-type"
-              >多选题 
-              
+                >多选题
               </span>
               <span
-                v-if="data[index].question.type == 2||data[index].question.type == 5||data[index].question.type == 14||data[index].question.type == 15"
+                v-if="
+                  data[index].question.type == 2 ||
+                  data[index].question.type == 5 ||
+                  data[index].question.type == 14 ||
+                  data[index].question.type == 15
+                "
                 class="question-type"
-              >填空题</span>
+                >填空题</span
+              >
               <span
-                v-if="data[index].question.type == 3||data[index].question.type == 4||data[index].question.type == 9"
+                v-if="
+                  data[index].question.type == 3 ||
+                  data[index].question.type == 4 ||
+                  data[index].question.type == 9
+                "
                 class="question-type"
-              >评分题</span>
-              <div v-if="questionType==3">
-                <span class="question-seq">正确率：{{rate[index]}}</span>
-                <span class="question-seq">正确答案：{{rightAnswer[index]}}</span>
-                <span class="question-seq">题目平均分：{{avglist[index]}}</span>
+                >评分题</span
+              >
+              <div v-if="questionType == 3">
+                <span class="question-seq">正确率：{{ rate[index] }}</span>
+                <span class="question-seq"
+                  >正确答案：{{ rightAnswer[index] }}</span
+                >
+                <span class="question-seq"
+                  >题目平均分：{{ avglist[index] }}</span
+                >
               </div>
             </div>
           </div>
-          <div v-if="data[index].question.type === 2||data[index].question.type === 5||data[index].question.type === 14||data[index].question.type === 15">
+          <div
+            v-if="
+              data[index].question.type === 2 ||
+              data[index].question.type === 5 ||
+              data[index].question.type === 14 ||
+              data[index].question.type === 15
+            "
+          >
             <el-table
               :data="completion[index]"
               style="width: 100%"
@@ -161,10 +258,7 @@
               </el-button>
             </div>
             <div v-else>
-              <el-table
-                :data="completion[index]"
-                style="width: 100%"
-              >
+              <el-table :data="completion[index]" style="width: 100%">
                 <el-table-column label="序号">
                   <template slot-scope="scope">
                     <!-- <i class="el-icon-time"></i> -->
@@ -185,19 +279,9 @@
         </div>
       </div>
     </div>
-    <div
-      class="center"
-      v-else
-    >
-    <span v-if="questionType==3">
-      答卷平均分：{{avg}}
-    </span>
-      <el-table
-        :data="table1"
-        border
-        height="550"
-        style="width: 100%"
-      >
+    <div class="center" v-else>
+      <span v-if="questionType == 3"> 答卷平均分：{{ avg }} </span>
+      <el-table :data="table1" border height="550" style="width: 100%">
         <template v-for="(item, index) in headArr">
           <el-table-column
             :key="index"
@@ -240,7 +324,7 @@ export default {
       id: this.id1,
       bar: [],
       data: [],
-      data1:[],
+      data1: [],
       pie: [],
       col: [],
       line: [],
@@ -253,11 +337,19 @@ export default {
       answerData: [],
       headArr: [],
       table1: [],
-      questionType:3,
-      rate:[],
-      rightAnswer:[],
-      avg:0,
-      avglist:[]
+      questionType: 3,
+      rate: [],
+      rightAnswer: [],
+      avg: 0,
+      avglist: [],
+      ishow: false,
+      studentId: "",
+      name: "",
+      studentlist: [],
+      ListOrProgress:false,
+      attendtype:false,
+      attendFlase:[],
+      attendTrue:[],
     };
   },
   components: {
@@ -269,46 +361,161 @@ export default {
   },
   mounted() {
     this.id = this.$route.params.id;
-    this.questionType=this.$route.params.type
+    this.questionType = this.$route.params.type;
     this.getseries();
     this.getAnswerData();
+    this.getList();
   },
 
   methods: {
- 
-    getRate(data){
-      if(this.questionType!==3){
-        return;
-      }
-      else{
-        for(var i=0;i<data.length;i++){
-        var t=data[i].question.rate;
-        t=t*100;
-        t=t.toFixed(2)
-        t=''+t+'%';
-        this.rate.push(t);
-        if(data[i].question.type==2||data[i].question.type==25||data[i].question.type==14){
-          this.rightAnswer.push(data[i].question.answer)
-        }
-        else{
-          var s='';
-          
-          for(var j=0;j<data[i].question.answer.length;j++){
-            if(j==0){
-              s=data[i].optionList[data[i].question.answer[j]-'0'].content;
-            }
-            else{
-              s+='、'+data[i].optionList[data[i].question.answer[j]-'0'].content;
-            }
+    getAttendFalseList(){
+      var Data=new FormData();
+      Data.append('questionnaireId',this.id);
+      axios({
+        url: "https://www.azur1tee.top/api/person/checkout_not_punch",
+        method: "post",
+        data:Data,
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
+        },
+      }).then((res)=>{
+        console.log('getList');
+        console.log(res);
+        this.attendFlase=res.data.data;
+      })
+      for(var i=0;i<this.studentlist.length;i++){
+        var flag=0;
+        for(var j=0;j<this.attendTrue.length;j++){
+          if(this.studentlis[i].stuId==this.attendFlase[j].stuId){
+            flag=1;
+            break;
           }
-          this.rightAnswer.push(s);
         }
-        t=data[i].question.rate*data.length;
-        t=t.toFixed(2);
-        this.avglist.push(t);
+        if(flag==0){
+          this.attendTrue.push(this.studentlist[i]);
+        }
       }
+    },
+    getList(){
+      var Data=new FormData();
+      Data.append('questionnaireId',this.id);
+      axios({
+        url: "https://www.azur1tee.top/api/person/get_all_list",
+        method: "post",
+        data:Data,
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
+        },
+      }).then((res)=>{
+        console.log('getList');
+        console.log(res);
+        this.studentlist=res.data.data;
+        this.getAttendFalseList();
+      })
+    },
+    deleteList(item) {
+      var index = -1;
+      console.log(item);
+      for (var i = 0; i < this.studentlist; i++) {
+        if (item.stuId == this.studentlist[i].stuId) {
+          index = i;
+          break;
+        }
       }
-      
+      this.studentlist.splice(index,1);
+    },
+    submitList() {
+      // console.log(this.studentlist);
+      axios({
+        url: "https://www.azur1tee.top/api/person/lead_in_list",
+        method: "post",
+        data: {
+          questionnaireId:this.id,
+          personList:this.studentlist,
+          // studentlist=[
+          //   {
+          //   id:'',name:''
+          //   },
+          //   {
+          //     id:'',name:''
+          //   }
+          // ]
+        },
+        headers: {
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
+        },
+      }).then((res)=>{
+        console.log(res);
+        this.getList();
+        this.ishow=false;
+      })
+    },
+    addlist() {
+      var c = { name: this.name, stuId: this.studentId };
+      for (var i = 0; i < this.studentlist.length; i++) {
+        if (this.studentlist[i].id == this.studentId) {
+          this.$confirm("学号重复，无法添加")
+            .then((_) => {
+              done();
+            })
+            .catch((_) => {});
+            return;
+        }
+      }
+      this.studentlist.push(c);
+      console.log(this.studentlist);
+      this.name = "";
+      this.studentId = "";
+    },
+    handleClose(done) {
+      this.$confirm("确认关闭？")
+        .then((_) => {
+          done();
+        })
+        .catch((_) => {});
+    },
+    showDialog() {
+      this.ishow = true;
+    },
+    getRate(data) {
+      if (this.questionType !== 3) {
+        return;
+      } else {
+        for (var i = 0; i < data.length; i++) {
+          var t = data[i].question.rate;
+          t = t * 100;
+          t = t.toFixed(2);
+          t = "" + t + "%";
+          this.rate.push(t);
+          if (
+            data[i].question.type == 2 ||
+            data[i].question.type == 25 ||
+            data[i].question.type == 14
+          ) {
+            this.rightAnswer.push(data[i].question.answer);
+          } else {
+            var s = "";
+
+            for (var j = 0; j < data[i].question.answer.length; j++) {
+              if (j == 0) {
+                s =
+                  data[i].optionList[data[i].question.answer[j] - "0"].content;
+              } else {
+                s +=
+                  "、" +
+                  data[i].optionList[data[i].question.answer[j] - "0"].content;
+              }
+            }
+            this.rightAnswer.push(s);
+          }
+          t = data[i].question.rate * data.length;
+          t = t.toFixed(2);
+          this.avglist.push(t);
+        }
+      }
     },
     exportExcel() {
       // 设置当前日期
@@ -349,13 +556,14 @@ export default {
       this.$set(this.states, index, num);
     },
     getCompletionData(data) {
-      console.log('this is ')
+      console.log("this is ");
       for (var i = 0; i < this.data.length; i++) {
-        console.log(data[i].question.type )
+        console.log(data[i].question.type);
         if (
           data[i].question.type === 2 ||
           data[i].question.type === 5 ||
-          data[i].question.type === 14||data[i].question.type === 15
+          data[i].question.type === 14 ||
+          data[i].question.type === 15
         ) {
           // console.log(11)
           var data_i = data[i].answerList;
@@ -365,7 +573,11 @@ export default {
             item.push(s);
           }
           this.completion.push(item);
-        } else if (data[i].question.type === 3||data[i].question.type ===4||data[i].question.type ===9) {
+        } else if (
+          data[i].question.type === 3 ||
+          data[i].question.type === 4 ||
+          data[i].question.type === 9
+        ) {
           var data_i = data[i].optionList;
           var item = [];
           for (let j = 0; j < data_i.length; j++) {
@@ -392,11 +604,12 @@ export default {
     getBarData(data) {
       // console.log(data.length);
       for (var i = 0; i < data.length; i++) {
-        console.log(i)
+        console.log(i);
         if (
           data[i].question.type === 2 ||
           data[i].question.type == 5 ||
-          data[i].question.type == 14||data[i].question.type==15
+          data[i].question.type == 14 ||
+          data[i].question.type == 15
         ) {
           // console.log(11)
           var data_i = data[i].answerList;
@@ -416,10 +629,10 @@ export default {
             var s = [data_i[j].answerNum, c];
             console.log(c);
             item.push(s);
-            console.log(item)
+            console.log(item);
           }
           this.bar.push(item);
-          console.log(item)
+          console.log(item);
         } else {
           var data_i = data[i].optionList;
           var item = [];
@@ -428,7 +641,7 @@ export default {
             item.push(s);
           }
           this.bar.push(item);
-          console.log(item)
+          console.log(item);
           // console.log(22)
         }
         // console.log(data[i])
@@ -451,7 +664,7 @@ export default {
       }).then((res) => {
         var data = res.data.data;
         console.log(res);
-        console.log('res');
+        console.log("res");
         this.data = data;
         this.getBarData(data);
         // console.log('bar');
@@ -468,7 +681,7 @@ export default {
     getAnswerData() {
       var Data = new FormData();
       Data.append("id", this.id);
-      Data.append("byGrade",1);
+      Data.append("byGrade", 1);
       axios({
         url: "https://www.azur1tee.top/api/answer/get_result_by_questionnaire",
         method: "post",
@@ -478,12 +691,12 @@ export default {
         },
       }).then((res) => {
         var data = res.data.data;
-        this.data1=data;
-        this.avg=0;
-        for(var i=0;i<data.answerInfo.length;i++){
-          this.avg+=data.answerInfo[i].info.point;
+        this.data1 = data;
+        this.avg = 0;
+        for (var i = 0; i < data.answerInfo.length; i++) {
+          this.avg += data.answerInfo[i].info.point;
         }
-        this.avg=this.avg/(data.answerInfo.length)
+        this.avg = this.avg / data.answerInfo.length;
         this.getAnswerExcel(data);
       });
     },
@@ -505,15 +718,15 @@ export default {
         c = { label: s, prop: (i + 1).toString() };
         this.headArr.push(c);
       }
-      if(this.questionType===3){
-        c={ label: '总成绩', prop: (i + 1).toString() };
+      if (this.questionType === 3) {
+        c = { label: "总成绩", prop: (i + 1).toString() };
         // console.log('11111');
         this.headArr.push(c);
       }
     },
     getAnswerExcel(data) {
       this.getprops(data);
-      console.log('this.headArr')
+      console.log("this.headArr");
       console.log(this.headArr);
       this.table1 = [];
       var answerData = data.answerInfo;
@@ -527,7 +740,8 @@ export default {
           if (
             data.questionInfo[j].info.type == 2 ||
             data.questionInfo[j].info.type == 5 ||
-            data.questionInfo[j].info.type == 14||data.questionInfo[j].info.type == 15
+            data.questionInfo[j].info.type == 14 ||
+            data.questionInfo[j].info.type == 15
           ) {
             if (item[j].content == "") {
               c[(j + 1).toString()] = "用户未填写";
@@ -550,15 +764,16 @@ export default {
               } else {
                 t += "、" + data.questionInfo[j].optionList[num].content;
               }
-              
             }
-            if(t==''){t='用户未填写'}
+            if (t == "") {
+              t = "用户未填写";
+            }
             c[(j + 1).toString()] = t;
           }
         }
-        if(this.questionType===3){
-          console.log(data.answerInfo[i].point)
-          c[(item.length+1).toString()]=data.answerInfo[i].info.point;
+        if (this.questionType === 3) {
+          console.log(data.answerInfo[i].point);
+          c[(item.length + 1).toString()] = data.answerInfo[i].info.point;
         }
         this.table1.push(c);
       }
@@ -619,7 +834,8 @@ export default {
         if (
           data[i].question.type == 2 ||
           data[i].question.type == 5 ||
-          data[i].question.type == 14||data[i].question.type == 15
+          data[i].question.type == 14 ||
+          data[i].question.type == 15
         ) {
           var data_i = data[i].answerList;
           var item = [];
@@ -659,7 +875,8 @@ export default {
         if (
           data[i].question.type == 2 ||
           data[i].question.type == 5 ||
-          data[i].question.type ==14 ||data[i].question.type == 15
+          data[i].question.type == 14 ||
+          data[i].question.type == 15
         ) {
           var data_i = data[i].answerList;
           var item = [];
@@ -693,7 +910,8 @@ export default {
         if (
           data[i].question.type == 2 ||
           data[i].question.type == 5 ||
-          data[i].question.type ==14  || data[i].question.type == 15
+          data[i].question.type == 14 ||
+          data[i].question.type == 15
         ) {
           var data_i = data[i].answerList;
           var item = [];
