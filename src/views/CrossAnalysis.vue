@@ -1,6 +1,7 @@
 <template>
   <div>
     <div id="head">
+<<<<<<< HEAD
       <el-button
         v-if="num === 1"
         @click="exportExcel"
@@ -15,6 +16,21 @@
         class="d-btn"
         ><i class="el-icon-download"></i> 下载PDF</el-button
       >
+=======
+      <span class="total">总回收量：</span>
+      <div class="d-btn">
+        <el-button
+          v-if="num===1"
+          @click="exportExcel"
+          type="primary"
+        >导出EXCEL</el-button>
+        <el-button
+          v-if="num===2"
+          type="primary"
+          @click="handleDown"
+        ><i class="el-icon-download"></i> 下载PDF</el-button>
+      </div>
+>>>>>>> 8589e92ae7bf49667ad1a2ff72442466093a7de5
     </div>
     <div v-show="questionType == 4">
       <el-button type="primary" @click="showDialog">查看每日进度</el-button>
@@ -92,70 +108,34 @@
       <div class="content">
         <div v-for="(item, index) in data" :key="index">
           <el-divider></el-divider>
-          <div class="question-head">
-            <div class="question-title">
-              <span class="question-seq"
-                ><b>第{{ index + 1 }}题：</b></span
-              >
-              <span class="text">{{ data[index].question.content }}</span>
-              <span
-                v-if="
-                  data[index].question.type == 0 ||
-                  data[index].question.type == 6 ||
-                  data[index].question.type == 10 ||
-                  data[index].question.type == 12
-                "
-                class="question-type"
-                >单选题</span
-              >
-              <span
-                v-if="
-                  data[index].question.type == 1 ||
-                  data[index].question.type == 7 ||
-                  data[index].question.type == 11 ||
-                  data[index].question.type == 13
-                "
-                class="question-type"
-                >多选题
-              </span>
-              <span
-                v-if="
-                  data[index].question.type == 2 ||
-                  data[index].question.type == 5 ||
-                  data[index].question.type == 14 ||
-                  data[index].question.type == 15
-                "
-                class="question-type"
-                >填空题</span
-              >
-              <span
-                v-if="
-                  data[index].question.type == 3 ||
-                  data[index].question.type == 4 ||
-                  data[index].question.type == 9
-                "
-                class="question-type"
-                >评分题</span
-              >
-              <div v-if="questionType == 3">
-                <span class="question-seq">正确率：{{ rate[index] }}</span>
-                <span class="question-seq"
-                  >正确答案：{{ rightAnswer[index] }}</span
-                >
-                <span class="question-seq"
-                  >题目平均分：{{ avglist[index] }}</span
-                >
-              </div>
+          <div class="question-title">
+            <div class="question-seq"><b>第{{ index + 1 }}题</b></div><br>
+            <span class="text">题目：{{ data[index].question.content }}</span>
+            <span
+              v-if="data[index].question.type == 0||data[index].question.type == 6||data[index].question.type == 10||data[index].question.type == 12"
+              class="question-type"
+            >单选题</span>
+            <span
+              v-if="data[index].question.type == 1||data[index].question.type == 7||data[index].question.type == 11||data[index].question.type == 13"
+              class="question-type"
+            >多选题
+
+            </span>
+            <span
+              v-if="data[index].question.type == 2||data[index].question.type == 5||data[index].question.type == 14||data[index].question.type == 15"
+              class="question-type"
+            >填空题</span>
+            <span
+              v-if="data[index].question.type == 3||data[index].question.type == 4||data[index].question.type == 9"
+              class="question-type"
+            >评分题</span>
+            <div v-if="questionType==3">
+              <div class="corret">正确率：{{rate[index]}}</div>
+              <div class="c-answer">正确答案：{{rightAnswer[index]}}</div>
             </div>
           </div>
-          <div
-            v-if="
-              data[index].question.type === 2 ||
-              data[index].question.type === 5 ||
-              data[index].question.type === 14 ||
-              data[index].question.type === 15
-            "
-          >
+
+          <div v-if="data[index].question.type === 2||data[index].question.type === 5||data[index].question.type === 14||data[index].question.type === 15">
             <el-table
               :data="completion[index]"
               style="width: 100%"

@@ -8,7 +8,8 @@
         <el-menu :default-openeds="['1', '2']">
           <el-submenu index="1">
             <template slot="title"><i class="el-icon-menu"></i>题目控件</template>
-            <el-menu-item
+            <div v-if="[0,1,2,4].includes(type)">
+              <el-menu-item
               v-for="(item, index) in problem_list"
               :key="(item, index)"
               @click="newProblem(item.text, false, {})"
@@ -16,6 +17,7 @@
               <v-icon>{{ item.icon }}</v-icon>
               {{ item.text }}
             </el-menu-item>
+            </div>
             <div v-if="type === 0">
               <el-menu-item
                 v-for="(item, index) in problem_list0"
@@ -304,7 +306,6 @@ export default {
         { text: "报名多选题", icon: "mdi-check-bold" },
       ],
       problem_list3: [
-        { text: "单选题", icon: "mdi-radiobox-marked" },
         { text: "考试填空题", icon: "mdi-checkbox-blank-outline" },
         { text: "考试单选题", icon: "mdi-radiobox-marked" },
         { text: "考试多选题", icon: "mdi-check-bold" },
@@ -348,6 +349,7 @@ export default {
         obj.point = x[i].question.point
         obj.question_analysis = x[i].question.analysis
         obj.ismodify = false
+        
         var list = [];
         for (var j = 0; j < x[i].optionList.length; j++) {
           var listitem = {};
@@ -504,6 +506,9 @@ export default {
         item.type = index;
         item.number = this.total_problem;
         item.iscopy = iscopy;
+        if(this.copy_questionnaire_info.modify_type === 1){
+          copy_info.upmove_limit=true
+        }
         item.copy_info = copy_info;
         console.log(item);
         this.total_problem += 1;
