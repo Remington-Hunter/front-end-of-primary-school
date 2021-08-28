@@ -36,7 +36,7 @@
           :num="num"
           v-if="this.num<3"
         />
-        <cross v-if="this.num===3" />
+        <cross v-if="this.num==3" />
       </el-main>
     </el-container>
   </div>
@@ -102,5 +102,8 @@ export default {
 }
 .text {
   line-height: 20px;
+}
+.el-aside {
+  position: fixed;
 }
 </style>

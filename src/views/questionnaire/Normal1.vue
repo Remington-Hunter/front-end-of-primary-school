@@ -344,7 +344,6 @@ export default {
         obj.name = x[i].question.content;
         obj.instruction = x[i].question.comment;
         obj.must_write_select = x[i].question.required === 1 ? true : false;
-        console.log(x[i].question.required);
         obj.question_id = x[i].question.id;
         obj.point = x[i].question.point
         obj.question_analysis = x[i].question.analysis
@@ -361,6 +360,10 @@ export default {
         obj.selection_list = list;
         if (index === 1) {
           obj.modify_limit = true;
+        }
+        if(this.type === 4 && i<=1){
+          console.log(123);
+          obj.is_daka_two = true;
         }
         this.newProblem1(item.type, true, obj);
       }

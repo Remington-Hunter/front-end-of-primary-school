@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div id="head">
+    <div class="head">
+      <span class="total">回收总量：</span>
       <el-button
         v-if="num === 1"
         @click="exportExcel"

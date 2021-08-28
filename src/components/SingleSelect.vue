@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="s-content">
     <div class="question">
 
       <!-- 编辑状态选择题 -->
@@ -66,8 +66,11 @@
         </div>
         <div v-if="['考试单选题','考试多选题'].includes(problem_type)">
           <div class="required">
-          是否设为普通题型(没有答案,分数)：<el-switch v-model="isnot_kaoshi" @change="typeChange"> </el-switch>
-        </div>
+            是否设为普通题型(没有答案,分数)：<el-switch
+              v-model="isnot_kaoshi"
+              @change="typeChange"
+            > </el-switch>
+          </div>
         </div>
         <div
           v-for="(item, index) in selection_list"
@@ -124,7 +127,7 @@
             :disabled="confirmstate"
           >确认</el-button>
           <el-button
-          :disabled="modify_limit"
+            :disabled="modify_limit"
             @click="cancel"
             v-show="cancel_button"
           >取消</el-button>
@@ -189,8 +192,11 @@
         </div>
         <div v-if="['考试填空题'].includes(problem_type)">
           <div class="required">
-          是否设为普通题型(无答案,分数,答案解析)：<el-switch v-model="isnot_kaoshi" @change="typeChange"> </el-switch>
-        </div>
+            是否设为普通题型(无答案,分数,答案解析)：<el-switch
+              v-model="isnot_kaoshi"
+              @change="typeChange"
+            > </el-switch>
+          </div>
         </div>
         <el-button
           @click="writeConfirm"
@@ -316,6 +322,7 @@
       v-show="!ismodify"
     >
       <el-button
+        v-show="!is_daka_two"
         @click="
           ismodify = true;
           $emit('ismodifying');
@@ -325,7 +332,7 @@
         <v-icon small>mdi-pencil</v-icon>修改
       </el-button>
       <el-button
-        v-show="!modify_limit"
+        v-show="!modify_limit && !is_daka_two"
         @click="deleteProblem"
         size="small"
       >
@@ -335,10 +342,10 @@
         @click="$emit('copy', problem_number)"
         size="small"
       >
-        <v-icon small>mdi-content-copy</v-icon>复制
+        <v-icon small>mdi-content-copy</v-icon>复制{{id_daka_two}}
       </el-button>
       <el-button
-        v-show="!modify_limit && !upmove_limit"
+        v-show="!modify_limit && !upmove_limit && !is_daka_two"
         @click="$emit('upMove', problem_number)"
         size="small"
       >
@@ -346,21 +353,21 @@
       </el-button>
 
       <el-button
-        v-show="!modify_limit && !upmove_limit"
+        v-show="!modify_limit && !upmove_limit && !is_daka_two"
         @click="$emit('upMoveFirst', problem_number)"
         size="small"
       >
         <v-icon small>mdi-arrow-collapse-up</v-icon>上移到最前
       </el-button>
       <el-button
-        v-show="!modify_limit"
+        v-show="!modify_limit && !is_daka_two"
         @click="$emit('downMove', problem_number)"
         size="small"
       >
         <v-icon small>mdi-arrow-down</v-icon>下移
       </el-button>
       <el-button
-        v-show="!modify_limit"
+        v-show="!modify_limit && !is_daka_two"
         @click="$emit('downMoveLast', problem_number)"
         size="small"
       >
@@ -427,8 +434,9 @@ export default {
         : undefined,
       question_analysis: this.iscopy ? this.copy_info.question_analysis : "",
       point: this.iscopy ? this.copy_info.point : 0,
-      isnot_kaoshi:false,
-      upmove_limit: this.copy_info.upmove_limit === undefined?false:true
+      isnot_kaoshi: false,
+      upmove_limit: this.copy_info.upmove_limit === undefined ? false : true,
+      is_daka_two: this.copy_info.is_daka_two === undefined ? false : true
     };
   },
   created() {
@@ -450,10 +458,10 @@ export default {
     },
   },
   methods: {
-    typeChange(){
+    typeChange() {
       console.log(this.isnot_kaoshi);
-      if(this.isnot_kaoshi === true){
-        switch(this.problem_type){
+      if (this.isnot_kaoshi === true) {
+        switch (this.problem_type) {
           case '考试填空题':
             this.problem_type = '填空题'
             break
@@ -513,13 +521,13 @@ export default {
 
 <style scoped>
 @import "../assets/css/icon/preview.css";
-.content {
+.s-content {
   display: flex;
-  flex-direction: column;
   padding-top: 15px;
+  flex-direction: column;
   border-bottom: solid 2px #e6e6e6;
 }
-.content:hover {
+.s-content:hover {
   background-color: rgb(245, 245, 245);
 }
 .btn-group {
@@ -554,7 +562,7 @@ export default {
 </style>
 
 <style lang="scss">
-.content {
+.s-content {
   .btn-group {
     display: none;
   }
