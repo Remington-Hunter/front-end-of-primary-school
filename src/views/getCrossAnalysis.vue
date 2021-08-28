@@ -65,13 +65,16 @@
       border
       height="550"
       style="width: 100%"
+
     >
       <template v-for="(item, index) in headArr">
         <el-table-column
           :key="index"
           :prop="item.prop"
-          :label="item.label"
+          :label="item.label |ellipsis"
           align="center"
+          :show-overflow-tooltip="true"
+          :render-header="renderHeader"
         >
           <template slot-scope="scope">
             <span>
@@ -164,6 +167,15 @@ export default {
       text: "交叉分析法又称立体分析法，是在纵向分析法和横向分析法的基础上，从交叉、立体的角度出发，由浅入深、由低级到高级的一种分析方法。这种方法虽然复杂，但它弥补了“各自为政”分析方法所带来的偏差。 \n\n通常用于分析两个变量之间的关系，例如各个报纸阅读和年龄之间的关系。实际使用中我们通常把这个概念推广到行变量和列变量之间的关系，这样行变量可能有多个变量组成，列变量也可能有多个变量，甚至可以只有行变量没有列变量，或者只有列变量没有行变量。"
     };
   },
+  filters: {
+    ellipsis(value) {
+      if (!value) return "";
+      if (value.length > 8) {
+        return value.slice(0, 8) + "...";
+      }
+      return value;
+    },
+  },
   mounted() {
     console.log('ididid')
     this.id = this.$route.params.id;
@@ -171,6 +183,44 @@ export default {
     this.getAnswerData();
   },
   methods: {
+    renderHeader(h, { column }) {
+      // h即为cerateElement的简写，具体可看vue官方文档
+      console.log('这是一个很有意思的内容')
+      var t=column.label;
+      
+      t=t.substring(0,t.length-3);
+      console.log(t);
+      for(var i=0;i<this.headArr.length;i++){
+        if(this.headArr[i].label.indexOf(t)!=-1){
+          t=this.headArr[i].label
+        }
+      }
+      console.log(t)
+      return h("div", [
+        h("span", column.label),
+        h(
+          "el-tooltip",
+          {
+            props: {
+              effect: "dark",
+              content:
+                t,
+              placement: "top",
+            },
+          },
+          [
+            h("i", {
+              class: "el-icon-warning-outline",
+              style: "color:#999;margin-left:5px;cursor:pointer;",
+            }),
+          ],
+          {
+            content:
+              "小时统计该时段整体数据，如当小时为9:00时，那统计的就是09:00-09:59时段的整体曝光量和设备屏数",
+          }
+        ),
+      ]);
+    },
     chageType(type) {
       this.type = type;
     },
@@ -342,7 +392,11 @@ export default {
           item1.push("" + (i + 1) + "星");
         } else {
           // c["0"] = question1.optionList[i].content;
-          item1.push(question1.optionList[i].content);
+          var ss = question1.optionList[i].content;
+            if (ss.length > 5) {
+              ss = ss.slice(0, 5) + "...";
+            }
+          item1.push(ss);
         }
         var num = 0;
         var item = [];
@@ -415,7 +469,12 @@ export default {
         },
         color: ['#009dff', '#40c45f', '#FFC851', '#5A5476', '#1869A0', '#FF9393'],
         // 声明一个 X 轴，类目轴（category）。默认情况下，类目轴对应到 dataset 第一列。
-        xAxis: { type: "category" },
+        xAxis: { type: "category",
+        nameLocation:'end',//坐标轴名称显示位置。
+            axisLabel : {//坐标轴刻度标签的相关设置。
+                interval:0,
+                rotate:"45"
+            }},
         // 声明一个 Y 轴，数值轴。
         yAxis: { type: "value", },
         // 声明多个 bar 系列，默认情况下，每个系列会自动对应到 dataset 的每一列。
@@ -443,7 +502,11 @@ export default {
           source: this.col,
         },
         // 声明一个 X 轴，类目轴（category）。默认情况下，类目轴对应到 dataset 第一列。
-        xAxis: { type: "category" },
+        xAxis: { type: "category",nameLocation:'end',//坐标轴名称显示位置。
+            axisLabel : {//坐标轴刻度标签的相关设置。
+                interval:0,
+                rotate:"45"
+            } },
         // 声明一个 Y 轴，数值轴。
         yAxis: {},
         // 声明多个 bar 系列，默认情况下，每个系列会自动对应到 dataset 的每一列。
@@ -536,7 +599,11 @@ export default {
         // 声明一个 X 轴，类目轴（category）。默认情况下，类目轴对应到 dataset 第一列。
         xAxis: { type: "value", },
         // 声明一个 Y 轴，数值轴。
-        yAxis: { type: 'category', },
+        yAxis: { type: 'category',nameLocation:'end',//坐标轴名称显示位置。
+            axisLabel : {//坐标轴刻度标签的相关设置。
+                interval:0,
+                rotate:"45"
+            } },
         // 声明多个 bar 系列，默认情况下，每个系列会自动对应到 dataset 的每一列。
         series: data1,
       };

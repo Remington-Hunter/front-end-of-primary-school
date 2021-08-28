@@ -65,7 +65,6 @@
                   type="text"
                   size="small"
                 >删除</el-button>
-                <!-- <el-button type="text" size="small">编辑</el-button> -->
               </template>
             </el-table-column>
           </el-table>
@@ -118,7 +117,6 @@
 
               </el-table>
           </div>
-          <!-- <el-button type="primary">不在导入名单之内</el-button> -->
         </el-card>
         <span
           slot="footer"
@@ -235,7 +233,7 @@
                   class="table"
                   border
                 >
-                  <el-table-column label="选项" :show-overflow-tooltip="true">
+                  <el-table-column label="选项" :show-overflow-tooltip="true" >
                     <template slot-scope="scope2">
                       <!-- <i class="el-icon-time"></i> -->
                       <span style="margin-left: 10px">{{
@@ -252,9 +250,9 @@
                     </template>
                   </el-table-column>
                   <el-table-column label="小计">
-                    <template slot-scope="scope3">
+                    <template slot-scope="scope3" >
                       
-                      <el-progress :percentage="scope3.row.progress"></el-progress>
+                      <el-progress :percentage="scope3.row.progress" style="width:250px"></el-progress>
                     </template>
                   </el-table-column>
                 </el-table>
@@ -323,7 +321,7 @@
                   </template>
                 </el-table-column>
                 <el-table-column label="内容">
-                  <template slot-scope="scope1">
+                  <template slot-scope="scope1" >
                     <!-- <i class="el-icon-time"></i> -->
                     <span style="margin-left: 10px">{{
                       scope1.row.content
@@ -496,8 +494,8 @@ export default {
           },
           [
             h("i", {
-              class: "el-icon-question",
-              style: "color:#409eff;margin-left:5px;cursor:pointer;",
+              class: "el-icon-warning-outline",
+              style: "color:#999;margin-left:5px;cursor:pointer;",
             }),
           ],
           {
@@ -881,7 +879,7 @@ export default {
       var c = { label: "序号", prop: "0" };
       this.headArr.push(c);
       for (var i = 0; i < len; i++) {
-        var s = "第" + (i + 1) + "题：";
+        var s = "" + (i + 1) + ".";
         if (data.questionInfo[i].info.content == null) {
           s += "内容为空";
         } else {
