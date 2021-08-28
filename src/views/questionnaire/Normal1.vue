@@ -160,6 +160,9 @@
               :problem_type_copy="item.type"
               :problem_number="item.number"
               :copy_info="item.copy_info"
+              @CancelOldProblem="
+              is_creating = false
+              "
               @CancelNewProblem="
                 created_problem.pop();
                 is_creating = false;
@@ -544,6 +547,9 @@ export default {
       //   }
       // }
       this.total_problem -= 1;
+      if(this.total_problem === 1){
+        this.is_creating=false
+      }
       this.total_problem_change();
       this.send_question_parent();
       this.$emit("problem_store");

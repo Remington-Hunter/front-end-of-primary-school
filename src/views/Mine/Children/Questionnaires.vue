@@ -320,7 +320,7 @@ export default {
     },
     modify(id) {
       this.questionnaire_id = id;
-      this.stopItem(id);
+      // this.stopItem(id);
       for (var i = 0; i < this.desserts.length; i++) {
         if (this.desserts[i].id === id) {
           this.count = this.desserts[i].num;
@@ -377,6 +377,7 @@ export default {
       }
     },
     modifyItem_first(item) {
+      this.stopItem(item);
       this.dialog = false;
       var type = "";
       for (var i = 0; i < this.desserts.length; i++) {
@@ -445,6 +446,7 @@ export default {
       });
     },
     modifyItem_second(item) {
+      this.stopItem(item);
       this.dialog = false;
       var type = "";
       for (var i = 0; i < this.desserts.length; i++) {
