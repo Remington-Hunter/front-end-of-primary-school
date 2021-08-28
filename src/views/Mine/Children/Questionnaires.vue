@@ -105,7 +105,7 @@
           </v-icon>
           <v-icon
             size="22px"
-            @click="checkAnalysis(item.id)"
+            @click="checkAnalysis(item.id,item.type)"
             title="统计结果"
             style="margin-left: 1%"
             color="purple darken-2"
@@ -296,14 +296,14 @@ export default {
       });
     },
     checkAnalysis(id, type) {
-      if (type == 3) {
-        this.$router.push({ name: "grade", params: { id: id } });
+      if (type == '考试问卷') {
+        this.$router.push({ name: "statistics", params: { id: id ,type:3} });
       }
-      else if (type == 2) {
-        this.$router.push({ name: 'clickoutanalysis', params: { id: id } })
+      else if(type=='疫情打卡问卷'){
+        this.$router.push({ name: "statistics", params: { id: id ,type:4} });
       }
       else {
-        this.$router.push({ name: "statistics", params: { id: id } });
+        this.$router.push({ name: "statistics", params: { id: id ,type:0} });
       }
     },
     lookUpLink(id) {
