@@ -10,8 +10,8 @@
     :remainTime="count_down_time"/></span> -->
       </div>
       <!-- 问卷副标题 -->
+      <div class="total-grade">总分:<span style="color:red"> {{total_grade}} 分</span></div>
       <div class="header-subtitle">{{ subtitle }}</div>
-      <div>总分:{{total_grade}}</div>
       <!-- 题目列表 -->
       <div
         class="question-list"
