@@ -234,7 +234,7 @@ export default {
       text: ["只能修改问卷的细节，例如更改错别字、添加选项、增加跳题逻辑或者修改题目的属性等\n不能对问卷做以下操作：删除题目或选项、移动题目或选项",
         "答卷删除后不可恢复，请谨慎选择", '复制一份题目完全一致的新问卷，对复制的问卷进行编辑，不会影响到原始问卷的题目及回收数据'],
       type: [],
-      types: ['普通问卷', '投票问卷', '报名问卷', '考试问卷','疫情打卡问卷'],
+      types: ['普通问卷', '投票问卷', '报名问卷', '考试问卷', '疫情打卡问卷'],
       preview_list: [],
       questionnaire_id: "",
       title: "题目",
@@ -250,7 +250,7 @@ export default {
       download_lianjie: '',
       ma: '',
       count: '',
-      loading_visible:true,
+      loading_visible: true,
       headers: [
         {
           text: "问卷名称",
@@ -303,10 +303,10 @@ export default {
     },
     checkAnalysis(id, type) {
       if (type === '考试问卷') {
-        this.$router.push({ name: "statistics", params: { id: id ,type:3} });
+        this.$router.push({ name: "statistics", params: { id: id, type: 3 } });
       }
-      else if(type==='疫情打卡问卷'){
-        this.$router.push({ name: "statistics", params: { id: id ,type:4} });
+      else if (type === '疫情打卡问卷') {
+        this.$router.push({ name: "statistics", params: { id: id, type: 4 } });
       }
       else {
         this.$router.push({ name: "statistics", params: { id: id, type: 0 } });
@@ -330,7 +330,7 @@ export default {
         this.dialog = false;
         this.modifyItem_second(id);
       } else {
-      this.dialog = true;
+        this.dialog = true;
       }
     },
 
@@ -537,6 +537,7 @@ export default {
           obj.problem_type = this.problem_type_info(x[i].question.type);
           obj.name = x[i].question.content;
           obj.instruction = x[i].question.comment;
+          obj.point = x[i].question.point;
           obj.must_write_select = x[i].question.required;
           var list = [];
           for (var j = 0; j < x[i].optionList.length; j++) {
@@ -619,8 +620,8 @@ export default {
         },
       }).then((res) => {
         console.log(res.data.data);
-        if(res.data.data.length===0){
-          this.loading_visible=false;
+        if (res.data.data.length === 0) {
+          this.loading_visible = false;
         }
         this.data = res.data.data;
         this.desserts = [];
@@ -741,6 +742,15 @@ export default {
           break;
         case 11:
           return "投票多选题";
+          break;
+        case 12:
+          return "考试单选题";
+          break;
+        case 13:
+          return "考试多选题";
+          break;
+        case 14:
+          return "考试填空题";
           break;
         case 15:
           return "定位题";
