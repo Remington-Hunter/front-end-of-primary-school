@@ -36,6 +36,10 @@
         :sort-desc="sortDesc"
         multi-sort
         class="elevation-1"
+        no-data-text="您当前没有创建任何问卷"
+        no-results-text="未搜索到相关问卷"
+        :loading="loading_visible"
+        loading-text="等待加载中"
       >
         <template v-slot:[`item.name`]="{ item }">
           <div style="max-width: 160px;overflow: hidden;text-overflow:ellipsis;white-space:nowrap;">
@@ -246,6 +250,7 @@ export default {
       download_lianjie: '',
       ma: '',
       count: '',
+      loading_visible:true,
       headers: [
         {
           text: "问卷名称",
@@ -602,10 +607,10 @@ export default {
       //   复制问卷
     },
     getItem() {
-      console.log(13123);
+      // console.log(13123);
       axios({
         url:
-          "https://www.azur1tee.top/api/questionnaire/get_questionnaire_list",
+          "https://www.azur1tee.top/api/questionnaire/get_questionnaire_list_not_deleted",
         method: "post",
         data: {},
         headers: {
@@ -614,6 +619,9 @@ export default {
         },
       }).then((res) => {
         console.log(res.data.data);
+        if(res.data.data.length===0){
+          this.loading_visible=false;
+        }
         this.data = res.data.data;
         this.desserts = [];
         for (let i = 0; i < res.data.data.length; i++) {
@@ -697,7 +705,12 @@ export default {
             date2: data2,
           };
           // console.log(data)
-          this.desserts.push(data);
+          this.desserts.push(data)
+          console.log(this.desserts)
+          // if(this.desserts.length===1){
+          //   this.loading_visible = false;
+          // }
+          this.loading_visible = false;
           // this
         }
         // 没写全之后再补

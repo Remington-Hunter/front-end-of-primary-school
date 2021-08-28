@@ -87,6 +87,11 @@ export default {
       window.localStorage.removeItem('authorization')
       window.localStorage.removeItem('userName')
       this.check_is_login();
+      this.$message({
+        message: '退出成功',
+        type: 'success'
+      });
+      this.$router.push('/')
     },
     check_is_login() {
       if (window.localStorage.getItem('user_id') != null) {

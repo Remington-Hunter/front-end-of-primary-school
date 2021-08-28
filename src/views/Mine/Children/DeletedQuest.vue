@@ -181,7 +181,7 @@ export default {
     getItem() {
       console.log(13123);
       axios({
-        url: "https://www.azur1tee.top/api/questionnaire/get_questionnaire_list",
+        url: "https://www.azur1tee.top/api/questionnaire/get_questionnaire_list_deleted",
         method: "post",
         data: {},
         headers: {
