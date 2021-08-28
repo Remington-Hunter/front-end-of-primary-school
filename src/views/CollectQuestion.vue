@@ -314,7 +314,7 @@ export default {
       }
     },
     getInfo2() {
-      if(can_write_state === false){
+      if(this.can_write_state === false){
         return
       }
       var formData = new FormData();

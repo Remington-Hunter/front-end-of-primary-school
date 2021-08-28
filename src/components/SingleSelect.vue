@@ -176,12 +176,12 @@
             ></v-text-field>
             <v-text-field
               label="请输入答案"
+              :rules="[rules.required]"
               v-model="answer"
               v-show="problem_type === '考试填空题'"
             ></v-text-field>
             <v-text-field
               label="请输入答案解析"
-              :rules="[rules.required]"
               v-show="problem_type === '考试填空题'"
               v-model="question_analysis"
             ></v-text-field>
@@ -325,6 +325,8 @@
         v-show="!is_daka_two"
         @click="
           ismodify = true;
+          cancel_button = true;
+          click_confirm = 1;
           $emit('ismodifying');
         "
         size="small"
@@ -433,11 +435,12 @@ export default {
           : this.copy_info.question_id
         : undefined,
       question_analysis: this.iscopy ? this.copy_info.question_analysis : "",
-      point: this.iscopy ? this.copy_info.point : 0,
-      isnot_kaoshi: false,
-      upmove_limit: this.copy_info.upmove_limit === undefined ? false : true,
-      is_daka_two: this.copy_info.is_daka_two === undefined ? false : true,
-      is_daka: this.copy_info.is_daka === undefined ? false : true,
+      point: (this.iscopy ? this.copy_info.point : 0),
+      isnot_kaoshi:false,
+      upmove_limit: (this.copy_info.upmove_limit === undefined?false:true),
+      is_daka_two:(this.copy_info.is_daka_two === undefined?false:true),
+      is_daka:(this.copy_info.is_daka === undefined?false:true),
+      click_confirm:0
     };
   },
   created() {
@@ -510,7 +513,12 @@ export default {
       this.$emit("ConfirmProblem");
     },
     cancel() {
-      this.$emit("CancelNewProblem");
+      if(this.click_confirm === 0){
+        this.$emit("CancelNewProblem");
+      }
+      else{
+        this.ismodify=false
+      }
     },
     deleteProblem() {
       this.$emit("deleteProblem", this.problem_number);

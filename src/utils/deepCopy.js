@@ -24,6 +24,7 @@ export function problem_change(obj1,obj2){
     obj1.must_write_select=obj2.must_write_select
     obj1.point=obj2.point
     obj1.question_analysis=obj2.question_analysis
+    obj1.ismodify=obj2.ismodify
 }
 
 export function problem_exchange(obj1,obj2){
