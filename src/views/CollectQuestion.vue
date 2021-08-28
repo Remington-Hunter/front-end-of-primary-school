@@ -174,7 +174,8 @@
       </div> -->
           <div class="page-control">
             <el-button
-              type="text"
+              style="width:120px;font-size:22px"
+              type="primary"
               @click="dialogVisible = judge()"
             >提交</el-button>
           </div>
@@ -314,7 +315,7 @@ export default {
       }
     },
     getInfo2() {
-      if(this.can_write_state === false){
+      if (this.can_write_state === false) {
         return
       }
       var formData = new FormData();
