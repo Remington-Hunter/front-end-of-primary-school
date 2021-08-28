@@ -518,6 +518,7 @@ export default {
       }
       else{
         this.ismodify=false
+        this.$emit("CancelOldProblem");
       }
     },
     deleteProblem() {
