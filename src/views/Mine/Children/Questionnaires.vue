@@ -326,12 +326,12 @@ export default {
           this.count = this.desserts[i].num;
         }
       };
-      // if (this.count === 0) {
-      //   this.dialog = false;
-      //   this.modifyItem_second(id);
-      // } else {
+      if (this.count === 0) {
+        this.dialog = false;
+        this.modifyItem_second(id);
+      } else {
       this.dialog = true;
-      // }
+      }
     },
 
 

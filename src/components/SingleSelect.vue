@@ -346,7 +346,7 @@
       </el-button>
       <el-button
         v-show="!modify_limit && !upmove_limit && !is_daka_two"
-        @click="$emit('upMove', problem_number)"
+        @click="$emit('upMove', {problem_number:problem_number,is_daka:is_daka})"
         size="small"
       >
         <v-icon small>mdi-arrow-up</v-icon>上移
@@ -354,7 +354,7 @@
 
       <el-button
         v-show="!modify_limit && !upmove_limit && !is_daka_two"
-        @click="$emit('upMoveFirst', problem_number)"
+        @click="$emit('upMoveFirst', {problem_number:problem_number,is_daka:is_daka})"
         size="small"
       >
         <v-icon small>mdi-arrow-collapse-up</v-icon>上移到最前
@@ -434,9 +434,10 @@ export default {
         : undefined,
       question_analysis: this.iscopy ? this.copy_info.question_analysis : "",
       point: this.iscopy ? this.copy_info.point : 0,
-      isnot_kaoshi: false,
-      upmove_limit: this.copy_info.upmove_limit === undefined ? false : true,
-      is_daka_two: this.copy_info.is_daka_two === undefined ? false : true
+      isnot_kaoshi:false,
+      upmove_limit: this.copy_info.upmove_limit === undefined?false:true,
+      is_daka_two:this.copy_info.is_daka_two === undefined?false:true,
+      is_daka:this.copy_info.is_daka === undefined?false:true,
     };
   },
   created() {
