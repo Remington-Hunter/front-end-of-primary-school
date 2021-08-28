@@ -1,7 +1,6 @@
 <template>
   <div>
     <div id="head">
-<<<<<<< HEAD
       <el-button
         v-if="num === 1"
         @click="exportExcel"
@@ -16,21 +15,6 @@
         class="d-btn"
         ><i class="el-icon-download"></i> 下载PDF</el-button
       >
-=======
-      <span class="total">总回收量：</span>
-      <div class="d-btn">
-        <el-button
-          v-if="num===1"
-          @click="exportExcel"
-          type="primary"
-        >导出EXCEL</el-button>
-        <el-button
-          v-if="num===2"
-          type="primary"
-          @click="handleDown"
-        ><i class="el-icon-download"></i> 下载PDF</el-button>
-      </div>
->>>>>>> 8589e92ae7bf49667ad1a2ff72442466093a7de5
     </div>
     <div v-show="questionType == 4">
       <el-button type="primary" @click="showDialog">查看每日进度</el-button>
