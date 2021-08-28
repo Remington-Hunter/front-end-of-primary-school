@@ -343,10 +343,10 @@ export default {
         } else {
           // c["0"] = question1.optionList[i].content;
           var ss = question1.optionList[i].content;
-            if (ss.length > 8) {
-              ss = ss.slice(0, 8) + "...";
+            if (ss.length > 5) {
+              ss = ss.slice(0, 5) + "...";
             }
-          item1.push(question1.optionList[i].content);
+          item1.push(ss);
         }
         var num = 0;
         var item = [];

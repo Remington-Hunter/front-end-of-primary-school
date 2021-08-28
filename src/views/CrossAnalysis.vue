@@ -499,8 +499,8 @@ export default {
           },
           [
             h("i", {
-              class: "el-icon-question",
-              style: "color:#409eff;margin-left:5px;cursor:pointer;",
+              class: "el-icon-warning-outline",
+              style: "color:#999;margin-left:5px;cursor:pointer;",
             }),
           ],
           {
@@ -884,7 +884,7 @@ export default {
       var c = { label: "序号", prop: "0" };
       this.headArr.push(c);
       for (var i = 0; i < len; i++) {
-        var s = "第" + (i + 1) + "题：";
+        var s = "" + (i + 1) + ".";
         if (data.questionInfo[i].info.content == null) {
           s += "内容为空";
         } else {
