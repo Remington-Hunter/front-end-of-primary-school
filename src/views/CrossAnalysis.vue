@@ -85,28 +85,6 @@
             >提交数据</el-button>
           </div>
         </el-card>
-<<<<<<< HEAD
-        <el-card v-show="ListOrProgress==true">
-          <el-button
-            type="primary"
-            @click="attendtype=false"
-          >待参与</el-button>
-          <el-button
-            type="primary"
-            @click="attendtype=true"
-          >已参与</el-button>
-          <div v-show="attendtype==false">
-            <el-table
-              :data="attendFlase"
-              border
-              style="width: 100%"
-            >
-              <el-table-column
-                prop="name"
-                label="姓名"
-                width="120"
-              >
-=======
         <el-card v-show="ListOrProgress == true">
           <el-button type="primary" @click="click1(false)"
             >待参与</el-button
@@ -117,7 +95,6 @@
           <div v-show="attendtype ===false">
             <el-table :data="attendFlase" border style="width: 100%">
               <el-table-column prop="name" label="姓名" width="120">
->>>>>>> wc
               </el-table-column>
               <el-table-column
                 prop="stuId"
@@ -128,24 +105,9 @@
 
             </el-table>
           </div>
-<<<<<<< HEAD
-          <div v-show="attendtype==true">
-            <div v-show="attendtype==false">
-              <el-table
-                :data="attendFlase"
-                border
-                style="width: 100%"
-              >
-                <el-table-column
-                  prop="name"
-                  label="姓名"
-                  width="120"
-                >
-=======
           <div v-show="attendtype ===true">
             <el-table :data="attendTrue" border style="width: 100%">
                 <el-table-column prop="name" label="姓名" width="120">
->>>>>>> wc
                 </el-table-column>
                 <el-table-column
                   prop="stuId"
