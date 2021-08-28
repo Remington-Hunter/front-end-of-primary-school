@@ -297,6 +297,26 @@
         </template>
       </el-table>
     </div>
+    <div class="center" v-show="false" id="demo2">
+      <span v-if="questionType == 3"> 答卷平均分：{{ avg }} </span>
+      <el-table :data="table1" border height="550" style="width: 100%">
+        <template v-for="(item, index) in headArr">
+          <el-table-column
+            :key="index"
+            :prop="item.prop"
+            :label="item.label "
+            align="center"
+            
+          >
+            <template slot-scope="scope">
+              <span>
+                {{ scope.row[item.prop] }}
+              </span>
+            </template>
+          </el-table-column>
+        </template>
+      </el-table>
+    </div>
   </div>
 </template>
 <script>
