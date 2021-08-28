@@ -338,7 +338,7 @@
         <v-icon small>mdi-content-copy</v-icon>复制
       </el-button>
       <el-button
-        v-show="!modify_limit"
+        v-show="!modify_limit && !upmove_limit"
         @click="$emit('upMove', problem_number)"
         size="small"
       >
@@ -346,7 +346,7 @@
       </el-button>
 
       <el-button
-        v-show="!modify_limit"
+        v-show="!modify_limit && !upmove_limit"
         @click="$emit('upMoveFirst', problem_number)"
         size="small"
       >
@@ -427,7 +427,8 @@ export default {
         : undefined,
       question_analysis: this.iscopy ? this.copy_info.question_analysis : "",
       point: this.iscopy ? this.copy_info.point : 0,
-      isnot_kaoshi:false
+      isnot_kaoshi:false,
+      upmove_limit: this.copy_info.upmove_limit === undefined?false:true
     };
   },
   created() {

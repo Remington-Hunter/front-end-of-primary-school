@@ -349,6 +349,7 @@ export default {
         obj.point = x[i].question.point
         obj.question_analysis = x[i].question.analysis
         obj.ismodify = false
+        
         var list = [];
         for (var j = 0; j < x[i].optionList.length; j++) {
           var listitem = {};
@@ -505,6 +506,9 @@ export default {
         item.type = index;
         item.number = this.total_problem;
         item.iscopy = iscopy;
+        if(this.copy_questionnaire_info.modify_type === 1){
+          copy_info.upmove_limit=true
+        }
         item.copy_info = copy_info;
         console.log(item);
         this.total_problem += 1;
