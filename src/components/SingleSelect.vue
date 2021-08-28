@@ -64,6 +64,11 @@
         <div class="required">
           是否必填：<el-switch v-model="must_write_select"> </el-switch>
         </div>
+        <div v-if="['考试单选题','考试多选题'].includes(problem_type)">
+          <div class="required">
+          是否设为普通题型(没有答案,分数)：<el-switch v-model="isnot_kaoshi" @change="typeChange"> </el-switch>
+        </div>
+        </div>
         <div
           v-for="(item, index) in selection_list"
           :key="(item, index)"
@@ -181,6 +186,11 @@
         </template>
         <div class="required">
           是否必填：<el-switch v-model="must_write_select"> </el-switch>
+        </div>
+        <div v-if="['考试填空题'].includes(problem_type)">
+          <div class="required">
+          是否设为普通题型(无答案,分数,答案解析)：<el-switch v-model="isnot_kaoshi" @change="typeChange"> </el-switch>
+        </div>
         </div>
         <el-button
           @click="writeConfirm"
@@ -416,7 +426,8 @@ export default {
           : this.copy_info.question_id
         : undefined,
       question_analysis: this.iscopy ? this.copy_info.question_analysis : "",
-      point: this.iscopy ? this.copy_info.point : 0
+      point: this.iscopy ? this.copy_info.point : 0,
+      isnot_kaoshi:false
     };
   },
   created() {
@@ -438,6 +449,22 @@ export default {
     },
   },
   methods: {
+    typeChange(){
+      console.log(this.isnot_kaoshi);
+      if(this.isnot_kaoshi === true){
+        switch(this.problem_type){
+          case '考试填空题':
+            this.problem_type = '填空题'
+            break
+          case '考试单选题':
+            this.problem_type = '单选题'
+            break
+          case '考试多选题':
+            this.problem_type = '多选题'
+            break
+        }
+      }
+    },
     clickitem() {
       if (this.radio === this.preradio) {
         this.radio = ""
