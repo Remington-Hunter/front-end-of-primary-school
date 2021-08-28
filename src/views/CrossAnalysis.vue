@@ -31,34 +31,33 @@
           :key="index"
         >
           <el-divider></el-divider>
-          <div class="question-head">
-            <div class="question-title">
-              <span class="question-seq"><b>第{{ index + 1 }}题：</b></span>
-              <span class="text">{{ data[index].question.content }}</span>
-              <span
-                v-if="data[index].question.type == 0||data[index].question.type == 6||data[index].question.type == 10||data[index].question.type == 12"
-                class="question-type"
-              >单选题</span>
-              <span
-                v-if="data[index].question.type == 1||data[index].question.type == 7||data[index].question.type == 11||data[index].question.type == 13"
-                class="question-type"
-              >多选题
+          <div class="question-title">
+            <div class="question-seq"><b>第{{ index + 1 }}题</b></div><br>
+            <span class="text">题目：{{ data[index].question.content }}</span>
+            <span
+              v-if="data[index].question.type == 0||data[index].question.type == 6||data[index].question.type == 10||data[index].question.type == 12"
+              class="question-type"
+            >单选题</span>
+            <span
+              v-if="data[index].question.type == 1||data[index].question.type == 7||data[index].question.type == 11||data[index].question.type == 13"
+              class="question-type"
+            >多选题
 
-              </span>
-              <span
-                v-if="data[index].question.type == 2||data[index].question.type == 5||data[index].question.type == 14||data[index].question.type == 15"
-                class="question-type"
-              >填空题</span>
-              <span
-                v-if="data[index].question.type == 3||data[index].question.type == 4||data[index].question.type == 9"
-                class="question-type"
-              >评分题</span>
-              <div v-if="questionType==3">
-                <span>正确率：{{rate[index]}}</span>
-                <span>正确答案：{{rightAnswer[index]}}</span>
-              </div>
+            </span>
+            <span
+              v-if="data[index].question.type == 2||data[index].question.type == 5||data[index].question.type == 14||data[index].question.type == 15"
+              class="question-type"
+            >填空题</span>
+            <span
+              v-if="data[index].question.type == 3||data[index].question.type == 4||data[index].question.type == 9"
+              class="question-type"
+            >评分题</span>
+            <div v-if="questionType==3">
+              <div class="corret">正确率：{{rate[index]}}</div>
+              <div class="c-answer">正确答案：{{rightAnswer[index]}}</div>
             </div>
           </div>
+
           <div v-if="data[index].question.type === 2||data[index].question.type === 5||data[index].question.type === 14||data[index].question.type === 15">
             <el-table
               :data="completion[index]"

@@ -19,7 +19,7 @@
 }
 
 .question-title {
-    font-size: 18px;
+    font-size: 16px;
     word-break: break-word;
 }
 .question-seq {
@@ -27,6 +27,7 @@
     margin-right: 8px;
     font-size: 18px;
     float: left;
+    margin-top: -5px;
 }
 
 .table{
@@ -69,4 +70,15 @@
 .c-text {
     white-space: pre-wrap;
     padding: 0 10px ;
-  }
+}
+
+.corret{
+    margin-top: 5px;
+    color: #409EFF;
+    font-size: 14px;
+}
+
+.c-answer{
+    margin-top: 5px;
+    font-size: 14px;
+}
