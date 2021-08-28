@@ -19,7 +19,7 @@
     },
     mounted () {
       if (this.remainTime > 0) {
-        this.hour = Math.floor((this.remainTime / 3600) % 24)
+        this.hour = Math.floor((this.remainTime / 3600) )
         this.minute = Math.floor((this.remainTime / 60) % 60)
         this.second = Math.floor(this.remainTime % 60)
         this.countDowm()
