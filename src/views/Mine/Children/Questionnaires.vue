@@ -34,7 +34,6 @@
         :search="search"
         :sort-by="sortBy"
         :sort-desc="sortDesc"
-        multi-sort
         class="elevation-1"
       >
         <template v-slot:[`item.name`]="{ item }">
@@ -325,7 +324,7 @@ export default {
       //   this.dialog = false;
       //   this.modifyItem_second(id);
       // } else {
-        this.dialog = true;
+      this.dialog = true;
       // }
     },
 
