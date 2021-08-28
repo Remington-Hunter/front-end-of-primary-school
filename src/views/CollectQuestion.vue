@@ -565,7 +565,7 @@ export default {
           }
         } else if (y.type === 2 || y.type === 14) {
           if (y.required) {
-            if (y.answer === " ") {
+            if (y.answer === "") {
               alert("您有必选项未完成!");
               return false;
             } else {
