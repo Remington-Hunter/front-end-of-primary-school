@@ -38,16 +38,36 @@
     font-size: 16px;
     padding-left: 20px;
 }
-.d-btn{
-    float:right;
-    margin-right: 60px;
-}
 
 #demo2{
     width: 80%;
 }
 
 #head{
-    height:30px;
-    vertical-align:middle;
+    margin: 0px auto;
+    width: 1000px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
+.total{
+    font-size: 22px;
+    color: #444;
+    font-weight: bold;
+}
+
+.content{
+    margin: 20px auto;
+    width: 1000px;
+}
+
+.sub{
+    font-size: 15px;
+    color: #999;
+    margin-left: 5px;
+}
+
+.c-text {
+    white-space: pre-wrap;
+    padding: 0 10px ;
+  }

@@ -1,18 +1,19 @@
 <template>
   <div>
     <div id="head">
-      <el-button
-        v-if="num===1"
-        @click="exportExcel"
-        type="primary"
-        class="d-btn"
-      >导出EXCEL</el-button>
-      <el-button
-        v-if="num===2"
-        type="primary"
-        @click="handleDown"
-        class="d-btn"
-      ><i class="el-icon-download"></i> 下载PDF</el-button>
+      <span class="total">总回收量：</span>
+      <div class="d-btn">
+        <el-button
+          v-if="num===1"
+          @click="exportExcel"
+          type="primary"
+        >导出EXCEL</el-button>
+        <el-button
+          v-if="num===2"
+          type="primary"
+          @click="handleDown"
+        ><i class="el-icon-download"></i> 下载PDF</el-button>
+      </div>
     </div>
 
     <div
@@ -41,8 +42,8 @@
               <span
                 v-if="data[index].question.type == 1||data[index].question.type == 7||data[index].question.type == 11||data[index].question.type == 13"
                 class="question-type"
-              >多选题 
-              
+              >多选题
+
               </span>
               <span
                 v-if="data[index].question.type == 2||data[index].question.type == 5||data[index].question.type == 14||data[index].question.type == 15"
@@ -249,9 +250,9 @@ export default {
       answerData: [],
       headArr: [],
       table1: [],
-      questionType:3,
-      rate:[],
-      rightAnswer:[],
+      questionType: 3,
+      rate: [],
+      rightAnswer: [],
     };
   },
   components: {
@@ -268,37 +269,37 @@ export default {
   },
 
   methods: {
-    getRate(data){
-      if(this.questionType!==3){
+    getRate(data) {
+      if (this.questionType !== 3) {
         return;
       }
-      else{
-        for(var i=0;i<data.length;i++){
-        var t=data[i].question.rate;
-        t=t*100;
-        t=t.toFixed(2)
-        t=''+t+'%';
-        this.rate.push(t);
-        if(data[i].question.type==2||data[i].question.type==25||data[i].question.type==14){
-          this.rightAnswer.push(data[i].question.answer)
-        }
-        else{
-          var s='';
-          
-          for(var j=0;j<data[i].question.answer.length;j++){
-            if(j==0){
-              s=data[i].optionList[data[i].question.answer[j]-'0'].content;
-            }
-            else{
-              s+='、'+data[i].optionList[data[i].question.answer[j]-'0'].content;
-            }
+      else {
+        for (var i = 0; i < data.length; i++) {
+          var t = data[i].question.rate;
+          t = t * 100;
+          t = t.toFixed(2)
+          t = '' + t + '%';
+          this.rate.push(t);
+          if (data[i].question.type == 2 || data[i].question.type == 25 || data[i].question.type == 14) {
+            this.rightAnswer.push(data[i].question.answer)
           }
-          this.rightAnswer.push(s);
+          else {
+            var s = '';
+
+            for (var j = 0; j < data[i].question.answer.length; j++) {
+              if (j == 0) {
+                s = data[i].optionList[data[i].question.answer[j] - '0'].content;
+              }
+              else {
+                s += '、' + data[i].optionList[data[i].question.answer[j] - '0'].content;
+              }
+            }
+            this.rightAnswer.push(s);
+          }
+
         }
-        
       }
-      }
-      
+
     },
     exportExcel() {
       // 设置当前日期
@@ -341,11 +342,11 @@ export default {
     getCompletionData(data) {
       console.log('this is ')
       for (var i = 0; i < this.data.length; i++) {
-        console.log(data[i].question.type )
+        console.log(data[i].question.type)
         if (
           data[i].question.type === 2 ||
           data[i].question.type === 5 ||
-          data[i].question.type === 14||data[i].question.type === 15
+          data[i].question.type === 14 || data[i].question.type === 15
         ) {
           // console.log(11)
           var data_i = data[i].answerList;
@@ -355,7 +356,7 @@ export default {
             item.push(s);
           }
           this.completion.push(item);
-        } else if (data[i].question.type === 3||data[i].question.type ===4||data[i].question.type ===9) {
+        } else if (data[i].question.type === 3 || data[i].question.type === 4 || data[i].question.type === 9) {
           var data_i = data[i].optionList;
           var item = [];
           for (let j = 0; j < data_i.length; j++) {
@@ -386,7 +387,7 @@ export default {
         if (
           data[i].question.type === 2 ||
           data[i].question.type == 5 ||
-          data[i].question.type == 14||data[i].question.type==15
+          data[i].question.type == 14 || data[i].question.type == 15
         ) {
           // console.log(11)
           var data_i = data[i].answerList;
@@ -458,7 +459,7 @@ export default {
     getAnswerData() {
       var Data = new FormData();
       Data.append("id", this.id);
-      Data.append("byGrade",1);
+      Data.append("byGrade", 1);
       axios({
         url: "https://www.azur1tee.top/api/answer/get_result_by_questionnaire",
         method: "post",
@@ -493,8 +494,8 @@ export default {
         c = { label: s, prop: (i + 1).toString() };
         this.headArr.push(c);
       }
-      if(this.questionType===3){
-        c={ label: '总成绩', prop: (i + 1).toString() };
+      if (this.questionType === 3) {
+        c = { label: '总成绩', prop: (i + 1).toString() };
         console.log('11111');
         this.headArr.push(c);
       }
@@ -515,7 +516,7 @@ export default {
           if (
             data.questionInfo[j].info.type == 2 ||
             data.questionInfo[j].info.type == 5 ||
-            data.questionInfo[j].info.type == 14||data.questionInfo[j].info.type == 15
+            data.questionInfo[j].info.type == 14 || data.questionInfo[j].info.type == 15
           ) {
             if (item[j].content == "") {
               c[(j + 1).toString()] = "用户未填写";
@@ -538,15 +539,15 @@ export default {
               } else {
                 t += "、" + data.questionInfo[j].optionList[num].content;
               }
-              
+
             }
-            if(t==''){t='用户未填写'}
+            if (t == '') { t = '用户未填写' }
             c[(j + 1).toString()] = t;
           }
         }
-        if(this.questionType===3){
+        if (this.questionType === 3) {
           console.log(data.answerInfo[i].point)
-          c[(item.length+1).toString()]=data.answerInfo[i].info.point;
+          c[(item.length + 1).toString()] = data.answerInfo[i].info.point;
         }
         this.table1.push(c);
         // console.log(1111);
@@ -609,7 +610,7 @@ export default {
         if (
           data[i].question.type == 2 ||
           data[i].question.type == 5 ||
-          data[i].question.type == 14||data[i].question.type == 15
+          data[i].question.type == 14 || data[i].question.type == 15
         ) {
           var data_i = data[i].answerList;
           var item = [];
@@ -649,7 +650,7 @@ export default {
         if (
           data[i].question.type == 2 ||
           data[i].question.type == 5 ||
-          data[i].question.type ==14 ||data[i].question.type == 15
+          data[i].question.type == 14 || data[i].question.type == 15
         ) {
           var data_i = data[i].answerList;
           var item = [];
@@ -683,7 +684,7 @@ export default {
         if (
           data[i].question.type == 2 ||
           data[i].question.type == 5 ||
-          data[i].question.type ==14  || data[i].question.type == 15
+          data[i].question.type == 14 || data[i].question.type == 15
         ) {
           var data_i = data[i].answerList;
           var item = [];
