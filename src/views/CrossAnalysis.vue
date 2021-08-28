@@ -44,14 +44,35 @@
             </el-table-column>
           </el-table>
           <div>
-            <el-button type="primary" @click="addbyhand=true"
+            <el-button type="primary" @click="addbyhand = true"
               >手动添加数据</el-button
             >
-            <div v-show="addbyhand==true">
+            <div v-show="addbyhand == true">
               <el-input v-model="name" placeholder="请输入姓名"></el-input>
               <el-input v-model="studentId" placeholder="请输入学号"></el-input>
               <el-button type="primary" @click="addlist">确定添加</el-button>
             </div>
+            <el-dialog
+              title=""
+              :visible.sync="showerro"
+              width="width"
+              :before-close="dialogBeforeClose"
+            >
+              <el-card>
+                <div >
+                  <el-table :data="error" border style="width: 100%">
+                    <el-table-column prop="stuId" label="学号" width="120">
+                    </el-table-column>
+                  </el-table>
+                </div>
+              </el-card>
+              <div slot="footer">
+                <el-button @click="showerro = false">取 消</el-button>
+                <el-button type="primary" @click="showerro = false"
+                  >确 定</el-button
+                >
+              </div>
+            </el-dialog>
             <el-button type="primary" @click="exportExcel('#demo3')"
               >下载模板</el-button
             >
@@ -414,7 +435,9 @@ export default {
       attendTrue: [],
       sum: [],
       fileList: [],
-      addbyhand:false
+      addbyhand: false,
+      showerro: false,
+      error:[],
     };
   },
   components: {
@@ -445,21 +468,31 @@ export default {
       var file = param.file;
       var file_form = new FormData(); //获取上传表单（文件）
       file_form.append("file", file);
-      file_form.append("questionnaireId",this.id);
+      file_form.append("questionnaireId", this.id);
       axios({
         url: "https://www.azur1tee.top/api/person/lead_in_list_by_excel",
         method: "POST",
         headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: window.localStorage.getItem("authorization"),
-            "Content-Type": "application/json",
-          },
+          "Content-Type": "multipart/form-data",
+          Authorization: window.localStorage.getItem("authorization"),
+          "Content-Type": "application/json",
+        },
         data: file_form,
       })
         .then((res) => {
-          // this.studentlist=res.data.data;
-          // console.log('这是文件')
-          
+          if(res.data.code==400){
+          this.showerro=true;
+          for(var i=0;i<res.data.data.length;i++){
+            var c={stuId:res.data.data[i]}
+            this.error.push(c);
+          }
+          // this.studentlist = res.data.data;
+          // this.getAttendFalseList();
+        }
+        else{
+          this.studentlist = res.data.data;
+          this.getAttendFalseList();
+        }
         })
         .catch((err) => {
           console.log(err);
@@ -540,21 +573,21 @@ export default {
         console.log("getList");
         console.log(res);
         this.attendFlase = res.data.data;
-        if(this.studentlist!==null){
+        if (this.studentlist !== null) {
           for (var i = 0; i < this.studentlist.length; i++) {
-          var flag = 0;
-          for (var j = 0; j < this.attendFlase.length; j++) {
-            if (this.studentlist[i].stuId == this.attendFlase[j].stuId) {
-              flag = 1;
-              break;
+            var flag = 0;
+            for (var j = 0; j < this.attendFlase.length; j++) {
+              if (this.studentlist[i].stuId == this.attendFlase[j].stuId) {
+                flag = 1;
+                break;
+              }
+            }
+            if (flag == 0) {
+              this.attendTrue.push(this.studentlist[i]);
             }
           }
-          if (flag == 0) {
-            this.attendTrue.push(this.studentlist[i]);
-          }
         }
-        }
-        
+
         console.log("attendTrue");
         console.log(this.attendTrue);
       });
@@ -571,8 +604,19 @@ export default {
           "Content-Type": "application/json",
         },
       }).then((res) => {
-        this.studentlist = res.data.data;
-        this.getAttendFalseList();
+        if(res.data.code==400){
+          this.showerro=true;
+          for(var i=0;i<res.data.data.length;i++){
+            var c={stuId:res.data.data[i]}
+            this.error.push(c);
+          }
+          // this.studentlist = res.data.data;
+          // this.getAttendFalseList();
+        }
+        else{
+          this.studentlist = res.data.data;
+          this.getAttendFalseList();
+        }
       });
     },
     deleteList(item) {
@@ -594,14 +638,6 @@ export default {
         data: {
           questionnaireId: this.id,
           personList: this.studentlist,
-          // studentlist=[
-          //   {
-          //   id:'',name:''
-          //   },
-          //   {
-          //     id:'',name:''
-          //   }
-          // ]
         },
         headers: {
           Authorization: window.localStorage.getItem("authorization"),
@@ -615,8 +651,8 @@ export default {
     },
     addlist() {
       var c = { name: this.name, stuId: this.studentId };
-      if(this.studentlist==null){
-        this.studentlist=[];
+      if (this.studentlist == null) {
+        this.studentlist = [];
         this.studentlist.push(c);
         return;
       }
