@@ -1,97 +1,174 @@
 <template>
   <div>
-    <div class="head">
+    <div class="c-head">
       <span class="total">回收总量：</span>
       <el-button
         v-if="num === 1"
         @click="exportExcel"
         type="primary"
         class="d-btn"
-        >导出EXCEL</el-button
-      >
+      >导出EXCEL</el-button>
       <el-button
         v-if="num === 2"
         type="primary"
         @click="handleDown"
         class="d-btn"
-        ><i class="el-icon-download"></i> 下载PDF</el-button
-      >
+      ><i class="el-icon-download"></i> 下载PDF</el-button>
     </div>
     <div v-show="questionType == 4">
-      <el-button type="primary" @click="showDialog">查看每日进度</el-button>
+      <el-button
+        type="primary"
+        @click="showDialog"
+      >查看每日进度</el-button>
       <el-dialog
         :visible.sync="ishow"
         width="50%"
         :before-close="handleClose"
       >
-      <el-button type="primary" @click="ListOrProgress=false">
-        导入名单
-      </el-button>
-      <el-button type="primary" @click="ListOrProgress=true">
-        参与进度
-      </el-button>
+        <el-button
+          type="primary"
+          @click="ListOrProgress=false"
+        >
+          导入名单
+        </el-button>
+        <el-button
+          type="primary"
+          @click="ListOrProgress=true"
+        >
+          参与进度
+        </el-button>
         <el-card v-show="ListOrProgress==false">
-          <el-table :data="studentlist" border style="width: 100%">
-            <el-table-column prop="name" label="姓名" width="120">
+          <el-table
+            :data="studentlist"
+            border
+            style="width: 100%"
+          >
+            <el-table-column
+              prop="name"
+              label="姓名"
+              width="120"
+            >
             </el-table-column>
-            <el-table-column prop="stuId" label="学号" width="120">
+            <el-table-column
+              prop="stuId"
+              label="学号"
+              width="120"
+            >
             </el-table-column>
-            <el-table-column label="操作" width="100">
+            <el-table-column
+              label="操作"
+              width="100"
+            >
               <template slot-scope="scope">
                 <el-button
                   @click="deleteList(scope.row)"
                   type="text"
                   size="small"
-                  >删除</el-button
-                >
+                >删除</el-button>
                 <!-- <el-button type="text" size="small">编辑</el-button> -->
               </template>
             </el-table-column>
           </el-table>
           <div slot="header">请输入姓名和学号</div>
           <div>
-            <el-input v-model="name" placeholder="请输入姓名"></el-input>
-            <el-input v-model="studentId" placeholder="请输入学号"></el-input>
-            <el-button type="primary" @click="addlist">提交数据</el-button>
+            <el-input
+              v-model="name"
+              placeholder="请输入姓名"
+            ></el-input>
+            <el-input
+              v-model="studentId"
+              placeholder="请输入学号"
+            ></el-input>
+            <el-button
+              type="primary"
+              @click="addlist"
+            >提交数据</el-button>
           </div>
         </el-card>
         <el-card v-show="ListOrProgress==true">
-          <el-button type="primary" @click="attendtype=false">待参与</el-button>
-          <el-button type="primary" @click="attendtype=true">已参与</el-button>
+          <el-button
+            type="primary"
+            @click="attendtype=false"
+          >待参与</el-button>
+          <el-button
+            type="primary"
+            @click="attendtype=true"
+          >已参与</el-button>
           <div v-show="attendtype==false">
-            <el-table :data="attendFlase" border style="width: 100%">
-            <el-table-column prop="name" label="姓名" width="120">
-            </el-table-column>
-            <el-table-column prop="stuId" label="学号" width="120">
-            </el-table-column>
-            
-          </el-table>
+            <el-table
+              :data="attendFlase"
+              border
+              style="width: 100%"
+            >
+              <el-table-column
+                prop="name"
+                label="姓名"
+                width="120"
+              >
+              </el-table-column>
+              <el-table-column
+                prop="stuId"
+                label="学号"
+                width="120"
+              >
+              </el-table-column>
+
+            </el-table>
           </div>
           <div v-show="attendtype==true">
             <div v-show="attendtype==false">
-            <el-table :data="attendFlase" border style="width: 100%">
-            <el-table-column prop="name" label="姓名" width="120">
-            </el-table-column>
-            <el-table-column prop="stuId" label="学号" width="120">
-            </el-table-column>
-            
-          </el-table>
-          </div>
+              <el-table
+                :data="attendFlase"
+                border
+                style="width: 100%"
+              >
+                <el-table-column
+                  prop="name"
+                  label="姓名"
+                  width="120"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="stuId"
+                  label="学号"
+                  width="120"
+                >
+                </el-table-column>
+
+              </el-table>
+            </div>
           </div>
           <!-- <el-button type="primary">不在导入名单之内</el-button> -->
         </el-card>
-        <span slot="footer" class="dialog-footer" v-show="ListOrProgress==false">
+        <span
+          slot="footer"
+          class="dialog-footer"
+          v-show="ListOrProgress==false"
+        >
           <el-button @click="ishow = false">取 消</el-button>
-          <el-button type="primary" @click="submitList()">确 定</el-button>
+          <el-button
+            type="primary"
+            @click="submitList()"
+          >确 定</el-button>
         </span>
       </el-dialog>
     </div>
-    <div class="center" id="demo1" v-if="num === 2">
-      <div class="header-title" style="color: #999; font-size: 20px">
+    <div
+      class="center"
+      id="demo1"
+      v-if="num === 2"
+    >
+      <div
+        class="header-title"
+        style="color: #999; font-size: 20px"
+      >
         问卷ID:<span style="font-size: 20px; color: #999">{{ this.id }}</span>
       </div>
       <div class="content">
-        <div v-for="(item, index) in data" :key="index">
+        <div
+          v-for="(item, index) in data"
+          :key="index"
+        >
           <el-divider></el-divider>
           <div class="question-title">
             <div class="question-seq"><b>第{{ index + 1 }}题</b></div><br>
@@ -223,7 +300,10 @@
               </el-button>
             </div>
             <div v-else>
-              <el-table :data="completion[index]" style="width: 100%">
+              <el-table
+                :data="completion[index]"
+                style="width: 100%"
+              >
                 <el-table-column label="序号">
                   <template slot-scope="scope">
                     <!-- <i class="el-icon-time"></i> -->
@@ -244,9 +324,17 @@
         </div>
       </div>
     </div>
-    <div class="center" v-else>
+    <div
+      class="center"
+      v-else
+    >
       <span v-if="questionType == 3"> 答卷平均分：{{ avg }} </span>
-      <el-table :data="table1" border height="550" style="width: 100%">
+      <el-table
+        :data="table1"
+        border
+        height="550"
+        style="width: 100%"
+      >
         <template v-for="(item, index) in headArr">
           <el-table-column
             :key="index"
@@ -311,10 +399,10 @@ export default {
       studentId: "",
       name: "",
       studentlist: [],
-      ListOrProgress:false,
-      attendtype:false,
-      attendFlase:[],
-      attendTrue:[],
+      ListOrProgress: false,
+      attendtype: false,
+      attendFlase: [],
+      attendTrue: [],
     };
   },
   components: {
@@ -333,50 +421,50 @@ export default {
   },
 
   methods: {
-    getAttendFalseList(){
-      var Data=new FormData();
-      Data.append('questionnaireId',this.id);
+    getAttendFalseList() {
+      var Data = new FormData();
+      Data.append('questionnaireId', this.id);
       axios({
         url: "https://www.azur1tee.top/api/person/checkout_not_punch",
         method: "post",
-        data:Data,
+        data: Data,
         headers: {
           Authorization: window.localStorage.getItem("authorization"),
           "Content-Type": "application/json",
         },
-      }).then((res)=>{
+      }).then((res) => {
         console.log('getList');
         console.log(res);
-        this.attendFlase=res.data.data;
+        this.attendFlase = res.data.data;
       })
-      for(var i=0;i<this.studentlist.length;i++){
-        var flag=0;
-        for(var j=0;j<this.attendTrue.length;j++){
-          if(this.studentlis[i].stuId==this.attendFlase[j].stuId){
-            flag=1;
+      for (var i = 0; i < this.studentlist.length; i++) {
+        var flag = 0;
+        for (var j = 0; j < this.attendTrue.length; j++) {
+          if (this.studentlis[i].stuId == this.attendFlase[j].stuId) {
+            flag = 1;
             break;
           }
         }
-        if(flag==0){
+        if (flag == 0) {
           this.attendTrue.push(this.studentlist[i]);
         }
       }
     },
-    getList(){
-      var Data=new FormData();
-      Data.append('questionnaireId',this.id);
+    getList() {
+      var Data = new FormData();
+      Data.append('questionnaireId', this.id);
       axios({
         url: "https://www.azur1tee.top/api/person/get_all_list",
         method: "post",
-        data:Data,
+        data: Data,
         headers: {
           Authorization: window.localStorage.getItem("authorization"),
           "Content-Type": "application/json",
         },
-      }).then((res)=>{
+      }).then((res) => {
         console.log('getList');
         console.log(res);
-        this.studentlist=res.data.data;
+        this.studentlist = res.data.data;
         this.getAttendFalseList();
       })
     },
@@ -389,7 +477,7 @@ export default {
           break;
         }
       }
-      this.studentlist.splice(index,1);
+      this.studentlist.splice(index, 1);
     },
     submitList() {
       // console.log(this.studentlist);
@@ -397,8 +485,8 @@ export default {
         url: "https://www.azur1tee.top/api/person/lead_in_list",
         method: "post",
         data: {
-          questionnaireId:this.id,
-          personList:this.studentlist,
+          questionnaireId: this.id,
+          personList: this.studentlist,
           // studentlist=[
           //   {
           //   id:'',name:''
@@ -412,10 +500,10 @@ export default {
           Authorization: window.localStorage.getItem("authorization"),
           "Content-Type": "application/json",
         },
-      }).then((res)=>{
+      }).then((res) => {
         console.log(res);
         this.getList();
-        this.ishow=false;
+        this.ishow = false;
       })
     },
     addlist() {
@@ -426,8 +514,8 @@ export default {
             .then((_) => {
               done();
             })
-            .catch((_) => {});
-            return;
+            .catch((_) => { });
+          return;
         }
       }
       this.studentlist.push(c);
@@ -440,7 +528,7 @@ export default {
         .then((_) => {
           done();
         })
-        .catch((_) => {});
+        .catch((_) => { });
     },
     showDialog() {
       this.ishow = true;
