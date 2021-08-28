@@ -12,6 +12,13 @@
     padding: 30px 72px 60px;
 }
 
+.c-head{
+    display: flex;
+    width: 1000px;
+    margin: 20px auto;
+    justify-content: space-between;
+}
+
 .header-title {
     font-size: 20px;
     font-weight: bold;
