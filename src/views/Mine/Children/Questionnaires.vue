@@ -301,10 +301,10 @@ export default {
       });
     },
     checkAnalysis(id, type) {
-      if (type == '考试问卷') {
+      if (type === '考试问卷') {
         this.$router.push({ name: "statistics", params: { id: id ,type:3} });
       }
-      else if(type=='疫情打卡问卷'){
+      else if(type==='疫情打卡问卷'){
         this.$router.push({ name: "statistics", params: { id: id ,type:4} });
       }
       else {
