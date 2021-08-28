@@ -25,6 +25,10 @@
         :sort-by.sync="sortBy"
         :sort-desc.sync="sortDesc"
         class="elevation-1"
+        no-data-text="当前回收站无任何问卷"
+        no-results-text="未搜索到相关问卷"
+        :loading="loading_visible"
+        loading-text="等待加载中"
       >
         <template v-slot:[`item.name`]="{ item }">
           <div style="max-width: 160px;overflow: hidden;text-overflow:ellipsis;white-space:nowrap;">
@@ -69,6 +73,7 @@ export default {
       sortDesc: true,
       user_id: window.localStorage.getItem("user_id"),
       search: "",
+      loading_visible:true,
       headers: [
         {
           text: "问卷名称",
@@ -190,6 +195,9 @@ export default {
         },
       }).then((res) => {
         console.log(res);
+        if(res.data.data.length===0){
+          this.loading_visible=false;
+        }
         this.desserts = [];
         for (let i = 0; i < res.data.data.length; i++) {
           var state = "已删除";
@@ -274,6 +282,7 @@ export default {
           };
           // console.log(data)
           this.desserts.push(data);
+          this.loading_visible = false;
         }
         // 没写全之后再补
       });
