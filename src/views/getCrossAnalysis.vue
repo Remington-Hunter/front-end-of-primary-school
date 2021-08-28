@@ -1,6 +1,9 @@
 <template>
-  <div>
-    <el-card class="box-card">
+  <div style="width:1000px;margin:20px auto">
+    <el-card
+      class="box-card"
+      shadow="never"
+    >
       <div
         slot="header"
         class="clearfix"
@@ -9,47 +12,54 @@
         <el-button
           style="float:right;padding:3px 0"
           type="text"
-        >交叉分析</el-button>
+          @click="dialogVisible = true"
+        >什么是交叉分析？</el-button>
       </div>
-      <div>
-        我的交叉分析
-        <hr>
+      <div style="padding: 0 30px">
+        <div style="width:50%;float:left">
+          <div style="padding-bottom:10px">定义行 <span class="sub">[一般为需要分析的题目，如爱好，意愿等]</span></div>
+          <el-select
+            v-model="v1"
+            clearable
+            filterable
+            placeholder="请选择"
+            style="width:80%"
+          >
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </div>
+        <div style="width:50%;float:right">
+          <div style="padding-bottom:10px">定义列 <span class="sub">[一般为样本属性，如性别，年龄等]</span></div>
+          <el-select
+            v-model="v2"
+            filterable
+            clearable
+            placeholder="请选择"
+            style="width:80%"
+          >
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </div>
+        <el-button
+          type="primary"
+          style="margin-top:20px;"
+          @click="getAnalysis(v1, v2)"
+        >开始分析</el-button>
       </div>
     </el-card>
-    <div style="width:50%;float:left">
-      <el-select
-        v-model="v1"
-        filterable
-        placeholder="请选择"
-      >
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        >
-        </el-option>
-      </el-select>
-    </div>
-    <div style="width:50%;float:right">
-      <el-select
-        v-model="v2"
-        filterable
-        placeholder="请选择"
-      >
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        >
-        </el-option>
-      </el-select>
-    </div>
-    <el-button
-      type="primary"
-      @click="getAnalysis(v1, v2)"
-    >提交</el-button>
+
     <el-table
       :data="table1"
       border
@@ -72,42 +82,58 @@
       </template>
     </el-table>
     <!-- <el-button type="primary" @click="chageType('bar')">条形图</el-button> -->
-    <el-button
-      type="primary"
-      @click="chageType('line')"
-    >折线图</el-button>
-    <el-button
-      type="primary"
-      @click="chageType('bar')"
-    >柱状图</el-button>
-    <el-button
-      type="primary"
-      @click="chageType('radar')"
-    >雷达图</el-button>
-    <el-button
-      type="primary"
-      @click="chageType('row')"
-    >条形图</el-button>
-    <div
-      id="line"
-      style="width: 600px; height: 400px"
-      v-show="type=='line'"
-    ></div>
-    <div
-      id="bar"
-      style="width: 600px; height: 400px"
-      v-show="type=='bar'"
-    ></div>
-    <div
-      id="radar"
-      style="width: 600px; height: 400px"
-      v-show="type=='radar'"
-    ></div>
-    <div
-      id="row"
-      style="width: 600px; height: 400px"
-      v-show="type=='row'"
-    ></div>
+    <el-card
+      :data="table1"
+      border
+      height="550px"
+      style="width: 100%"
+    >
+      <div style="margin-bottom:20px">
+        <el-button @click="chageType('line')">折线图</el-button>
+        <el-button @click="chageType('bar')">柱状图</el-button>
+        <el-button @click="chageType('radar')">雷达图</el-button>
+        <el-button @click="chageType('row')">条形图</el-button>
+      </div>
+      <div>
+        <div
+          id="line"
+          style="width: 600px; height: 400px;margin:0 auto"
+          v-show="type=='line'"
+        ></div>
+        <div
+          id="bar"
+          style="width: 600px; height: 400px;margin:0 auto"
+          v-show="type=='bar'"
+        ></div>
+        <div
+          id="radar"
+          style="width: 600px; height: 400px;margin:0 auto"
+          v-show="type=='radar'"
+        ></div>
+        <div
+          id="row"
+          style="width: 600px; height: 400px;margin:0 auto"
+          v-show="type=='row'"
+        ></div>
+      </div>
+    </el-card>
+    <el-dialog
+      title="什么是交叉分析？"
+      :visible.sync="dialogVisible"
+      width="30%"
+      center
+    >
+      <div class="c-text">{{ text }}</div>
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button
+          type="primary"
+          @click="dialogVisible = false"
+        >确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -134,6 +160,8 @@ export default {
       col: [],
       data1: [],
       type: 'bar',
+      dialogVisible: false,
+      text: "交叉分析法又称立体分析法，是在纵向分析法和横向分析法的基础上，从交叉、立体的角度出发，由浅入深、由低级到高级的一种分析方法。这种方法虽然复杂，但它弥补了“各自为政”分析方法所带来的偏差。 \n\n通常用于分析两个变量之间的关系，例如各个报纸阅读和年龄之间的关系。实际使用中我们通常把这个概念推广到行变量和列变量之间的关系，这样行变量可能有多个变量组成，列变量也可能有多个变量，甚至可以只有行变量没有列变量，或者只有列变量没有行变量。"
     };
   },
   mounted() {
@@ -205,7 +233,7 @@ export default {
       //   var answerInfo=data.answerInfo;
       var questionInfo = data.questionInfo;
       for (var i = 0; i < questionInfo.length; i++) {
-        if (questionInfo[i].info.type == 2||questionInfo[i].info.type==5||questionInfo[i].info.type==14||questionInfo[i].info.type==15) {
+        if (questionInfo[i].info.type == 2 || questionInfo[i].info.type == 5 || questionInfo[i].info.type == 14 || questionInfo[i].info.type == 15) {
           continue;
         } else {
           var content = "" + (i + 1) + "." + questionInfo[i].info.content;
@@ -520,5 +548,6 @@ export default {
 };
 </script>
 <style scoped>
-</style>>
+@import "../assets/css/icon/analysis.css";
+</style>
     

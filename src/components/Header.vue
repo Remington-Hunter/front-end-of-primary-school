@@ -11,13 +11,14 @@
               class="img"
             /></div><span style="padding-left:8px">问卷星球</span>
         </router-link>
-        <a @click="myquestionnaire"
+        <a
+          @click="myquestionnaire"
           class="my"
         >
-          <i class="el-icon-document" ></i> 我的问卷
+          <i class="el-icon-document"></i> 我的问卷
         </a>
         <a
-            @click="toQuestionnaire_type()"
+          @click="toQuestionnaire_type()"
           to="/Questionnaire_type"
           class="my"
         >
@@ -74,11 +75,11 @@ export default {
     }
   },
   methods: {
-    toQuestionnaire_type(){
-      if(this.ishow!=null){
+    toQuestionnaire_type() {
+      if (this.ishow != null) {
         this.$router.push('/Questionnaire_type')
       }
-      else{
+      else {
         this.$router.push('/login')
       }
     },
@@ -87,6 +88,11 @@ export default {
       window.localStorage.removeItem('authorization')
       window.localStorage.removeItem('userName')
       this.check_is_login();
+      this.$message({
+        message: '退出成功',
+        type: 'success'
+      });
+      this.$router.push('/')
     },
     check_is_login() {
       if (window.localStorage.getItem('user_id') != null) {
@@ -97,11 +103,11 @@ export default {
       }
       // this.$router.go(0)
     },
-    myquestionnaire(){
-      if(this.ishow!=null){
+    myquestionnaire() {
+      if (this.ishow != null) {
         this.$router.push('/mine')
       }
-      else{
+      else {
         this.$router.push('/login')
       }
     }
@@ -148,7 +154,7 @@ a {
 #head-title {
   margin-left: 3vw;
   margin-right: 2vw;
-  font-size: 4vh;
+  font-size: 3vh;
   font-family: YouYuan;
   font-weight: bold;
   color: #094299;
@@ -174,7 +180,7 @@ li :hover {
   color: #008fff;
 }
 .my {
-  font-size: 1.2em;
+  font-size: 1.1em;
   color: #333333;
   padding-left: 30px;
 }

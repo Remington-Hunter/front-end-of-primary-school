@@ -1,8 +1,11 @@
 <template>
   <div>
     <el-container>
-      <el-aside style="width:120px">
-        <el-menu active-text-color="#1296db">
+      <el-aside style="width:120px;position:fixed;">
+        <el-menu
+          active-text-color="#1296db"
+          style="height:100vh"
+        >
           <el-menu-item
             index="1"
             @click="goto(1)"
@@ -28,7 +31,7 @@
         </el-menu>
       </el-aside>
 
-      <el-main>
+      <el-main style="margin-left:120px">
         <anlysis
           :num="num"
           v-if="this.num<3"

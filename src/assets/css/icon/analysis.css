@@ -19,7 +19,7 @@
 }
 
 .question-title {
-    font-size: 18px;
+    font-size: 16px;
     word-break: break-word;
 }
 .question-seq {
@@ -27,6 +27,7 @@
     margin-right: 8px;
     font-size: 18px;
     float: left;
+    margin-top: -5px;
 }
 
 .table{
@@ -38,16 +39,46 @@
     font-size: 16px;
     padding-left: 20px;
 }
-.d-btn{
-    float:right;
-    margin-right: 60px;
-}
 
 #demo2{
     width: 80%;
 }
 
 #head{
-    height:30px;
-    vertical-align:middle;
+    margin: 0px auto;
+    width: 1000px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.total{
+    font-size: 22px;
+    color: #444;
+    font-weight: bold;
+}
+
+.content{
+    margin: 20px auto;
+}
+
+.sub{
+    font-size: 15px;
+    color: #999;
+    margin-left: 5px;
+}
+
+.c-text {
+    white-space: pre-wrap;
+    padding: 0 10px ;
+}
+
+.corret{
+    margin-top: 5px;
+    color: #409EFF;
+    font-size: 14px;
+}
+
+.c-answer{
+    margin-top: 5px;
+    font-size: 14px;
 }
