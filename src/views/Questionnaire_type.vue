@@ -1,185 +1,147 @@
 <template>
-  <div
-    class="1"
-    style="margin:2% 0"
-  >
-    <div class="3">
-      <v-card
-        class="common_question"
-        style="margin-left:15%; margin-right: 7%; display: inline-block"
-      >
-        <span
-          class="iconfont"
-          style="text-align: center;display:block;"
-        >&#xe643;</span>
-        <div style="text-align: center;display:block;">普通问卷</div>
-        <div style="text-align: center;display:block;">
-          <v-btn
-            class="ma-2"
-            color="primary"
-            @click="saveQues_normal"
-          >
-            <!-- to进行跳转 由于普通问卷页面没有做好，这里先转到home试一下-->
-            创建
-            <v-icon
-              dark
-              right
-            >mdi-checkbox-marked-circle
-            </v-icon>
-          </v-btn>
-        </div>
-      </v-card>
+  <div style="margin:2% 15%">
+    <el-row>
+      <el-col :span="8">
+        <v-card class="common_question">
+          <span
+            class="iconfont"
+            style="text-align: center;display:block;"
+          >&#xe643;</span>
+          <div style="text-align: center;display:block;">普通问卷</div>
+          <div style="text-align: center;display:block;">
+            <v-btn
+              height="5vh"
+              class="ma-2"
+              color="primary"
+              @click="saveQues_normal"
+            >
+              <!-- to进行跳转 由于普通问卷页面没有做好，这里先转到home试一下-->
+              创建
+              <v-icon
+                dark
+                right
+              >mdi-checkbox-marked-circle
+              </v-icon>
+            </v-btn>
+          </div>
+        </v-card>
+      </el-col>
+      <el-col :span="8">
+        <v-card class="common_question">
+          <span
+            class="iconfont"
+            style="text-align: center;display:block;"
+          >&#xe69a;</span>
+          <div style="text-align: center;display:block;">投票问卷</div>
+          <div style="text-align: center;display:block;">
+            <v-btn
+              height="5vh"
+              class="ma-2"
+              color="primary"
+              @click="saveQues_toupiao"
+            >
+              <!-- to进行跳转 由于普通问卷页面没有做好，这里先转到home试一下-->
+              创建
+              <v-icon
+                dark
+                right
+              >mdi-checkbox-marked-circle
+              </v-icon>
+            </v-btn>
+          </div>
+        </v-card>
+      </el-col>
+      <el-col :span="8">
+        <v-card class="common_question">
+          <span
+            class="iconfont"
+            style="text-align: center;display:block;"
+          >&#xe636;</span>
+          <div style="text-align: center;display:block;">报名问卷</div>
+          <div style="text-align: center;display:block;">
+            <v-btn
+              height="5vh"
+              class="ma-2"
+              color="primary"
+              @click="saveQues_baoming"
+            >
+              <!-- to进行跳转 由于普通问卷页面没有做好，这里先转到home试一下-->
+              创建
+              <v-icon
+                dark
+                right
+              >mdi-checkbox-marked-circle
+              </v-icon>
+            </v-btn>
+          </div>
+        </v-card>
+      </el-col>
+    </el-row>
 
-      <v-card
-        class="common_question"
-        style="margin-right:15%; margin-left: 7%; display: inline-block"
-      >
-        <span
-          class="iconfont"
-          style="text-align: center;display:block;"
-        >&#xe69a;</span>
-        <div style="text-align: center;display:block;">投票问卷</div>
-        <div style="text-align: center;display:block;">
-          <v-btn
-            class="ma-2"
-            color="primary"
-            @click="saveQues_toupiao"
-          >
-            <!-- to进行跳转 由于普通问卷页面没有做好，这里先转到home试一下-->
-            创建
-            <v-icon
-              dark
-              right
-            >mdi-checkbox-marked-circle
-            </v-icon>
-          </v-btn>
-        </div>
-      </v-card>
+    <el-row style="margin-top:40px">
+      <el-col :span="8">
+        <v-card class="common_question">
+          <span
+            class="iconfont"
+            style="text-align: center;display:block;"
+          >&#xe8bb;</span>
+          <div style="text-align: center;display:block;">考试问卷</div>
+          <div style="text-align: center;display:block;">
+            <v-btn
+              class="ma-2"
+              color="primary"
+              @click="saveQues_kaoshi"
+              height="5vh"
+            >
+              <!-- to进行跳转 由于普通问卷页面没有做好，这里先转到home试一下-->
+              创建
+              <v-icon
+                dark
+                right
+              >mdi-checkbox-marked-circle
+              </v-icon>
+            </v-btn>
+          </div>
+        </v-card>
+      </el-col>
+      <el-col :span="8">
+        <v-card class="common_question">
+          <span
+            class="iconfont"
+            style="text-align: center;display:block;"
+          >&#xe6e2;</span>
+          <div style="text-align: center;display:block;">疫情打卡问卷</div>
+          <div style="text-align: center;display:block;">
+            <v-btn
+              height="5vh"
+              class="ma-2"
+              color="primary"
+              @click="saveQues_daka"
+            >
+              <!-- to进行跳转 由于普通问卷页面没有做好，这里先转到home试一下-->
+              创建
+              <v-icon
+                dark
+                right
+              >mdi-checkbox-marked-circle
+              </v-icon>
+            </v-btn>
+          </div>
+        </v-card>
+      </el-col>
+      <el-col :span="8">
+        <v-card class="common_question">
+          <span
+            class="iconfont"
+            style="text-align: center;display:block;"
+          >&#xe652;</span>
+          <div style="text-align: center;display:block;">更多问卷</div>
+          <div style="text-align: center;display:block;">
+          </div>
+        </v-card>
+      </el-col>
+    </el-row>
 
-    </div>
-    <div
-      class="3"
-      style="margin-top:3%"
-    >
-      <v-card
-        class="common_question"
-        style="margin-left:15%; margin-right: 7%; display: inline-block"
-      >
-        <span
-          class="iconfont"
-          style="text-align: center;display:block;"
-        >&#xe636;</span>
-        <div style="text-align: center;display:block;">报名问卷</div>
-        <div style="text-align: center;display:block;">
-          <v-btn
-            class="ma-2"
-            color="primary"
-            @click="saveQues_baoming"
-          >
-            <!-- to进行跳转 由于普通问卷页面没有做好，这里先转到home试一下-->
-            创建
-            <v-icon
-              dark
-              right
-            >mdi-checkbox-marked-circle
-            </v-icon>
-          </v-btn>
-        </div>
-      </v-card>
-      <v-card
-        class="common_question"
-        style="margin-right:15%; margin-left: 7%; display: inline-block"
-      >
-        <span
-          class="iconfont"
-          style="text-align: center;display:block;"
-        >&#xe8bb;</span>
-        <div style="text-align: center;display:block;">考试问卷</div>
-        <div style="text-align: center;display:block;">
-          <v-btn
-            class="ma-2"
-            color="primary"
-            @click="saveQues_kaoshi"
-          >
-            <!-- to进行跳转 由于普通问卷页面没有做好，这里先转到home试一下-->
-            创建
-            <v-icon
-              dark
-              right
-            >mdi-checkbox-marked-circle
-            </v-icon>
-          </v-btn>
-        </div>
-      </v-card>
-    </div>
-    <div
-      class="3"
-      style="margin-top:3%"
-    >
-      <v-card
-        class="common_question"
-        style="margin-left:15%; margin-right: 7%; display: inline-block"
-      >
-        <span
-          class="iconfont"
-          style="text-align: center;display:block;"
-        >&#xe6e2;</span>
-        <div style="text-align: center;display:block;">疫情打卡问卷</div>
-        <div style="text-align: center;display:block;">
-          <v-btn
-            class="ma-2"
-            color="primary"
-            @click="saveQues_daka"
-          >
-            <!-- to进行跳转 由于普通问卷页面没有做好，这里先转到home试一下-->
-            创建
-            <v-icon
-              dark
-              right
-            >mdi-checkbox-marked-circle
-            </v-icon>
-          </v-btn>
-        </div>
-      </v-card>
-      <v-card
-        class="common_question"
-        style="margin-right:15%; margin-left: 7%; display: inline-block"
-      >
-        <span
-          class="iconfont"
-          style="text-align: center;display:block;"
-        >&#xe652;</span>
-        <div style="text-align: center;display:block;">考试问卷</div>
-        <div style="text-align: center;display:block;">
-          <v-btn
-            class="ma-2"
-            color="primary"
-            @click="saveQues_kaoshi"
-          >
-            <!-- to进行跳转 由于普通问卷页面没有做好，这里先转到home试一下-->
-            创建
-            <v-icon
-              dark
-              right
-            >mdi-checkbox-marked-circle
-            </v-icon>
-          </v-btn>
-        </div>
-      </v-card>
-    </div>
-
-    <!--    <v-btn-->
-    <!--        class="ma-2"-->
-    <!--        color="primary"-->
-    <!--        @click="saveQues_daka"-->
-    <!--    >-->
-    <!--      创建-->
-    <!--      <v-icon-->
-    <!--          dark-->
-    <!--          right-->
-    <!--      >mdi-checkbox-marked-circle-->
-    <!--      </v-icon>-->
-    <!--    </v-btn>-->
   </div>
 
 </template>
@@ -332,12 +294,13 @@ export default {
 
 <style scoped>
 .common_question {
-  height: 100% !important;
-  width: 25%;
+  width: 80%;
+  height: 35vh;
+  padding: 2vh;
 }
 
-.theme--light.v-application {
-  background: #f4f6f9;
-  color: rgba(0, 0, 0, 0.87);
+.iconfont {
+  font-size: 13vh;
+  color: #1e88e5;
 }
 </style>
