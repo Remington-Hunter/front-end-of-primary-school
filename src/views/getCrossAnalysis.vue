@@ -1,5 +1,5 @@
 <template>
-  <div class='content'>
+  <div style="width:1000px;margin:20px auto">
     <el-card class="box-card">
       <div
         slot="header"
