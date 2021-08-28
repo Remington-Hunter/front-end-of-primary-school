@@ -108,9 +108,13 @@
   line-height: 24px;
 }
 
-
 .loc{
   margin-bottom: 20px;
+}
+
+.question-answer{
+  font-size: 15px;
+  margin-top: 10px;
 }
 
 
