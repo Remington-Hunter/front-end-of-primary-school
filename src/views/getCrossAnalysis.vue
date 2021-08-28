@@ -342,6 +342,10 @@ export default {
           item1.push("" + (i + 1) + "星");
         } else {
           // c["0"] = question1.optionList[i].content;
+          var ss = question1.optionList[i].content;
+            if (ss.length > 8) {
+              ss = ss.slice(0, 8) + "...";
+            }
           item1.push(question1.optionList[i].content);
         }
         var num = 0;
@@ -415,7 +419,12 @@ export default {
         },
         color: ['#009dff', '#40c45f', '#FFC851', '#5A5476', '#1869A0', '#FF9393'],
         // 声明一个 X 轴，类目轴（category）。默认情况下，类目轴对应到 dataset 第一列。
-        xAxis: { type: "category" },
+        xAxis: { type: "category",
+        nameLocation:'end',//坐标轴名称显示位置。
+            axisLabel : {//坐标轴刻度标签的相关设置。
+                interval:0,
+                rotate:"45"
+            }},
         // 声明一个 Y 轴，数值轴。
         yAxis: { type: "value", },
         // 声明多个 bar 系列，默认情况下，每个系列会自动对应到 dataset 的每一列。
@@ -443,7 +452,11 @@ export default {
           source: this.col,
         },
         // 声明一个 X 轴，类目轴（category）。默认情况下，类目轴对应到 dataset 第一列。
-        xAxis: { type: "category" },
+        xAxis: { type: "category",nameLocation:'end',//坐标轴名称显示位置。
+            axisLabel : {//坐标轴刻度标签的相关设置。
+                interval:0,
+                rotate:"45"
+            } },
         // 声明一个 Y 轴，数值轴。
         yAxis: {},
         // 声明多个 bar 系列，默认情况下，每个系列会自动对应到 dataset 的每一列。
@@ -536,7 +549,11 @@ export default {
         // 声明一个 X 轴，类目轴（category）。默认情况下，类目轴对应到 dataset 第一列。
         xAxis: { type: "value", },
         // 声明一个 Y 轴，数值轴。
-        yAxis: { type: 'category', },
+        yAxis: { type: 'category',nameLocation:'end',//坐标轴名称显示位置。
+            axisLabel : {//坐标轴刻度标签的相关设置。
+                interval:0,
+                rotate:"45"
+            } },
         // 声明多个 bar 系列，默认情况下，每个系列会自动对应到 dataset 的每一列。
         series: data1,
       };
