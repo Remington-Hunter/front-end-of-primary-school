@@ -79,42 +79,41 @@
       </template>
     </el-table>
     <!-- <el-button type="primary" @click="chageType('bar')">条形图</el-button> -->
-    <el-button
-      type="primary"
-      @click="chageType('line')"
-    >折线图</el-button>
-    <el-button
-      type="primary"
-      @click="chageType('bar')"
-    >柱状图</el-button>
-    <el-button
-      type="primary"
-      @click="chageType('radar')"
-    >雷达图</el-button>
-    <el-button
-      type="primary"
-      @click="chageType('row')"
-    >条形图</el-button>
-    <div
-      id="line"
-      style="width: 600px; height: 400px"
-      v-show="type=='line'"
-    ></div>
-    <div
-      id="bar"
-      style="width: 600px; height: 400px"
-      v-show="type=='bar'"
-    ></div>
-    <div
-      id="radar"
-      style="width: 600px; height: 400px"
-      v-show="type=='radar'"
-    ></div>
-    <div
-      id="row"
-      style="width: 600px; height: 400px"
-      v-show="type=='row'"
-    ></div>
+    <el-card
+      :data="table1"
+      border
+      height="550px"
+      style="width: 100%"
+    >
+      <div style="margin-bottom:20px">
+        <el-button @click="chageType('line')">折线图</el-button>
+        <el-button @click="chageType('bar')">柱状图</el-button>
+        <el-button @click="chageType('radar')">雷达图</el-button>
+        <el-button @click="chageType('row')">条形图</el-button>
+      </div>
+      <div>
+        <div
+          id="line"
+          style="width: 600px; height: 400px;margin:0 auto"
+          v-show="type=='line'"
+        ></div>
+        <div
+          id="bar"
+          style="width: 600px; height: 400px;margin:0 auto"
+          v-show="type=='bar'"
+        ></div>
+        <div
+          id="radar"
+          style="width: 600px; height: 400px;margin:0 auto"
+          v-show="type=='radar'"
+        ></div>
+        <div
+          id="row"
+          style="width: 600px; height: 400px;margin:0 auto"
+          v-show="type=='row'"
+        ></div>
+      </div>
+    </el-card>
     <el-dialog
       title="什么是交叉分析？"
       :visible.sync="dialogVisible"
