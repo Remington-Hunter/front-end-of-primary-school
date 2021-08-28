@@ -1,6 +1,9 @@
 <template>
   <div style="width:1000px;margin:20px auto">
-    <el-card class="box-card">
+    <el-card
+      class="box-card"
+      shadow="never"
+    >
       <div
         slot="header"
         class="clearfix"
