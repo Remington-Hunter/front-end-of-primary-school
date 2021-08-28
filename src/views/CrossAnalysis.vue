@@ -14,7 +14,6 @@
         class="d-btn"
       ><i class="el-icon-download"></i> 下载PDF</el-button>
     </div>
-
     <div
       class="center"
       id="demo1"
@@ -53,8 +52,9 @@
                 class="question-type"
               >评分题</span>
               <div v-if="questionType==3">
-                <span>正确率：{{rate[index]}}</span>
-                <span>正确答案：{{rightAnswer[index]}}</span>
+                <span class="question-seq">正确率：{{rate[index]}}</span>
+                <span class="question-seq">正确答案：{{rightAnswer[index]}}</span>
+                <span class="question-seq">题目平均分：{{avglist[index]}}</span>
               </div>
             </div>
           </div>
@@ -189,6 +189,9 @@
       class="center"
       v-else
     >
+    <span v-if="questionType==3">
+      答卷平均分：{{avg}}
+    </span>
       <el-table
         :data="table1"
         border
@@ -237,6 +240,7 @@ export default {
       id: this.id1,
       bar: [],
       data: [],
+      data1:[],
       pie: [],
       col: [],
       line: [],
@@ -252,6 +256,8 @@ export default {
       questionType:3,
       rate:[],
       rightAnswer:[],
+      avg:0,
+      avglist:[]
     };
   },
   components: {
@@ -263,11 +269,13 @@ export default {
   },
   mounted() {
     this.id = this.$route.params.id;
+    this.questionType=this.$route.params.type
     this.getseries();
     this.getAnswerData();
   },
 
   methods: {
+ 
     getRate(data){
       if(this.questionType!==3){
         return;
@@ -295,7 +303,9 @@ export default {
           }
           this.rightAnswer.push(s);
         }
-        
+        t=data[i].question.rate*data.length;
+        t=t.toFixed(2);
+        this.avglist.push(t);
       }
       }
       
@@ -376,8 +386,8 @@ export default {
           this.completion.push(item);
         }
       }
-      console.log(11111111);
-      console.log(this.completion)
+      // console.log(11111111);
+      // console.log(this.completion)
     },
     getBarData(data) {
       // console.log(data.length);
@@ -468,10 +478,12 @@ export default {
         },
       }).then((res) => {
         var data = res.data.data;
-        this.answerData = data.answerInfo;
-        console.log(data);
-        console.log(res);
-        // this.getAnswerData(data);
+        this.data1=data;
+        this.avg=0;
+        for(var i=0;i<data.answerInfo.length;i++){
+          this.avg+=data.answerInfo[i].info.point;
+        }
+        this.avg=this.avg/(data.answerInfo.length)
         this.getAnswerExcel(data);
       });
     },
@@ -495,7 +507,7 @@ export default {
       }
       if(this.questionType===3){
         c={ label: '总成绩', prop: (i + 1).toString() };
-        console.log('11111');
+        // console.log('11111');
         this.headArr.push(c);
       }
     },
@@ -549,8 +561,6 @@ export default {
           c[(item.length+1).toString()]=data.answerInfo[i].info.point;
         }
         this.table1.push(c);
-        // console.log(1111);
-        // console.log(this.table1);
       }
     },
     exportData() {
