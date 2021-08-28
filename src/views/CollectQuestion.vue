@@ -314,8 +314,8 @@ export default {
       }
     },
     getInfo2() {
-      if(can_write_state === false){
-        return
+      if(this.can_write_state === false){
+        return;
       }
       var formData = new FormData();
       formData.append("md5", this.ma);
