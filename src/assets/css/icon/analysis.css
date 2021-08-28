@@ -5,7 +5,7 @@
     margin-bottom: 80px;
 }
 
-.center{
+.c-center{
     margin: 20px auto;
     width: 1000px;
     background-color: white;
@@ -19,17 +19,12 @@
     justify-content: space-between;
 }
 
-.header-title {
-    font-size: 20px;
-    font-weight: bold;
-    word-break: break-word;
-}
 
-.question-title {
+.q-title {
     font-size: 16px;
     word-break: break-word;
 }
-.question-seq {
+.q-seq {
     display: block;
     margin-right: 8px;
     font-size: 18px;

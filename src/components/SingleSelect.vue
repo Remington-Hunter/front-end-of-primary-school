@@ -214,8 +214,8 @@
         v-show="!ismodify"
         class="q-content"
       >
-        <div class="question-seq">{{ problem_number }}.</div>
-        <div class="text">
+        <span class="question-seq">{{ problem_number }}.</span>
+        <span class="question-text">
           {{ name }}
           <span
             v-if="['考试填空题','考试单选题','考试多选题'].includes(problem_type)"
@@ -225,7 +225,7 @@
             v-if="must_write_select"
             class="question-required"
           >*</span>
-        </div>
+        </span>
 
         <div class="q-instruction">{{ instruction }}</div>
         <div
@@ -434,10 +434,10 @@ export default {
         : undefined,
       question_analysis: this.iscopy ? this.copy_info.question_analysis : "",
       point: this.iscopy ? this.copy_info.point : 0,
-      isnot_kaoshi:false,
-      upmove_limit: this.copy_info.upmove_limit === undefined?false:true,
-      is_daka_two:this.copy_info.is_daka_two === undefined?false:true,
-      is_daka:this.copy_info.is_daka === undefined?false:true,
+      isnot_kaoshi: false,
+      upmove_limit: this.copy_info.upmove_limit === undefined ? false : true,
+      is_daka_two: this.copy_info.is_daka_two === undefined ? false : true,
+      is_daka: this.copy_info.is_daka === undefined ? false : true,
     };
   },
   created() {

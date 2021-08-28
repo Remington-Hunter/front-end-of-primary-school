@@ -9,7 +9,7 @@
   
   .header-title {
     text-align: center;
-    font-size: 32px;
+    font-size: 28px;
     word-break: break-word;
   }
   .header-subtitle {
@@ -26,7 +26,10 @@
   }
 
   .question-seq {
-    font-size: 22px;
+    font-weight: bold;
+    margin-right: 5px;
+    font-size: 18px;
+    color: #444;
   }
   .question-required {
     margin-left: 2px;
@@ -52,16 +55,18 @@
     display: block;
     margin-top: 5px;
   }
-  .page-control {
+.page-control {
     text-align: center;
     padding: 50px 0;
-  }
-  .el-tag {
+}
+
+.el-tag {
     padding: 0px 3px;
     height: 25px;
     line-height: 25px;
     font-size: 80%;
-  }
+}
+
 .sel-total {
     padding: 0 10px;
     color: #feae3a;
@@ -102,10 +107,6 @@
   line-height: 24px;
 }
 
-.el-col-1 {
-  width: 3%;
-  min-height: 1px
-}
 
 .loc{
   margin-bottom: 20px;

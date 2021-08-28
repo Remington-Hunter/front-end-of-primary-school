@@ -134,7 +134,7 @@
       </el-dialog>
     </div>
     <div
-      class="center"
+      class="c-center"
       id="demo1"
       v-if="num === 2"
     >
@@ -150,8 +150,8 @@
           :key="index"
         >
           <el-divider></el-divider>
-          <div class="question-title">
-            <div class="question-seq">
+          <div class="q-title">
+            <div class="q-seq">
               <b>第{{ index + 1 }}题</b>
             </div>
             <br />
@@ -164,8 +164,7 @@
                 data[index].question.type == 12
               "
               class="question-type"
-              >单选题</span
-            >
+            >单选题</span>
             <span
               v-if="
                 data[index].question.type == 1 ||
@@ -174,7 +173,7 @@
                 data[index].question.type == 13
               "
               class="question-type"
-              >多选题
+            >多选题
             </span>
             <span
               v-if="
@@ -184,8 +183,7 @@
                 data[index].question.type == 15
               "
               class="question-type"
-              >填空题</span
-            >
+            >填空题</span>
             <span
               v-if="
                 data[index].question.type == 3 ||
@@ -193,22 +191,19 @@
                 data[index].question.type == 9
               "
               class="question-type"
-              >评分题</span
-            >
+            >评分题</span>
             <div v-if="questionType == 3">
               <div class="corret">正确率：{{ rate[index] }}</div>
               <div class="c-answer">正确答案：{{ rightAnswer[index] }}</div>
             </div>
           </div>
 
-          <div
-            v-if="
+          <div v-if="
               data[index].question.type === 2 ||
               data[index].question.type === 5 ||
               data[index].question.type === 14 ||
               data[index].question.type === 15
-            "
-          >
+            ">
             <el-table
               :data="completion[index]"
               style="width: 100%"
@@ -342,7 +337,7 @@
       </div>
     </div>
     <div
-      class="center"
+      class="c-center"
       v-else
     >
       <span v-if="questionType == 3"> 答卷平均分：{{ avg }} </span>
