@@ -171,33 +171,64 @@
         >
           <el-divider></el-divider>
           <div class="question-title">
-            <div class="question-seq"><b>第{{ index + 1 }}题</b></div><br>
+            <div class="question-seq">
+              <b>第{{ index + 1 }}题</b>
+            </div>
+            <br />
             <span class="text">题目：{{ data[index].question.content }}</span>
             <span
-              v-if="data[index].question.type == 0||data[index].question.type == 6||data[index].question.type == 10||data[index].question.type == 12"
+              v-if="
+                data[index].question.type == 0 ||
+                data[index].question.type == 6 ||
+                data[index].question.type == 10 ||
+                data[index].question.type == 12
+              "
               class="question-type"
-            >单选题</span>
+              >单选题</span
+            >
             <span
-              v-if="data[index].question.type == 1||data[index].question.type == 7||data[index].question.type == 11||data[index].question.type == 13"
+              v-if="
+                data[index].question.type == 1 ||
+                data[index].question.type == 7 ||
+                data[index].question.type == 11 ||
+                data[index].question.type == 13
+              "
               class="question-type"
-            >多选题
-
+              >多选题
             </span>
             <span
-              v-if="data[index].question.type == 2||data[index].question.type == 5||data[index].question.type == 14||data[index].question.type == 15"
+              v-if="
+                data[index].question.type == 2 ||
+                data[index].question.type == 5 ||
+                data[index].question.type == 14 ||
+                data[index].question.type == 15
+              "
               class="question-type"
-            >填空题</span>
+              >填空题</span
+            >
             <span
-              v-if="data[index].question.type == 3||data[index].question.type == 4||data[index].question.type == 9"
+              v-if="
+                data[index].question.type == 3 ||
+                data[index].question.type == 4 ||
+                data[index].question.type == 9
+              "
               class="question-type"
-            >评分题</span>
-            <div v-if="questionType==3">
-              <div class="corret">正确率：{{rate[index]}}</div>
-              <div class="c-answer">正确答案：{{rightAnswer[index]}}</div>
+              >评分题</span
+            >
+            <div v-if="questionType == 3">
+              <div class="corret">正确率：{{ rate[index] }}</div>
+              <div class="c-answer">正确答案：{{ rightAnswer[index] }}</div>
             </div>
           </div>
 
-          <div v-if="data[index].question.type === 2||data[index].question.type === 5||data[index].question.type === 14||data[index].question.type === 15">
+          <div
+            v-if="
+              data[index].question.type === 2 ||
+              data[index].question.type === 5 ||
+              data[index].question.type === 14 ||
+              data[index].question.type === 15
+            "
+          >
             <el-table
               :data="completion[index]"
               style="width: 100%"
@@ -339,8 +370,9 @@
           <el-table-column
             :key="index"
             :prop="item.prop"
-            :label="item.label"
+            :label="item.label | ellipsis"
             align="center"
+            :render-header="renderHeader"
           >
             <template slot-scope="scope">
               <span>
@@ -390,6 +422,7 @@ export default {
       answerData: [],
       headArr: [],
       table1: [],
+      table2: [],
       questionType: 3,
       rate: [],
       rightAnswer: [],
@@ -419,7 +452,15 @@ export default {
     this.getAnswerData();
     this.getList();
   },
-
+  filters: {
+    ellipsis(value) {
+      if (!value) return "";
+      if (value.length > 8) {
+        return value.slice(0, 8) + "...";
+      }
+      return value;
+    },
+  },
   methods: {
     getAttendFalseList() {
       var Data = new FormData();
@@ -466,7 +507,7 @@ export default {
         console.log(res);
         this.studentlist = res.data.data;
         this.getAttendFalseList();
-      })
+      });
     },
     deleteList(item) {
       var index = -1;
@@ -771,16 +812,18 @@ export default {
         c = { label: s, prop: (i + 1).toString() };
         this.headArr.push(c);
       }
+      c = { label: "填写时间", prop: (len + 1).toString() };
+      this.headArr.push(c);
       if (this.questionType === 3) {
-        c = { label: "总成绩", prop: (i + 1).toString() };
+        c = { label: "总成绩", prop: (len + 2).toString() };
         // console.log('11111');
         this.headArr.push(c);
       }
     },
     getAnswerExcel(data) {
       this.getprops(data);
-      console.log("this.headArr");
-      console.log(this.headArr);
+      // console.log("this.headArr");
+      // console.log(this.headArr);
       this.table1 = [];
       var answerData = data.answerInfo;
       var len = answerData.length;
@@ -824,9 +867,10 @@ export default {
             c[(j + 1).toString()] = t;
           }
         }
+        c[(item.length + 1).toString()] = data.answerInfo[i].info.submitTime;
         if (this.questionType === 3) {
           console.log(data.answerInfo[i].point);
-          c[(item.length + 1).toString()] = data.answerInfo[i].info.point;
+          c[(item.length + 2).toString()] = data.answerInfo[i].info.point;
         }
         this.table1.push(c);
       }
