@@ -67,6 +67,7 @@
     <el-dialog
       :visible.sync="dialogVisible"
       width="60%"
+      center
     >
       <d-preview
         :headerTitle="this.title"

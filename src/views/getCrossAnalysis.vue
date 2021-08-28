@@ -205,7 +205,7 @@ export default {
       //   var answerInfo=data.answerInfo;
       var questionInfo = data.questionInfo;
       for (var i = 0; i < questionInfo.length; i++) {
-        if (questionInfo[i].info.type == 2||questionInfo[i].info.type==5||questionInfo[i].info.type==14) {
+        if (questionInfo[i].info.type == 2||questionInfo[i].info.type==5||questionInfo[i].info.type==14||questionInfo[i].info.type==15) {
           continue;
         } else {
           var content = "" + (i + 1) + "." + questionInfo[i].info.content;

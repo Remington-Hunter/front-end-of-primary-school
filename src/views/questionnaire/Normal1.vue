@@ -58,7 +58,7 @@
               </el-menu-item>
             </div>
             <!--            打卡问卷-->
-            <div v-if="type === 4">
+            <div v-if="type === 4 || type === 0">
               <el-menu-item
                 v-for="(item, index) in problem_list4"
                 :key="(item, index)"
