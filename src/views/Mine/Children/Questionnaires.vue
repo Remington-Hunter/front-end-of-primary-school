@@ -51,6 +51,20 @@
             </v-tooltip>
           </div>
         </template>
+        <template v-slot:[`item.state`]="{ item }">
+          <div v-if="item.state==='准备中'">
+<!--            <div style="color: HSL(240,50%,50%)">{{item.state}}</div>-->
+            <el-tag>{{item.state}}</el-tag>
+          </div>
+          <div v-if="item.state==='已发布'">
+<!--            <div style="color: 	#80DF20">{{item.state}}</div>-->
+            <el-tag type="success">{{item.state}}</el-tag>
+          </div>
+          <div v-if="item.state==='已停用'">
+<!--            <div style="color: #FF4040">{{item.state}}</div>-->
+            <el-tag type="danger">{{item.state}}</el-tag>
+          </div>
+        </template>
         <template v-slot:[`item.actions`]="{ item }">
           <v-icon
             size="22px"
