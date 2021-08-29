@@ -650,7 +650,9 @@ export default {
       let y = {};
       problem_change(y, x);
       console.log(y);
+      y.is_modify=false
       this.newProblem(x.problem_type, true, y);
+      this.is_creating=false
     },
     problem_type_number(str) {
       switch (str) {

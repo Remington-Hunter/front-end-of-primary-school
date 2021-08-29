@@ -319,7 +319,11 @@ export default {
       if (this.can_write_state === false) {
         return
       }
+      if(this.type === 3 && window.localStorage.getItem("seed") == null){
+        window.localStorage.setItem('seed',Math.round(Math.random()*10))
+      }
       var formData = new FormData();
+      formData.append("seed",window.localStorage.getItem('seed'))
       formData.append("md5", this.ma);
       axios({
         method: "post",
@@ -328,6 +332,10 @@ export default {
       }).then((res) => {
         console.log(res);
         console.log(res.data.data);
+        if (res.data.code === 400) {
+          this.can_write_state = false;
+          return;
+        }
         var x = res.data.data.questionnaire.endTime;
         if (
           parseInt(res.data.data.questionnaire.type) === 3 &&
@@ -448,7 +456,7 @@ export default {
       console.log(this.questionList);
     },
     getInfo() {
-      if(window.localStorage.getItem("seed") == null){
+      if(this.type === 3 && window.localStorage.getItem("seed") == null){
         window.localStorage.setItem('seed',Math.round(Math.random()*10))
       }
       var formData = new FormData();
@@ -461,6 +469,10 @@ export default {
       }).then((res) => {
         console.log(res);
         var x = res.data.data.questionnaire.endTime;
+        if (res.data.code === 400) {
+          this.can_write_state = false;
+          return;
+        }
         if (
           parseInt(res.data.data.questionnaire.type) === 3 &&
           res.data.data.questionnaire.endTime !== null
@@ -479,9 +491,7 @@ export default {
           this.$message.error("不在填写时间内");
           return;
         }
-        if (res.data.code === 400) {
-          this.can_write_state = false;
-        }
+
         console.log(res.data.data);
         this.type = res.data.data.questionnaire.type;
         this.current_questionnaire = res.data.data;
