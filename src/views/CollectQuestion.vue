@@ -147,7 +147,8 @@
                   class="loc"
                   v-show="locationInfo.country"
                   readonly
-                  v-model="locationInfo.country+locationInfo.province+locationInfo.city+locationInfo.district"
+                  v-model="locationInfo.country+'/'+locationInfo.province
+                  +'/'+locationInfo.city+'/'+locationInfo.district"
                 >
                 </el-input>
                 <div>
@@ -776,15 +777,15 @@ export default {
         else if (y.type === 15) {
           if (y.required) {
             if (this.locationInfo.country === "") {
-              alert("您有必选项未完成!");
-              return false;
+              // alert("您有必选项未完成!");
+              return;
             } else {
               z.number = "";
-              z.content = this.locationInfo.country + this.locationInfo.province + this.locationInfo.city + this.locationInfo.district;
+              z.content = this.locationInfo.country +'/'+ this.locationInfo.province +'/'+ this.locationInfo.city +'/'+ this.locationInfo.district;
             }
           } else {
             z.number = "";
-            z.content = this.locationInfo.country + this.locationInfo.province + this.locationInfo.city + this.locationInfo.district;
+            z.content = this.locationInfo.country +'/'+ this.locationInfo.province +'/'+ this.locationInfo.city +'/'+ this.locationInfo.district;
           }
         }
         list.push(z);
