@@ -118,7 +118,7 @@
               color="primary"
               @click="saveQues_daka"
             >
-              <!-- to进行跳转 由于普通问卷页面没有做好，这里先转到home试一下-->
+
               创建
               <v-icon
                 dark
@@ -134,7 +134,7 @@
           <span
             class="iconfont"
             style="text-align: center;display:block;"
-          >&#xe652;</span>
+          >&#xe69b;</span>
           <div style="text-align: center;display:block;">文本编辑</div>
           <div style="text-align: center;display:block;">
             <v-btn
