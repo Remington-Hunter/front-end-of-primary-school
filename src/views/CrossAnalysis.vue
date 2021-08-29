@@ -302,10 +302,12 @@
               "
               class="question-type"
             >评分题</span>
-            <div v-if="questionType == 3">
-              <div class="corret">正确率：{{ rate[index] }}</div>
+            <div v-if="questionType == '3'">
+              <div v-if="data[index].question.type==12|| data[index].question.type==13 || data[index].question.type==14">
+                <div class="corret">正确率：{{ rate[index] }}</div>
               <div class="corret">平均分：{{ avglist[index] }}</div>
               <div class="c-answer">正确答案：{{ rightAnswer[index] }}</div>
+              </div>
             </div>
           </div>
           <div v-if="
@@ -459,7 +461,7 @@
       class="c-center"
       v-if="num === 1"
     >
-      <span v-if="questionType == 3"> 答卷平均分：{{ avg }} </span>
+      <span v-if="questionType == '3'"> 答卷平均分：{{ avg }} </span>
       <el-table
         :data="table1"
         border
@@ -489,7 +491,7 @@
       v-show="false"
       id="demo2"
     >
-      <span v-if="questionType == 3"> 答卷平均分：{{ avg }} </span>
+      <span v-if="questionType == '3'"> 答卷平均分：{{ avg }} </span>
       <el-table
         :data="table1"
         border
@@ -912,7 +914,7 @@ export default {
           this.rate.push(t);
           if (
             data[i].question.type == 2 ||
-            data[i].question.type == 25 ||
+            data[i].question.type == 15 ||
             data[i].question.type == 14
           ) {
             this.rightAnswer.push(data[i].question.answer);
@@ -931,7 +933,7 @@ export default {
             }
             this.rightAnswer.push(s);
           }
-          t = data[i].question.rate * data.length;
+          t = data[i].question.rate * data[i].question.point;
           t = t.toFixed(2);
           this.avglist.push(t);
 
