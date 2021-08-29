@@ -188,6 +188,7 @@ export default {
   box-sizing: border-box;
   background-color: rgb(255, 255, 255);
   overflow: hidden;
+  padding-top: 30px;
 }
 .question-title {
   font-size: 16px;

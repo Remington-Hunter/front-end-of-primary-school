@@ -70,15 +70,16 @@
       :visible.sync="dialogVisible"
       width="60%"
       center
-      
     >
-    <el-button
-          v-if="activeName==='first'"
-          type="primary"
-          @click="handleDown"
-          plain
-        >导出PDF<i class="el-icon-download el-icon--right"></i></el-button>
-      <d-preview id="demo5"
+      <el-button
+        v-if="activeName==='first'"
+        type="primary"
+        @click="handleDown"
+        class="dc-pdf"
+        plain
+      >导出PDF<i class="el-icon-download el-icon--right"></i></el-button>
+      <d-preview
+        id="demo5"
         :headerTitle="this.title"
         :subtitle="this.description"
         :list="this.preview_list"
@@ -126,7 +127,7 @@ export default {
       ma: '',
       input: '',
       lianjie: '',
-      download_lianjie:'',
+      download_lianjie: '',
       dialogVisible: false,
       questionnaire_type: "",//问卷类型
       is_saved: false,
@@ -246,7 +247,7 @@ export default {
       //   var formData=x
       // }
       // else{
-        console.log(this.copy_questionnaire_info);
+      console.log(this.copy_questionnaire_info);
       var formData = this.current_questionnaire
       console.log(JSON.stringify(formData));
       // }
@@ -334,7 +335,7 @@ export default {
         // 触发事件
         // this.send_ID();
         this.sendQues();
-      }else if(tab.name==='first'){
+      } else if (tab.name === 'first') {
         this.change_stop_state();
       }
     },
@@ -430,10 +431,10 @@ export default {
       console.log(x);
 
       //刷新时的预览
-      this.title=x.questionnaire.title
-      this.description=x.questionnaire.description
+      this.title = x.questionnaire.title
+      this.description = x.questionnaire.description
       var list = [];
-      var y=x.questionList
+      var y = x.questionList
       for (var i = 0; i < y.length; i++) {
         let item = {};
         item.problem_type = this.problem_type_info(y[i].question.type); //问题种类
@@ -441,20 +442,20 @@ export default {
         item.name = y[i].question.content; //题目名字
         item.instruction = y[i].question.comment; //题目备注
         // item.selection_list = x.selection_list; //选择选项列表
-        item.selection_list=[]
-        for(var j =0;j<y[i].optionList.length;j++){
-          var zz={}
-          zz.content=y[i].optionList[j].content
-          zz.total=y[i].optionList[j].limit
-          zz.comment=y[i].optionList[j].comment
+        item.selection_list = []
+        for (var j = 0; j < y[i].optionList.length; j++) {
+          var zz = {}
+          zz.content = y[i].optionList[j].content
+          zz.total = y[i].optionList[j].limit
+          zz.comment = y[i].optionList[j].comment
           item.selection_list.push(zz)
         }
-        item.must_write_select = y[i].question.required == 1?true:false; //题目是否必选
-        item.point = y[i].question.point
-        item.question_analysis=y[i].question.analysis
+        item.must_write_select = y[i].question.required == 1 ? true : false; //题目是否必选
+        item.point = y[i].question.point
+        item.question_analysis = y[i].question.analysis
         list.push(item);
       }
-      this.preview_list=list
+      this.preview_list = list
       console.log(list);
     })
   }
@@ -465,6 +466,9 @@ export default {
 .tabs {
   padding: 0 54px;
   padding-top: 5vh;
+}
+.dc-pdf {
+  margin-left: 60px;
 }
 </style>
 

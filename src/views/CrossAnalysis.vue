@@ -193,9 +193,16 @@
           name="second"
         >
           <el-card style="height:650px">
-            <el-button type="primary" @click="exportExcel('#demo4')" >导出未打卡名单</el-button>
-            <div class="tables" >
-              <div class="att-table" id="demo4">
+            <el-button
+              type="primary"
+              @click="exportExcel('#demo4')"
+              id="wdk"
+            >导出未打卡名单</el-button>
+            <div class="tables">
+              <div
+                class="att-table"
+                id="demo4"
+              >
                 <p id="dcy">待参与</p>
                 <el-table
                   :header-cell-style="{background:'#eef1f6',color:'#606266'}"
@@ -305,8 +312,8 @@
             <div v-if="questionType == '3'">
               <div v-if="data[index].question.type==12|| data[index].question.type==13 || data[index].question.type==14">
                 <div class="corret">正确率：{{ rate[index] }}</div>
-              <div class="corret">平均分：{{ avglist[index] }}</div>
-              <div class="c-answer">正确答案：{{ rightAnswer[index] }}</div>
+                <div class="corret">平均分：{{ avglist[index] }}</div>
+                <div class="c-answer">正确答案：{{ rightAnswer[index] }}</div>
               </div>
             </div>
           </div>
@@ -825,7 +832,7 @@ export default {
       console.log(item);
       console.log(this.studentlist.length);
       for (var i = 0; i < this.studentlist.length; i++) {
-        if (JSON.stringify(this.studentlist[i].stuId)===JSON.stringify(item.stuId)) {
+        if (JSON.stringify(this.studentlist[i].stuId) === JSON.stringify(item.stuId)) {
           index = i;
           break;
         }
@@ -856,7 +863,7 @@ export default {
     },
     addlist() {
       // alert(this.name);
-      if(this.name==''||this.studentId==''){
+      if (this.name == '' || this.studentId == '') {
         this.$message({
           message: '姓名或学号为空',
           type: 'warning'
@@ -899,12 +906,12 @@ export default {
     },
     getRate(data) {
       // console.log('this is the log');
-      
+
       if (this.questionType !== '3') {
         console.log('this is the log');
         return;
       } else {
-        
+
         console.log('this is the log');
         for (var i = 0; i < data.length; i++) {
           var t = data[i].question.rate;
@@ -938,7 +945,7 @@ export default {
           this.avglist.push(t);
 
         }
-      console.log('rate'+this.rate);
+        console.log('rate' + this.rate);
       }
     },
     exportExcel(id) {
@@ -1158,7 +1165,7 @@ export default {
           this.avg += data.answerInfo[i].info.point;
         }
         this.avg = this.avg / data.answerInfo.length;
-        this.avg=this.avg.toFixed(2);
+        this.avg = this.avg.toFixed(2);
         this.getAnswerExcel(data);
       });
     },
@@ -1180,17 +1187,17 @@ export default {
         c = { label: s, prop: (i + 1).toString() };
         this.headArr.push(c);
       }
-      
+
       if (this.questionType === '3') {
         c = { label: "总成绩", prop: (len + 1).toString() };
         // console.log('11111');
         this.headArr.push(c);
         c = { label: "填写时间", prop: (len + 2).toString() };
-      this.headArr.push(c);
+        this.headArr.push(c);
       }
-      else{
+      else {
         c = { label: "填写时间", prop: (len + 1).toString() };
-      this.headArr.push(c);
+        this.headArr.push(c);
       }
     },
     getAnswerExcel(data) {
@@ -1259,19 +1266,19 @@ export default {
             c[(j + 1).toString()] = t;
           }
         }
-        
+
         if (this.questionType === '3') {
           console.log(data.answerInfo[i].point);
           c[(data.questionInfo.length + 1).toString()] =
             data.answerInfo[i].info.point;
-            c[(data.questionInfo.length + 2).toString()] = data.answerInfo[
-          i
-        ].info.submitTime.replace("T", " ");
+          c[(data.questionInfo.length + 2).toString()] = data.answerInfo[
+            i
+          ].info.submitTime.replace("T", " ");
         }
-        else{
+        else {
           c[(data.questionInfo.length + 1).toString()] = data.answerInfo[
-          i
-        ].info.submitTime.replace("T", " ");
+            i
+          ].info.submitTime.replace("T", " ");
         }
         this.table1.push(c);
       }
@@ -1482,6 +1489,10 @@ export default {
   font-size: 20px;
   margin-bottom: 20px;
   color: #67c23a;
+}
+#wdk {
+  margin-left: 100px;
+  margin-bottom: 20px;
 }
 .mingdan {
   margin: 0 auto;
