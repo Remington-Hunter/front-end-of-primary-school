@@ -1,160 +1,263 @@
 <template>
   <div>
-    <div class="c-head">
-      <span class="total" style="text-align: center"
-        >回收总量：{{ total }}</span
-      >
+    <div
+      class="c-head"
+      v-show="num<4"
+    >
+      <span
+        class="total"
+        style="text-align:center"
+      >回收总量：{{total}}</span>
       <el-button
         v-if="num === 1"
         @click="exportExcel('#demo2')"
         type="primary"
         class="d-btn"
-        >导出EXCEL</el-button
-      >
+      >导出EXCEL</el-button>
       <el-button
         v-if="num === 2"
         type="primary"
         @click="handleDown"
         class="d-btn"
-        ><i class="el-icon-download"></i> 下载PDF</el-button
-      >
+      ><i class="el-icon-download"></i> 下载PDF</el-button>
     </div>
-    <div v-show="questionType == 4">
-      <el-button type="primary" @click="showDialog">查看每日进度</el-button>
-      <el-dialog :visible.sync="ishow" width="50%" :before-close="handleClose">
-        <el-button type="primary" @click="ListOrProgress = false">
-          名单预览
-        </el-button>
-        <el-button type="primary" @click="ListOrProgress = true">
-          参与进度
-        </el-button>
-        <el-card v-show="ListOrProgress == false">
-          <el-table :data="studentlist" border style="width: 100%">
-            <el-table-column prop="name" label="姓名" width="120">
-            </el-table-column>
-            <el-table-column prop="stuId" label="学号" width="120">
-            </el-table-column>
-            <el-table-column label="操作" width="100">
-              <template slot-scope="scope">
-                <el-button
-                  @click="deleteList(scope.row)"
-                  type="text"
-                  size="small"
-                  >删除</el-button
-                >
-              </template>
-            </el-table-column>
-          </el-table>
-          <div>
-            <el-button type="primary" @click="addbyhand = true"
-              >手动添加数据</el-button
-            >
-            <div v-show="addbyhand == true">
-              <el-input v-model="name" placeholder="请输入姓名"></el-input>
-              <el-input v-model="studentId" placeholder="请输入学号"></el-input>
-              <el-button type="primary" @click="addlist">确定添加</el-button>
-            </div>
-            <el-dialog title="" :visible.sync="showerro" width="width">
-              <el-card>
-                <div>
-                  <el-table :data="error" border style="width: 100%">
-                    <el-table-column prop="stuId" label="学号" width="120">
-                    </el-table-column>
-                  </el-table>
-                </div>
-              </el-card>
-              <div slot="footer">
-                <el-button @click="showerro = false">取 消</el-button>
-                <el-button type="primary" @click="showerro = false"
-                  >确 定</el-button
-                >
-              </div>
-            </el-dialog>
-            <el-button type="primary" @click="exportExcel('#demo3')"
-              >下载模板</el-button
-            >
-            <!-- <el-upload
-              :limit="1"
-              class="upload-demo"
-              ref="upload"
-              action
-              :on-preview="handlePreview"
-              :on-remove="handleRemove"
-              :file-list="fileList"
-              :auto-upload="false"
-              accept=".xls,.xlsx"
-              
-              :before-upload="beforeUpload"
-            > -->
-            <el-upload
-              class="c-upload"
-              ref="upload"
-              :limit="1"
-              accept=".xls,.xlsx"
-              :on-exceed="handleExceed"
-              :on-preview="handlePreview"
-              :on-remove="handleRemove"
-              :file-list="fileList"
-              :before-upload="beforeUpload"
-              :auto-upload="false"
-              :http-request="UploadSubmit"
-            >
-              <!--  -->
-              <el-button slot="trigger" size="small" type="primary"
-                >选取文件</el-button
-              >
-              <div slot="tip" class="el-upload__tip">
-                请上传符合模板格式的文件
-              </div>
-              <el-button
-                type="success"
-                style="
-                  float: right;
-                  margin-right: 100px;
-                  background-color: #409eff;
-                "
-                @click="submitUpload"
-                >提交文件</el-button
-              >
-            </el-upload>
-          </div>
-        </el-card>
-        <el-card v-show="ListOrProgress == true">
-          <el-button type="primary" @click="click1(false)">待参与</el-button>
-          <el-button type="primary" @click="click1(true)">已参与</el-button>
-          <div v-show="attendtype === false">
-            <el-table :data="attendFlase" border style="width: 100%">
-              <el-table-column prop="name" label="姓名" width="120">
-              </el-table-column>
-              <el-table-column prop="stuId" label="学号" width="120">
-              </el-table-column>
-            </el-table>
-          </div>
-          <div v-show="attendtype === true">
-            <el-table :data="attendTrue" border style="width: 100%">
-              <el-table-column prop="name" label="姓名" width="120">
-              </el-table-column>
-              <el-table-column prop="stuId" label="学号" width="120">
-              </el-table-column>
-            </el-table>
-          </div>
-        </el-card>
-        <span
-          slot="footer"
-          class="dialog-footer"
-          v-show="ListOrProgress == false"
+
+    <div
+      v-show="num == 4"
+      style="width:1000px;margin:0 auto"
+    >
+      <el-tabs v-model="activeName">
+        <el-tab-pane
+          label="名单预览"
+          name="first"
         >
-          <el-button @click="ishow = false">取 消</el-button>
-          <el-button type="primary" @click="submitList()">确 定</el-button>
-        </span>
-      </el-dialog>
+          <el-card style="padding:10px 30px">
+
+            <span>您可以选择 </span>
+            <el-button
+              type="text"
+              @click="addbyhand = !addbyhand"
+            >手动添加数据</el-button>
+            <div style="margin: 20px; ">
+              <el-collapse-transition>
+                <div v-show="addbyhand == true">
+                  <el-input
+                    v-model="name"
+                    placeholder="请输入姓名"
+                    class="input-add"
+                    clearable
+                  ></el-input>
+                  <el-input
+                    v-model="studentId"
+                    placeholder="请输入学号"
+                    class="input-add"
+                    clearable
+                  ></el-input>
+
+                  <el-button
+                    @click="addbyhand = false"
+                    type="warning"
+                    plain
+                  >取 消</el-button>
+                  <el-button
+                    type="primary"
+                    @click="addlist"
+                  >确定添加</el-button>
+                </div>
+              </el-collapse-transition>
+            </div>
+            <div><span>或者 </span>
+              <el-button
+                type="text"
+                @click="addbyup = !addbyup"
+              >从本地导入数据</el-button>
+              <el-button
+                @click="exportExcel('#demo3')"
+                size="small"
+              ><i class="el-icon-download"></i> 下载模板</el-button>
+              <div style="margin: 20px; ">
+                <el-collapse-transition>
+                  <div v-show="addbyup == true">
+                    <div>
+                      <el-upload
+                        class="c-upload"
+                        :action="url"
+                        ref="upload"
+                        :limit="1"
+                        accept=".xls,.xlsx"
+                        :on-exceed="handleExceed"
+                        :on-preview="handlePreview"
+                        :on-remove="handleRemove"
+                        :file-list="fileList"
+                        :before-upload="beforeUpload"
+                        :auto-upload="false"
+                        :http-request="UploadSubmit"
+                      >
+                        <el-button
+                          slot="trigger"
+                          size="small"
+                          type="success"
+                        >选取文件</el-button>
+
+                        <div
+                          slot="tip"
+                          class="el-upload__tip"
+                        >
+                          请上传符合模板格式的xls、xlsx文件
+                        </div>
+                      </el-upload>
+                    </div>
+                    <el-button
+                      type="text"
+                      @click="submitUpload"
+                    >提交文件</el-button>
+                  </div>
+                </el-collapse-transition>
+              </div>
+            </div>
+            <div class="mingdan">
+              <el-button
+                type="primary"
+                plain
+                @click="submitList();open2()"
+                class="save-btn"
+              > <i class="el-icon-check"></i> 保存名单</el-button>
+              <el-table
+                :header-cell-style="{background:'#eef1f6',color:'#606266'}"
+                :data="
+              studentlist"
+                border
+                height="500px"
+                style="width: 650px"
+              >
+                <el-table-column
+                  prop="name"
+                  label="姓名"
+                  width="250"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="stuId"
+                  label="学号"
+                  width="300"
+                >
+                </el-table-column>
+                <el-table-column label="操作">
+                  <template slot-scope="scope">
+                    <el-button
+                      @click="deleteList(scope.row)"
+                      type="text"
+                      size="small"
+                    >删除</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </div>
+            <div>
+
+              <el-dialog
+                title=""
+                :visible.sync="showerro"
+                width="width"
+              >
+                <el-card>
+                  <div>
+                    <el-table
+                      :data="error"
+                      border
+                      style="width: 100%"
+                    >
+                      <el-table-column
+                        prop="stuId"
+                        label="学号"
+                        width="120"
+                      >
+                      </el-table-column>
+                    </el-table>
+                  </div>
+                </el-card>
+                <div slot="footer">
+                  <el-button @click="showerro = false">取 消</el-button>
+                  <el-button
+                    type="primary"
+                    @click="showerro = false"
+                  >确 定</el-button>
+                </div>
+              </el-dialog>
+
+            </div>
+          </el-card>
+        </el-tab-pane>
+        <el-tab-pane
+          label="参与进度"
+          name="second"
+        >
+          <el-card style="height:650px">
+            <div class="tables">
+              <div class="att-table">
+                <p id="dcy">待参与</p>
+                <el-table
+                  :header-cell-style="{background:'#eef1f6',color:'#606266'}"
+                  :data="attendFlase"
+                  border
+                  style="width: 300px"
+                  height="500px"
+                >
+                  <el-table-column
+                    prop="name"
+                    label="姓名"
+                  >
+                  </el-table-column>
+                  <el-table-column
+                    prop="stuId"
+                    label="学号"
+                  >
+                  </el-table-column>
+                </el-table>
+              </div>
+              <div class="att-table">
+                <p id="ycy">已参与</p>
+                <el-table
+                  :header-cell-style="{background:'#eef1f6',color:'#606266'}"
+                  :data="attendTrue"
+                  border
+                  style="width:300px"
+                  height="500px"
+                >
+                  <el-table-column
+                    prop="name"
+                    label="姓名"
+                  >
+                  </el-table-column>
+                  <el-table-column
+                    prop="stuId"
+                    label="学号"
+                  >
+                  </el-table-column>
+                </el-table>
+              </div>
+            </div>
+          </el-card>
+        </el-tab-pane>
+      </el-tabs>
+
     </div>
-    <div class="c-center" id="demo1" v-if="num === 2">
-      <div class="header-title" style="color: #999; font-size: 20px">
+    <div
+      class="c-center"
+      id="demo1"
+      v-if="num === 2"
+    >
+      <div
+        class="header-title"
+        style="color: #999; font-size: 20px"
+      >
         问卷ID:<span style="font-size: 20px; color: #999">{{ this.id }}</span>
       </div>
       <div class="content">
-        <div v-for="(item, index) in data" :key="index">
+        <div
+          v-for="(item, index) in data"
+          :key="index"
+        >
           <el-divider></el-divider>
           <div class="q-title">
             <div class="q-seq">
@@ -170,8 +273,7 @@
                 data[index].question.type == 12
               "
               class="question-type"
-              >单选题</span
-            >
+            >单选题</span>
             <span
               v-if="
                 data[index].question.type == 1 ||
@@ -180,7 +282,7 @@
                 data[index].question.type == 13
               "
               class="question-type"
-              >多选题
+            >多选题
             </span>
             <span
               v-if="
@@ -190,8 +292,7 @@
                 data[index].question.type == 15
               "
               class="question-type"
-              >填空题</span
-            >
+            >填空题</span>
             <span
               v-if="
                 data[index].question.type == 3 ||
@@ -199,33 +300,36 @@
                 data[index].question.type == 9
               "
               class="question-type"
-              >评分题</span
-            >
+            >评分题</span>
             <div v-if="questionType == 3">
               <div class="corret">正确率：{{ rate[index] }}</div>
               <div class="c-answer">正确答案：{{ rightAnswer[index] }}</div>
             </div>
           </div>
-          <div
-            v-if="
+          <div v-if="
               data[index].question.type === 2 ||
               data[index].question.type === 5 ||
               data[index].question.type === 14 ||
               data[index].question.type === 15
-            "
-          >
+            ">
             <el-table
               :data="completion[index]"
               style="width: 100%"
               class="table"
             >
-              <el-table-column label="序号" :show-overflow-tooltip="true">
+              <el-table-column
+                label="序号"
+                :show-overflow-tooltip="true"
+              >
                 <template slot-scope="scope">
                   <!-- <i class="el-icon-time"></i> -->
                   <span style="margin-left: 10px">{{ scope.row.id }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="内容" :show-overflow-tooltip="true">
+              <el-table-column
+                label="内容"
+                :show-overflow-tooltip="true"
+              >
                 <template slot-scope="scope1">
                   <!-- <i class="el-icon-time"></i> -->
                   <span style="margin-left: 10px">{{
@@ -245,7 +349,10 @@
                   class="table"
                   border
                 >
-                  <el-table-column label="选项" :show-overflow-tooltip="true">
+                  <el-table-column
+                    label="选项"
+                    :show-overflow-tooltip="true"
+                  >
                     <template slot-scope="scope2">
                       <!-- <i class="el-icon-time"></i> -->
                       <span style="margin-left: 10px">{{
@@ -321,7 +428,10 @@
               </el-button>
             </div>
             <div v-else>
-              <el-table :data="completion[index]" style="width: 100%">
+              <el-table
+                :data="completion[index]"
+                style="width: 100%"
+              >
                 <el-table-column label="序号">
                   <template slot-scope="scope">
                     <!-- <i class="el-icon-time"></i> -->
@@ -342,9 +452,17 @@
         </div>
       </div>
     </div>
-    <div class="c-center" v-else>
+    <div
+      class="c-center"
+      v-if="num === 1"
+    >
       <span v-if="questionType == 3"> 答卷平均分：{{ avg }} </span>
-      <el-table :data="table1" border height="550" style="width: 100%">
+      <el-table
+        :data="table1"
+        border
+        height="550"
+        style="width: 100%"
+      >
         <template v-for="(item, index) in headArr">
           <el-table-column
             :key="index"
@@ -363,9 +481,18 @@
         </template>
       </el-table>
     </div>
-    <div class="center" v-show="false" id="demo2">
+    <div
+      class="center"
+      v-show="false"
+      id="demo2"
+    >
       <span v-if="questionType == 3"> 答卷平均分：{{ avg }} </span>
-      <el-table :data="table1" border height="550" style="width: 100%">
+      <el-table
+        :data="table1"
+        border
+        height="550"
+        style="width: 100%"
+      >
         <template v-for="(item, index) in headArr">
           <el-table-column
             :key="index"
@@ -382,11 +509,26 @@
         </template>
       </el-table>
     </div>
-    <div class="center" v-show="false" id="demo3">
-      <el-table :data="[]" style="width: 100%">
-        <el-table-column prop="date" label="姓名" width="180">
+    <div
+      class="center"
+      v-show="false"
+      id="demo3"
+    >
+      <el-table
+        :data="[]"
+        style="width: 100%"
+      >
+        <el-table-column
+          prop="date"
+          label="姓名"
+          width="180"
+        >
         </el-table-column>
-        <el-table-column prop="name" label="学号" width="180">
+        <el-table-column
+          prop="name"
+          label="学号"
+          width="180"
+        >
         </el-table-column>
       </el-table>
     </div>
@@ -446,9 +588,12 @@ export default {
       sum: [],
       fileList: [],
       addbyhand: false,
+      addbyup: false,
       showerro: false,
       error: [],
       total: 0,
+      activeName: 'first',
+      url: ''
     };
   },
   components: {
@@ -475,6 +620,12 @@ export default {
     },
   },
   methods: {
+    open2() {
+      this.$message({
+        message: '保存成功',
+        type: 'success'
+      });
+    },
     handleExceed(files, fileList) {
       this.$message.warning("超出1个文件，请先删除当前文件，再重新上传");
       return false;
@@ -548,8 +699,7 @@ export default {
     },
     handleExceed(files, fileList) {
       this.$message.warning(
-        `当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
-          files.length + fileList.length
+        `当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length
         } 个文件`
       );
     },
@@ -703,7 +853,7 @@ export default {
             .then((_) => {
               done();
             })
-            .catch((_) => {});
+            .catch((_) => { });
           return;
         }
       }
@@ -717,7 +867,7 @@ export default {
         .then((_) => {
           done();
         })
-        .catch((_) => {});
+        .catch((_) => { });
     },
     showDialog() {
       this.ishow = true;
@@ -1263,4 +1413,35 @@ export default {
 
 <style  scoped>
 @import "../assets/css/icon/analysis.css";
+.save-btn {
+  margin-bottom: 20px;
+  float: right;
+}
+.input-add {
+  width: 300px;
+  margin-right: 20px;
+}
+.att-table {
+  margin: 10px;
+}
+.tables {
+  padding: 0 100px;
+  display: flex;
+  justify-content: space-between;
+}
+#dcy {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #f56c6c;
+}
+
+#ycy {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #67c23a;
+}
+.mingdan {
+  margin: 0 auto;
+  width: 650px;
+}
 </style>

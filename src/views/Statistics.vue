@@ -52,8 +52,9 @@
           </el-menu-item>
 
           <el-menu-item
+            v-show="this.type==4"
             index="3"
-            @click="goto(3)"
+            @click="goto(4)"
           >
             <div class="item-content">
               <svg
@@ -71,7 +72,7 @@
       <el-main style="margin-left:120px">
         <anlysis
           :num="num"
-          v-if="this.num<3"
+          v-if="this.num<3 ||this.num===4"
         />
         <cross v-if="this.num===3" />
       </el-main>
@@ -89,9 +90,10 @@ export default {
   },
   data() {
     return {
+      type: '',
       id: '',
       num: 2,
-      type:0,
+      type: 0,
     }
   },
   methods:
