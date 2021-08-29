@@ -445,8 +445,8 @@ export default {
     Completion,
   },
   mounted() {
-    this.id = this.$route.params.id;
-    this.questionType = this.$route.params.type;
+    this.id = this.$route.query.id;
+    this.questionType = this.$route.query.type;
     this.getseries();
     this.getAnswerData();
     this.getList();

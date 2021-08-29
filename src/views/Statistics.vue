@@ -73,7 +73,7 @@
           :num="num"
           v-if="this.num<3"
         />
-        <cross v-if="this.num==3" />
+        <cross v-if="this.num===3" />
       </el-main>
     </el-container>
   </div>
@@ -91,6 +91,7 @@ export default {
     return {
       id: '',
       num: 2,
+      type:0,
     }
   },
   methods:
@@ -99,8 +100,9 @@ export default {
       this.num = index;
     }
   },
-  mounted() {
-    this.id = this.$route.params.id;
+  created() {
+    this.id = this.$route.query.id;
+    this.type = this.$route.query.type;
     // this.getseries();
     // this.getAnswerData();
   },

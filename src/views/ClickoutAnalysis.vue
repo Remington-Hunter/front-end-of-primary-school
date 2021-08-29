@@ -12,7 +12,7 @@ export default {
         }
     },
     mounted(){
-        this.id = this.$route.params.id;
+        this.id = this.$route.query.id;
         this.getData();
     },
     methods:{

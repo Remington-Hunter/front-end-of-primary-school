@@ -320,14 +320,39 @@ export default {
       });
     },
     checkAnalysis(id, type) {
+      var index = 0;
       if (type === '考试问卷') {
-        this.$router.push({ name: "statistics", params: { id: id, type: 3 } });
+        index = 3;
+        // this.$router.push({ name: "statistics", params: { id: id, type: 3 } });
+        this.$router.push({
+          path: "/statistics/" + index,
+          query: {
+            id: id,
+            type: index,
+          },
+        });
       }
       else if (type === '疫情打卡问卷') {
-        this.$router.push({ name: "statistics", params: { id: id, type: 4 } });
+        // this.$router.push({ name: "statistics", params: { id: id, type: 4 } });
+        index = 4;
+        this.$router.push({
+          path: "/statistics/" + index,
+          query: {
+            id: id,
+            type: index,
+          },
+        });
       }
       else {
-        this.$router.push({ name: "statistics", params: { id: id, type: 0 } });
+        // this.$router.push({ name: "statistics", params: { id: id, type: 0 } });
+        index = 0;
+        this.$router.push({
+          path: "/statistics/" + index,
+          query: {
+            id: id,
+            type: index,
+          },
+        });
       }
     },
     lookUpLink(id) {
@@ -534,7 +559,7 @@ export default {
         for (var i = 0; i < this.desserts.length; i++) {
           if (this.desserts[i].id === item) {
             if(this.desserts[i].date2===null){
-              this.desserts[i].state = "已停用"
+              this.desserts[i].state = "已停用";
             }
             else{
               if(this.desserts[i].date<this.desserts[i].date2){

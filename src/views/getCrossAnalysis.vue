@@ -163,6 +163,7 @@ export default {
       col: [],
       data1: [],
       type: 'bar',
+      questionnaire_type:'',
       dialogVisible: false,
       text: "交叉分析法又称立体分析法，是在纵向分析法和横向分析法的基础上，从交叉、立体的角度出发，由浅入深、由低级到高级的一种分析方法。这种方法虽然复杂，但它弥补了“各自为政”分析方法所带来的偏差。 \n\n通常用于分析两个变量之间的关系，例如各个报纸阅读和年龄之间的关系。实际使用中我们通常把这个概念推广到行变量和列变量之间的关系，这样行变量可能有多个变量组成，列变量也可能有多个变量，甚至可以只有行变量没有列变量，或者只有列变量没有行变量。"
     };
@@ -178,7 +179,8 @@ export default {
   },
   mounted() {
     console.log('ididid')
-    this.id = this.$route.params.id;
+    this.id = this.$route.query.id;
+    this.questionnaire_type = this.$route.query.type;
     console.log(this.id);
     this.getAnswerData();
   },
