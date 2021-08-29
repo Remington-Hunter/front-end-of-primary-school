@@ -998,13 +998,13 @@ export default {
             data.questionInfo[j].info.type == 15
           ) {
             if (item[j].content == "") {
-              c[(j + 1).toString()] = "用户未填写";
+              c[(j + 1).toString()] = "";
             } else {
               c[(j + 1).toString()] = item[j].content;
             }
           } else if (data.questionInfo[j].info.type == 3) {
             if (item[j].number == "" || item[j].number == "0") {
-              c[(j + 1).toString()] = "无评价";
+              c[(j + 1).toString()] = "";
             } else {
               var t = item[j].number - "0";
               c[(j + 1).toString()] = "" + t + "星";
@@ -1020,15 +1020,15 @@ export default {
               }
             }
             if (t == "") {
-              t = "用户未填写";
+              t = "";
             }
             c[(j + 1).toString()] = t;
           }
         }
-        c[(item.length + 1).toString()] = data.answerInfo[i].info.submitTime;
+        c[(data.questionInfo.length + 1).toString()] = data.answerInfo[i].info.submitTime.replace("T"," ");
         if (this.questionType === 3) {
           console.log(data.answerInfo[i].point);
-          c[(item.length + 2).toString()] = data.answerInfo[i].info.point;
+          c[(data.questionInfo.length + 2).toString()] = data.answerInfo[i].info.point;
         }
         this.table1.push(c);
       }
