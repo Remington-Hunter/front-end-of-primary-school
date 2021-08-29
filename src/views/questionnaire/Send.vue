@@ -101,7 +101,7 @@ export default {
     //     this.download_lianjie += this.input;
   },
   mounted() {
-    this.id = this.$router.query.id;
+    this.id = this.$route.query.id;
     // this.download_link();
     console.log(this.id);
   },

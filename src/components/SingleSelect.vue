@@ -437,9 +437,9 @@ export default {
       question_analysis: this.iscopy ? this.copy_info.question_analysis : "",
       point: (this.iscopy ? this.copy_info.point : 0),
       isnot_kaoshi:false,
-      upmove_limit: (this.copy_info.upmove_limit === undefined?false:true),
-      is_daka_two:(this.copy_info.is_daka_two === undefined?false:true),
-      is_daka:(this.copy_info.is_daka === undefined?false:true),
+      upmove_limit: (this.copy_info.upmove_limit !== undefined),
+      is_daka_two:(this.copy_info.is_daka_two !== undefined),
+      is_daka:(this.copy_info.is_daka !== undefined),
       click_confirm:0
     };
   },
