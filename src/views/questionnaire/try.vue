@@ -229,6 +229,7 @@ export default {
         item.required = 0;
         item.point = 0;
         item.analysis = "";
+        item.optionList = [];
         if (x[i].selectionList !== undefined) {
           let y = [];
           for (var j = 0; j < x[i].selectionList.length; j++) {
