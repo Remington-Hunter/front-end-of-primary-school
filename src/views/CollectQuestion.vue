@@ -447,8 +447,12 @@ export default {
       console.log(this.questionList);
     },
     getInfo() {
+      if(window.localStorage.getItem("seed") == null){
+        window.localStorage.setItem('seed',Math.round(Math.random()*10))
+      }
       var formData = new FormData();
       formData.append("md5", this.ma);
+      formData.append("seed",window.localStorage.getItem('seed'))
       axios({
         method: "post",
         url: "https://www.azur1tee.top/api/questionnaire/get_questionnaire",
@@ -850,14 +854,13 @@ export default {
   created() {
     this.getInfo();
     var interval = setInterval(() => {
-      this.getInfo2();
       if (parseInt(this.type) !== 1) {
         clearInterval(interval);
       }
       if (this.end) {
         clearInterval(interval);
       }
-      //do whatever here..
+      this.getInfo2();
     }, 2000);
   },
 };

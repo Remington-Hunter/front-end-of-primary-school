@@ -297,7 +297,24 @@
         <div v-else-if="
             ['单选题', '投票单选题', '报名单选题','考试单选题'].includes(problem_type)
           ">
-          <div
+          <el-radio-group
+              v-model="radio"
+            >
+              <el-radio
+                v-for="(item, index) in selection_list"
+                :key="index"
+                :label="index"
+                @change="$emit('answer_confirm')"
+                @click.native="clickitem()"
+              >
+                {{ item.content }}<span
+                class="sel-total"
+                v-show="item.total"
+              >(剩余{{ item.total }})</span>
+              <div class="q-instruction">{{ item.comment }}</div>
+              </el-radio>
+            </el-radio-group>
+          <!-- <div
             v-for="(item, index) in selection_list"
             :key="(item, index)"
           >
@@ -313,7 +330,7 @@
               >(剩余{{ item.total }})</span>
             </el-radio>
             <div class="q-instruction">{{ item.comment }}</div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -411,9 +428,23 @@ export default {
         ? this.copy_array(this.copy_info.selection_list)
         : [],
       preradio: "",
-      radio: "1", //单选题答案
-      checkList: [], //多选题答案
-      answer: "", //填空题答案
+      radio:this.iscopy
+        ? (this.copy_info.radio === undefined
+          ? "0"
+          : this.copy_info.radio)
+        : "0",
+
+      // radio: this.copp_info.radio === undefined?"1":this.copp_info.radio, //单选题答案
+      checkList: this.iscopy
+        ? (this.copy_info.checkList === undefined
+          ? []
+          : this.copy_info.checkList)
+        : [], //多选题答案
+      answer: this.iscopy
+        ? (this.copy_info.answer === undefined
+          ? ""
+          : this.copy_info.answer)
+        :"", //填空题答案
       rating: 0, //评分题答案
       cancel_button: true,
       must_write_select: this.iscopy ? this.copy_info.must_write_select : false,
