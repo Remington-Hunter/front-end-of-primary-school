@@ -819,6 +819,9 @@ export default {
   mounted() {
     this.getItem();
   },
+  updated() {
+    this.getItem();
+  }
 };
 </script>
 

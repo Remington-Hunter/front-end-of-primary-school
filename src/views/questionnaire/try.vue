@@ -118,6 +118,7 @@ export default {
       subtitle: "",
       flag: false,
       num: "",
+      questionnaire_id:""
     }
   },
   methods: {
@@ -302,6 +303,26 @@ export default {
         //   this.is_saved = true
         //   this.questionnaire_id = res.data.data
         // }
+            if (res.data.code === 200 || res.data.code === 201) {
+              var Data1 = new FormData();
+              this.questionnaire_id = res.data.data;
+              Data1.append("questionnaireId", this.questionnaire_id);
+              axios({
+                url:
+                    "https://www.azur1tee.top/api/questionnaire/publish_questionnaire",
+                method: "post",
+                data: Data1,
+                headers: {
+                  Authorization: window.localStorage.getItem("authorization"),
+                  "Content-Type": "application/json",
+                },
+              }).then((res) => {
+                console.log(res);
+                // if (res.data.code === 200 || res.data.code === 201) {
+                //   this.$message({message: "问卷已发布", type: "success"});
+                // }
+              });
+            }
       });
     },
 
