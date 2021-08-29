@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="c-head">
-      <!-- <span class="total">回收总量：</span> -->
+      <span class="total" style="text-align:center">回收总量：{{total}}</span>
       <el-button
         v-if="num === 1"
         @click="exportExcel('#demo2')"
@@ -101,7 +101,7 @@
                   background-color: #409eff;
                 "
                 @click="submitUpload"
-                >提交文章</el-button
+                >提交文件</el-button
               >
             </el-upload>
           </div>
@@ -435,6 +435,7 @@ export default {
       addbyhand: false,
       showerro: false,
       error: [],
+      total:0,
     };
   },
   components: {
@@ -450,7 +451,7 @@ export default {
     this.getseries();
     this.getAnswerData();
     this.getList();
-  },
+    },
   filters: {
     ellipsis(value) {
       if (!value) return "";
@@ -925,6 +926,7 @@ export default {
       }).then((res) => {
         var data = res.data.data;
         this.data1 = data;
+        this.total=data.answerInfo.length;
         this.avg = 0;
         for (var i = 0; i < data.answerInfo.length; i++) {
           this.avg += data.answerInfo[i].info.point;
@@ -998,13 +1000,13 @@ export default {
             data.questionInfo[j].info.type == 15
           ) {
             if (item[j].content == "") {
-              c[(j + 1).toString()] = "用户未填写";
+              c[(j + 1).toString()] = "";
             } else {
               c[(j + 1).toString()] = item[j].content;
             }
           } else if (data.questionInfo[j].info.type == 3) {
             if (item[j].number == "" || item[j].number == "0") {
-              c[(j + 1).toString()] = "无评价";
+              c[(j + 1).toString()] = "";
             } else {
               var t = item[j].number - "0";
               c[(j + 1).toString()] = "" + t + "星";
@@ -1020,15 +1022,15 @@ export default {
               }
             }
             if (t == "") {
-              t = "用户未填写";
+              t = "";
             }
             c[(j + 1).toString()] = t;
           }
         }
-        c[(item.length + 1).toString()] = data.answerInfo[i].info.submitTime;
+        c[(data.questionInfo.length + 1).toString()] = data.answerInfo[i].info.submitTime.replace("T"," ");
         if (this.questionType === 3) {
           console.log(data.answerInfo[i].point);
-          c[(item.length + 2).toString()] = data.answerInfo[i].info.point;
+          c[(data.questionInfo.length + 2).toString()] = data.answerInfo[i].info.point;
         }
         this.table1.push(c);
       }

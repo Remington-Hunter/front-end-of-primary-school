@@ -465,6 +465,18 @@ export default {
       var option = {
         legend: {},
         tooltip: {},
+        toolbox: {
+
+          show: true,
+          x: 'right',
+          y:'120',
+          feature: {
+            mark: { show: true },
+            // dataView: { show: true, readOnly: false },
+            // restore: { show: true },
+            saveAsImage: { show: true },
+          }
+        },
         dataset: {
           // 提供一份数据。
           source: this.col,
@@ -498,6 +510,19 @@ export default {
       var option = {
         legend: {},
         tooltip: {},
+        toolbox: {
+
+          show: true,
+          x: 'right',
+          y:'120',
+          feature: {
+            mark: { show: true, },
+            
+            // dataView: { show: true, readOnly: false },
+            // restore: { show: true },
+            saveAsImage: { show: true, },
+          }
+        },
         color: ['#009dff', '#40c45f', '#FFC851', '#5A5476', '#1869A0', '#FF9393'],
         dataset: {
           // 提供一份数据。
@@ -519,15 +544,14 @@ export default {
       myChart.setOption(option);
     },
     drawfunc2() {
-      console.log('func2');
       var c = [];
-      for (var i = 1; i < this.headArr.length; i++) {
+      for (var i = 1; i < this.headArr.length-1; i++) {
         var item = { text: this.headArr[i].label, max: 100 }
         c.push(item);
       }
       console.log(c);
       var data = [];
-      for (var i = 1; i < this.col.length; i++) {
+      for (var i = 1; i < this.col.length-1; i++) {
         var b = [];
         for (var j = 1; j < this.col[i].length; j++) {
           b.push(this.col[i][j]);
@@ -558,10 +582,12 @@ export default {
         toolbox: {
 
           show: true,
+          x: 'right',
+          y:'120',
           feature: {
             mark: { show: true },
-            dataView: { show: true, readOnly: false },
-            restore: { show: true },
+            // dataView: { show: true, readOnly: false },
+            // restore: { show: true },
             saveAsImage: { show: true },
           }
         },
@@ -593,6 +619,18 @@ export default {
       var option = {
         legend: {},
         tooltip: {},
+        toolbox: {
+
+          show: true,
+          x: 'right',
+          y:'120',
+          feature: {
+            mark: { show: true },
+            // dataView: { show: true, readOnly: false },
+            // restore: { show: true },
+            saveAsImage: { show: true },
+          }
+        },
         color: ['#009dff', '#40c45f', '#FFC851', '#5A5476', '#1869A0', '#FF9393'],
         dataset: {
           // 提供一份数据。
