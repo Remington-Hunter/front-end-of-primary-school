@@ -614,8 +614,8 @@ export default {
   filters: {
     ellipsis(value) {
       if (!value) return "";
-      if (value.length > 8) {
-        return value.slice(0, 8) + "...";
+      if (value.length > 6) {
+        return value.slice(0, 6) + "...";
       }
       return value;
     },
@@ -847,6 +847,14 @@ export default {
       });
     },
     addlist() {
+      // alert(this.name);
+      if(this.name==''||this.studentId==''){
+        this.$message({
+          message: '姓名或学号为空',
+          type: 'warning'
+        });
+        return;
+      }
       var c = { name: this.name, stuId: this.studentId };
       if (this.studentlist == null) {
         this.studentlist = [];
@@ -862,10 +870,12 @@ export default {
             .catch((_) => { });
           return;
         }
-        this.submitList();
       }
+      console.log('studentlist');
+      console.log(c);
       this.studentlist.push(c);
-      // console.log(this.studentlist);
+      console.log(this.studentlist);
+      this.submitList();
       this.name = "";
       this.studentId = "";
     },
