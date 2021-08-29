@@ -410,6 +410,8 @@ export default {
         index = 2;
       } else if (type === "考试问卷") {
         index = 3;
+      }else if(type==="疫情打卡问卷"){
+        index = 4;
       }
       this.$router.push({
         path: "/edit1/" + index,
@@ -450,6 +452,8 @@ export default {
           index = 2;
         } else if (types === "考试问卷") {
           index = 3;
+        }else if(type==="疫情打卡问卷"){
+          index = 4;
         }
         this.$router.push({
           path: "/edit1/" + index,
@@ -479,6 +483,8 @@ export default {
         index = 2;
       } else if (type === "考试问卷") {
         index = 3;
+      }else if(type==="疫情打卡问卷"){
+        index = 4;
       }
       this.$router.push({
         path: "/edit1/" + index,
