@@ -2,12 +2,45 @@
   <div>
     <div>
       <el-button
+        type="text"
+        @click="dialogVisible = true"
+        id="tishi"
+      >查看编辑提示</el-button>
+      <el-button
         class="btn"
         type="primary"
         size="medium"
         @click="open"
       >发布问卷</el-button>
     </div>
+
+    <el-dialog
+      :visible.sync="dialogVisible"
+      width="50%"
+    >
+      <div>
+        <p class="ming">格式说明</p>
+        <div class="shuo">
+          <p>第一行默认为问卷标题，问卷题目自动添加题号</p>
+          <p>请在题目开头使用 [单选题]、[多选题]、[填空题]、[评分题] 来标注不同的题型，其中选择题需要至少设置一个选项，如无标注会识别为填空题。</p>
+          <p>目前仅支持上述四种题型，更多题型敬请期待</p>
+        </div>
+        <p class="ming">题目样例</p>
+        <div class="shuo">
+          {{tm}}
+        </div>
+      </div>
+
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button
+          type="primary"
+          @click="dialogVisible = false"
+        >确 定</el-button>
+      </span>
+    </el-dialog>
 
     <div class="try-main ">
       <div class="edit">
@@ -118,13 +151,15 @@ export default {
       subtitle: "",
       flag: false,
       num: "",
+      dialogVisible: false,
+      tm: '[单选题]请问您最常用的创建问卷方式是？\n从空白问卷开始创建\n使用已有的问卷模板\n使用导入功能自动创建\n\n[填空题]请您用一句话评价下问卷平台\n\n[多选题]以下特性中，您认为比较重要的是？\n创建方式多样\n免费好用\n在线实时统计\n多终端自动适应显示\n\n[评分题]请为问卷平台评一下分',
     }
   },
   methods: {
     c() {
       this.list = this.textarea.split('\n');
       for (var i = 0; i < this.list.length; i++) {
-        if (this.list[i] == "") {
+        if (this.list[i].match(/^[ ]*$/)) {
           this.list.splice(i, 1);
           i = i - 1;
         }
@@ -137,6 +172,7 @@ export default {
         this.headerTitle = this.list[0];
       }
       for (var i = 1; i < l.length; i++) {
+        l[i] = l[i].replace(/^\s*/, "");
         if (c.type != undefined) {
           if (c.selectionList.length == 0) {
             var select = {};
@@ -358,10 +394,11 @@ export default {
   background-color: #fff;
   max-height: 80vh;
   min-height: 80vh;
-  width: 60vw;
+  width: 55vw;
   margin: auto;
   padding: 40px 80px;
   overflow-y: auto;
+  padding-right: 100px;
 }
 .t-area {
   height: 80vh;
@@ -369,9 +406,10 @@ export default {
 }
 
 .try-main {
-  margin-top: 10px;
   display: flex;
-  margin-left: 5px;
+  margin: 0 auto;
+  margin-top: 10px;
+  width: 85vw;
 }
 .edit {
   display: flex;
@@ -394,7 +432,7 @@ export default {
   font-size: 14px;
   color: black;
   font-family: inherit;
-  border: 1px solid #eaeaea;
+  border: 2px solid #eaeaea;
   background: rgb(255, 255, 255, 1);
   box-sizing: border-box;
   outline: none;
@@ -406,11 +444,10 @@ export default {
   font-size: 14px;
   text-align: right;
   resize: none;
-  border: 0;
+  border-left: 2px solid #eaeaea;
   box-sizing: border-box;
   height: 100%;
   width: 100%;
-  outline: none;
   overflow-y: hidden;
   overflow-x: hidden;
   background: rgb(247, 247, 247);
@@ -423,6 +460,21 @@ export default {
 }
 .btn {
   margin-top: 10px;
-  margin-left: 86vw;
+  margin-left: 65vw;
+}
+#tishi {
+  margin-left: 10vw;
+}
+.shuo {
+  margin: 3%;
+  background: rgb(247, 247, 247);
+  padding: 3%;
+  white-space: pre-wrap;
+}
+.ming {
+  margin-left: 3%;
+  font-size: 18px;
+  font-weight: bold;
+  color: #1565c0;
 }
 </style>
