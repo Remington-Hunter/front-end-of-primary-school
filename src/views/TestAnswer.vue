@@ -56,7 +56,9 @@
             </el-radio-group>
             <div v-if="question.type === 12">
               <div class="question-answer">
-                <b>正确答案: </b>选项{{ parseInt(question.correct_answer) + 1 }}
+                <b>正确答案: </b>
+                <span v-if="question.correct_answer === ''">无</span>
+                <span v-else>选项{{ parseInt(question.correct_answer) + 1 }}</span>
               </div>
               <div>
                 你的得分:{{question.grade}}
@@ -81,12 +83,15 @@
             <div v-if="question.type === 13">
               <div class="question-answer">
                 <b>正确答案: </b>
-                <span
+                <span v-if="question.correct_answer === ''">无</span>
+                <span v-else>
+                  <span
                   v-for="(item, index) in strtolist(question.correct_answer)"
                   :key="(item, index)"
                 >
                   选项{{ parseInt(item) + 1 }}
                   <span v-if="index < strtolist(question.correct_answer).length - 1">,</span>
+                </span>
                 </span>
               </div>
               <div>
@@ -116,7 +121,10 @@
             >
             </el-input>
             <div v-if="question.type === 14">
-              <div class="question-answer"> <b>正确答案: </b>{{ question.correct_answer }}</div>
+              <div class="question-answer"> <b>正确答案: </b>
+              <span v-if="question.correct_answer === ''">无</span>
+                <span v-else>{{ question.correct_answer }}</span>
+              </div>
               <div>
                 你的得分:{{question.grade}}
               </div>
