@@ -304,6 +304,7 @@
             >评分题</span>
             <div v-if="questionType == 3">
               <div class="corret">正确率：{{ rate[index] }}</div>
+              <div class="corret">平均分：{{ avglist[index] }}</div>
               <div class="c-answer">正确答案：{{ rightAnswer[index] }}</div>
             </div>
           </div>
@@ -1177,12 +1178,17 @@ export default {
         c = { label: s, prop: (i + 1).toString() };
         this.headArr.push(c);
       }
-      c = { label: "填写时间", prop: (len + 1).toString() };
-      this.headArr.push(c);
-      if (this.questionType === 3) {
-        c = { label: "总成绩", prop: (len + 2).toString() };
+      
+      if (this.questionType === '3') {
+        c = { label: "总成绩", prop: (len + 1).toString() };
         // console.log('11111');
         this.headArr.push(c);
+        c = { label: "填写时间", prop: (len + 2).toString() };
+      this.headArr.push(c);
+      }
+      else{
+        c = { label: "填写时间", prop: (len + 1).toString() };
+      this.headArr.push(c);
       }
     },
     getAnswerExcel(data) {
@@ -1251,13 +1257,19 @@ export default {
             c[(j + 1).toString()] = t;
           }
         }
-        c[(data.questionInfo.length + 1).toString()] = data.answerInfo[
+        
+        if (this.questionType === '3') {
+          console.log(data.answerInfo[i].point);
+          c[(data.questionInfo.length + 1).toString()] =
+            data.answerInfo[i].info.point;
+            c[(data.questionInfo.length + 2).toString()] = data.answerInfo[
           i
         ].info.submitTime.replace("T", " ");
-        if (this.questionType === 3) {
-          console.log(data.answerInfo[i].point);
-          c[(data.questionInfo.length + 2).toString()] =
-            data.answerInfo[i].info.point;
+        }
+        else{
+          c[(data.questionInfo.length + 1).toString()] = data.answerInfo[
+          i
+        ].info.submitTime.replace("T", " ");
         }
         this.table1.push(c);
       }
