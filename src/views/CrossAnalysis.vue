@@ -59,7 +59,7 @@
               :before-close="dialogBeforeClose"
             >
               <el-card>
-                <div >
+                <div>
                   <el-table :data="error" border style="width: 100%">
                     <el-table-column prop="stuId" label="学号" width="120">
                     </el-table-column>
@@ -294,9 +294,6 @@
                   :series="col[index]"
                 ></drawCol>
               </div>
-              <el-button @click="setStates(index, 0)">
-                <span>表格</span>
-              </el-button>
               <el-button @click="setStates(index, 1)">
                 <span>条形图</span>
               </el-button>
@@ -437,7 +434,7 @@ export default {
       fileList: [],
       addbyhand: false,
       showerro: false,
-      error:[],
+      error: [],
     };
   },
   components: {
@@ -480,19 +477,18 @@ export default {
         data: file_form,
       })
         .then((res) => {
-          if(res.data.code==400){
-          this.showerro=true;
-          for(var i=0;i<res.data.data.length;i++){
-            var c={stuId:res.data.data[i]}
-            this.error.push(c);
+          if (res.data.code == 400) {
+            this.showerro = true;
+            for (var i = 0; i < res.data.data.length; i++) {
+              var c = { stuId: res.data.data[i] };
+              this.error.push(c);
+            }
+            // this.studentlist = res.data.data;
+            // this.getAttendFalseList();
+          } else {
+            this.studentlist = res.data.data;
+            this.getAttendFalseList();
           }
-          // this.studentlist = res.data.data;
-          // this.getAttendFalseList();
-        }
-        else{
-          this.studentlist = res.data.data;
-          this.getAttendFalseList();
-        }
         })
         .catch((err) => {
           console.log(err);
@@ -604,16 +600,15 @@ export default {
           "Content-Type": "application/json",
         },
       }).then((res) => {
-        if(res.data.code==400){
-          this.showerro=true;
-          for(var i=0;i<res.data.data.length;i++){
-            var c={stuId:res.data.data[i]}
+        if (res.data.code == 400) {
+          this.showerro = true;
+          for (var i = 0; i < res.data.data.length; i++) {
+            var c = { stuId: res.data.data[i] };
             this.error.push(c);
           }
           // this.studentlist = res.data.data;
           // this.getAttendFalseList();
-        }
-        else{
+        } else {
           this.studentlist = res.data.data;
           this.getAttendFalseList();
         }
@@ -749,7 +744,7 @@ export default {
     },
     initStates() {
       for (var i = 0; i < this.data.length; i++) {
-        this.states[i] = 0;
+        this.states[i] = 1;
       }
       this.s.states = this.states;
     },
@@ -757,8 +752,6 @@ export default {
       this.$set(this.states, index, num);
     },
     getCompletionData(data) {
-      console.log("this is ");
-
       for (var i = 0; i < this.data.length; i++) {
         // console.log(data[i].question.type);
 
@@ -978,6 +971,25 @@ export default {
         var c = {};
         c["0"] = i + 1;
         var item = answerData[i].answerList;
+        // if (item.length == 0) {
+        //   for (var j = 0; j < data.question; j++) {
+        //     if (
+        //       data.questionInfo[j].info.type == 2 ||
+        //       data.questionInfo[j].info.type == 5 ||
+        //       data.questionInfo[j].info.type == 14 ||
+        //       data.questionInfo[j].info.type == 15
+        //     ) {
+        //       c[(j + 1).toString()] = "用户未填写";
+        //     } else if (data.questionInfo[j].info.type == 3) {
+        //       c[(j + 1).toString()] = "无评价";
+        //     } else {
+        //       var t = "";
+        //       t = "用户未填写";
+        //       c[(j + 1).toString()] = t;
+        //     }
+        //   }
+        //   continue;
+        // }
         for (var j = 0; j < item.length; j++) {
           if (
             data.questionInfo[j].info.type == 2 ||
