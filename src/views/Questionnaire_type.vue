@@ -302,7 +302,7 @@ export default {
     },
 
     wenben() {
-      this.$router.push('/try');
+      this.$router.push('/textedit');
     }
 
   }

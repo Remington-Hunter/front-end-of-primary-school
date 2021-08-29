@@ -323,8 +323,8 @@ export default {
         window.localStorage.setItem('seed', Math.round(Math.random() * 10))
       }
       var formData = new FormData();
-      if (this.type === 3 && window.localStorage.getItem("seed") != null) {
-        formData.append("seed", window.localStorage.getItem('seed'))
+      if(this.type === 3 && window.localStorage.getItem("seed") != null){
+        formData.append("seed",window.localStorage.getItem('seed'))
       }
       formData.append("md5", this.ma);
       axios({
@@ -464,8 +464,8 @@ export default {
       console.log(window.localStorage.getItem('seed'))
       var formData = new FormData();
       formData.append("md5", this.ma);
-      if (this.type === 3 && window.localStorage.getItem("seed") != null) {
-        formData.append("seed", window.localStorage.getItem('seed'))
+      if(this.type === 3 && window.localStorage.getItem("seed") != null){
+        formData.append("seed",window.localStorage.getItem('seed'))
       }
       axios({
         method: "post",
