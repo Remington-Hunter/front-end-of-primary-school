@@ -135,8 +135,22 @@
             class="iconfont"
             style="text-align: center;display:block;"
           >&#xe652;</span>
-          <div style="text-align: center;display:block;">更多问卷</div>
+          <div style="text-align: center;display:block;">文本编辑</div>
           <div style="text-align: center;display:block;">
+            <v-btn
+              height="5vh"
+              class="ma-2"
+              color="primary"
+              @click="wenben"
+            >
+              <!-- to进行跳转 由于普通问卷页面没有做好，这里先转到home试一下-->
+              创建
+              <v-icon
+                dark
+                right
+              >mdi-checkbox-marked-circle
+              </v-icon>
+            </v-btn>
           </div>
         </v-card>
       </el-col>
@@ -286,6 +300,10 @@ export default {
         // alert(this.current_questionnaire.id);
       });
     },
+
+    wenben() {
+      this.$router.push('/try');
+    }
 
   }
 }
