@@ -73,23 +73,11 @@
             <el-button type="primary" @click="exportExcel('#demo3')"
               >下载模板</el-button
             >
-            <!-- <el-upload
-              :limit="1"
-              class="upload-demo"
-              ref="upload"
-              action
-              :on-preview="handlePreview"
-              :on-remove="handleRemove"
-              :file-list="fileList"
-              :auto-upload="false"
-              accept=".xls,.xlsx"
-              
-              :before-upload="beforeUpload"
-            > -->
             <el-upload
               class="c-upload"
               ref="upload"
               :limit="1"
+              action=""
               accept=".xls,.xlsx"
               :on-exceed="handleExceed"
               :on-preview="handlePreview"
@@ -612,7 +600,11 @@ export default {
         console.log("getList");
         console.log(res);
         this.attendFlase = res.data.data;
+        if(this.attendFlase==null){
+          this.attendFlase=[];
+        }
         if (this.studentlist !== null) {
+          this.attendTrue=[]
           for (var i = 0; i < this.studentlist.length; i++) {
             var flag = 0;
             if (this.attendFlase.length == null) {
@@ -670,6 +662,7 @@ export default {
         }
       }
       this.studentlist.splice(index, 1);
+      this.submitList();
     },
     submitList() {
       // console.log(this.studentlist);
@@ -706,9 +699,10 @@ export default {
             .catch((_) => {});
           return;
         }
+        this.submitList();
       }
       this.studentlist.push(c);
-      console.log(this.studentlist);
+      // console.log(this.studentlist);
       this.name = "";
       this.studentId = "";
     },
@@ -872,7 +866,6 @@ export default {
               progress: progress,
             };
             item.push(s);
-            console.log("progress:" + progress);
           }
           this.completion.push(item);
         }
