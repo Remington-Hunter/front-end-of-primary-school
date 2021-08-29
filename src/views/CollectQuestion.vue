@@ -323,7 +323,9 @@ export default {
         window.localStorage.setItem('seed',Math.round(Math.random()*10))
       }
       var formData = new FormData();
-      formData.append("seed",window.localStorage.getItem('seed'))
+      if(this.type === 3 && window.localStorage.getItem("seed") != null){
+        formData.append("seed",window.localStorage.getItem('seed'))
+      }
       formData.append("md5", this.ma);
       axios({
         method: "post",
@@ -461,7 +463,9 @@ export default {
       }
       var formData = new FormData();
       formData.append("md5", this.ma);
-      formData.append("seed",window.localStorage.getItem('seed'))
+      if(this.type === 3 && window.localStorage.getItem("seed") != null){
+        formData.append("seed",window.localStorage.getItem('seed'))
+      }
       axios({
         method: "post",
         url: "https://www.azur1tee.top/api/questionnaire/get_questionnaire",
