@@ -855,13 +855,13 @@ export default {
   created() {
     this.getInfo();
     var interval = setInterval(() => {
-      if (parseInt(this.type) !== 1) {
+      this.getInfo2();
+      if (parseInt(this.type) !== 2) {
         clearInterval(interval);
       }
       if (this.end) {
         clearInterval(interval);
       }
-      this.getInfo2();
     }, 2000);
   },
 };
