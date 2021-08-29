@@ -52,7 +52,7 @@
           </div>
         </template>
         <template v-slot:[`item.state`]="{ item }">
-          <div v-if="item.state==='准备中'">
+          <div v-if="item.state==='未发布'">
 <!--            <div style="color: HSL(240,50%,50%)">{{item.state}}</div>-->
             <el-tag>{{item.state}}</el-tag>
           </div>
@@ -533,11 +533,16 @@ export default {
         console.log(res);
         for (var i = 0; i < this.desserts.length; i++) {
           if (this.desserts[i].id === item) {
-            if(this.desserts[i].date2===null||this.desserts[i].date<=this.desserts[i].date2){
-              this.desserts[i].state = "已停止";
+            if(this.desserts[i].date2===null){
+              this.desserts[i].state = "已停用"
             }
-            else if (this.desserts[i].date2 != null && this.desserts[i].date > this.desserts[i].date2) {
-              this.desserts[i].state = "已过期";
+            else{
+              if(this.desserts[i].date<this.desserts[i].date2){
+                this.desserts[i].state = "已停用";
+              }
+              else if (this.desserts[i].date > this.desserts[i].date2) {
+                this.desserts[i].state = "已过期";
+              }
             }
           }
         }
@@ -660,9 +665,11 @@ export default {
             continue;
           }
           if (res.data.data[i].preparing) {
-            state = "准备中";
+            state = "未发布";
           } else if (res.data.data[i].using) {
             state = "已发布";
+          } else if (res.data.data[i].stopping) {
+            state = "已停用";
           }
           Date.prototype.Format = function (fmt) {
             // author: meizz
@@ -704,10 +711,7 @@ export default {
             res.data.data[i].endTime != null &&
             res.data.data[i].startTime > time
           ) {
-            state = "未开始";
-          }
-          if (res.data.data[i].stopping) {
-            state = "已停用";
+            state = "未发布";
           }
           var data2 = res.data.data[i].endTime;
           if (data2 != null) {
