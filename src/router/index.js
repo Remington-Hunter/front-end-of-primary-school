@@ -128,6 +128,11 @@ const routes = [{
         path:'/statistics/:type',
         name:'statistics',
         component:()=>import('../views/Statistics.vue')
+    },
+    {
+        path:'/try',
+        name:'try',
+        component:()=>import('../views/questionnaire/try.vue')
     }
 ]
 
