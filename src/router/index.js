@@ -130,8 +130,8 @@ const routes = [{
         component:()=>import('../views/Statistics.vue')
     },
     {
-        path:'/try',
-        name:'try',
+        path:'/textedit',
+        name:'textedit',
         component:()=>import('../views/questionnaire/try.vue')
     }
 ]
