@@ -59,7 +59,7 @@ export default {
         },
         yAxis: {},
         series: [
-          { type: "bar" ,barWidth : 40,color:'#008fff'},
+          { type: "bar" ,barWidth : 30,color:'#008fff'},
           // {type: 'bar'},
           // {type: 'bar'}
           // barWidth : 30,

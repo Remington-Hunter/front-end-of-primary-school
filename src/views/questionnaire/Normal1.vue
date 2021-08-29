@@ -320,6 +320,7 @@ export default {
       this.description = this.copy_questionnaire_info.questionnaire.description;
       this.see_result=this.copy_questionnaire_info.questionnaire.canSee == 1? true: false
       this.disorder=this.copy_questionnaire_info.questionnaire.disorder == 1?true :false
+      console.log(this.copy_questionnaire_info);
       if(this.copy_questionnaire_info.questionnaire.startTime != null && this.copy_questionnaire_info.questionnaire.endTime != null){
         this.value1=[]
         this.has_time=true
@@ -334,6 +335,25 @@ export default {
         item.type = this.problem_type_info(x[i].question.type);
         var obj = {};
         obj.problem_type = this.problem_type_info(x[i].question.type);
+        if(['考试单选题','考试多选题','考试填空题'].includes(obj.problem_type)){
+          switch(obj.problem_type){
+            case '考试单选题':
+              obj.radio=parseInt(x[i].question.answer)
+              console.log(obj.radio);
+              break
+            case '考试填空题':
+              obj.answer=x[i].question.answer
+              break
+            case '考试多选题':
+              var yy=[]
+              var y=x[i].question.answer.split('')
+              for(var ii=0;ii<y.length;ii++){
+                yy.push(x[i].optionList[parseInt(y[ii])].content)
+              }
+              obj.checkList=yy
+              break
+          }
+        }
         obj.name = x[i].question.content;
         obj.instruction = x[i].question.comment;
         obj.must_write_select = x[i].question.required === 1 ? true : false;
