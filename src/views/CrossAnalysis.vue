@@ -309,7 +309,7 @@
               </el-button>
             </div>
             <div v-else>
-              <el-table :data="completion[index]" style="width: 100%">
+              <el-table :data="completion[index]" style="width: 100%" border>
                 <el-table-column label="序号">
                   <template slot-scope="scope">
                     <!-- <i class="el-icon-time"></i> -->
