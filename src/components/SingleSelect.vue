@@ -430,9 +430,9 @@ export default {
       preradio: "",
       radio:this.iscopy
         ? (this.copy_info.radio === undefined
-          ? "0"
+          ? ""
           : this.copy_info.radio)
-        : "0",
+        : "",
 
       // radio: this.copp_info.radio === undefined?"1":this.copp_info.radio, //单选题答案
       checkList: this.iscopy
