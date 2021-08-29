@@ -295,6 +295,7 @@ export default {
       ],
       desserts: [],
       data: [],
+      flag:true
     };
   },
   methods: {
@@ -820,8 +821,14 @@ export default {
     this.getItem();
   },
   updated() {
-    this.getItem();
+    if(this.flag){
+      this.getItem();
+      this.flag=false;
+    }else{
+      return;
+    }
   }
+
 };
 </script>
 
