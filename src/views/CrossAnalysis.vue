@@ -446,6 +446,9 @@ export default {
     Completion,
   },
   mounted() {
+    
+  },
+  created(){
     this.id = this.$route.params.id;
     this.questionType = this.$route.params.type;
     this.getseries();
