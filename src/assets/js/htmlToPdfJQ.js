@@ -7,7 +7,7 @@ import $ from 'jquery';
 
 // console.log($, '这是什么什么');
 function download(ele) {
-    var element = $("#demo"); // 这个dom元素是要导出pdf的div容器
+    var element = $("#"); // 这个dom元素是要导出pdf的div容器
     console.log(element, '1212122');
     // var element = ele;    // 这个dom元素是要导出pdf的div容器
     var w = element.width(); // 获得该容器的宽

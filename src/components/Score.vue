@@ -1,7 +1,7 @@
 <template>
   <div>
     <div></div>
-    <div id="demo">
+    <div id="">
       <el-table :data="table1" border height="550" style="width: 100%">
         <template v-for="(item, index) in headArr">
           <el-table-column
@@ -106,7 +106,7 @@ export default {
       // console.log(name)
       /* generate workbook object from table */
       //  .table要导出的是哪一个表格
-      var wb = XLSX.utils.table_to_book(document.querySelector("#demo"));
+      var wb = XLSX.utils.table_to_book(document.querySelector("#"));
       console.log(wb.Sheets.Sheet1);
       /* get binary string as output */
       var wbout = XLSX.write(wb, {

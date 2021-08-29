@@ -153,6 +153,7 @@ export default {
       num: "",
       dialogVisible: false,
       tm: '[单选题]请问您最常用的创建问卷方式是？\n从空白问卷开始创建\n使用已有的问卷模板\n使用导入功能自动创建\n\n[填空题]请您用一句话评价下问卷平台\n\n[多选题]以下特性中，您认为比较重要的是？\n创建方式多样\n免费好用\n在线实时统计\n多终端自动适应显示\n\n[评分题]请为问卷平台评一下分',
+      questionnaire_id: ""
     }
   },
   methods: {
@@ -338,6 +339,26 @@ export default {
         //   this.is_saved = true
         //   this.questionnaire_id = res.data.data
         // }
+        if (res.data.code === 200 || res.data.code === 201) {
+          var Data1 = new FormData();
+          this.questionnaire_id = res.data.data;
+          Data1.append("questionnaireId", this.questionnaire_id);
+          axios({
+            url:
+              "https://www.azur1tee.top/api/questionnaire/publish_questionnaire",
+            method: "post",
+            data: Data1,
+            headers: {
+              Authorization: window.localStorage.getItem("authorization"),
+              "Content-Type": "application/json",
+            },
+          }).then((res) => {
+            console.log(res);
+            // if (res.data.code === 200 || res.data.code === 201) {
+            //   this.$message({message: "问卷已发布", type: "success"});
+            // }
+          });
+        }
       });
     },
 
