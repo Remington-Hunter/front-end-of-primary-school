@@ -895,9 +895,14 @@ export default {
       this.ishow = true;
     },
     getRate(data) {
-      if (this.questionType !== 3) {
+      // console.log('this is the log');
+      
+      if (this.questionType !== '3') {
+        console.log('this is the log');
         return;
       } else {
+        
+        console.log('this is the log');
         for (var i = 0; i < data.length; i++) {
           var t = data[i].question.rate;
           t = t * 100;
@@ -928,7 +933,9 @@ export default {
           t = data[i].question.rate * data.length;
           t = t.toFixed(2);
           this.avglist.push(t);
+
         }
+      console.log('rate'+this.rate);
       }
     },
     exportExcel(id) {
@@ -1148,6 +1155,7 @@ export default {
           this.avg += data.answerInfo[i].info.point;
         }
         this.avg = this.avg / data.answerInfo.length;
+        this.avg=this.avg.toFixed(2);
         this.getAnswerExcel(data);
       });
     },
