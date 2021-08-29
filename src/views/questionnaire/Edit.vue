@@ -52,12 +52,12 @@
           @click="getProblemInfo"
         >预览
         </el-button>
-        <el-button
+        <!-- <el-button
           v-if="activeName==='first'"
           type="primary"
           @click="handleDown"
           plain
-        >导出PDF<i class="el-icon-download el-icon--right"></i></el-button>
+        >导出PDF<i class="el-icon-download el-icon--right"></i></el-button> -->
         <el-button
           type="primary"
           @click="$router.go(-1)"
@@ -70,8 +70,15 @@
       :visible.sync="dialogVisible"
       width="60%"
       center
+      
     >
-      <d-preview
+    <el-button
+          v-if="activeName==='first'"
+          type="primary"
+          @click="handleDown"
+          plain
+        >导出PDF<i class="el-icon-download el-icon--right"></i></el-button>
+      <d-preview id="demo5"
         :headerTitle="this.title"
         :subtitle="this.description"
         :list="this.preview_list"
@@ -133,7 +140,7 @@ export default {
   methods: {
 
     handleDown() {
-      htmlToPdf.downloadPDF(document.querySelector("#demo"), "我的问卷");
+      htmlToPdf.downloadPDF(document.querySelector("#demo5"), "我的问卷");
     },
     getProblemInfo() {
       if (this.is_creating === true) {

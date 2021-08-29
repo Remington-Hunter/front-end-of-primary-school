@@ -193,8 +193,9 @@
           name="second"
         >
           <el-card style="height:650px">
-            <div class="tables">
-              <div class="att-table">
+            <el-button type="primary" @click="exportExcel('#demo4')" >导出未打卡名单</el-button>
+            <div class="tables" >
+              <div class="att-table" id="demo4">
                 <p id="dcy">待参与</p>
                 <el-table
                   :header-cell-style="{background:'#eef1f6',color:'#606266'}"
