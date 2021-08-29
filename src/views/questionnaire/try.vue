@@ -446,10 +446,10 @@ export default {
   padding-right: 5px;
 }
 #edit-content {
-  padding: 10px 8px;
+  padding: 10px 18px;
   width: 100%;
   height: 100%;
-  line-height: 24px;
+  line-height: 26px;
   font-size: 14px;
   color: black;
   font-family: inherit;
@@ -461,7 +461,7 @@ export default {
 }
 #leftNum {
   padding: 10px 4px;
-  line-height: 24px;
+  line-height: 26px;
   font-size: 14px;
   text-align: right;
   resize: none;
@@ -481,7 +481,7 @@ export default {
 }
 
 .btn {
-  margin-left: 30vw;
+  margin-left: 40vw;
 }
 
 .shuo {
@@ -506,7 +506,8 @@ export default {
 }
 .fuzhi {
   padding-top: 10px;
-  margin-right: 6vw;
+  margin-right: 3vw;
+  color: #888;
 }
 </style>
 
