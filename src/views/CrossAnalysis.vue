@@ -817,13 +817,17 @@ export default {
     },
     deleteList(item) {
       var index = -1;
+      console.log('this s item');
       console.log(item);
-      for (var i = 0; i < this.studentlist; i++) {
-        if (item.stuId == this.studentlist[i].stuId) {
+      console.log(this.studentlist.length);
+      for (var i = 0; i < this.studentlist.length; i++) {
+        if (JSON.stringify(this.studentlist[i].stuId)===JSON.stringify(item.stuId)) {
           index = i;
           break;
         }
       }
+      console.log('index');
+      console.log(index);
       this.studentlist.splice(index, 1);
       this.submitList();
     },
