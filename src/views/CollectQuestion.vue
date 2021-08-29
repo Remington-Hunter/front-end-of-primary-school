@@ -875,7 +875,7 @@ export default {
 }
 #c-top {
   margin-top: -8vh;
-  padding-top: 100px;
+  padding-top: 2vh;
   background: rgba(235, 246, 254, 1);
   min-height: 100vh;
 }

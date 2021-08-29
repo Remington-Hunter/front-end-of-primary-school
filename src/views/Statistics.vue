@@ -10,23 +10,60 @@
             index="1"
             @click="goto(1)"
           >
-            <span class="item-content"><span class="text">回收数据</span></span>
+            <div class="item-content">
+              <svg
+                class="icon"
+                aria-hidden="true"
+              >
+                <use xlink:href="#icon-icon_gerenpingjibaogao"></use>
+              </svg>
+              <p class="s-text">回收数据</p>
+            </div>
           </el-menu-item>
 
           <el-menu-item
             index="2"
             @click="goto(2)"
           >
-            <span class="item-content">
-              <p class="text">统计图表</p>
-            </span>
+            <div class="item-content">
+              <svg
+                class="icon"
+                aria-hidden="true"
+              >
+                <use xlink:href="#icon-icon_shanghupingji"></use>
+              </svg>
+              <p class="s-text">统计图表</p>
+            </div>
           </el-menu-item>
 
           <el-menu-item
             index="3"
             @click="goto(3)"
           >
-            <span class="item-content"><span class="text">交叉分析</span></span>
+            <div class="item-content">
+              <svg
+                class="icon"
+                aria-hidden="true"
+              >
+                <use xlink:href="#icon-icon_dashujujiaochayanzheng"></use>
+              </svg>
+              <p class="s-text">交叉分析</p>
+            </div>
+          </el-menu-item>
+
+          <el-menu-item
+            index="3"
+            @click="goto(3)"
+          >
+            <div class="item-content">
+              <svg
+                class="icon"
+                aria-hidden="true"
+              >
+                <use xlink:href="#icon-icon_dilidingweijishu"></use>
+              </svg>
+              <p class="s-text">学生打卡</p>
+            </div>
           </el-menu-item>
         </el-menu>
       </el-aside>
@@ -44,7 +81,7 @@
 
 <script>
 import anlysis from "./CrossAnalysis.vue";
-import cross from "./getCrossAnalysis.vue"
+import cross from "./getCrossAnalysis.vue";
 export default {
   components: {
     anlysis,
@@ -91,19 +128,26 @@ export default {
   text-decoration: none;
 }
 .item-content {
-  display: block;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+  flex-direction: column;
+  display: flex;
   white-space: nowrap;
+  padding-top: 25px;
 }
-.text {
+/* .s-text {
   line-height: 20px;
-}
+} */
 .el-aside {
   position: fixed;
+}
+</style>
+
+<style type="text/css">
+.icon {
+  margin: 0 auto;
+  width: 40px;
+  height: 40px;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
 }
 </style>
