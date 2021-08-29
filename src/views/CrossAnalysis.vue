@@ -101,7 +101,7 @@
                   background-color: #409eff;
                 "
                 @click="submitUpload"
-                >提交文章</el-button
+                >提交文件</el-button
               >
             </el-upload>
           </div>
