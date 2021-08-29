@@ -64,6 +64,10 @@
 <!--            <div style="color: #FF4040">{{item.state}}</div>-->
             <el-tag type="danger">{{item.state}}</el-tag>
           </div>
+          <div v-if="item.state==='已过期'">
+            <!--            <div style="color: #FF4040">{{item.state}}</div>-->
+            <el-tag type="info">{{item.state}}</el-tag>
+          </div>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
           <v-icon
@@ -347,8 +351,6 @@ export default {
         this.dialog = true;
       }
     },
-
-
     now_date(date) {
       Date.prototype.Format = function (fmt) {
         // author: meizz
@@ -408,6 +410,8 @@ export default {
         index = 2;
       } else if (type === "考试问卷") {
         index = 3;
+      }else if(type==="疫情打卡问卷"){
+        index = 4;
       }
       this.$router.push({
         path: "/edit1/" + index,
@@ -448,6 +452,8 @@ export default {
           index = 2;
         } else if (types === "考试问卷") {
           index = 3;
+        }else if(type==="疫情打卡问卷"){
+          index = 4;
         }
         this.$router.push({
           path: "/edit1/" + index,
@@ -477,6 +483,8 @@ export default {
         index = 2;
       } else if (type === "考试问卷") {
         index = 3;
+      }else if(type==="疫情打卡问卷"){
+        index = 4;
       }
       this.$router.push({
         path: "/edit1/" + index,
@@ -525,7 +533,12 @@ export default {
         console.log(res);
         for (var i = 0; i < this.desserts.length; i++) {
           if (this.desserts[i].id === item) {
-            this.desserts[i].state = "已停止";
+            if(this.desserts[i].date2===null||this.desserts[i].date<=this.desserts[i].date2){
+              this.desserts[i].state = "已停止";
+            }
+            else if (this.desserts[i].date2 != null && this.desserts[i].date > this.desserts[i].date2) {
+              this.desserts[i].state = "已过期";
+            }
           }
         }
       });
