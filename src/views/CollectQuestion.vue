@@ -49,12 +49,12 @@
           <div class="header-title">
             {{ headerTitle }}
             <div v-if="have_count_down && this.type === 3">
-<!--              <span>距离截止时间:-->
-                <CountDown
-                  :remainTime="count_down_time"
-                  @countDownEnd="countDownEnd"
-                />
-<!--              </span>-->
+              <!--              <span>距离截止时间:-->
+              <CountDown
+                :remainTime="count_down_time"
+                @countDownEnd="countDownEnd"
+              />
+              <!--              </span>-->
             </div>
             <!-- <span><CountDown
     :remainTime="count_down_time"/></span> -->
@@ -319,14 +319,14 @@ export default {
       if (this.can_write_state === false) {
         return
       }
-      if(this.type === 3 && window.localStorage.getItem("seed") == null){
-        window.localStorage.setItem('seed',Math.round(Math.random()*10))
+      if (this.type === 3 && window.localStorage.getItem("seed") == null) {
+        window.localStorage.setItem('seed', Math.round(Math.random() * 10))
       }
       var formData = new FormData();
-      formData.append("seed",window.localStorage.getItem('seed'))
-      if(this.type === 3 && window.localStorage.getItem("seed") == null){
-        formData.append("seed",window.localStorage.getItem('seed'))
+      if (this.type === 3 && window.localStorage.getItem("seed") != null) {
+        formData.append("seed", window.localStorage.getItem('seed'))
       }
+      formData.append("md5", this.ma);
       axios({
         method: "post",
         url: "https://www.azur1tee.top/api/questionnaire/get_questionnaire",
@@ -458,14 +458,14 @@ export default {
       console.log(this.questionList);
     },
     getInfo() {
-      if(this.type === 3 && window.localStorage.getItem("seed") == null){
-        window.localStorage.setItem('seed',Math.round(Math.random()*10))
+      if (this.type === 3 && window.localStorage.getItem("seed") == null) {
+        window.localStorage.setItem('seed', Math.round(Math.random() * 10))
       }
       console.log(window.localStorage.getItem('seed'))
       var formData = new FormData();
       formData.append("md5", this.ma);
-      if(this.type === 3 && window.localStorage.getItem("seed") == null){
-        formData.append("seed",window.localStorage.getItem('seed'))
+      if (this.type === 3 && window.localStorage.getItem("seed") != null) {
+        formData.append("seed", window.localStorage.getItem('seed'))
       }
       axios({
         method: "post",
@@ -800,11 +800,11 @@ export default {
               return;
             } else {
               z.number = "";
-              z.content = this.locationInfo.country +'/'+ this.locationInfo.province +'/'+ this.locationInfo.city +'/'+ this.locationInfo.district;
+              z.content = this.locationInfo.country + '/' + this.locationInfo.province + '/' + this.locationInfo.city + '/' + this.locationInfo.district;
             }
           } else {
             z.number = "";
-            z.content = this.locationInfo.country +'/'+ this.locationInfo.province +'/'+ this.locationInfo.city +'/'+ this.locationInfo.district;
+            z.content = this.locationInfo.country + '/' + this.locationInfo.province + '/' + this.locationInfo.city + '/' + this.locationInfo.district;
           }
         }
         list.push(z);
