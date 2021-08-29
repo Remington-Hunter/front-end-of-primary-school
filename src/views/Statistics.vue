@@ -139,9 +139,7 @@ export default {
 .el-aside {
   position: fixed;
 }
-</style>
 
-<style type="text/css">
 .icon {
   margin: 0 auto;
   width: 40px;
@@ -151,3 +149,4 @@ export default {
   overflow: hidden;
 }
 </style>
+
