@@ -49,12 +49,12 @@
           <div class="header-title">
             {{ headerTitle }}
             <div v-if="have_count_down && this.type === 3">
-              <span>距离截止时间:
+<!--              <span>距离截止时间:-->
                 <CountDown
                   :remainTime="count_down_time"
                   @countDownEnd="countDownEnd"
                 />
-              </span>
+<!--              </span>-->
             </div>
             <!-- <span><CountDown
     :remainTime="count_down_time"/></span> -->

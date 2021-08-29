@@ -65,7 +65,6 @@
       border
       height="550"
       style="width: 100%"
-
     >
       <template v-for="(item, index) in headArr">
         <el-table-column

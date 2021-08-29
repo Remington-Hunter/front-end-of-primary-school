@@ -431,6 +431,7 @@
               <el-table
                 :data="completion[index]"
                 style="width: 100%"
+                border
               >
                 <el-table-column label="序号">
                   <template slot-scope="scope">
@@ -762,7 +763,11 @@ export default {
         console.log("getList");
         console.log(res);
         this.attendFlase = res.data.data;
+        if (this.attendFlase == null) {
+          this.attendFlase = [];
+        }
         if (this.studentlist !== null) {
+          this.attendTrue = []
           for (var i = 0; i < this.studentlist.length; i++) {
             var flag = 0;
             if (this.attendFlase.length == null) {
@@ -820,6 +825,7 @@ export default {
         }
       }
       this.studentlist.splice(index, 1);
+      this.submitList();
     },
     submitList() {
       // console.log(this.studentlist);
@@ -856,9 +862,10 @@ export default {
             .catch((_) => { });
           return;
         }
+        this.submitList();
       }
       this.studentlist.push(c);
-      console.log(this.studentlist);
+      // console.log(this.studentlist);
       this.name = "";
       this.studentId = "";
     },
@@ -1022,7 +1029,6 @@ export default {
               progress: progress,
             };
             item.push(s);
-            console.log("progress:" + progress);
           }
           this.completion.push(item);
         }
