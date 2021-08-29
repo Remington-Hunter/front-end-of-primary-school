@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="c-head">
-      <span class="total" style="text-align:center">回收总量：{{total}}</span>
+      <span class="total" style="text-align: center"
+        >回收总量：{{ total }}</span
+      >
       <el-button
         v-if="num === 1"
         @click="exportExcel('#demo2')"
@@ -52,12 +54,7 @@
               <el-input v-model="studentId" placeholder="请输入学号"></el-input>
               <el-button type="primary" @click="addlist">确定添加</el-button>
             </div>
-            <el-dialog
-              title=""
-              :visible.sync="showerro"
-              width="width"
-              :before-close="dialogBeforeClose"
-            >
+            <el-dialog title="" :visible.sync="showerro" width="width">
               <el-card>
                 <div>
                   <el-table :data="error" border style="width: 100%">
@@ -76,7 +73,7 @@
             <el-button type="primary" @click="exportExcel('#demo3')"
               >下载模板</el-button
             >
-            <el-upload
+            <!-- <el-upload
               :limit="1"
               class="upload-demo"
               ref="upload"
@@ -85,8 +82,24 @@
               :on-remove="handleRemove"
               :file-list="fileList"
               :auto-upload="false"
+              accept=".xls,.xlsx"
+              
+              :before-upload="beforeUpload"
+            > -->
+            <el-upload
+              class="c-upload"
+              ref="upload"
+              :limit="1"
+              accept=".xls,.xlsx"
+              :on-exceed="handleExceed"
+              :on-preview="handlePreview"
+              :on-remove="handleRemove"
+              :file-list="fileList"
+              :before-upload="beforeUpload"
+              :auto-upload="false"
               :http-request="UploadSubmit"
             >
+              <!--  -->
               <el-button slot="trigger" size="small" type="primary"
                 >选取文件</el-button
               >
@@ -435,7 +448,7 @@ export default {
       addbyhand: false,
       showerro: false,
       error: [],
-      total:0,
+      total: 0,
     };
   },
   components: {
@@ -451,7 +464,7 @@ export default {
     this.getseries();
     this.getAnswerData();
     this.getList();
-    },
+  },
   filters: {
     ellipsis(value) {
       if (!value) return "";
@@ -462,7 +475,13 @@ export default {
     },
   },
   methods: {
+    handleExceed(files, fileList) {
+      this.$message.warning("超出1个文件，请先删除当前文件，再重新上传");
+      return false;
+    },
+
     UploadSubmit(param) {
+      console.log(param.files);
       var file = param.file;
       var file_form = new FormData(); //获取上传表单（文件）
       file_form.append("file", file);
@@ -480,6 +499,7 @@ export default {
         .then((res) => {
           if (res.data.code == 400) {
             this.showerro = true;
+            this.error = [];
             for (var i = 0; i < res.data.data.length; i++) {
               var c = { stuId: res.data.data[i] };
               this.error.push(c);
@@ -490,10 +510,32 @@ export default {
             this.studentlist = res.data.data;
             this.getAttendFalseList();
           }
+          // param.files=null;
         })
         .catch((err) => {
           console.log(err);
         });
+    },
+    beforeUpload(file) {
+      console.log(file);
+      var testmsg = file.name.substring(file.name.lastIndexOf(".") + 1);
+      const extension = testmsg === "xls";
+      const extension2 = testmsg === "xlsx";
+      // const isLt2M = file.size / 1024 / 1024 < 10
+      if (!extension && !extension2) {
+        this.$message({
+          message: "上传文件只能是 xls、xlsx格式!",
+          type: "warning",
+        });
+      }
+      // if(!isLt2M) {
+      //     this.$message({
+      //         message: '上传文件大小不能超过 10MB!',
+      //         type: 'warning'
+      //     });
+      // }
+      // return (extension || extension2) && isLt2M
+      return extension || extension2;
     },
     submitUpload() {
       this.$refs.upload.submit();
@@ -573,6 +615,9 @@ export default {
         if (this.studentlist !== null) {
           for (var i = 0; i < this.studentlist.length; i++) {
             var flag = 0;
+            if (this.attendFlase.length == null) {
+              continue;
+            }
             for (var j = 0; j < this.attendFlase.length; j++) {
               if (this.studentlist[i].stuId == this.attendFlase[j].stuId) {
                 flag = 1;
@@ -926,7 +971,7 @@ export default {
       }).then((res) => {
         var data = res.data.data;
         this.data1 = data;
-        this.total=data.answerInfo.length;
+        this.total = data.answerInfo.length;
         this.avg = 0;
         for (var i = 0; i < data.answerInfo.length; i++) {
           this.avg += data.answerInfo[i].info.point;
@@ -1027,10 +1072,13 @@ export default {
             c[(j + 1).toString()] = t;
           }
         }
-        c[(data.questionInfo.length + 1).toString()] = data.answerInfo[i].info.submitTime.replace("T"," ");
+        c[(data.questionInfo.length + 1).toString()] = data.answerInfo[
+          i
+        ].info.submitTime.replace("T", " ");
         if (this.questionType === 3) {
           console.log(data.answerInfo[i].point);
-          c[(data.questionInfo.length + 2).toString()] = data.answerInfo[i].info.point;
+          c[(data.questionInfo.length + 2).toString()] =
+            data.answerInfo[i].info.point;
         }
         this.table1.push(c);
       }
