@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="c-head">
-      <!-- <span class="total">回收总量：</span> -->
+      <span class="total" style="text-align:center">回收总量：{{total}}</span>
       <el-button
         v-if="num === 1"
         @click="exportExcel('#demo2')"
@@ -435,6 +435,7 @@ export default {
       addbyhand: false,
       showerro: false,
       error: [],
+      total:0,
     };
   },
   components: {
@@ -925,6 +926,7 @@ export default {
       }).then((res) => {
         var data = res.data.data;
         this.data1 = data;
+        this.total=data.answerInfo.length;
         this.avg = 0;
         for (var i = 0; i < data.answerInfo.length; i++) {
           this.avg += data.answerInfo[i].info.point;
