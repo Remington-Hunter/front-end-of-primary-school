@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div>
+    <div class="wb-head">
+      <p class="fuzhi">将已准备好的问卷文档复制粘贴至左边区域</p>
       <el-button
         type="text"
         @click="dialogVisible = true"
-        id="tishi"
       >查看编辑提示</el-button>
       <el-button
         class="btn"
@@ -420,6 +420,7 @@ export default {
   padding: 40px 80px;
   overflow-y: auto;
   padding-right: 100px;
+  border: 1px solid #eaeaea;
 }
 .t-area {
   height: 80vh;
@@ -429,7 +430,6 @@ export default {
 .try-main {
   display: flex;
   margin: 0 auto;
-  margin-top: 10px;
   width: 85vw;
 }
 .edit {
@@ -453,7 +453,7 @@ export default {
   font-size: 14px;
   color: black;
   font-family: inherit;
-  border: 2px solid #eaeaea;
+  border: 1px solid #eaeaea;
   background: rgb(255, 255, 255, 1);
   box-sizing: border-box;
   outline: none;
@@ -479,13 +479,11 @@ export default {
 .header-title {
   font-size: 22px;
 }
+
 .btn {
-  margin-top: 10px;
-  margin-left: 65vw;
+  margin-left: 30vw;
 }
-#tishi {
-  margin-left: 10vw;
-}
+
 .shuo {
   margin: 3%;
   background: rgb(247, 247, 247);
@@ -497,5 +495,24 @@ export default {
   font-size: 18px;
   font-weight: bold;
   color: #1565c0;
+}
+.wb-head {
+  display: flex;
+  width: 85vw;
+  margin: 0 auto;
+  background: #fff;
+  padding: 10px 30px;
+  border: 1px solid #eaeaea;
+}
+.fuzhi {
+  padding-top: 10px;
+  margin-right: 6vw;
+}
+</style>
+
+
+<style>
+.v-application p {
+  margin-bottom: 0px;
 }
 </style>
