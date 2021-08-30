@@ -319,11 +319,8 @@ export default {
       if (this.can_write_state === false) {
         return
       }
-      if (this.type === 3 && window.localStorage.getItem("seed") == null) {
-        window.localStorage.setItem('seed', Math.round(Math.random() * 10))
-      }
       var formData = new FormData();
-      if (this.type === 3 && window.localStorage.getItem("seed") != null) {
+      if (window.localStorage.getItem("seed") != null) {
         formData.append("seed", window.localStorage.getItem('seed'))
       }
       formData.append("md5", this.ma);
@@ -458,13 +455,13 @@ export default {
       console.log(this.questionList);
     },
     getInfo() {
-      if (this.type === 3 && window.localStorage.getItem("seed") == null) {
-        window.localStorage.setItem('seed', Math.round(Math.random() * 10))
+      if (this.can_write_state === false) {
+        return
       }
       console.log(window.localStorage.getItem('seed'))
       var formData = new FormData();
       formData.append("md5", this.ma);
-      if (this.type === 3 && window.localStorage.getItem("seed") != null) {
+      if (window.localStorage.getItem("seed") != null) {
         formData.append("seed", window.localStorage.getItem('seed'))
       }
       axios({
@@ -868,6 +865,9 @@ export default {
     }
   },
   created() {
+    if (window.localStorage.getItem("seed") == null) {
+        window.localStorage.setItem('seed', Math.round(Math.random() * 10))
+      }
     this.getInfo();
     var interval = setInterval(() => {
       this.getInfo2();
