@@ -236,7 +236,7 @@ export default {
       var data = this.data;
       var question2 = data.questionInfo[this.v2];
       var len = question2.optionList.length;
-      var c = { label: "X/Y", prop: "0" };
+      var c = { label: "行/列", prop: "0" };
       this.headArr.push(c);
       for (var i = 0; i < len; i++) {
         var s = "";
@@ -366,7 +366,7 @@ export default {
       var question2 = data.questionInfo[this.v2];
       var len = question2.optionList.length;
       var item = [];
-      item.push("X/Y");
+      item.push("行/列");
       for (var i = 0; i < len; i++) {
         var s = "";
         if (question2.optionList[i].content == null) {
